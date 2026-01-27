@@ -9,7 +9,21 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="deposit-group">
+       <div class="deposit-fild">
+         <label class="deposit-label" for="deposit-select">金額を入力</label>
+         <div class="deposit-wrapper">
+           <select id="deposit-select">
+             <option value="1000">¥1,000</option>
+             <option value="3000">¥3,000</option>
+             <option value="5000">¥5,000</option>
+             <option value="10000">¥10,000</option>
+             <option value="manual">金額を入力</option>
+           </select>
+         </div>
 
+         <input type="number" aria-labelledby="deposit-title-id" inputmode="numeric" class="manual-deposit-fild" placeholder="金額を入力">
+        </div>  
     
 </body>
 </html>
