@@ -9,74 +9,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="card-front-group">
 
-    <section class="card-front-inner">
-      <div class="card-front-wapper">
-        <div>
-          <img src="" alt="スターバックスカード" class="card-img">
-        </div>
-        <div class="card-front-OR">
-          <img scr="" alt="QRコード" class="front-QR-img">
-        </div>
-        <div class="card-balance-group" aria-label="価格0円"> <!-- 記号と数値をタグで分けると読み上げが不自然に(「円、０」)なるため、アクセシビリティに配慮して一つのラベルへ -->
-          <span class="front-en" aria-hidden="true">¥</span>
-          <data value="0.000" class="card-balance" aria-hidden="true">0.000</data> <!-- valueに数字を入れることでプログラムが処理しやすくなる -->
-        </div>
-        <div class="front-star-group" aria-label="現在のスターは0.0ポイントです">
-          <span class="front-star-member">Green会員</span>
-          <span class="front-star-balance" aria-hidden="true">0.000</span>
-          <img src="" alt="スター" class="star-img" aria-hidden="true">
-        </div>
-      </div>
-    </section>
-
-    <div class="tapbtn"><button class="frount-tapbtn"></button></div>
-
-  </div>
-  
-  <div class="card-back-group">
-
-    <div><img src="" alt="サブスターバックスカード" class="sub-card-img"></div>    
-
-  <div class="deposit-field">
-      <!-- 親(参照したいテキスト)に id を振る-->
-    <label id="deposit-label" for="deposit-select">入金額</label>
-    <div class="deposit-wrapper">
-      <!-- 指定したい要素に aria-labelledby を書く -->  
-      <select id="deposit-select" aria-labelledby="deposit-label">
-        <option value="1000">¥1,000</option>
-        <option value="3000">¥3,000</option>
-        <option value="5000">¥5,000</option>
-        <option value="10000">¥10,000</option>
-        <option value="manual">金額を入力</option>
-      </select>
-      <!-- inputmode スマホで数字キーボードが自動で出る-->
-      <input type="number" inputmode="numeric" aria-labelledby="deposit-label" class="manual-deposit-field" placeholder="金額を入力"> 
-    </div>         
-  </div>
-
-  <div class="payment-field">
-    <label id="paymnet-label" for="payment-select">支払い方法</label>
-      <select id="payment-select" aria-labelledby="payment-label">
-        <div class="payment-wapper">
-          <option value="credit">クレジットカード</option>
-          <option value="applepay">Apple Pay</option>
-          <option value="paypay">Pay Pay</option>
-          <option value="select">支払い方法を追加する</option>
-        </div>  
-      </select>
-  </div> 
-  
-  <button class="deposit-btn">次へ</button>
-
-  <div class="payimages">
-    <img src="" alt="決済イメージ" class="payimg">
-  </div>
-  
-  <div class="tapbtn"><button class="back-tapbtn"></button></div>
-  
-  </div>
   
     
 </body>
