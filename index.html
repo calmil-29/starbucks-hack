@@ -10,7 +10,38 @@
 </head>
 <body>
 
+<div class="card-balance-group" aria-label="利用残高価格0円"> <!-- 記号と数値をタグで分けると読み上げが不自然に(「円、０」)なるため、アクセシビリティに配慮して一つのラベルへ -->
+          <span class="card-label" aria-hidden="true">Starbucks Card</span>  
+          <span class="front-en" aria-hidden="true">¥</span>
+          <data value="0.000" class="card-balance" aria-hidden="true">0.000</data> <!-- valueに数字を入れることでプログラムが処理しやすくなる -->
+        </div>
 
+    .card-balance-group {
+    position: absolute;
+    top: 35%;
+    left: 45%;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+} 
+
+.card-label {
+    font-size: 14px;
+    letter-spacing: 0.05em;
+}
+
+.card-blance {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.front-en {
+    font-size: 10px;
+    margin-right: 2px;
+}
 
 
 
