@@ -9,7 +9,136 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<section class="card-front-inner">
+      <div class="card-front-wrapper">
+        <div class="card-front-OR">
+          <img src="../images/QRコード.png" alt="QRコード" class="front-QR-img">
+        </div>
+        <div class="card-balance-group" aria-label="利用残高価格0円"> <!-- 記号と数値をタグで分けると読み上げが不自然に(「円、０」)なるため、アクセシビリティに配慮して一つのラベルへ -->
+          <span class="card-label" aria-hidden="true">Starbucks Card</span>  
+          <span class="front-en" aria-hidden="true">¥</span>
+          <data value="0.000" class="card-balance" aria-hidden="true">0.000</data> <!-- valueに数字を入れることでプログラムが処理しやすくなる -->
+        </div>
+        <div class="front-star-group" aria-label="現在の保有スターは0.0ポイントです">
+          <div class="star-text-row">    
+            <span class="front-star-member">Green会員</span>
+            <span class="front-star" aria-hidden="true">保有Star</span>
+            <span class="front-star-balance" aria-hidden="true">0.000</span>
+            <img src="" alt="スター" class="star-img" aria-hidden="true">
+            <button class="star-button" aria-label="スターリワードに交換する">スターリワードに交換</button>
+          </div>    
+        </div>
+      </div>
+    </section> 
 
+    .card-front-inner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.card-front-wrapper{
+    position: relative;
+    width: 90%;
+    max-width: 340px;
+    aspect-ratio: 1.6 / 1; /* 高さを数値で指定せず比率で決める(横幅に合わせて高さが自動で計算される) */
+    margin: 20px auto;
+    border-radius: 12px;
+    background-image: url('../images/my-card.png');
+    background-size: cover;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    color: white;
+    overflow: hidden;
+}
+
+.card-front-OR {
+    position: absolute;
+    top: 40%;
+    left: 8%;
+    transform: translateY(-50%);
+    background-color: white;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+.front-QR-img {
+    width: 85px;
+    height: 85px;
+    display: block;
+}
+
+/* 残高グループ */
+.card-balance-group {
+    position: absolute;
+    top: 35%;
+    left: 45%;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+} 
+
+.card-label {
+    display: flex;
+    align-items: baseline;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    margin-bottom: 2px;
+}
+
+.card-blance {
+    font-size: 22px;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+
+.front-en {
+    font-size: 12px;
+    margin-right: 2px;
+}
+
+/* ステータスグループ */
+.front-star-group {
+    position: absolute;
+    top: 70%;
+    left: 8%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.star-text-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 2px;
+}
+
+.front-star-member {
+    font-size: 11px;
+    color: var(--stb-white);
+    opacity: 0.7;
+    letter-spacing: 0.02em;
+}
+
+.front-star {
+    padding-right: 3px;
+    font-size: 11px;
+    font-weight: normal;
+    opacity: 0.7;
+    letter-spacing: 0.02em;
+}
+
+
+.front-star-balance {
+    padding-right: 2px;
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--stb-white);
+}
     
 </body>
 </html>
