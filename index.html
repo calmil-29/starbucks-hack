@@ -9,6 +9,59 @@
 </head>
 <body>
 
+/* 全体のリスト */
+.main-inner {
+    width: 100%;
+    padding: 0 16px; /* ここで一括して左右の余白をとる */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    box-sizing: border-box; /* 余白を含めた幅計算にする */
+}
+
+.main-inner li {
+    width: 100%;
+    list-style: none;
+}
+
+/* 2列並ぶ li だけの特別な設定 */
+.main-menu-dual-button {
+    display: flex; /* 横並びにする */
+    gap: 12px;     /* ボタン同士の隙間 */
+}
+
+/* バナーの共通土台 */
+.main-inner li a {
+    display: block;
+    position: relative;
+    text-decoration: none;
+    border-radius: 12px; /* スタバ風に角を丸く */
+    overflow: hidden;    /* 中身のはみ出し防止 */
+}
+
+/* 個別に高さを設定する */
+.is-order {
+    height: 110px;
+}
+
+.is-menu, .is-select {
+    height: 90px; /* 2列の方は少し低くするとバランスが良い */
+    flex: 1;      /* 2列の時、均等に幅を分ける */
+}
+
+/* 文字の配置（共通） */
+.main-order, .main-menu, .main-select {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: white;
+    gap: 8px; /* 文字とボタンの隙間を少し広げると見やすい */
+}
 
 
 
