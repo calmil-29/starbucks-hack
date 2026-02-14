@@ -8,6 +8,128 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
- 
+ <section class="banner-group">
+    <ul class="banner-inner">
+      <li>
+        <a href="" class="is-reserve" aria-label="スターバックス リザーブ">
+          <div class="banner-reserve">
+            <strong>STARBUCKS RESERVE®</strong>
+            <span>もっと見る</span> 
+          </div>
+        </a>
+      </li>  
+      <li>
+        <a href="" class="is-gift" aria-label="eGiftを贈る">
+          <div class="banner-gift">
+            <span class="btn-text">Starbucks eGift</span>
+            <strong>eGiftを贈ろう</strong>
+            <span>eGiftを贈る</span> 
+          </div>
+        </a>
+      </li> 
+      <li>
+        <a href="" class="is-card" aria-label="デジタルスターバックスカードを贈る">
+          <div class="banner-card">
+            <span class="btn-text">Digital Starbucks Card Gift</span>
+            <strong>メールやSNSで贈るデジタルタイプのスターバックス カード</strong>
+            <span>Digtal Cardを贈る</span> 
+          </div>
+        </a>
+      </li> 
+      <li>
+        <a href="" class="is-online-store" aria-label="オンラインストア">
+          <div class="banner-online">
+            <span class="btn-text">Online Store</span>
+            <strong>オンラインストア</strong>
+            <span>もっと見る</span> 
+          </div>
+        </a>
+      </li> 
+      <li>
+        <a href="" class="is-passport" aria-label="マイストアパスポート">
+          <div class="banner-passport">
+            <span class="btn-text">My store passport</span>
+            <strong>マイストアパスポート</strong>
+            <span>もっと見る</span> 
+          </div>
+        </a>
+      </li>     
+      <li>
+        <a href="" class="is-coffee-passport" aria-label="コーヒーパスポート">
+          <div class="banner-coffee">
+            <strong>My CoffeePassport</strong>
+            <span>もっと見る</span> 
+          </div>
+        </a>
+      </li>   
+      <li>
+        <a href="" class="is-free-wifi" aria-label="free Wi-Fi">
+          <div class="banner-WiFi">
+            <span class="btn-text">Free WiFi</span>
+            <strong>東京都店舗をご利用のお客様※一部店舗を除く</strong>
+            <span>もっと見る</span> 
+          </div>
+        </a>
+      </li> 
+    </ul>
+  </section>
+  /* バナーグループ */
+.banner-inner {
+    width: 100%;
+    padding: 0; /* ここで一括して左右の余白をとる */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-sizing: border-box; /* 余白を含めた幅計算にする */
+}
+
+/* バナーの共通土台 */
+.banner-inner li a {
+    width: 100%;
+    list-style: none;
+    display: block;
+    position: relative;
+    height: 200px;
+    text-decoration: none;
+    overflow: hidden;    /* 中身のはみ出し防止 */
+}
+
+/* リザーブ自作（仮） */
+.banner-inner .is-reserve {
+    background-color: #1a1a1a;/* リザーブ仮色 */
+}
+
+/* その他バナー */
+.banner-inner a {
+    background-color: #6b6b6b;
+}
+
+/* 文字の配置 */
+.banner-inner div {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: white;
+    gap: 50px; /* 文字とボタンの隙間を少し広げると見やすい */
+}
+
+/* ボタン（共通） */
+.banner-inner span {
+    position: relative;
+    display: inline-block;
+    background-color: white;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--stb-black);
+    padding: 4px 15px;
+    border-radius: 50px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+  
 </body>
 </html>
