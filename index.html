@@ -9,6 +9,155 @@
 </head>
 <body>
 
+    <nav class="bottom-nav-group" aria-label="メインメニュー">
+    <ul class="bottom-nav-inner">
+      <li>
+        <a href="">
+        <img src="../images/nav-home.svg" alt="ホーム">
+          <span class="nav-label">Home</span>    
+        </a>
+      </li>    
+      <li class="nav-pay">
+        <a href="">
+          <div class="pay-icon">
+            <img src="../images/nav-pay.svg" alt="支払い">
+            <span class="pay-badge">1</span> <!-- eTicket通知バッジ-->
+          </div> 
+          <span class="nav-label">Pay</span>     
+        </a>
+      </li>
+      <li class="nav-moble">
+        <a href="">
+          <img src="../images/starbucks-logo-removebg-preview.png" alt="モバイルオーダー">
+          <span class="nav-label">Order</span>
+        </a>
+      </li>
+      <li>
+        <a href="">
+          <img src="../images/nav-store.svg" alt="店舗検索">  
+          <span class="nav-label">Store</span>  
+        </a>
+      </li>
+      <li class="nav-hamburger-btn-group">
+          <button class="nav-hamburger-btn-inner">
+            <div class="nav-hamburger-icon-badge">
+              <span></span> <!-- index通知バッジ -->
+            </div>
+            <div class="nav-btn-hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>  
+            <span class="nav-label">Menu</span>
+          </button>
+      </li>
+    </ul>
+  </nav>
+/* Bottom Navグループ箱(ナビゲーション全体の固定) */
+.bottom-nav-group {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+    z-index: 1000; /* コンテンツより常に上に表示 */
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* アイコンを横一列に表示 */
+.bottom-nav-inner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* 各メニューのスタイル */
+.nav-label {
+    display: block;
+    font-size: 10px;
+    color: var(--stb-text-gray);
+    margin-top: 4px;
+    line-height: 1.2;
+    text-align: center;
+}
+
+/* アイコン画像 */
+.bottom-nav-inner img {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 4px;
+}
+
+
+/* Pay 親：アイコンと文字を包むaタグ */
+.nav-pay a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Pay 子：通知バッジ[1] */
+.pay-badge {
+    position: absolute;
+    top: -2px;
+    right: 50%;
+    transform: translateX(120%);
+    background-color: white;
+    color: var(--stb-black);
+    font-size: 10px;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 20%;
+    border: 2px solid var(--stb-black);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+/* ハンバーガーボタン(≡) */
+/* button(Menu)に合わせて a タグも高さを 100% にして揃える */
+.bottom-nav-inner li a,
+.nav-hamburger-btn-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 50px;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-decoration: none;
+}
+
+.nav-btn-hamburger {
+    width: 20px;
+    height: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0;
+    margin-bottom: 5px;
+}
+
+.nav-btn-hamburger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #a0a0a0;
+    border-radius: 1px;
+}
+
 
 </body>
 </html>
