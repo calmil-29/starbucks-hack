@@ -8,21 +8,173 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-/* カードをバナー化する */
-.card-front-wrapper {
-    width: 100%;       /* 端から端まで */
-    max-width: none;   /* 制限を解除 */
-    border-radius: 0;  /* あえて角をなくし、画面と一体化させる */
-    aspect-ratio: auto; /* 高さは中身に合わせるか、少し余裕を持たせる */
-    padding: 24px 0;
-    /* 背景画像はそのまま、よりリッチに */
+<div class="card-front-group">
+    
+    <section class="card-front-inner">
+  <div class="card-front-group">
+    
+    <div class="card-front-wrapper">
+      <div class="card-front-QR">
+        <img src="../images/QRコード.png" alt="QRコード" class="front-QR-img">
+      </div>
+
+      <img src="../images/starbucks-logo.png" alt="スターバックスロゴ" class="card-logo">  
+     
+      <div class="card-balance-group">
+        <span class="card-label">Starbucks Card</span>      
+        <div class="card-balance-inner">
+          <span class="amount-group">
+            <span class="front-en">¥</span>
+            <data value="0" class="card-balance">0.000</data>
+          </span>  
+        </div>
+      </div>  
+
+      <div class="front-star-info">
+        <span class="front-star-member">Green会員</span>    
+        <div class="front-star-inner">    
+          <span class="front-star">保有Star</span>
+          <span class="front-star-balance"><span class="big-zero">0</span>.0</span>
+          <img src="../images/Star-icon.svg" alt="スター" class="star-img">
+        </div>
+      </div>
+    </div>
+
+    <div class="card-action-list">
+      <button class="charge-button">チャージ</button>
+      <button class="star-button">スターリワード交換</button>
+      <button class="btn-eticket">
+        eTicket
+        <span class="eticket-count">3</span>
+      </button>
+    </div>
+
+  </div>
+</section>
+
+    /* Home画面 */
+
+/* ①Card Hero Area */
+/* 全体のコンテナ */
+.card-front-inner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
 }
 
-/* ボタンをバナーの中に「住まわせる」 */
-.card-action-list {
-    margin-top: 20px;
-    padding: 0 16px;   /* 左右に余白を作って、タップしやすく */
+.card-front-group {
+    width: 100%;
+    max-width: none; 
 }
+
+/* カードの「板」 */
+.card-front-wrapper {
+    border-radius: 0;  
+    aspect-ratio: auto; /* 高さは中身に合わせるか、少し余裕を持たせる */
+    padding: 24px 0;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.6 / 1;
+    background-image: url('../images/my-card.png');
+    background-size: cover;
+    background-position: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    color: white;
+    overflow: hidden;
+    margin-bottom: 16px; /* ボタンとの距離 */
+}
+
+/* 板の中の要素（絶対配置） */
+.card-front-QR {
+    position: absolute;
+    top: 50%;
+    left: 8%;
+    transform: translateY(-50%);
+    background: white;
+    padding: 6px;
+    border-radius: 4px;
+}
+.front-QR-img { width: 80px; height: 80px; display: block; }
+
+.card-logo {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 40px;
+}
+
+.card-balance-group {
+    position: absolute;
+    top: 25%;
+    left: 42%;
+}
+
+.front-star-info {
+    position: absolute;
+    bottom: 12%;
+    left: 42%;
+}
+
+/* ボタンエリア（ここが重要） */
+.card-action-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px; /* ボタン同士の隙間 */
+    margin-top: 20px;
+    padding: 0 16px;
+}
+
+.card-action-list button {
+    flex: 1; /* 3つのボタンを均等幅にする */
+    height: 36px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+/* 各ボタンの固有カラー */
+.charge-button {
+    background-color: #006241 !important;
+    color: white !important;
+    border: none !important;
+}
+
+.star-button {
+    border-color: #ffc45e !important;
+    color: #ffc45e !important;
+}
+
+/* eTicketボタンとバッジ */
+.btn-eticket {
+    position: relative;
+    border-color: #006241 !important;
+    color: #006241 !important;
+}
+
+.eticket-count {
+    position: absolute;
+    top: -8px;
+    right: -5px;
+    background-color: #006241;
+    color: white;
+    font-size: 10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+}
+
 
 
 
