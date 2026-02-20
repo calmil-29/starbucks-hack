@@ -8,6 +8,121 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+/* 全体のコンテナ */
+.card-front-inner {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
+.card-front-group {
+    width: 90%;
+    max-width: 360px;
+}
+
+/* カードの「板」 */
+.card-front-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1.6 / 1;
+    background-image: url('../images/my-card.png');
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    color: white;
+    overflow: hidden;
+    margin-bottom: 16px; /* ボタンとの距離 */
+}
+
+/* 板の中の要素（絶対配置） */
+.card-front-QR {
+    position: absolute;
+    top: 50%;
+    left: 8%;
+    transform: translateY(-50%);
+    background: white;
+    padding: 6px;
+    border-radius: 4px;
+}
+.front-QR-img { width: 80px; height: 80px; display: block; }
+
+.card-logo {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 40px;
+}
+
+.card-balance-group {
+    position: absolute;
+    top: 25%;
+    left: 42%;
+}
+
+.front-star-info {
+    position: absolute;
+    bottom: 12%;
+    left: 42%;
+}
+
+/* ボタンエリア（ここが重要） */
+.card-action-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px; /* ボタン同士の隙間 */
+}
+
+.card-action-list button {
+    flex: 1; /* 3つのボタンを均等幅にする */
+    height: 36px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+/* 各ボタンの固有カラー */
+.charge-button {
+    background-color: #006241 !important;
+    color: white !important;
+    border: none !important;
+}
+
+.star-button {
+    border-color: #ffc45e !important;
+    color: #ffc45e !important;
+}
+
+/* eTicketボタンとバッジ */
+.btn-eticket {
+    position: relative;
+    border-color: #006241 !important;
+    color: #006241 !important;
+}
+
+.eticket-count {
+    position: absolute;
+    top: -8px;
+    right: -5px;
+    background-color: #006241;
+    color: white;
+    font-size: 10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid white;
+}
 
 
 </body>
