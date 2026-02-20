@@ -9,155 +9,219 @@
 </head>
 <body>
 
-    <nav class="bottom-nav-group" aria-label="メインメニュー">
-    <ul class="bottom-nav-inner">
-      <li>
-        <a href="">
-        <img src="../images/nav-home.svg" alt="ホーム">
-          <span class="nav-label">Home</span>    
-        </a>
-      </li>    
-      <li class="nav-pay">
-        <a href="">
-          <div class="pay-icon">
-            <img src="../images/nav-pay.svg" alt="支払い">
-            <span class="pay-badge">1</span> <!-- eTicket通知バッジ-->
-          </div> 
-          <span class="nav-label">Pay</span>     
-        </a>
-      </li>
-      <li class="nav-moble">
-        <a href="">
-          <img src="../images/starbucks-logo-removebg-preview.png" alt="モバイルオーダー">
-          <span class="nav-label">Order</span>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <img src="../images/nav-store.svg" alt="店舗検索">  
-          <span class="nav-label">Store</span>  
-        </a>
-      </li>
-      <li class="nav-hamburger-btn-group">
-          <button class="nav-hamburger-btn-inner">
-            <div class="nav-hamburger-icon-badge">
-              <span></span> <!-- index通知バッジ -->
-            </div>
-            <div class="nav-btn-hamburger">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>  
-            <span class="nav-label">Menu</span>
-          </button>
-      </li>
-    </ul>
-  </nav>
-/* Bottom Navグループ箱(ナビゲーション全体の固定) */
-.bottom-nav-group {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+   <div class="card-front-group">
+    
+    <section class="card-front-inner">
+      <div class="card-front-wrapper">
+
+        <div class="card-front-OR">
+          <img src="../images/QRコード.png" alt="QRコード" class="front-QR-img">
+        </div>
+
+        <img src="../images/starbucks-logo.png" alt="スターバックスロゴ" class="card-logo">  
+       
+        <div class="card-balance-group">
+          <span class="card-label" aria-hidden="true">Starbucks Card</span>      
+          <div class="card-balance-inner" aria-label="利用残高価格0円"> <!-- 記号と数値をタグで分けると読み上げが不自然に(「円、０」)なるため、アクセシビリティに配慮して一つのラベルへ -->
+            <span class="amount-group">
+              <span class="front-en" aria-hidden="true">¥</span>
+              <data value="0.000" class="card-balance" aria-hidden="true">0.000</data> <!-- valueに数字を入れることでプログラムが処理しやすくなる -->
+            </span>  
+            <button class="charge-button" aria-label="チャージする">チャージ</button>
+          </div>
+        </div>  
+        
+        <!--- ステータス(スターリワード)グループ -->
+        <div class="front-star-group" aria-label="現在の保有スターは0.0ポイントです">
+          <span class="front-star-member">Green会員</span>    
+          <div class="front-star-inner">    
+            <span class="front-star" aria-hidden="true">保有Star</span>
+            <span class="front-star-balance" aria-hidden="true">
+              <span class="big-zero" aria-hidden="true">0</span>.0</span>
+            <img src="../images/Star-icon.svg" alt="スター" class="star-img" aria-hidden="true">
+          </div>
+          <button class="star-button" aria-label="スターリワードに交換する">スターリワードに交換</button>
+        </div>  
+
+        <!-- eTiketボタン(裏面へ) -->
+        <div class="btn-card-flip">
+          <button class="btn-etiket">
+            <span class="btn-etiket-icon"></span>eTiket 
+            <span class="etiket-count">3</span>   
+          </button></div> <!-- どちらのボタンか自動で特定 : CSS 例.card-frount-group .card-flip-btn{} -->
+
+      </div>
+    </section>  
+  </div>
+
+    /* Home画面(①Card Hero Area) */
+.card-front-inner {
     width: 100%;
-    height: 70px;
-    background-color: #ffffff;
-    border-top: 1px solid #e0e0e0;
-    z-index: 1000; /* コンテンツより常に上に表示 */
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-}
-
-/* アイコンを横一列に表示 */
-.bottom-nav-inner {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 100%;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-/* 各メニューのスタイル */
-.nav-label {
-    display: block;
-    font-size: 10px;
-    color: var(--stb-text-gray);
-    margin-top: 4px;
-    line-height: 1.2;
-    text-align: center;
-}
-
-/* アイコン画像 */
-.bottom-nav-inner img {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 4px;
-}
-
-
-/* Pay 親：アイコンと文字を包むaタグ */
-.nav-pay a {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Pay 子：通知バッジ[1] */
-.pay-badge {
-    position: absolute;
-    top: -2px;
-    right: 50%;
-    transform: translateX(120%);
-    background-color: white;
-    color: var(--stb-black);
-    font-size: 10px;
-    font-weight: 700;
-    width: 16px;
-    height: 16px;
-    border-radius: 20%;
-    border: 2px solid var(--stb-black);
     display: flex;
     justify-content: center;
-    align-items: center;
-    z-index: 10;
+    padding-top: 20px;
 }
 
-/* ハンバーガーボタン(≡) */
-/* button(Menu)に合わせて a タグも高さを 100% にして揃える */
-.bottom-nav-inner li a,
-.nav-hamburger-btn-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    height: 50px;
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    text-decoration: none;
+.card-front-wrapper{
+    position: relative;
+    width: 80%;
+    max-width: 340px;
+    aspect-ratio: 1.6 / 1; /* 高さを数値で指定せず比率で決める(横幅に合わせて高さが自動で計算される) */
+    margin: 20px auto;
+    border-radius: 12px;
+    background-image: url('../images/my-card.png');
+    background-size: cover;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    color: white;
+    overflow: hidden;
 }
 
-.nav-btn-hamburger {
-    width: 20px;
-    height: 14px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 0;
-    margin-bottom: 5px;
+/* QRコード */
+.card-front-OR {
+    position: absolute;
+    top: 35%;
+    left: 8%;
+    transform: translateY(-50%);
+    background-color: white;
+    padding: 6px;
+    border-radius: 4px;
 }
 
-.nav-btn-hamburger span {
+.front-QR-img {
+    width: 80px;
+    height: 80px;
     display: block;
-    width: 100%;
-    height: 2px;
-    background-color: #a0a0a0;
-    border-radius: 1px;
 }
 
+.card-logo {
+    position: absolute;
+    top: 10.5px;
+    right: 10.5px;
+    width: 40px;
+    height: auto;
+}
+
+/* 残高グループ */
+.card-balance-group {
+    position: absolute;
+    top: 30%;
+    left: 45%;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+} 
+
+.card-balance-inner {
+    display: flex;
+    justify-content: flex-start;
+    align-items: baseline;
+    column-gap: 20px;
+}
+
+.amount-group {
+    display: flex;
+    align-items: baseline;
+    column-gap: 3px;
+}
+
+.card-label {
+    display: flex;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    opacity: 1;
+}
+
+.front-en {
+    font-size: 15px;
+    line-height: 1;
+    transform: translateY(-1px);
+}
+
+.card-balance {
+    font-size: 17px;
+    line-height: 1;
+}
+
+.charge-button {
+    align-items: baseline;
+    transform: translateY(-1px);
+    margin: 4px;
+    padding: 3px 16px;
+    letter-spacing: 0.02em;
+    background-color: var(--stb-green);
+    border: 1px solid white;
+    color: white;
+    border-radius: 50px;
+    font-size: 10px;
+    cursor: pointer;
+}    
+    
+/* ステータスグループ */
+.front-star-group {
+    position: absolute;
+    top: 65%;
+    left: 8%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+}
+
+.front-star-member {
+    line-height: 1;
+    font-size: 11px;
+    color: var(--stb-white);
+    opacity: 0.7;
+    letter-spacing: 0.03em;
+}
+
+.front-star-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 3px;
+}
+
+.front-star {
+    padding-right: 3px;
+    font-size: 10px;
+    font-weight: normal;
+    letter-spacing: 0.02em;
+    color: #ffc45e;
+}
+
+.front-star-balance {
+    padding-right: 2px;
+    font-size: 11px;
+    font-weight: normal;
+    color: var(--stb-white);
+}
+
+.big-zero {
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.star-img {
+    width: 12px;
+    height: auto;  
+}
+
+/* スターリワード交換 */
+.star-button {
+    margin-top: 3px;
+    width: fit-content;
+    padding: 3px 12px;
+    font-size: 10px;
+    border: 1px solid #ffc45e;
+    background: transparent;
+    color: #ffc45e;
+    border-radius: 20px;
+}
+
+/* eTiketボタン(裏面へ) */
 
 </body>
 </html>
