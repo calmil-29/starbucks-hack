@@ -8,6 +8,115 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+/* 1. ベースとなるバナー容器 */
+.card-front-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 260px; /* ボタンまで入る十分な高さ */
+    background-image: url('../images/my-card.png');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* 中身を下に寄せてボタンを底に配置 */
+    padding-bottom: 20px;      /* 底面の余白 */
+    overflow: hidden;
+}
+
+/* 2. QRコード：左側に配置 */
+.card-front-QR {
+    position: absolute;
+    top: 45px;
+    left: 20px;
+    background: white;
+    padding: 6px;
+    border-radius: 4px;
+}
+.front-QR-img { width: 70px; height: 70px; display: block; }
+
+/* 3. ロゴ：右上に配置 */
+.card-logo {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 45px;
+}
+
+/* 4. 残高グループ：QRの右側あたり */
+.card-balance-group {
+    position: absolute;
+    top: 50px;
+    left: 120px; /* QRの横幅分ずらす */
+    text-align: left;
+}
+
+/* 5. スター情報：残高の下あたり */
+.front-star-info {
+    position: absolute;
+    top: 110px;
+    left: 120px;
+}
+
+/* 6. ボタンエリア：下部に一列に並べる */
+.card-action-list {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box; /* パディングを含めて100%にする */
+}
+
+/* ボタン共通指定 */
+.card-action-list button {
+    flex: 1;
+    max-width: 120px; /* 広がりすぎ防止 */
+    height: 38px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.2); /* 少し透けさせてリッチに */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px); /* 背景をぼかす（イマドキのUI） */
+}
+
+
+/* チャージ：スタバグリーンで強調 */
+.charge-button {
+    background-color: #006241 !important;
+    border: none !important;
+}
+
+/* eTicket：通知があることを強調 */
+.btn-eticket {
+    position: relative;
+    background-color: white !important;
+    color: #006241 !important;
+}
+
+/* 通知バッジ：ここがハックの象徴 */
+.eticket-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: #e31837; /* 注意を引く赤系 */
+    color: white;
+    font-size: 10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
 
 
 
