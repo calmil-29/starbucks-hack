@@ -9,31 +9,38 @@
 </head>
 <body>
     
-   /* --- アイコン切り替えの決定版 --- */
+ <li class="nav-hamburger-btn-group is-active">
+          <button class="nav-hamburger-btn-inner">
+            <div class="nav-hamburger-icon-badge">
+              <span></span> <!-- index通知バッジ -->
+            </div>
+            <div class="nav-btn-hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>  
+            <span class="nav-label">Menu</span>
+          </button>
+      </li>
+    </ul>
+  </nav>
 
-/* 1. 基本：カラー版アイコン(icon-on)は常に非表示にしておく */
-.icon-on {
-    display: none;
-}
-
-/* 2. アクティブ時：グレーのアイコンを消す */
-.is-active .icon-off {
-    display: none !important;
-}
-
-/* 3. アクティブ時：カラー版アイコンを強制表示する */
-.is-active .icon-on {
-    display: inline-block !important;
-    width: 35px; /* 元の画像サイズに合わせる */
-    height: 35px;
-    margin-bottom: 4px;
-}
-
-/* 4. アクティブ時：文字色をスタバグリーンにする */
-.is-active .nav-label {
-    color: #006241;
-    font-weight: bold;
-}
-
+   <nav class="nav-hamburger-group" aria-label="サイドメニュー">
+    <ul class="nav-hamburger-btn-inner">
+      <li><a href="#">inbox</a></li>
+      <li><a href="#">Menu</a></li>
+      <li><a href="#">Order</a></li>
+      <li><a href="#">Store</a></li>
+      <li><a href="#">Account</a></li>
+      <li class="setting">
+        <a href="#">
+          <img src="" alt="設定"> <!-- 歯車のアイコン -->
+          <div class="setting-icon">
+            <span></span> <!-- index通知バッジ -->
+          </div>
+        </a>
+      </li> 
+    </ul>
+  </nav>
 </body>
 </html>
