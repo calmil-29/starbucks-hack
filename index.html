@@ -9,240 +9,31 @@
 </head>
 <body>
     
-     <!-- Bottom Nav -->
-  <nav class="bottom-nav-group" aria-label="メインメニュー">
-    <ul class="bottom-nav-inner">
-      <li class="is-active"> 
-        <a href="index.html">
-          <img src="../images/icon-home.svg" class="icon-off" alt="ホーム"> 
-          <img src="../images/icon-home-color.svg" class="icon-on" alt="ホーム">
-          <span class="nav-label">Home</span>    
-        </a>
-      </li>
-      <li class="nav-pay">
-        <a href="">
-          <div class="pay-icon">
-            <img src="../images/icon-pay.svg" class="icon-off" alt="支払い">
-            <img src="../images/icon-pay-color.svg" class="icon-on" alt="支払い">
-            <span class="pay-badge">1</span> <!-- eTicket通知バッジ-->
-          </div> 
-          <span class="nav-label">Pay</span>     
-        </a>
-      </li>
-      <li class="nav-order">
-        <a href="">
-          <div class="order-icon-circle">
-            <img src="../images/starbucks-logo-removebg-preview.png" alt="モバイルオーダー">
-          </div>
-          <span class="nav-label">Order</span>
-        </a>
-      </li>
-      <li>
-        <a href="">
-          <img src="../images/icon-store.svg" class="icon-off" alt="店舗検索">  
-          <img src="../images/icon-store-color.svg" class="icon-on" alt="店舗検索">
-          <span class="nav-label">Store</span>  
-        </a>
-      </li>
-      <li class="nav-hamburger-btn-group">
-          <button class="nav-hamburger-btn-inner">
-            <div class="nav-hamburger-icon-badge">
-              <span></span> <!-- index通知バッジ -->
-            </div>
-            <div class="nav-btn-hamburger">
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>  
-            <span class="nav-label">Menu</span>
-          </button>
-      </li>
-    </ul>
-  </nav>
-/* Bottom Navグループ箱(ナビゲーション全体の固定) */
-.bottom-nav-group {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 70px;
-    background-color: #ffffff;
-    border-top: 1px solid #e0e0e0;
-    z-index: 1000; /* コンテンツより常に上に表示 */
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+   /* --- アイコン切り替えの決定版 --- */
+
+/* 1. 基本：カラー版アイコン(icon-on)は常に非表示にしておく */
+.icon-on {
+    display: none;
 }
 
-/* アイコンを横一列に表示 */
-.bottom-nav-inner {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 100%;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-/* 各メニューのスタイル */
-.nav-label {
-    display: block;
-    font-size: 10px;
-    color: var(--stb-text-gray);
-    margin-top: 4px;
-    line-height: 1.2;
-    text-align: center;
-}
-
-/* アイコン画像 */
-.bottom-nav-inner img {
-    width: 35px;
-    height: 35px;
-    margin-bottom: 4px;
-}
-
-
-/* Pay 親：アイコンと文字を包むaタグ */
-.nav-pay a {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Pay 子：通知バッジ[1] */
-.pay-badge {
-    position: absolute;
-    top: -2px;
-    right: 50%;
-    transform: translateX(120%);
-    background-color: white;
-    color: var(--stb-black);
-    font-size: 10px;
-    font-weight: 700;
-    width: 16px;
-    height: 16px;
-    border-radius: 20%;
-    border: 2px solid var(--stb-black);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 10;
-}
-
-.pay-icon {
-    height: 34px;
-}
-
-/* ハンバーガーボタン(≡) */
-/* button(Menu)に合わせて a タグも高さを 100% にして揃える */
-.bottom-nav-inner li a,
-.nav-hamburger-btn-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    height: 50px;
-    background-color: transparent;
-    border: none;
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    text-decoration: none;
-}
-
-.nav-btn-hamburger {
-    width: 20px;
-    height: 14px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 0;
-    margin-bottom: 12px;
-}
-
-.nav-btn-hamburger span {
-    display: block;
-    width: 100%;
-    height: 2px;
-    background-color: #a0a0a0;
-    border-radius: 1px;
-}
-
-
-/* オーダー */
-.nav-order a {
-    position: relative;
-    width: 60px; /* 丸が収まる幅 */
-}
-
-.nav-order img {
-    width: 45px;
-    height: 45px;
-}
-
-/* オーダー（白い丸の土台） */ 
-.order-icon-circle {
-    width: 56px;
-    height: 56px;
-    background-color: white;
-    border-radius: 50%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute; /* 親のliかaを基準に浮かせる */
-    top: -24px;
-    border: 1px solid #e0e0e0;
-}
-
- /* 共通：aタグに相対位置を持たせる（点を配置する基準） */
-.bottom-nav-inner li a {
-    position: relative; /* これを追記 */
-}
-
-/* 通常時は「ON画像」を隠す */
-.icon-on { display: none;}
-
-/* アクティブ中は「OFF画像」を隠し、「ON画像」を出す */
-.is-active .icon-off { display: none;}
-.is-active .icon-on {display: inline-block;}
-
-/* ≡ ハンバーガー（span）もアクティブなら色を変える設定 */
-.is-active .nav-btn-hamburger span {
-    background-color: #006241;
-}
-
-/* ③ 脱・無難：小さなインジケーター（点） */
-.is-active a::after,
-.is-active .nav-hamburger-btn-inner::after {
-    content: "";
-    position: absolute;
-    bottom: -10px;      /* 文字の下に配置 */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 4px;
-    background-color: #006241;
-    border-radius: 50%;
-    box-shadow: 0 0 4px rgba(0, 98, 65, 0.4); /* ほんの少しだけ光らせる */
-}
-
-/* 1. 通常状態：ON画像を強制的に消す */
-.bottom-nav-inner .icon-on {
-    display: none !important;
-}
-
-/* 2. アクティブ状態：OFFを消してONを出す */
+/* 2. アクティブ時：グレーのアイコンを消す */
 .is-active .icon-off {
     display: none !important;
 }
 
+/* 3. アクティブ時：カラー版アイコンを強制表示する */
 .is-active .icon-on {
     display: inline-block !important;
-    width: 24px;   /* サイズが変わってしまうのを防ぐ */
-    height: 24px;
+    width: 35px; /* 元の画像サイズに合わせる */
+    height: 35px;
+    margin-bottom: 4px;
 }
 
+/* 4. アクティブ時：文字色をスタバグリーンにする */
+.is-active .nav-label {
+    color: #006241;
+    font-weight: bold;
+}
 
 </body>
 </html>
