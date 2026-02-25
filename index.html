@@ -9,43 +9,22 @@
 </head>
 <body>
     
-    <li class="is-active"> <a href="index.html">
-    <img src="../images/nav-home-on.svg" alt="ホーム"> <span class="nav-label">Home</span>    
-  </a>
-</li>
-
-    
-    
-    /* ① 共通：aタグに相対位置を持たせる（点を配置する基準） */
-.bottom-nav-inner li a {
-    position: relative; /* これを追記 */
+    /* 1. 通常状態：ON画像を強制的に消す */
+.bottom-nav-inner .icon-on {
+    display: none !important;
 }
 
-/* ② アクティブ時の色（スタバグリーン） */
-.is-active .nav-label {
-    color: #006241; /* スタバグリーン */
-    font-weight: bold;
+/* 2. アクティブ状態：OFFを消してONを出す */
+.is-active .icon-off {
+    display: none !important;
 }
 
-/* ≡ ハンバーガー（span）もアクティブなら色を変える設定 */
-.is-active .nav-btn-hamburger span {
-    background-color: #006241;
+.is-active .icon-on {
+    display: inline-block !important;
+    width: 24px;   /* サイズが変わってしまうのを防ぐ */
+    height: 24px;
 }
 
-/* ③ 脱・無難：小さなインジケーター（点） */
-.is-active a::after,
-.is-active .nav-hamburger-btn-inner::after {
-    content: "";
-    position: absolute;
-    bottom: -10px;      /* 文字の下に配置 */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 4px;
-    height: 4px;
-    background-color: #006241;
-    border-radius: 50%;
-    box-shadow: 0 0 4px rgba(0, 98, 65, 0.4); /* ほんの少しだけ光らせる */
-}
 
 
 
