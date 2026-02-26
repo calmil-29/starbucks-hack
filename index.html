@@ -8,7 +8,35 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+    /* リスト全体のコンテナ */
+.other-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #f0f0f0; /* リストの始まりを明確に */
+}
+
+/* 各項目 */
+.other-menu-list li {
+    border-bottom: 1px solid #f0f0f0; /* 項目間の区切り */
+}
+
+.other-menu-list li a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* 文字とアイコンを両端に */
+    padding: 16px 20px;            /* タップしやすい高さ（重要！） */
+    text-decoration: none;
+    color: var(--stb-black);
+    font-size: 15px;
+}
+
+/* Starbucks Reserve 特別枠の調整 */
+.reserve-item img {
+    height: 20px; /* ロゴの高さに合わせて調整 */
+    margin-right: 10px;
+}
+
  
 
 
