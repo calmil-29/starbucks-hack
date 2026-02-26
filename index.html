@@ -8,7 +8,71 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    /* リスト全体のコンテナ */
+  <nav class="other-menu-nav" aria-label="サイドメニュー">
+    <ul class="other-menu-list">
+      <li><a href="#">Inbox
+        <span class="notification-dot-index"></span></a></li>
+      <li><a href="#">Menu</a></li>
+      <li><a href="#">Order</a></li>
+      <li><a href="#">Store</a></li>
+      <li><a href="#">Account</a></li>
+      <li class="reserve-item"><a href="#"><img src="../images/icon-reserve.svg" class="reserve-icon" alt=スターバックスリザーブ><span class="reserve-label">STARBUCKS RESERVE®</span></a></li> 
+      <li class="setting-item"><a href="#"><img src="../images/icon-歯車.svg" class="setting-icon" alt="設定"></a></li>    
+    </ul>
+  </nav>
+
+  <!-- Bottom Nav -->
+  <nav class="bottom-nav-group" aria-label="メインメニュー">
+    <ul class="bottom-nav-inner">
+      <li class="nav-home"> 
+        <a href="index.html">
+          <img src="../images/icon-home.svg" class="icon-off" alt="ホーム"> 
+          <img src="../images/icon-home-color.svg" class="icon-on" alt="ホーム">
+          <span class="nav-label">Home</span>    
+        </a>
+      </li>
+      <li class="nav-pay">
+        <a href="pay.html">
+          <div class="pay-icon">
+            <img src="../images/icon-pay.svg" class="icon-off" alt="支払い">
+            <img src="../images/icon-pay-color.svg" class="icon-on" alt="支払い">
+            <span class="pay-badge">1</span> <!-- eTicket通知バッジ-->
+          </div> 
+          <span class="nav-label">Pay</span>     
+        </a>
+      </li>
+      <li class="nav-order">
+        <a href="order.html">
+          <div class="order-icon-circle">
+            <img src="../images/starbucks-logo-removebg-preview.png" alt="モバイルオーダー">
+          </div>
+          <span class="nav-label">Order</span>
+        </a>
+      </li>
+      <li>
+        <a href="store.html">
+          <img src="../images/icon-store.svg" class="icon-off" alt="店舗検索">  
+          <img src="../images/icon-store-color.svg" class="icon-on" alt="店舗検索">
+          <span class="nav-label">Store</span>  
+        </a>
+      </li>
+      <li class="nav-hamburger-btn-group is-active">
+          <a href="other.html" class="nav-hamburger-btn-inner">
+            <div class="nav-hamburger-icon-badge">
+              <span class="notification-dot"></span> <!-- index通知バッジ -->
+            </div>
+            <div class="nav-btn-hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>  
+            <span class="nav-label">Other</span>
+          </a>
+      </li>
+    </ul>
+  </nav>
+/* Otherページ（Bottom Nav） */
+/* リスト全体のコンテナ */
 .other-menu-list {
     list-style: none;
     padding: 0;
@@ -33,9 +97,44 @@
 
 /* Starbucks Reserve 特別枠の調整 */
 .reserve-item img {
-    height: 20px; /* ロゴの高さに合わせて調整 */
-    margin-right: 10px;
+    height: 60px; /* ロゴの高さに合わせて調整 */
+    margin-bottom: 5px;
 }
+
+.reserve-label {
+    font-size: 10px;
+    font-weight: bold;
+}
+
+
+.setting-item .setting-icon {
+    height: 25px;
+}
+
+.notification-dot-index {
+    position: absolute;
+    top: 20px;
+    left: 65px;
+    width: 8px;
+    height: 8px;
+    background-color: #ff3d30;
+    border-radius: 50px;
+}
+
+.other-menu-list li a::after {
+    content: "";
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 8px;
+    border-top: 2px solid #ccc;
+    border-right: 2px solid #ccc;
+    transform: rotate(45deg);
+    position: absolute;
+    right: auto;
+    top: -5px;
+}
+ 
 
  
 
