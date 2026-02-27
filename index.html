@@ -8,7 +8,86 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
- 
+  <nav class="other-menu-nav" aria-label="サイドメニュー">
+    <ul class="other-menu-list">
+      <li><a href="#">
+        <div  class="list-item-index">Index
+        <span class="notification-dot-index"></span></div></a>
+      </li>
+      <li><a href="#">Menu</a></li>
+      <li><a href="#">Order</a></li>
+      <li><a href="#">Store</a></li>
+      <li><a href="#">Account</a></li>
+      <li class="reserve-item"><a href="#"><img src="../images/icon-reserve.svg" class="reserve-icon" alt=スターバックスリザーブ><span class="reserve-label">STARBUCKS RESERVE®</span></a></li> 
+      <li class="setting-item"><a href="#"><img src="../images/icon-歯車.svg" class="setting-icon" alt="設定"></a></li>    
+    </ul>
+  </nav>
+/** Otherページ（Bottom Nav） **/
+/* リスト全体のコンテナ */
+.other-menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #f0f0f0; /* リストの始まりを明確に */
+}
+
+/* 各項目 */
+.other-menu-list li {
+    border-bottom: 1px solid #f0f0f0; /* 項目間の区切り */
+}
+
+.other-menu-list li a {
+    position: relative; /* 子要素（::after）を配置する基準点 */
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;            
+    text-decoration: none;
+    color: var(--stb-black);
+    font-size: 15px;
+}
+
+/* Starbucks Reserve */
+.reserve-item img {
+    height: 60px; 
+    margin-bottom: 5px;
+}
+
+.reserve-label {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+.setting-item .setting-icon {
+    height: 25px;
+}
+
+.notification-dot-index {
+    display: inline-block;
+    left: 65px;
+    width: 7px;
+    height: 7px;
+    background-color: #ff3d30;
+    border-radius: 50px;
+    position: relative;
+    top: -5px;
+    margin-left: 5px;
+}
+
+.other-menu-list li a::after {
+    content: "";
+    display: block;
+    align-items: center;
+    justify-content: space-between;
+    width: 8px;
+    height: 8px;
+    border-top: 2px solid #ccc;
+    border-right: 2px solid #ccc;
+    transform: rotate(45deg);
+    position: absolute;
+    right: 20px;
+    top: 45%;
+}
 
  
 
