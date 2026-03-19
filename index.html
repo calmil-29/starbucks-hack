@@ -9,6 +9,170 @@
 </head>
 <body>
 
+<!-- ①カード画面(Hero Area) -->
+  <section class="card-hero-section">
+  <div class="card-front-container">
+    
+    <div class="card-front-wrapper">
+      <div class="card-front-QR">
+        <img src="../images/QRコード.png" alt="QRコード" class="front-QR-img">
+      </div>
+
+      <img src="../images/starbucks-logo.png" alt="スターバックスロゴ" class="card-logo">  
+     
+      <div class="card-balance-group">
+        <span class="card-label">Starbucks Card</span>      
+        <div class="card-balance-inner">
+          <span class="amount-group">
+            <span class="front-en">¥</span>
+            <data value="0" class="card-balance">0.000</data>
+          </span>  
+        </div>
+      </div>  
+
+      <div class="front-star-info">
+        <span class="front-star-member">Green会員</span>    
+        <div class="front-star-inner">   
+          <span class="front-star">保有Star</span>
+          <span class="front-star-balance"><span class="big-zero">0</span>.0</span>
+           <img src="../images/Star-icon.svg" alt="スター" class="star-img"> 
+        </div>
+
+        <buttton class="btn-etiket-tag" aria-label="eTiketを表示">
+          <span class="etiket-label">eTiket</span>
+          <span class="etiket-count">3</span>
+        </buttton>
+      </div>
+    </div><!-- card-front-wrapper -->
+
+      <div class="card-action-list">
+        <button class="charge-button" aria-label="チャージする">チャージ</button>
+        <button class="star-button" aria-label="スターリワードに交換する">スターリワード交換</button>
+      </div>
+
+      /* --- ①カード画面(Hero Area) --- */
+/* 全体のコンテナ */
+/* ベースとなるバナー容器 */
+.card-front-wrapper {
+    position: relative;
+    width: 100%;
+    min-height: 260px; 
+    background-image: url('../images/my-card.png');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* 中身を下に寄せてボタンを底に配置 */
+    padding-bottom: 20px;      /* 底面の余白 */
+    overflow: hidden;
+}
+
+/* QRコード：左側に配置 */
+.card-front-QR {
+    position: absolute;
+    top: 45px;
+    left: 20px;
+    background: white;
+    padding: 6px;
+    border-radius: 4px;
+}
+.front-QR-img { width: 80px; height: 80px; display: block; }
+
+/* ロゴ：右上に配置 */
+.card-logo {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 45px;
+}
+
+/* 残高グループ：QRの右側あたり */
+.card-balance-group {
+    position: absolute;
+    top: 50px;
+    left: 120px; 
+    text-align: left;
+}
+
+/* スターリワード情報：残高の下あたり */
+.front-star-info {
+    position: absolute;
+    top: 110px;
+    left: 120px;
+}
+
+.star-img {
+    width: 20px;
+    height: 20px;
+}
+
+.big-zero {
+    font-size: 20px;
+}
+
+/* チャージ・スターリワード交換ボタンエリア：下部に一列に並べる */
+.card-action-list {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box; /* パディングを含めて100%にする */
+}
+
+/* チャージ・スターリワード交換カードボタン共通指定 */
+.card-action-list button {
+    width: 100%;
+    height: 50px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* チャージ */
+.charge-button {
+    background-color: #006241 !important;
+    border: none !important;
+}
+
+/* スターリワード交換 */
+.star-button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* eTicket：通知があることを強調 */
+.etiket-label {
+    position: relative;
+    background-color: white;
+    color: var(--stb-black);
+}
+
+/* カードeTiket通知バッジ */
+.etiket-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: #e31837; /* 注意を引く赤系 */
+    color: white;
+    font-size: 10px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+
+    </div><!-- card-front-container -->
+  </section><!-- card-hero-section -->
+
+
   
 
 
