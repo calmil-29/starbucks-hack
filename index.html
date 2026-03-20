@@ -9,119 +9,69 @@
 </head>
 <body>
 
-  /* --- ①カード全体のレイアウト修正 --- */
-.card-front {
-    position: relative;
-    width: 100%;
-    min-height: 260px; 
-    background-image: url('../images/my-card.png');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    display: flex;
-    flex-direction: column; /* 上下に分ける */
-    border-radius: 12px;
-    overflow: hidden;
-    padding: 0; /* paddingを一旦リセット */
-}
-
-/* 上半分のエリア（QRと金額） */
-.card-main-visual {
-    display: flex; /* 横に並べる */
-    padding: 20px;
-    gap: 15px;
-    position: relative;
-}
-
-/* QRコードエリア */
-.qr-tap-area {
-    background: white;
-    padding: 6px;
-    border-radius: 6px;
-    flex-shrink: 0; /* QRが潰れないように */
-    width: 100px; /* 白枠込みのサイズ */
-    height: 100px;
-}
-.card-qr-box img { width: 100%; height: 100%; }
-
-/* 右側：ロゴ・金額・eTicket */
-.card-info-side {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    position: relative;
-}
-
-/* ロゴの配置（右上に固定） */
-.mini-logo {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 40px;
-}
-
-.balance-display {
-    margin-top: 5px;
-}
-
-.card-label { font-size: 11px; opacity: 0.8; margin: 0; }
-.card-price { font-size: 18px; font-weight: bold; margin: 2px 0; }
-
-/* [3]eTicketボタン（金額のすぐ下へ） */
-.btn-etiket-trigger {
-    background: white;
-    border: none;
-    border-radius: 50px;
-    padding: 4px 12px;
-    display: flex;
-    align-items: center;
-    width: fit-content; /* 中身に合わせる */
-    margin-top: 5px;
-    position: relative; /* バッジ用 */
-    cursor: pointer;
-}
-
-.count { font-weight: bold; color: #006241; margin-right: 4px; }
-.eticket-label { font-size: 12px; color: #333; }
-
-/* 下半分：スターとプログレスバー（グラデーションを敷く） */
-.star-progress-overlay {
-    margin-top: auto; /* 底に寄せる */
-    background: linear-gradient(to top, rgba(44,30,21,1) 0%, transparent 100%);
-    padding: 15px 20px;
-}
-
-/* プログレスバーの配置を横並びに */
-.rewards-text-group {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 8px;
-}
-
-.rewards-label { font-size: 10px; margin: 0; }
-.current-stars { font-size: 14px; font-weight: bold; }
-.current-stars img { width: 14px; vertical-align: middle; }
-
-/* アクションボタン（カードの下） */
+/* アクションリスト全体の配置 */
 .card-action-list {
     display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    padding: 15px 10px;
+    padding: 10px 15px;
+    gap: 12px; /* 入金ボタンと連結ボタンの間の隙間 */
     width: 100%;
+    box-sizing: border-box;
 }
-.card-action-list a { flex: 1; text-decoration: none; }
+
+/* 共通ボタン基本設定 */
 .card-action-list button {
-    width: 100%;
-    height: 44px;
-    border-radius: 50px;
     border: none;
-    font-weight: bold;
-    background-color: #006241;
-    color: white;
+    height: 44px;
     font-size: 13px;
+    font-weight: bold;
+    color: white;
     cursor: pointer;
+    background: #006241; /* スタバグリーン */
+}
+
+/* 左：入金ボタン（独立したカプセル） */
+.btn-action-single {
+    flex: 0 0 25%; /* 幅を少し抑える */
+    text-decoration: none;
+}
+.btn-charge {
+    width: 100%;
+    border-radius: 50px;
+}
+
+/* 右：連結ボタンのコンテナ */
+.btn-action-group {
+    display: flex;
+    flex: 1; /* 残りの幅をすべて使う */
+    border-radius: 50px;
+    overflow: hidden; /* 角丸を中身のボタンにも適用させる */
+    border: 1px solid #006241; /* 外枠を引いて境界をハッキリさせる */
+}
+
+.btn-action-group a {
+    display: flex;
+    text-decoration: none;
+}
+
+/* 「スターリワードに交換」部分 */
+.btn-reward-main {
+    flex: 7; /* 比率：広め */
+}
+.btn-reward-main button {
+    width: 100%;
+    border-radius: 0; /* 連結するため角丸を消す */
+    border-right: 1px solid rgba(255, 255, 255, 0.3); /* 白い縦の仕切り線 */
+}
+
+/* 「もっと見る」部分 */
+.btn-reward-sub {
+    flex: 3; /* 比率：狭め */
+}
+.btn-reward-sub button {
+    width: 100%;
+    background-color: white !important; /* 背景を白に */
+    color: #006241 !important; /* 文字を緑に */
+    border-radius: 0;
 }
 
 
