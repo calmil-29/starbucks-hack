@@ -8,257 +8,168 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
- <section class="card-hero-section">
-  <div class="card-flip-container" id="cardFlip">
-    <div class="card-flip-inner">
-      
-      <div class="card-front">
-        <div class="card-main-visual">
-          <div class="qr-tap-area" onclick="openQrModal()">
-            <div class="card-qr-box">
-              <img src="../images/QRコード.png" alt="QR" class="qr-img">
-            </div>
-          </div>
-          <div class="card-info-side">
-            <img src="../images/starbucks-logo.png" alt="Logo" class="mini-logo">
-            <div class="balance-display">
-              <p class="card-label">Starbucks Card</p>
-              <p class="card-price"><span class="unit">¥</span>00,000</p>
-            </div>
-            <button class="btn-etiket-trigger" onclick="flipCard(event)">
-              <span class="count">3</span> 
-              <span class="eticket-label">eTicket</span>
-              <span class="eticket-badge"></span>
-            </button>
-          </div>
-        </div>
+/* --- ①カード全体のコンテナ --- */
+.card-hero-section {
+    width: 100%;
+    padding: 16px; /* 画面端からの余白 */
+    box-sizing: border-box;
+}
 
-        <div class="star-progress-overlay">
-          <div class="rewards-text-group">
-            <p class="rewards-label">STARBUCKS® REWARDS</p>
-            <div class="current-stars"><span class=big-number>160</span>.5</span> <img src="../images/Star-icon.svg" alt="★"></div>
-            <small class="membership-status">Green会員</small>
-          </div>
+.card-flip-container {
+    width: 100%;
+    min-height: 260px;
+    perspective: 1000px;
+}
 
-          <div class="progress-bar-wrapper">
-            <div class="progress-bar-track"><div class="progress-bar-fill"></div></div>
-            <div class="progress-steps">
-              <span>25</span><span>90</span><span>130</span><span>190</span><span class="gold-text">400</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card-back">
-        <div class="ticket-header">
-           <span class="ticket-title">Star Ticket</span>
-           <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
-        </div>
-        </div>
-
-    </div>
-  </div>
-
-  <div class="card-action-list">
-    <a href="#" class="btn-charge-a" aria-label="入金">
-     <button class="btn-charge">入金</button>
-    </a> 
-    <a href="#" class="btn-reward-a" aria-label="スターリワードに交換する">
-     <button class="btn-reward">スターリワード交換</button>
-    </a> 
-    <a href="#" class="btn-reward-more-a" aria-label="スターリワードをもっと見る">
-     <button class="btn-reward-more">もっと見る</button>
-    </a>
-  </div>
-
-     /* --- ①カード画面(Hero Area) --- */
-/* 全体のコンテナ */
-/* ベースとなるバナー容器 */
 .card-front {
     position: relative;
     width: 100%;
-    min-height: 260px; 
+    height: 100%;
+    min-height: 260px;
     background-image: url('../images/my-card.png');
     background-size: cover;
     background-position: center;
+    border-radius: 12px;
     color: white;
+    display: flex;
+    flex-direction: column; /* 縦に2段構え */
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* --- 上段：メインビジュアル (QR + 情報) --- */
+.card-main-visual {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* QRエリア */
+.qr-tap-area {
+    background: white;
+    padding: 8px;
+    border-radius: 8px;
+    flex-shrink: 0; /* QRが潰れないように固定 */
+}
+.card-qr-box img {
+    width: 90px;
+    height: 90px;
+    display: block;
+}
+
+/* 右側：ロゴ・残高・eTicket */
+.card-info-side {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* 中身を下に寄せてボタンを底に配置 */
-    padding-bottom: 20px;/* 底面の余白 */
-    overflow: hidden;
+    justify-content: flex-start;
+    gap: 4px;
+    position: relative;
+    flex-grow: 1;
 }
 
-/* QRコード：左側に配置 */
-.qr-tap-area {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    background: white;
-    padding: 6px;
-    border-radius: 4px;
-}
-.card-qr-box img { width: 88px; height: 88px; display: block; }
-
-/* ロゴ：右上に配置 */
 .mini-logo {
-    position: absolute;
-    top: -30%;
-    left: 198px;
-    width: 45px;
+    width: 40px;
+    margin-bottom: 4px;
 }
 
-/* 残高グループ：QRの右側あたり */
-.card-info-side {
-    position: absolute;
-    display: inline-block;
-    top: 30px;
-    left: 150px; 
-    text-align: left;
-}
+.card-label { font-size: 11px; opacity: 0.9; }
+.card-price { font-size: 20px; font-weight: bold; }
 
-.card-label {
-    font-size: 12px;
-       
-}
-
-.card-price {
-    font-size: 16px;
+/* eTicketボタン */
+.btn-etiket-trigger {
+    margin-top: 8px;
+    background: white;
+    color: #333;
+    border: none;
+    border-radius: 20px;
+    padding: 4px 12px;
+    width: fit-content; /* 文字の長さに合わせる */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
     font-weight: bold;
-    letter-spacing: 0.02em;
+    cursor: pointer;
+    position: relative;
 }
-
-/* [3]eTicketボタン */
-.btn-etiket-trigger {
-    position: absolute;
-    display: inline-block;
-    top: 100px;
-    right: 140px;
-}
-
-.btn-etiket-trigger {
-    width: 80%;
-    height: 40px;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    font-size: 16px;
-    color: var(--stb-black);
-    letter-spacing: 0.02em;
-}
-
-.count {
-    width: 30%;
-    height: 40px;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-/* カードeTiket通知バッジ */
 .eticket-badge {
     position: absolute;
-    top: -6px;
-    right: -6px;
-    background-color: #e31837; /* 注意を引く赤系 */
+    top: -5px;
+    right: -5px;
+    background: #e31837;
     color: white;
-    font-size: 10px;
-    width: 18px;
-    height: 18px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
+    font-size: 10px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    border: 2px solid #fff;
+    justify-content: center;
+    border: 1.5px solid white;
 }
 
-
-/* スターリワード情報 */
+/* --- 下段：Star進捗 (グラデーションオーバーレイ) --- */
 .star-progress-overlay {
-    position: absolute;
+    margin-top: auto; /* 一番下に配置 */
+    background: linear-gradient(to top, rgba(44, 30, 21, 1) 0%, rgba(44, 30, 21, 0.7) 60%, transparent 100%);
+    padding: 15px 20px 20px;
+}
+
+.rewards-text-group {
     display: flex;
     justify-content: space-between;
-    top: 110px;
-    left: 20px;
+    align-items: flex-end;
+    margin-bottom: 8px;
 }
 
-.rewards-label {
-    font-size: 11px;
-    letter-spacing: 0.03em;
-    padding-top: 65px;
+.rewards-label { font-size: 10px; font-weight: bold; }
+.current-stars { font-size: 16px; font-weight: bold; }
+.current-stars img { width: 14px; vertical-align: middle; }
+.membership-status { color: #43a047; font-weight: bold; font-size: 11px; }
+
+/* プログレスバー */
+.progress-bar-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 10px;
+    margin-bottom: 4px;
+}
+.progress-bar-fill {
+    width: 40%; /* 仮の進捗 */
+    height: 100%;
+    background: linear-gradient(to right, #D4AF37, #FFD700);
+    border-radius: 10px;
+}
+.progress-steps {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    opacity: 0.8;
 }
 
-.current-stars img {
-    width: 13px;
-    height: 13px;
-}
-
-.big-number {
-    font-size: 20px;
-}
-
-.membership-status {
-    font-size: 12px;
-    color: #316E46;
-}
-
-
-/* チャージ・スターリワード交換 ボタン土台：下部に一列に並べる */
+/* --- ② カード下のアクションボタン --- */
 .card-action-list {
     display: flex;
-    justify-content: center;
-    float: none;
-    padding: 0;
-    margin-bottom: 10px;
+    gap: 8px;
+    padding: 16px 0;
     width: 100%;
-    margin: 14px;
-    box-sizing: border-box; /* パディングを含めて100%にする */
 }
+.card-action-list a { flex: 1; text-decoration: none; }
 
 .card-action-list button {
-    font-size: 16px;
-    color: #ffffff;
+    width: 100%;
+    height: 44px;
+    border: none;
+    border-radius: 22px;
+    background-color: #006241;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+    white-space: nowrap; /* 改行防止 */
+    cursor: pointer;
 }
 
-/* チャージボタン */
-.btn-charge {
-    width: 20%;
-    height: 40px;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50px;
-    background-color: var(--stb-deepgreen);
-}
-
-/* スターリワード交換 */
-.btn-reward {
-    width: 50%;
-    height: 40px;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50px;
-    background-color: var(--stb-deepgreen);
-}
-
-.btn-reward-more {
-    width: 30%;
-    height: 40px;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50px;
-    background-color: var(--stb-deepgreen);
-}
 
 
 
