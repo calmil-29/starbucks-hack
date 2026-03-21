@@ -9,92 +9,47 @@
 </head>
 <body>
 
- <div class="card-action-list">
-    <a href="#" class="btn-action-single" aria-label="入金">
-     <button class="btn-charge">入金</button>
-    </a> 
+  <div class="star-progress-overlay">
+          <div class="rewards-text-group">
+            <p class="rewards-label">STARBUCKS® REWARDS</p>
+            <div class="current-stars"><span class=big-number>160</span>.5</span> <img src="../images/Star-icon.svg" alt="★"></div>
+          </div>
 
-   <div class="btn-action-group">
-    <a href="#" class="btn-reward-main" aria-label="スターリワードに交換する">
-     <button class="btn-reward">スターリワードに交換</button>
-    </a> 
-    <a href="#" class="btn-reward-sub" aria-label="スターリワードをもっと見る">
-     <button class="btn-reward-more">もっと見る</button>
-    </a>
-    </div>
-  </div>  
+          <p class="member-status">Green会員</p>
 
-    /* アクションボタン（カードの下） */
-/* アクションリスト全体の配置 */
-.card-action-list {
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar-track"><div class="progress-bar-fill"></div></div>
+              <div class="progress-steps">
+                <span>25</span><span>90</span><span>130</span><span>190</span><span class="gold-text">400</span>
+              </div>
+            </div>
+          </div>
+        </div>
+/* 下半分：スターとプログレスバー（グラデーションを敷く） */
+.star-progress-overlay {
     display: flex;
-    padding: 10px 15px;
-    gap: 12px; /* 入金ボタンと連結ボタンの間の隙間 */
-    width: 100%;
-    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto; /* 底に寄せる */
+    background: linear-gradient(to top, rgba(44,30,21,1) 0%, transparent 100%);
+    padding: 15px 20px;
 }
 
-/* 共通ボタン基本設定 */
-.card-action-list button {
-    border: none;
-    height: 44px;
-    font-size: 15px;
-    font-weight: 500;
-    color: white;
-    background: var(--stb-deepgreen); 
-}
-
-/* 左：入金ボタン（独立したカプセル） */
-.btn-action-single {
-    flex: 0 0 20%; /* 幅を少し抑える */
-    text-decoration: none;
-}
-.btn-charge {
-    width: 100%;
-    border-radius: 50px;
-}
-
-/* 右：連結ボタンのコンテナ */
-.btn-action-group {
+.rewards-text-group {
     display: flex;
-    flex: 1; /* 残りの幅をすべて使う */
-    border-radius: 50px;
-    overflow: hidden; /* 中の斜め板のはみ出しをカット */
-    position: relative;
+    flex-direction: column;
+    gap: 2px;
 }
 
-.btn-action-group a {
+.rewards-label { font-size: 10px; letter-spacing: 0.02em; margin: 0; }
+.current-stars { font-size: 14px; font-weight: bold; }
+.current-stars img { width: 14px; vertical-align: middle; }
+.membership-status { font-size: 10px; letter-spacing: 0.02em; color: #316E46;}
+
+.progress-bar-wrapper {
     display: flex;
-    text-decoration: none;
+    flex-direction: column;
 }
-
-/* 「スターリワードに交換」部分 */
-.btn-reward-main {
-    flex: 2; /* 比率：広め */
-}
-.btn-reward-main button {
-    width: 100%;
-    border-radius: 0; /* 連結するため角丸を消す */
-    border-right: 1px solid; 
-}
-
-/* 「もっと見る」部分 */
-.btn-reward-sub {
-    flex: 1; /* 比率：狭め */
-    position: relative;
-}
-.btn-reward-sub ::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -10px;
-    width: 2px;
-    height: 100%;
-    background-color: rgba(225, 225, 225, 0.5);
-    transform: skewX(-20deg);
-    z-index: 1;
-}
-
 
 
 </body>
