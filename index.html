@@ -9,53 +9,74 @@
 </head>
 <body>
 
-  <div class="star-progress-overlay">
-          <div class="rewards-label">
-            <p>STARBUCKS® REWARDS</p>
-          </div>  
+  <div class="progress-bar-wrapper">
+            <div class="progress-bar-track">
+              <div class="progress-bar-fill" styly=""></div>
 
-          <div class="current-stars-group">
-              <div class="current-reward">
-              <spans class="big-number">160</span>.5 <img src="../images/Star-icon.svg" alt="★">
+              <div class="track-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
               </div>
-              <p class="member-status">Green会員</p>
-          </div>
+            </div>
 
-          <div class="progress-bar-wrapper">
-            <div class="progress-bar-track"><div class="progress-bar-fill"></div></div>
               <div class="progress-steps">
-                <span>25</span><span>90</span><span>130</span><span>190</span><span class="gold-text">400</span>
+                <span>25</span><span>90</span><span>130</span><span>190</span><span>400</span>
               </div>
             </div>
           </div>
         </div>
 
-    /* カード下部：リワードとプログレスバー（グラデーション） */
-.star-progress-overlay {
+
+    .progress-bar-track {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    background-color: rgba(225, 225, 225, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.track-dots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: column;
-    margin-top: auto; /* 底に寄せる */
-    background: linear-gradient(to top, rgba(44,30,21,1) 0%, transparent 100%);
-    padding: 15px 20px;
+    flex-direction: space-around;
+    padding: 0 2px;
+    box-sizing: border-box;
+    pointer-events: none;
 }
 
-.rewards-label { font-size: 10px; letter-spacing: 0.02em; margin: 0; }
+.dot {
+    width: 3px;
+    height: 3px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    align-self: center;
+    opacity: 0.5;
+}
 
-.current-stars-group {
+/* 中の進歩バー */
+.progress-bar-fill {
+    height: 100%;
+    background-color: #D2A04A;
+    width: 40%;
+    border-radius: 10px;
+    transition: width 0.8s ease;
+}
+
+/* メモリ（数字） */
+.progress-steps  {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
+    font-size: 12px;
 }
 
-.big-number {
-    font-size: 15px;
-} 
-
-.current-stars-group img { width: 14px; vertical-align: middle; }
-
-.member-status {
-    font-size: 10px; 
-    letter-spacing: 0.02em; 
-    color: #316E46;
-}
 </body>
 </html>
