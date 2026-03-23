@@ -10,12 +10,16 @@
 <body>
 
   <div class="star-progress-overlay">
-          <div class="rewards-text-group">
-            <p class="rewards-label">STARBUCKS® REWARDS</p>
-            <div class="current-stars"><span class=big-number>160</span>.5</span> <img src="../images/Star-icon.svg" alt="★"></div>
-          </div>
+          <div class="rewards-label">
+            <p>STARBUCKS® REWARDS</p>
+          </div>  
 
-          <p class="member-status">Green会員</p>
+          <div class="current-stars-group">
+              <div class="current-reward">
+              <spans class="big-number">160</span>.5 <img src="../images/Star-icon.svg" alt="★">
+              </div>
+              <p class="member-status">Green会員</p>
+          </div>
 
           <div class="progress-bar-wrapper">
             <div class="progress-bar-track"><div class="progress-bar-fill"></div></div>
@@ -25,32 +29,33 @@
             </div>
           </div>
         </div>
-/* 下半分：スターとプログレスバー（グラデーションを敷く） */
+
+    /* カード下部：リワードとプログレスバー（グラデーション） */
 .star-progress-overlay {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+    flex-direction: column;
     margin-top: auto; /* 底に寄せる */
     background: linear-gradient(to top, rgba(44,30,21,1) 0%, transparent 100%);
     padding: 15px 20px;
 }
 
-.rewards-text-group {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-
 .rewards-label { font-size: 10px; letter-spacing: 0.02em; margin: 0; }
-.current-stars { font-size: 14px; font-weight: bold; }
-.current-stars img { width: 14px; vertical-align: middle; }
-.membership-status { font-size: 10px; letter-spacing: 0.02em; color: #316E46;}
 
-.progress-bar-wrapper {
+.current-stars-group {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
 }
 
+.big-number {
+    font-size: 15px;
+} 
 
+.current-stars-group img { width: 14px; vertical-align: middle; }
+
+.member-status {
+    font-size: 10px; 
+    letter-spacing: 0.02em; 
+    color: #316E46;
+}
 </body>
 </html>
