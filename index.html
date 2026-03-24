@@ -9,89 +9,111 @@
 </head>
 <body>
 
-  <section class="card-hero-section">
-  
-  <div class="card-flip-container" id="cardFlip">
-    <div class="card-flip-inner">
-      
-      <!-- カード表面 -->
-      <div class="card-front">
-        <div class="card-main-visual">
-          <div class="qr-tap-area" onclick="openQrModal()">
-            <div class="card-qr-box">
-              <img src="../images/QRコード.png" alt="QR" class="qr-img">
-            </div><!-- .card-qr-box -->
-          </div><!-- .qr-tap-area -->
-
-          <div class="card-info-side">
-            <img src="../images/starbucks-logo.png" alt="Logo" class="mini-logo">
-            <div class="balance-display">
-              <p class="card-label">Starbucks Card</p>
-              <p class="card-price"><span class="unit">¥ </span>00,000</p><!-- .card-price -->
-            </div><!-- .balance-display -->
-            
-            <!-- buttonタグのみにし、aタグでの囲いを削除 -->
-            <button class="btn-etiket-trigger" onclick="flipCard(event)">
-              <div class="count-box">
-                <span class="count">3</span>
-              </div><!-- .count-box --> 
-              <span class="eticket-label">eTicket</span>
-              <span class="eticket-badge"></span>
-            </button><!-- .btn-etiket-trigger -->
-          </div><!-- .card-info-side -->
-        </div><!-- .card-main-visual -->
-        
-        <div class="star-progress-overlay">
-          <div class="rewards-label">
-            <p>STARBUCKS® REWARDS</p>
-          </div><!-- .rewards-label -->  
-
-          <div class="current-stars-group">
-            <div class="current-reward">
-              <span class="big-number">160</span>.5 <img src="../images/Star-icon.svg" alt="★">
-            </div><!-- .current-reward -->
-            <p class="member-status">Green会員</p>
-          </div><!-- .current-stars-group -->
-
-          <div class="progress-bar-wrapper">
-            <div class="progress-bar-track">
-              <div id="js-progressbar" class="progress-bar-fill"></div><!-- #js-progressbar -->
-              <div class="track-dots">
-                <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              </div><!-- .track-dots -->
-            </div><!-- .progress-bar-track -->  
-            <div class="progress-steps">
-              <span>25</span><span>90</span><span>130</span><span>190</span><span>400</span>
-            </div><!-- .progress-steps -->
-          </div><!-- .progress-bar-wrapper -->
-        </div><!-- .star-progress-overlay -->
-      </div><!-- .card-front -->
-      
-      <!-- カード裏面 -->
-      <div class="card-back">
-        <div class="ticket-header">
-          <span class="ticket-title">Star Ticket</span>
-          <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
-        </div><!-- .ticket-header -->
-      </div><!-- .card-back -->
-
-    </div><!-- .card-flip-inner -->
-  </div><!-- #cardFlip -->
-
-  <!-- 下部アクションボタン：aタグをボタン風に装飾する前提で整理 -->
   <div class="card-action-list">
-    <a href="#" class="btn-charge" aria-label="入金">入金</a><!-- .btn-charge --> 
+    <a href="#" class="btn-charge" aria-label="入金">入金</a>
     
     <div class="btn-action-group">
       <a href="#" class="btn-reward" aria-label="スターリワードに交換する">スターリワードに交換</a><!-- .btn-reward --> 
       <a href="#" class="btn-reward-more" aria-label="スターリワードをもっと見る">もっと見る</a><!-- .btn-reward-more -->
-    </div><!-- .btn-action-group -->
-  </div><!-- .card-action-list -->  
+    </div>
+  </div>
   
   <div id="qrModal" class="qr-modal">
   </div><!-- #qrModal -->
+/* 下部アクションボタン（カード下） */
+/* アクションリスト全体の配置 */
+.card-action-list {
+    display: flex;
+    padding: 10px 15px;
+    gap: 12px; /* 入金ボタンと連結ボタンの間の隙間 */
+    width: 100%;
+    box-sizing: border-box;
+}
 
-</section><!-- .card-hero-section -->
+/* 共通ボタン基本設定 */
+.card-action-list a {
+    border: none;
+    height: 44px;
+    font-size: 15px;
+    font-weight: 500;
+    color: white;
+    background: transparent;/* 背景は親で指定 */ 
+    width: 100%;
+    white-space: nowrap;/* 改行防止 */
+    border-radius: 50px;
+}
+
+/* 左：入金ボタン（単独カプセル） */
+.btn-charge {
+    flex: 0 0 20%; /* 幅を少し抑える */
+    text-decoration: none;
+    background-color: var(--stb-deepgreen);
+    border-radius: 50px;
+}
+
+/* 右：連結ボタンのコンテナ */
+.btn-action-group {
+    display: flex;
+    flex: 1; /* 残りの幅をすべて使う */
+    border-radius: 50px;
+    overflow: hidden; /* 中の斜め板のはみ出しをカット */
+    position: relative;
+    background-color: var(--stb-deepgreen);
+}
+
+.btn-action-group a {
+    display: flex;
+    text-decoration: none;
+    position: relative;
+}
+
+/* 「スターリワードに交換」 */
+.btn-reward {
+    flex: 1.8; /* 比率：広め */
+}
+
+/* 「もっと見る」 */
+.btn-reward-more {
+    flex: 1; /* 比率：狭め */
+}
+
+/* 斜めセパレーター */
+.btn-reward-more::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0px;
+    width: 1px;
+    height: 100%;
+    background-color: rgba(225, 225, 225, 0.5);
+    transform: skewX(-20deg);/* 斜めにする */
+    z-index: 1;
+}
+
+
+/* --- QR拡大モーダル（ニョキっと出る） --- */
+.qr-modal {
+    position: fixed;
+    bottom: -100%; /* 最初は画面の下に隠す */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    transition: bottom 0.4s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+}
+.qr-modal.is-open { bottom: 0; }
+
+.qr-modal-content {
+    background: white;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    color: black;
+}
+
 
 
 </body>
