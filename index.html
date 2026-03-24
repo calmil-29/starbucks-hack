@@ -78,5 +78,17 @@
     font-size: 12px;
 }
 
+    
+    window.addEventListener('load',() => {
+    const currentStars = 160.5;
+    const maxStras = 400;
+    const percentage = (currentStars / maxStras) * 100;
+    const progressBar = document.getElementById('js-progressBar');
+
+    setTimeout(() => {
+        if (progressBar) {
+            progressBar.style.width = percentage + "%"; }}, 100);
+});
+
 </body>
 </html>
