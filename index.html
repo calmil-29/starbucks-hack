@@ -9,7 +9,7 @@
 </head>
 <body>
 
-  <section class="card-hero-section">
+<section class="card-hero-section">
   <div class="card-flip-container" id="cardFlip">
     <div class="card-flip-inner">
       
@@ -28,90 +28,42 @@
             </div>
             <button class="btn-etiket-trigger" onclick="flipCard(event)">
               <div class="count-box">
-               <span class="count">3</span>
+                <span class="count">3</span>
               </div> 
-
               <span class="eticket-label">eTicket</span>
               <span class="eticket-badge"></span>
             </button>
           </div>
-        </div>
-
-        <div class="star-progress-overlay">
+        </div> <div class="star-progress-overlay">
           <div class="rewards-label">
             <p>STARBUCKS® REWARDS</p>
           </div>  
-
           <div class="current-stars-group">
-              <div class="current-reward">
+            <div class="current-reward">
               <span class="big-number">160</span>.5 <img src="../images/Star-icon.svg" alt="★">
-              </div>
-              <p class="member-status">Green会員</p>
+            </div>
+            <p class="member-status">Green会員</p>
           </div>
-
           <div class="progress-bar-wrapper">
             <div class="progress-bar-track">
-              <div id="js-progressbar"  class="progress-bar-fill" style=""></div>
-
+              <div id="js-progressbar" class="progress-bar-fill" style=""></div>
               <div class="track-dots">
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
               </div>
             </div>
-
-              <div class="progress-steps">
-                <span>25</span><span>90</span><span>130</span><span>190</span><span>400</span>
-              </div>
+            <div class="progress-steps">
+              <span>25</span><span>90</span><span>130</span><span>190</span><span>400</span>
             </div>
-          </div>
-        </div>
-
-      <div class="card-back">
+          </div> </div> </div> <div class="card-back">
         <div class="ticket-header">
            <span class="ticket-title">Star Ticket</span>
            <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
         </div>
-        </div>
-
-    </div>
-  </div>
-
-  <div class="card-action-list">
-    <a href="#" class="btn-action-single" aria-label="入金">
-     <button class="btn-charge">入金</button>
-    </a> 
-
-   <div class="btn-action-group">
-    <a href="#" class="btn-reward-main" aria-label="スターリワードに交換する">
-     <button class="btn-reward">スターリワードに交換</button>
-    </a> 
-    <a href="#" class="btn-reward-sub" aria-label="スターリワードをもっと見る">
-     <button class="btn-reward-more">もっと見る</button>
-    </a>
-    </div>
-  </div>  
+        </div> </div> </div> <div class="card-action-list">
+    </div>  
   
-  <!-- モダール画面用 -->
-  <div id="qrModal" class="qr-modal">
-    <div class="qr-modal-content">
-      <div class="modal-handle"></div> <div class="modal-qr-big">
-        <img src="../images/QRコード.png" alt="Big QR">
-      </div>
-      <details class="code-number"><!--　details summary で折りたためるか確認 -->
-        <summary class="code-number">0000 0000 0000 0000</summary>
-      </details>  
+  </section>
 
-      <ul class="modal-menu">
-        <li>カード管理 (入金・切り替え)</li>
-        <li>eGift <span>&gt;</span></li>
-        <li onclick="closeQrModal()">閉じる</li>
-      </ul>
-    </div>
-  </div>
-</section>
 
 
 </body>
