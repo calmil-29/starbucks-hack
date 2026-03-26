@@ -9,89 +9,108 @@
 </head>
 <body>
 
-  <div class="card-action-list">
-    <a href="#" class="btn-charge" aria-label="入金">入金</a>
-    
-    <div class="btn-action-group">
-      <a href="#" class="btn-reward" aria-label="スターリワードに交換する">スターリワードに交換</a><!-- .btn-reward --> 
-      <a href="#" class="btn-reward-more" aria-label="スターリワードをもっと見る">もっと見る</a><!-- .btn-reward-more -->
-    </div>
-  </div>
-  
-  /* 下部アクションボタン（カード下） */
-/* アクションリスト全体の配置 */
-.card-action-list {
-    display: flex;
-    padding: 10px 15px;
-    gap: 12px; /* 入金ボタンと連結ボタンの間の隙間 */
-    width: 100%;
-    box-sizing: border-box;
-}
+ <!-- カード裏面 -->
+      <div class="card-back">
+        <div class="carousel-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
 
-/* 共通ボタン基本設定 */
-.card-action-list a {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    border: none;
-    height: 44px;
-    font-size: 15px;
-    font-weight: bold;
-    color: white;
-    width: 100%;
-    white-space: nowrap;/* 改行防止 */
-    border-radius: 50px;
-    transition: opacity 0.2s;
-}
+        <div class="ticket-carousel-innner">
 
-.card-action-list a:active {
-    opacity: 0.7;
-}
+          <div class="ticket-item">
+            <div class="ticket-visual-card type-500">
+              <div class="visual-main-gold">
+                <div class="qr-pleceholder"></div>
+                <div class="star-icon-area">
+                  <img src="../images/star(5)-icon.svg" alt="星">
+                </div>
+                <div class="ticket-amount-rewards">
+                  <span class="brand-text-rewards">STARBUCKS®</span>
+                  <span class="type-rewards">REWARDS</span>
+                  <span class="price">500</span>
+                  <span class="ticket-type">eTicket</span>
+                </div>
+              </div>
+              <div class="visual-side-5-star">
+                <p class="eticket-text">ドリンク/<br>フード/<br>コーヒー豆/<br>ティー</p>
+              </div>
 
-/* 左：入金ボタン（単独カプセル） */
-.btn-charge {
-    flex: 0 0 20%; /* 幅を少し抑える */
-    background-color: var(--stb-deepgreen);
-}
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
 
-/* 右：連結ボタンのコンテナ */
-.btn-action-group {
-    display: flex;
-    flex: 1; /* 残りの幅をすべて使う */
-    border-radius: 50px;
-    overflow: hidden; /* 中の斜め板のはみ出しをカット */
-    background-color: var(--stb-deepgreen);
-}
+            <div class="ticket-expalnation">
+              <p class="desc-text">500円/505円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆/ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
+              <a href="#" class="detail-link">詳細はこちら</a>
+              <p class="expiry-text">有効期限<strong>2026年01月31日(土)</strong></p>
+            </div>
+          </div>
 
-.btn-action-group a {
-    position: relative;
-    flex: 1;
-    justify-content: center;
-}
+          <div class="ticket-item">
+            <div class="ticket-visual-card type-700">
+              <div class="visual-main-green">
+                <div class="qr-pleceholder"></div>
+                <div class="cup-icon-area">
+                  <img src="../images/cup-icon.svg" alt="カップ">
+                  <img src="../images/湯気-icon.svg" alt="カップ">
+                </div>
+                <div class="ticket-amount">
+                  <span class="type">DRINK TICKET</span>
+                  <span class="price">700</span>
+                </div>
+              </div>
+              <div class="visual-side-gold">
+                <p class="brand-text">STARBUCKS®<br>eGift</p>
+              </div>
 
-/* 「スターリワードに交換」 */
-.btn-reward {
-    flex: 1.8; /* 比率：広め */
-}
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
 
-/* 「もっと見る」 */
-.btn-reward-more {
-    flex: 1 !important; /* 比率：狭め */
-}
+            <div class="ticket-expalnation">
+              <p class="desc-text">お好きなドリンク１杯(税込700円まで)と交換できます。</p>
+              <a href="#" class="detail-link">詳細はこちら</a>
+              <p class="expiry-text">有効期限<strong>2026年02月28日(土)</strong></p>
+            </div>
+          </div>
 
-/* 斜めセパレーター */
-.btn-reward-more::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 12px;
-    width: 1px;
-    height: 100%;
-    background-color: rgba(225, 225, 225, 0.5);
-    transform: skewX(-20deg);/* 斜めにする */
-    z-index: 1;
-}
+          <div class="ticket-item">
+            <div class="ticket-visual-card type-700">
+              <div class="visual-main-green">
+                <div class="qr-pleceholder"></div>
+                <div class="cup-icon-area">
+                  <img src="../images/food-icon.svg" alt="フード">
+                </div>
+                <div class="ticket-amount">
+                  <span class="type">FOOD TICKET</span>
+                  <span class="price">300</span>
+                </div>
+              </div>
+              <div class="visual-side-gold">
+                <p class="brand-text">STARBUCKS®<br>eGift</p>
+              </div>
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <div class="ticket-expalnation">
+              <p class="desc-text">お好きなフード１点(税込300円まで)と交換できます。</p>
+              <a href="#" class="detail-link">詳細はこちら</a>
+              <p class="expiry-text">有効期限<strong>2026年03月31日(火)</strong></p>
+            </div>
+          </div>
+        </div><!-- .ticket-carousel-innner -->
+
+        <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+      </div><!-- .card-back -->
+
 
 </body>
 </html>
