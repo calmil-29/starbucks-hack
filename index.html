@@ -21,13 +21,17 @@
           <div class="ticket-item">
             <div class="ticket-visual-card type-500">
               <div class="visual-main-gold">
-                <div class="qr-pleceholder"></div>
+                <div class="qr-tap-area">
+                  <img src="../images/QRコード.png" alt="QR" class="card-qr-box">
+                </div>
                 <div class="star-icon-area">
                   <img src="../images/star(5)-icon.svg" alt="星">
                 </div>
                 <div class="ticket-amount-rewards">
-                  <span class="brand-text-rewards">STARBUCKS®</span>
-                  <span class="type-rewards">REWARDS</span>
+                  <div class="ticket-title-group">
+                    <span class="brand-text-rewards">STARBUCKS®</span>
+                    <span class="type-rewards">REWARDS</span>
+                  </div>  
                   <span class="price">500</span>
                   <span class="ticket-type">eTicket</span>
                 </div>
@@ -67,28 +71,33 @@
     top: 0;
     left: 0;
     backface-visibility: hidden;
+    background-color: white;
 }
 
 .ticket-carousel-inner {
     display: flex;
+    width: 300%;
     transition: transform 0.3s ease;/* スライド用 */
 }
 
 .ticket-item {
+    width: 100%;
     flex: 0 0 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     padding: 20px 20px;
     box-sizing: border-box;
 }
 
 /* REWARDSチケット */
 .type-500 {
-    width: 360px;
-    max-width: 90%;
+    width: 370px;
+    max-width: 92%;
     height: 119px;
     position: relative;
+    margin: 0 auto;
     border-radius: 5px;
     background: linear-gradient(153deg, #c4a163 0%, #e8d5b5 50%,#c4a163 100%);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -100,18 +109,24 @@
     left: 85px;
     display: flex;
     flex-direction: column;
-    align-items: flex;
+    align-items: flex-start;
     color: #ffffff;
     letter-spacing: 0.02em;
 }
 
-.brand-text-rewards{ font-size: 14px; }
+.ticket-title-group {
+    padding-right: 20px;
+}
+
+.brand-text-rewards{ font-size: 14px; font-weight: bold;}
 .type-rewards { font-size: 17px; font-weight: bold; }
 .price {
-    font-family: 'poppins', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 38px;
-    font-weight: bold;
+    font-weight: 700;
     color: #006241;
+    line-height: 1;
+    margin: 2px 0;
 }
 .ticket-type { font-size: 15px; font-weight: bold; }
 
@@ -136,6 +151,8 @@
 }
 
 .ticket-explanation {
+    width: 360px;
+    max-width: 90%;
     color: #0f0f0f;
     font-size: 14px;
 }
@@ -144,6 +161,7 @@
     color: #4DA66C;
     text-decoration: none;
 }
+
 
 </body>
 </html>
