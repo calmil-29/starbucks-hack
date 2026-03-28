@@ -180,5 +180,367 @@
     </div><!-- .card-flip-inner -->
   </div><!-- #cardFlip -->
 
+       /* --- ①カード画面(Hero Area) --- */
+/* 全体のコンテナ */
+/* ベースとなるバナー容器 */
+.card-front {
+    position: relative;
+    width: 100%;
+    min-height: 260px; 
+    background-image: url('../images/my-card.png');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    flex-direction: column; /* 上下に分ける */
+    overflow: hidden;
+    padding: 0; /* paddingを一旦リセット */
+}
+
+/* 上半分のエリア（QRと金額） */
+.card-main-visual {
+    position: relative;
+    display: flex; /* 横に並べる */
+    padding: 20px;
+    gap: 15px;
+}
+
+/* QRコードエリア */
+.qr-tap-area {
+    background: white;
+    padding: 6px;
+    border-radius: 6px;
+    flex-shrink: 0; /* QRが潰れないように */
+    width: 100px; /* 白枠込みのサイズ */
+    height: 100px;
+    margin: 8px 0 0 8px;
+}
+.gr-main { width: 100%; height: 100%;}
+
+/* 右側：ロゴ・金額・eTicket */
+.card-info-side {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    position: relative;
+}
+
+/* ロゴの配置（右上に固定） */
+.mini-logo {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+}
+
+.balance-display {
+    margin-top: 5px;
+}
+
+.card-label { font-size: 11px; opacity: 0.8; margin: 10px 0 2px 10px; }
+.card-price { font-size: 18px; font-weight: bold; margin-left: 10px; letter-spacing: 0.02em; }
+
+/* [3]eTicketボタン（残高のすぐ下へ） */
+.btn-etiket-trigger {
+    position: relative; /* バッジ用 */
+    background: white;
+    border: 1px solid rgb(180, 179, 179);
+    border-radius: 5px;
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    width: fit-content; /* 中身に合わせる */
+    margin: 10px;
+    font-size: 15px;
+}
+
+.count-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 4px;
+    border: 1px solid rgb(23, 23, 23);
+    border-radius: 2px;
+    margin: 0 5px 0 -3px;
+}
+
+.count { 
+    font-size: 15px; 
+    line-height: 1;  
+    color: var(--stb-black); 
+    margin-right: 4px; 
+    display: block;
+    transform: translateX(2px)
+}
+.eticket-label { font-size: 15px; letter-spacing: 0.02em; color: #333; }
+
+.eticket-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: red;
+}
+
+/* 下部：リワードとプログレスバー（グラデーション） */
+.star-progress-overlay {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto; /* 底に寄せる */
+    background: linear-gradient(to top, rgba(44,30,21,1) 0%, transparent 100%);
+    padding: 15px 20px;
+}
+
+.rewards-label { font-size: 10px; letter-spacing: 0.02em; margin: 0; }
+
+.current-stars-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.big-number {
+    font-size: 20px;
+    font-weight: bold;
+} 
+
+.current-stars-group img { width: 14px; vertical-align: middle; }
+
+.member-status {
+    font-size: 11px; 
+    letter-spacing: 0.02em; 
+    color: #369d68;
+    margin-bottom: 5px;
+    opacity: 0.8;
+}
+
+/* プログレスバー　*/
+/* 土台　*/
+.progress-bar-track {
+    position: relative;
+    width: 100%;
+    height:8px;
+    background-color: rgba(225, 225, 225, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.track-dots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-around;
+    padding: 0 2px;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    align-self: center;
+    opacity: 0.5;
+}
+
+/* 中の進歩バー */
+.progress-bar-fill {
+    height: 100%;
+    background-color: #D2A04A;
+    border-radius: 10px;
+    transition: width 0.8s ease;
+}
+
+/* メモリ（数字） */
+.progress-steps  {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    font-size: 12px;
+    padding: 0 2px;
+}
+
+.progress-steps span {
+    display: inline-block;
+    width: 30px;
+    text-align: center;
+}
+
+/* --- カード裏面([3]Ticketボタン) --- */
+.card-back {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+    background-color: white;
+    transform: rotateY(180deg);
+    border: 2px solid blue;/* 確認用(後で削除) */
+}
+
+.carousel-dots {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ccc;
+    border-radius: 50%;
+}
+.dot :active {
+    background-color: red;
+}
+
+.ticket-carousel-inner {
+    display: flex;
+    width: 300%;
+    transition: transform 0.3s ease;/* スライド用 */
+}
+
+/* REWARDSチケット */
+.ticket-item {
+    width: 100%;
+    flex: 0 0 calc(100% / 3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.type-500 {
+    width: 370px;
+    max-width: 92%;
+    height: 119px;
+    position: relative;
+    border-radius: 5px 5px 0 0;
+    background: linear-gradient(153deg, #c4a163 0%, #e8d5b5 50%,#c4a163 100%);
+}
+
+/* QRコードエリア(eTicket)：表と同様 */
+.qr-ticket { width: 100%; height: 100%;}
+
+.ticket-amount-rewards {
+    position: absolute;
+    top: 15px;
+    left: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: #103A31;
+    letter-spacing: 0.02em;
+    gap: 3px;
+}
+
+.ticket-title-group {
+    padding-right: 20px;
+}
+
+.brand-text-rewards{ font-size: 12px; font-weight: bold;}
+.type-rewards { font-size: 14px; font-weight: bold; }
+.price {
+    font-family: 'Poppins', sans-serif;
+    font-size: 38px;
+    font-weight: 700;
+    line-height: 1;
+}
+.ticket-type { margin: -5px 0 0 50px; font-size: 15px; font-weight: bold; }
+
+.star-icon-area {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    padding: 0%;
+}
+.star-icon-area img {
+    width: 37px;
+    height: auto;
+}
+
+.visual-side {
+    position: absolute;
+    top: 46px;
+    right: 25px;
+    color: #103A31;
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+.ticket-explanation {
+    width: 360px;
+    max-width: 90%;
+    color: #0f0f0f;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.detail-link {
+    color: #4DA66C;
+    text-decoration: none;
+}
+
+.expiry-text {
+    margin: 2px;
+}
+
+.ticket-perforation {
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+.ticket-perforation span {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.btn-back-to-front {
+    position: absolute;
+    bottom: 7px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #006241;
+    color: white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+/* JS：カードを回転させる命令 */
+#cardFlip .is-flipped .card-flip-inner {
+    transform: rotateY('180deg');
+}
+.card-front, .card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;/* これがないとひっくり返した時透ける */
+}
+
 </body>
 </html>
