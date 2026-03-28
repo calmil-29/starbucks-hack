@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
- <!-- カード裏面([3]eTicketボタン) -->
+  
+      <!-- カード裏面([3]eTicketボタン) -->
       <div class="card-back">
         <div class="carousel-dots">
           <span class="dot active"></span>
@@ -21,8 +22,10 @@
           <div class="ticket-item">
             <div class="ticket-visual-card type-500">
               <div class="visual-main-gold">
-                <div class="qr-tap-area">
-                  <img src="../images/QRコード.png" alt="QR" class="card-qr-box">
+                <div class="qr-tap-area" onclick="openQrModal()">
+                 <div class="card-qr-box">
+                   <img src="../images/QRコード.png" alt="QR" class="qr-ticket">
+                 </div>
                 </div>
                 <div class="star-icon-area">
                   <img src="../images/star(5)-icon.svg" alt="星">
@@ -48,11 +51,9 @@
             <div class="ticket-explanation">
               <p class="desc-text">500円/505円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆/ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
               <a href="#" class="detail-link">詳細はこちら</a>
-              <p class="expiry-text">有効期限<strong>2026年01月31日(土)</strong></p>
+              <p class="expiry-text"><strong>有効期限 2026年01月31日(土)</strong></p>
             </div>
           </div>
-
-
           </div><!-- .ticket-carousel-innner -->
 
         <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
@@ -72,6 +73,7 @@
     left: 0;
     backface-visibility: hidden;
     background-color: white;
+    border: 2px solid blue;/* 確認用(後で削除) */
 }
 
 .ticket-carousel-inner {
@@ -82,12 +84,12 @@
 
 .ticket-item {
     width: 100%;
-    flex: 0 0 100%;
+    flex: 0 0 calc(100% / 3);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 20px 20px;
+    padding: 20px 0;
     box-sizing: border-box;
 }
 
@@ -97,43 +99,45 @@
     max-width: 92%;
     height: 119px;
     position: relative;
-    margin: 0 auto;
     border-radius: 5px;
     background: linear-gradient(153deg, #c4a163 0%, #e8d5b5 50%,#c4a163 100%);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
+/* QRコードエリア(eTicket)：表と同様 */
+.qr-ticket { width: 100%; height: 100%;}
+
 .ticket-amount-rewards {
     position: absolute;
     top: 15px;
-    left: 85px;
+    left: 120px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    color: #ffffff;
+    color: #103A31;
     letter-spacing: 0.02em;
+    gap: 3px;
 }
 
 .ticket-title-group {
     padding-right: 20px;
 }
 
-.brand-text-rewards{ font-size: 14px; font-weight: bold;}
-.type-rewards { font-size: 17px; font-weight: bold; }
+.brand-text-rewards{ font-size: 12px; font-weight: bold;}
+.type-rewards { font-size: 14px; font-weight: bold; }
 .price {
     font-family: 'Poppins', sans-serif;
     font-size: 38px;
     font-weight: 700;
-    color: #006241;
     line-height: 1;
-    margin: 2px 0;
 }
-.ticket-type { font-size: 15px; font-weight: bold; }
+.ticket-type { margin: -5px 0 0 50px; font-size: 15px; font-weight: bold; }
 
 .star-icon-area {
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px;
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    padding: 0%;
 }
 .star-icon-area img {
     width: 37px;
@@ -142,12 +146,11 @@
 
 .visual-side {
     position: absolute;
-    display: flex;
-    justify-content: flex-end;
-    top: 20px;
-    left: 250px;
-    color: #ffffff;
-    font-size: 12px;
+    top: 46px;
+    right: 25px;
+    color: #103A31;
+    font-size: 11px;
+    line-height: 1.2;
 }
 
 .ticket-explanation {
@@ -155,12 +158,18 @@
     max-width: 90%;
     color: #0f0f0f;
     font-size: 14px;
+    margin-top: 10px;
 }
 
 .detail-link {
     color: #4DA66C;
     text-decoration: none;
 }
+
+.expiry-text {
+    margin: 2px;
+}
+
 
 
 </body>
