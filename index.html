@@ -9,17 +9,59 @@
 </head>
 <body>
 
-* カード表裏切り替え */
-function flipCard(event) {
-    event.StopPropagation();
-
-    const card = document.getElementById('cardFlip');
-    card.classList.toggle('is-flipped');
+.card-flip-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 95%;
+    height: 300px;
+    margin: 0 auto;
+    position: relative;
 }
 
-function openQrModal() {
-    console.log("QR Modal Open!");
-    //ここにモダールを表示する処理を追加予定
+.card-flip-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
 }
+
+.card-front, .card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;/* これがないとひっくり返した時透ける */
+}
+
+.card-back {
+    width: 100%;
+    overflow: hidden;
+    background-color: white;
+    transform: rotateY(180deg);
+    border: 2px solid blue;/* 確認用(後で削除) */
+}
+
+.card-front, .card-back {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 300px; 
+    backface-visibility: hidden;
+}
+
+.card-front {
+    background-image: url('../images/my-card.png');/* メインカード画像 */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    flex-direction: column;/* 上下に分ける */
+    overflow: hidden;
+    padding: 0;/* paddingを一旦リセット */
+}
+
 </body>
 </html>
