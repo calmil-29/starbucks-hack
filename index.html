@@ -9,117 +9,17 @@
 </head>
 <body>
 
-  <div class="card-back">
-        <div class="carousel-dots">
-          <span class="dot active"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </div>
+* カード表裏切り替え */
+function flipCard(event) {
+    event.StopPropagation();
 
-        <div class="ticket-carousel-inner">
+    const card = document.getElementById('cardFlip');
+    card.classList.toggle('is-flipped');
+}
 
-          <div class="ticket-item">
-            <div class="ticket-visual-card type-500">
-              <div class="visual-main-gold">
-                <div class="qr-tap-area" onclick="openQrModal()">
-                 <div class="card-qr-box">
-                   <img src="../images/QRコード.png" alt="QR" class="qr-ticket">
-                 </div>
-                </div>
-                <div class="star-icon-area">
-                  <img src="../images/star(5)-icon.svg" alt="星">
-                </div>
-                <div class="ticket-amount-rewards">
-                  <div class="ticket-title-group">
-                    <span class="brand-text-rewards">STARBUCKS®</span>
-                    <span class="type-rewards">REWARDS</span>
-                  </div>  
-                  <span class="price">500</span>
-                  <span class="ticket-type">eTicket</span>
-                </div>
-              </div>
-              <div class="visual-side">
-                <p class="eticket-text">ドリンク/<br>フード/<br>コーヒー豆/<br>ティー</p>
-              </div>
-
-              <div class="ticket-perforation">
-                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-            </div>
-
-            <div class="ticket-explanation">
-              <p class="desc-text">500円/505円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆/ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
-              <a href="#" class="detail-link">詳細はこちら</a>
-              <p class="expiry-text"><strong>有効期限 2026年01月31日(土)</strong></p>
-            </div>
-          </div>
-
-          <div class="ticket-item">
-            <div class="ticket-visual-card type-700">
-              <div class="visual-main-green">
-                <div class="qr-pleceholder"></div>
-                <div class="cup-icon-area">
-                  <img src="../images/cup-icon.svg" alt="カップ">
-                  <img src="../images/湯気-icon.svg" alt="カップ">
-                </div>
-                <div class="ticket-amount">
-                  <span class="type">DRINK TICKET</span>
-                  <span class="price">700</span>
-                </div>
-              </div>
-              <div class="visual-side-gold">
-                <p class="brand-text">STARBUCKS®<br>eGift</p>
-              </div>
-
-              <div class="ticket-perforation">
-                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-            </div>
-
-            <div class="ticket-explanation">
-              <p class="desc-text">お好きなドリンク１杯(税込700円まで)と交換できます。</p>
-              <a href="#" class="detail-link">詳細はこちら</a>
-              <p class="expiry-text">有効期限<strong>2026年02月28日(土)</strong></p>
-            </div>
-          </div>
-
-          <div class="ticket-item">
-            <div class="ticket-visual-card type-300">
-              <div class="visual-main-green">
-                <div class="qr-pleceholder"></div>
-                <div class="cup-icon-area">
-                  <img src="../images/food-icon.svg" alt="フード">
-                </div>
-                <div class="ticket-amount">
-                  <span class="type">FOOD TICKET</span>
-                  <span class="price">300</span>
-                </div>
-              </div>
-              <div class="visual-side-gold">
-                <p class="brand-text">STARBUCKS®<br>eGift</p>
-              </div>
-
-              <div class="ticket-perforation">
-                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-            </div>
-
-            <div class="ticket-explanation">
-              <p class="desc-text">お好きなフード１点(税込300円まで)と交換できます。</p>
-              <a href="#" class="detail-link">詳細はこちら</a>
-              <p class="expiry-text">有効期限<strong>2026年03月31日(火)</strong></p>
-            </div>
-          </div>
-        </div><!-- .ticket-carousel-innner -->
-
-        <button class="btn-back-to-front" onclick="cardFlip(event)">BACK</button>
-
-      </div><!-- .card-back -->
-
-
-      </div><!-- .card-flip-inner -->
-  </div><!-- #cardFlip -->
-  
-     
+function openQrModal() {
+    console.log("QR Modal Open!");
+    //ここにモダールを表示する処理を追加予定
+}
 </body>
 </html>
