@@ -9,13 +9,83 @@
 </head>
 <body>
 
-<button class="btn-etiket-trigger" onclick="flipCard(event)">
-              <div class="count-box">
-                <span class="count">3</span>
-              </div>
+<div class="card-flip-container" id="cardFlip">
+    <div class="card-flip-inner">
+      
+      <div class="card-front">
+        <div class="card-main-visual">
+          <div class="qr-tap-area" onclick="openQrModal()">
+            <div class="card-qr-box">
+              <img src="../images/QRコード.png" alt="QR" class="qr-main">
+            </div>
+          </div>
+
+          <div class="card-info-side">
+            <img src="../images/starbucks-logo.png" alt="Logo" class="mini-logo">
+            <div class="balance-display">
+              <p class="card-label">Starbucks Card</p>
+              <p class="card-price"><span class="unit">¥</span>00,000</p>
+            </div>
+            
+            <button class="btn-etiket-trigger" onclick="flipCard(event)">
+              <div class="count-box">3</div>
               <span class="eticket-label">eTicket</span>
               <span class="eticket-badge"></span>
             </button>
+          </div><!-- .card-info-side -->
+        </div><!-- .card-main-visual -->
+
+
+          /* --- ①カード画面(Hero Area) --- */
+/* JS：カードを回転させる命令 */
+#cardFlip.is-flipped .card-flip-inner {
+    transform: rotateY(180deg);
+}
+
+.card-flip-container {
+    perspective: 1000px;
+    width: 100%;
+    max-width: 95%;
+    height: 300px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.card-flip-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+.card-front, .card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;/* これがないとひっくり返した時透ける */
+}
+
+.card-back {
+    width: 100%;
+    overflow: hidden;
+    background-color: white;
+    transform: rotateY(180deg);
+    border: 2px solid blue;/* 確認用(後で削除) */
+}
+
+.card-front {
+    background-image: url('../images/my-card.png');/* メインカード画像 */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    flex-direction: column;/* 上下に分ける */
+    overflow: hidden;
+    padding: 0;/* paddingを一旦リセット */
+}
 
 </body>
 </html>
