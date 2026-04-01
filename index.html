@@ -9,7 +9,8 @@
 </head>
 <body>
 
-<div class="card-flip-container" id="cardFlip">
+<!-- カード表面(メインカードエリア) -->
+  <div class="card-flip-container" id="cardFlip">
     <div class="card-flip-inner">
       
       <div class="card-front">
@@ -34,18 +35,155 @@
             </button>
           </div><!-- .card-info-side -->
         </div><!-- .card-main-visual -->
+        
+        <div class="star-progress-overlay">
+          <div class="rewards-label">
+            <p>STARBUCKS® REWARDS</p>
+          </div>
 
+          <div class="current-stars-group">
+            <div class="current-reward">
+              <span class="big-number">160</span>.5 <img src="../images/Star-icon.svg" alt="★">
+            </div>
+            <p class="member-status">Green会員</p>
+          </div>
 
-          /* --- ①カード画面(Hero Area) --- */
-/* JS：カードを回転させる命令 */
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar-track">
+              <div id="js-progressbar" class="progress-bar-fill"></div><!-- #js-progressbar -->
+              <div class="track-dots">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              </div>
+            </div>
+
+            <div class="progress-steps">
+              <span>25</span><span>90</span><span>130</span><span>190</span><span>400</span>
+            </div>
+          </div><!-- .progress-bar-wrapper -->
+          
+        </div><!-- .star-progress-overlay -->
+      </div><!-- .card-front -->
+      
+      
+      <!-- カード裏面([3]eTicketボタン) -->
+      <div class="card-back">
+        <div class="carousel-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+
+        <div class="ticket-carousel-inner">
+
+          <div class="ticket-item">
+            <div class="ticket-visual-card type-500">
+              <div class="visual-main-gold">
+                <div class="qr-tap-area" onclick="openQrModal()">
+                 <div class="card-qr-box">
+                   <img src="../images/QRコード.png" alt="QR" class="qr-ticket">
+                 </div>
+                </div>
+                <div class="star-icon-area">
+                  <img src="../images/star(5)-icon.svg" alt="星">
+                </div>
+                <div class="ticket-amount-rewards">
+                  <div class="ticket-title-group">
+                    <span class="brand-text-rewards">STARBUCKS®</span>
+                    <span class="type-rewards">REWARDS</span>
+                  </div>  
+                  <span class="price">500</span>
+                  <span class="ticket-type">eTicket</span>
+                </div>
+              </div>
+              <div class="visual-side">
+                <p class="eticket-text">ドリンク/<br>フード/<br>コーヒー豆/<br>ティー</p>
+              </div>
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <div class="ticket-explanation">
+              <p class="desc-text">500円/505円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆/ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
+              <a href="#" class="detail-link">詳細はこちら</a>
+              <p class="expiry-text"><strong>有効期限 2026年01月31日(土)</strong></p>
+            </div>
+          </div>
+
+          <div class="ticket-item">
+            <div class="ticket-visual-card type-700">
+              <div class="visual-main-green">
+                <div class="qr-pleceholder"></div>
+                <div class="cup-icon-area">
+                  <img src="../images/cup-icon.svg" alt="カップ">
+                  <img src="../images/湯気-icon.svg" alt="カップ">
+                </div>
+                <div class="ticket-amount">
+                  <span class="type">DRINK TICKET</span>
+                  <span class="price">700</span>
+                </div>
+              </div>
+              <div class="visual-side-gold">
+                <p class="brand-text">STARBUCKS®<br>eGift</p>
+              </div>
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <div class="ticket-explanation">
+              <p class="desc-text">お好きなドリンク１杯(税込700円まで)と交換できます。</p>
+              <a href="#" class="detail-link">詳細はこちら</a>
+              <p class="expiry-text">有効期限<strong>2026年02月28日(土)</strong></p>
+            </div>
+          </div>
+
+          <div class="ticket-item">
+            <div class="ticket-visual-card type-300">
+              <div class="visual-main-green">
+                <div class="qr-pleceholder"></div>
+                <div class="cup-icon-area">
+                  <img src="../images/food-icon.svg" alt="フード">
+                </div>
+                <div class="ticket-amount">
+                  <span class="type">FOOD TICKET</span>
+                  <span class="price">300</span>
+                </div>
+              </div>
+              <div class="visual-side-gold">
+                <p class="brand-text">STARBUCKS®<br>eGift</p>
+              </div>
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <div class="ticket-explanation">
+              <p class="desc-text">お好きなフード１点(税込300円まで)と交換できます。</p>
+              <a href="#" class="detail-link">詳細はこちら</a>
+              <p class="expiry-text">有効期限<strong>2026年03月31日(火)</strong></p>
+            </div>
+          </div>
+        </div><!-- .ticket-carousel-innner -->
+
+        <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+      </div><!-- .card-back -->
+
+    </div><!-- .card-flip-inner -->
+  </div><!-- .card-flip-container #cardFlip -->
+
+    /* JS：カードを回転させる命令 */
 #cardFlip.is-flipped .card-flip-inner {
     transform: rotateY(180deg);
 }
 
 .card-flip-container {
-    perspective: 1000px;
+    perspective: 1000px;/* 3D奥行き感(遠近感)用 */
     width: 100%;
-    max-width: 95%;
     height: 300px;
     margin: 0 auto;
     position: relative;
@@ -78,13 +216,30 @@
 
 .card-front {
     background-image: url('../images/my-card.png');/* メインカード画像 */
-    background-size: cover;
-    background-position: center;
+    background-size: 100% auto;/* 横幅いっぱい、高さは自動 */
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-color: #ffffff;
+    overflow: hidden;
+    width: 100%;
+    aspect-ratio: 1.58;
+    position: relative;
     color: white;
     display: flex;
     flex-direction: column;/* 上下に分ける */
-    overflow: hidden;
     padding: 0;/* paddingを一旦リセット */
+}
+/* カード表裏の切り替え */
+function flipCard(event) {
+    event.stopPropagation();
+
+    const card = document.getElementById('cardFlip');
+    card.classList.toggle('is-flipped');
+}
+
+function openQrModal() {
+    console.log("QR Modal Open!");
+    //ここにモダールを表示する処理を追加予定
 }
 
 </body>
