@@ -9,19 +9,35 @@
 </head>
 <body>
 
-<section class="card-hero-section">
-  
-/* REWARDSチケット */  /*** ①.ticket-visual-cardとの間にスペース作ったらを指定できない？②width370pxが効かなくて画面いっぱいに広がるのは？ */
+.ticket-carousel-inner {
+    display: flex;
+    width: 300%;
+    transition: transform 0.3s ease;/* スライド用 */
+}
+
+.ticket-item {
+    width: 100%;
+    flex: 0 0 calc(100% / 3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+/* REWARDSチケット */  
 .ticket-visual-card.type-500 {
     position: relative;
     width: 370px;
+    min-width: 370px;
     height: 141px;
     background-color: #09231E;
     border-radius: 8px;
     box-shadow: 0 -5px 25px -10px rgba(0, 0, 0, 0.3);
     overflow: hidden;
-
 }
+
 
 /* ？.qr-tap-area-eticket と .eticket-info-center　の間を狭めるには？ */
 .visual-main-area {
