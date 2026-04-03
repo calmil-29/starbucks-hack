@@ -8,85 +8,71 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+ <div class="ticket-visual-card type-500">
+              
+              <!-- メインコンテンツエリア(深緑背景) -->
+              <div class="visual-main-area">
+                <!-- QRコード: タップ領域 -->
+                <div class="qr-tap-area-eticket" onclick="openQrModal()">
+                 <div class="card-qr-box-eticket">
+                   <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
+                 </div>
+                </div>
+                <!-- 中央情報グループ: タイトル / 500 / eTicket -->
+                <div class="eticket-info-center">
+                  <div class="brand-title-group">
+                    <span class="brand-name">STARBUCKS®</span>
+                    <span class="rewards-name">REWARDS</span>
+                  </div>
+                  <div class="amount-box">
+                    <span class="price-value">500</span>
+                    <span class="eticket-label-type-500">eTicket</span>
+                  </div>
+                </div>
+              </div>
 
-.ticket-carousel-inner {
-    display: flex;
-    width: 300%;
-    transition: transform 0.3s ease;/* スライド用 */
-}
+ </div>
 
-.ticket-item {
-    width: 100%;
-    flex: 0 0 calc(100% / 3);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 20px 0;
-    box-sizing: border-box;
-}
-
-/* REWARDSチケット */  
-.ticket-visual-card.type-500 {
+     .ticket-visual-card.type-500 {
     position: relative;
-    width: 370px;
-    min-width: 370px;
-    height: 141px;
+    width: 92%;
+    max-width: 370px;
+    height:  auto;
+    aspect-ratio: 370 / 141;
     background-color: #09231E;
     border-radius: 8px;
     box-shadow: 0 -5px 25px -10px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    margin: 5px auto 0;
 }
 
-
-/* ？.qr-tap-area-eticket と .eticket-info-center　の間を狭めるには？ */
 .visual-main-area {
     flex: 1;
     position: relative;
     display: flex;
     align-items: center;
-    padding: 10px 0 0 10px;
+    justify-content: flex-start;
+    padding: 5px 0 0 15px;
+    gap: 0;
+    background-color: #006241;
 }
 
-/* QRコードエリア：表と同様 */
+/* QRコード: タップ領域 */
 .qr-tap-area-eticket {
     width: 100px;
     height: 100px;
-    background: white;
-    border-radius: 5px;
-    padding: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: white;
+    border-radius: 6px;
 }
-.qr-eticket { width: 100%; height: 100%; object-fit: contain;} /* ?.qr-tap-area-eticketの？真ん中に配置できないのはなぜ？ */
-
-/* 中央情報グループ: タイトル / 500 / eTicket */
-.eticket-info-center {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-    margin-right: 10px;
-}
-
-.brand-title-group {
-   text-align: center;
-   margin-bottom: 2px;
-   letter-spacing: 0.02em;
-}
-.brand-name { 
+.qr-eticket {          
+    width: 90%; 
+    height: 90%; 
+    object-fit: contain;
     display: block;
-    font-size: 10px; 
-    font-weight: bold; 
-    color: #d2a04a;
-}
-.rewards-name { 
-    font-size: 17px; 
-    font-weight: bold; 
-}
-
+} 
 
 </body>
 </html>
