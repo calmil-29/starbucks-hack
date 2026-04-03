@@ -11,84 +11,19 @@
 
 <section class="card-hero-section">
   
-  <!-- カード表面(メインカードエリア) -->
-  <div class="card-flip-container" id="cardFlip">
-    <div class="card-flip-inner">
-      
-      <div class="card-front">
-        <div class="card-main-visual">
-          <div class="qr-tap-area" onclick="openQrModal()">
-            <div class="card-qr-box">
-              <img src="../images/QRコード.png" alt="QR" class="qr-main">
-            </div>
-          </div>
-
-          <div class="card-info-side">
-            <img src="../images/starbucks-logo.png" alt="Logo" class="mini-logo">
-            <div class="balance-display">
-              <p class="card-label">Starbucks Card</p>
-              <p class="card-price"><span class="unit">¥</span>00,000</p>
-            </div>
-            
-            <button class="btn-etiket-trigger" onclick="flipCard(event)">
-              <div class="count-box">3</div>
-              <span class="eticket-label">eTicket</span>
-              <span class="eticket-badge"></span>
-            </button>
-          </div><!-- .card-info-side -->
-        </div><!-- .card-main-visual -->
-        
-        <div class="star-progress-overlay">
-          <div class="rewards-label">
-            <p>STARBUCKS® REWARDS</p>
-          </div>
-
-          <div class="current-stars-group">
-            <div class="current-reward">
-              <span class="big-number">160</span>.5 <img src="../images/Star-icon.svg" alt="★">
-            </div>
-            <p class="member-status">Green会員</p>
-          </div>
-
-          <div class="progress-bar-wrapper">
-            <div class="progress-bar-track">
-              <div id="js-progressbar" class="progress-bar-fill"></div><!-- #js-progressbar -->
-              <div class="track-dots">
-                <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
-              </div>
-            </div>
-
-            <div class="progress-steps">
-              <span>25</span><span>90</span><span>130</span><span>190</span><span>400</span>
-            </div>
-          </div><!-- .progress-bar-wrapper -->
-          
-        </div><!-- .star-progress-overlay -->
-      </div><!-- .card-front -->
-      
-      
-      <!-- カード裏面([3]eTicketボタン) -->
-      <div class="card-back">
-        <div class="carousel-dots">
-          <span class="dot active"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </div>
-
-        <div class="ticket-carousel-inner">
-
-          <div class="ticket-item">
+ <div class="ticket-item">
             <div class="ticket-visual-card type-500">
+              
               <!-- メインコンテンツエリア(深緑背景) -->
               <div class="visual-main-area">
                 <!-- QRコード:タップ領域 -->
                 <div class="qr-tap-area" onclick="openQrModal()">
                  <div class="card-qr-box">
-                   <img src="../images/QRコード.png" alt="QR" class="qr-ticket">
+                   <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
                  </div>
                 </div>
                 <!-- 中央情報グループ:500 / eTicket -->
-                <div class="ticket-info-center">
+                <div class="ticket-info-center"></div>
                   <div class="brand-title-group">
                     <span class="brand-name">STARBUCKS®</span>
                     <span class="rewards-name">REWARDS</span>
@@ -120,70 +55,6 @@
             </div>
           </div><!-- .ticket-item -->
 
-          <div class="ticket-item">
-            <div class="ticket-visual-card type-700">
-              <div class="visual-main-green">
-                <div class="qr-pleceholder"></div>
-                <div class="cup-icon-area">
-                  <img src="../images/cup-icon.svg" alt="カップ">
-                  <img src="../images/湯気-icon.svg" alt="カップ">
-                </div>
-                <div class="ticket-amount">
-                  <span class="type">DRINK TICKET</span>
-                  <span class="price">700</span>
-                </div>
-              </div>
-              <div class="visual-side-gold">
-                <p class="brand-text">STARBUCKS®<br>eGift</p>
-              </div>
-
-              <div class="ticket-perforation">
-                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-            </div>
-
-            <div class="ticket-explanation">
-              <p class="desc-text">お好きなドリンク１杯(税込700円まで)と交換できます。</p>
-              <a href="#" class="detail-link">詳細はこちら</a>
-              <p class="expiry-text">有効期限<strong>2026年02月28日(土)</strong></p>
-            </div>
-          </div>
-
-          <div class="ticket-item">
-            <div class="ticket-visual-card type-300">
-              <div class="visual-main-green">
-                <div class="qr-pleceholder"></div>
-                <div class="cup-icon-area">
-                  <img src="../images/food-icon.svg" alt="フード">
-                </div>
-                <div class="ticket-amount">
-                  <span class="type">FOOD TICKET</span>
-                  <span class="price">300</span>
-                </div>
-              </div>
-              <div class="visual-side-gold">
-                <p class="brand-text">STARBUCKS®<br>eGift</p>
-              </div>
-
-              <div class="ticket-perforation">
-                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-            </div>
-
-            <div class="ticket-explanation">
-              <p class="desc-text">お好きなフード１点(税込300円まで)と交換できます。</p>
-              <a href="#" class="detail-link">詳細はこちら</a>
-              <p class="expiry-text">有効期限<strong>2026年03月31日(火)</strong></p>
-            </div>
-          </div>
-        </div><!-- .ticket-carousel-innner -->
-
-        <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
-
-      </div><!-- .card-back -->
-
-    </div><!-- .card-flip-inner -->
-  </div><!-- .card-flip-container #cardFlip -->
 
 </body>
 </html>
