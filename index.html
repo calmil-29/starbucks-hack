@@ -11,49 +11,65 @@
 
 <section class="card-hero-section">
   
- <div class="ticket-item">
-            <div class="ticket-visual-card type-500">
-              
-              <!-- メインコンテンツエリア(深緑背景) -->
-              <div class="visual-main-area">
-                <!-- QRコード:タップ領域 -->
-                <div class="qr-tap-area" onclick="openQrModal()">
-                 <div class="card-qr-box">
-                   <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
-                 </div>
-                </div>
-                <!-- 中央情報グループ:500 / eTicket -->
-                <div class="ticket-info-center"></div>
-                  <div class="brand-title-group">
-                    <span class="brand-name">STARBUCKS®</span>
-                    <span class="rewards-name">REWARDS</span>
-                  </div>
-                  <div class="amount-box">
-                    <span class="price-value">500</span>
-                    <span class="eticket-label-type-500">eTicket</span>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- サイド帯エリア(暗緑背景:星) -->
-              <div class="visual-side-band">
-                <div class="star-layer">
-                  <img src="../images/star-all-in-one.svg" alt="星の群れ" class="star-svg">
-                </div>
-                <p class="side-detail-text">ドリンク/<br>フード/<br>コーヒー豆/<br>ティー</p>
-              </div>  
+/* REWARDSチケット */  /*** ①.ticket-visual-cardとの間にスペース作ったらを指定できない？②width370pxが効かなくて画面いっぱいに広がるのは？ */
+.ticket-visual-card.type-500 {
+    position: relative;
+    width: 370px;
+    height: 141px;
+    background-color: #09231E;
+    border-radius: 8px;
+    box-shadow: 0 -5px 25px -10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
 
-              <div class="ticket-perforation">
-                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-            </div><!-- .ticket-visual-card type-500 -->
+}
 
-            <div class="ticket-explanation">
-              <p class="desc-text">500円/505円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆/ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
-              <a href="#" class="detail-link">詳細はこちら</a>
-              <p class="expiry-text"><strong>有効期限 2026年01月31日(土)</strong></p>
-            </div>
-          </div><!-- .ticket-item -->
+/* ？.qr-tap-area-eticket と .eticket-info-center　の間を狭めるには？ */
+.visual-main-area {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 10px 0 0 10px;
+}
+
+/* QRコードエリア：表と同様 */
+.qr-tap-area-eticket {
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 5px;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.qr-eticket { width: 100%; height: 100%; object-fit: contain;} /* ?.qr-tap-area-eticketの？真ん中に配置できないのはなぜ？ */
+
+/* 中央情報グループ: タイトル / 500 / eTicket */
+.eticket-info-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    margin-right: 10px;
+}
+
+.brand-title-group {
+   text-align: center;
+   margin-bottom: 2px;
+   letter-spacing: 0.02em;
+}
+.brand-name { 
+    display: block;
+    font-size: 10px; 
+    font-weight: bold; 
+    color: #d2a04a;
+}
+.rewards-name { 
+    font-size: 17px; 
+    font-weight: bold; 
+}
 
 
 </body>
