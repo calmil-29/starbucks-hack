@@ -46,33 +46,53 @@
     margin: 5px auto 0;
 }
 
-.visual-main-area {
+/* 中央情報グループ: タイトル / 500 / eTicket */
+.eticket-info-center {
     flex: 1;
-    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    padding: 5px 0 0 15px;
-    gap: 0;
-    background-color: #006241;
+    color: white;
+    margin: 10px 80px 0 0;
 }
 
-/* QRコード: タップ領域 */
-.qr-tap-area-eticket {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    border-radius: 6px;
+/* ?display: flex; justify-content: center; を指定して[STARBUCKS®]と[REWARDS]を横並びにしたいけど、qrコードが影響受けて縦に伸びるような形になってしまう。どうすればいい？  */
+.brand-title-group { 
+   text-align: center;
+   margin-bottom: 2px;
+   letter-spacing: 0.02em;
+   background-color: yellow; /* 確認用(後で消去) */
 }
-.qr-eticket {          
-    width: 90%; 
-    height: 90%; 
-    object-fit: contain;
+.brand-name { 
     display: block;
-} 
+    font-size: 9px; 
+    font-weight: bold; 
+    color: #d2a04a;
+}
+.rewards-name { 
+    font-size: 14px; 
+    font-weight: bold; 
+}
+
+.amount-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2px;
+}
+.price-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 0.9; /* ?どうして１じゃなくて0.9にしたの？ */
+    letter-spacing: 0.03em;
+}
+.eticket-label-type-500 { 
+    margin: 2px; 
+    font-size: 14px; 
+    font-weight: bold;
+    letter-spacing: 0.02em;  
+}
 
 </body>
 </html>
