@@ -31,68 +31,51 @@
                 </div>
               </div>
 
+      <!-- 右側: 暗緑の帯エリア -->
+              <div class="visual-side-band">
+                <div class="star-layer">
+                  <img src="../images/star-all-in-one.svg" alt="星の群れ" class="star-svg">
+                </div>
+                <p class="side-detail-text">ドリンク/<br>フード/<br>コーヒー豆/<br>ティー</p>
+              </div>  
+
  </div>
 
-     .ticket-visual-card.type-500 {
+   /* 右側: 暗緑の帯エリア */
+.visual-side-band {
+    width: 89px;
+    height: 100%;
+    background-color: #04100d;
+    position: absolute; /* ?relativeからabsoluteに変更：top right で動かしたけど大丈夫？ */
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.star-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+/* ？星の画像を一回り小さくするには？width height で指定したら、right: 17px;で動かした時画像が見切れてしまう。 */
+.star-svg { 
     position: relative;
-    width: 92%;
-    max-width: 370px;
-    height:  auto;
-    aspect-ratio: 370 / 141;
-    background-color: #09231E;
-    border-radius: 8px;
-    box-shadow: 0 -5px 25px -10px rgba(0, 0, 0, 0.3);
-    overflow: hidden;
-    margin: 5px auto 0;
+    object-fit: cover;
+    right: 17px;
+    filter: drop-shadow(0 0 5px rgba210, 160, 74, 0.4);
 }
 
-/* 中央情報グループ: タイトル / 500 / eTicket */
-.eticket-info-center {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: white;
-    margin: 10px 80px 0 0;
+.side-detail-text {
+    position: relative;
+    top: 8px;
+    font-size: 10px;
+    line-height: 1.4;
+    text-align: left;
+    letter-spacing: 0.05em;
+    color: #C9C9C9;
 }
-
-/* ?display: flex; justify-content: center; を指定して[STARBUCKS®]と[REWARDS]を横並びにしたいけど、qrコードが影響受けて縦に伸びるような形になってしまう。どうすればいい？  */
-.brand-title-group { 
-   text-align: center;
-   margin-bottom: 2px;
-   letter-spacing: 0.02em;
-   background-color: yellow; /* 確認用(後で消去) */
-}
-.brand-name { 
-    display: block;
-    font-size: 9px; 
-    font-weight: bold; 
-    color: #d2a04a;
-}
-.rewards-name { 
-    font-size: 14px; 
-    font-weight: bold; 
-}
-
-.amount-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2px;
-}
-.price-value {
-    font-family: 'Poppins', sans-serif;
-    font-size: 40px;
-    font-weight: 700;
-    line-height: 0.9; /* ?どうして１じゃなくて0.9にしたの？ */
-    letter-spacing: 0.03em;
-}
-.eticket-label-type-500 { 
-    margin: 2px; 
-    font-size: 14px; 
-    font-weight: bold;
-    letter-spacing: 0.02em;  
-}
-
 </body>
 </html>
