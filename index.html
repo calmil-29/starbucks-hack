@@ -41,41 +41,36 @@
 
  </div>
 
-   /* 右側: 暗緑の帯エリア */
+  /* 右側: 暗緑の帯エリア */
 .visual-side-band {
+    position: absolute; 
     width: 89px;
     height: 100%;
     background-color: #04100d;
-    position: absolute; /* ?relativeからabsoluteに変更：top right で動かしたけど大丈夫？ */
     top: 0;
     right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
+
 .star-layer {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    background-color: palevioletred;/* 後で消去*/
 }
-/* ？星の画像を一回り小さくするには？width height で指定したら、right: 17px;で動かした時画像が見切れてしまう。 */
 .star-svg { 
-    position: relative;
-    object-fit: cover;
-    right: 17px;
-    filter: drop-shadow(0 0 5px rgba210, 160, 74, 0.4);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: (calc(-50% -10px), -50%) scale(1.1);
+    object-fit: contain;
+    outline: 1px solid red;/* 後で消去 */
 }
 
-.side-detail-text {
-    position: relative;
-    top: 8px;
-    font-size: 10px;
-    line-height: 1.4;
-    text-align: left;
-    letter-spacing: 0.05em;
-    color: #C9C9C9;
-}
 </body>
 </html>
