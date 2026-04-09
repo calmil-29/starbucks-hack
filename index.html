@@ -9,5 +9,64 @@
 </head>
 <body>
 
+    #cardFlip.is-flipped .card-flip-inner {
+    transform: rotateY(180deg);
+}
+
+.card-flip-container {
+    perspective: 1000px;/* 3D奥行き感(遠近感)用 */
+    width: 100%;
+    height: 300px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.card-flip-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+/* カードの表裏の土台 */
+.card-front, .card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    backface-visibility: hidden;/* これがないとひっくり返した時に透ける */
+}
+
+.card-back {
+    width: 100%;
+    transform: rotateY(180deg);
+}
+
+
+    
+.ticket-carousel-inner {
+    display: flex;
+    width: 300%;
+    transition: transform 0.3s ease;/* スライド用 */ 
+    gap: 20px;/*** ここから下は実装用(後で削除)***/
+    padding: 20px;
+    overflow-x: auto;
+    background: #ccc;
+}
+
+.ticket-item {
+    width: 100%;
+    flex: 0 0 calc(100% / 3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
 </body>
 </html>
