@@ -8,7 +8,76 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="visual-side-band">
+<div class="card-back">
+        <div class="carousel-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+
+        <div class="ticket-carousel-inner">
+          
+          <!-- eTicket 500チケット -->
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+              <div class="ticket-visual-upper type-500">
+                <!-- メインコンテンツエリア(暗緑色背景) -->
+                <div class="visual-main-area">
+                  <!-- QRコード:タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal()">
+                    <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
+                  <!-- 中央情報グループ:タイトル / 500 / eTicket -->
+                  <div class="eticket-info-center">
+                    <div class="brand-title-group">
+                      <span class="brand-name">STARBUCKS®</span>
+                      <span class="brand-name-sub">REWARDS</span>
+                    </div>
+                    <div class="amount-box">
+                      <span class="price-value">500</span>
+                      <span class="ticket-name">eTicket</span>
+                    </div>
+                  </div>
+                </div>
+                <!-- 右側: 暗緑の帯エリア -->
+                <div class="visual-side-band">
+                  <div class="star-layer">
+                    <img src="../images/star-all-in-one3.svg" alt="星の群れ" class="star-svg">
+                  </div>
+                  <p class="side-detail-text">ドリンク/<br>フード/<br>コーヒー豆/<br>ティー</p>
+                </div>  
+              </div><!-- .ticket-visual-card.type-500 -->
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            
+              <!-- 500チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">500円/505円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆/ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
+                <a href="#" class="detail-link">詳細はこちら</a>
+                <p class="expiry-text"><strong>有効期限 2026年01月31日(土)</strong></p>
+              </div>
+            </div><!-- .ticket-content-wrapper -->  
+          </div><!-- .ticket-item (REWARDS 500チケット) -->
+          
+         <!-- eGift 700チケット -->
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+              <div class="ticket-visual-upper type-700">
+                <!-- メインコンテンツエリア(深緑背景)-->  
+                <div class="visual-main-area">
+                  <!-- QRコード: タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal()">
+                    <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
+                  <!-- 中央情報グループ: カップ画像 -->
+                  <div class="cup-icon-area">
+                    <img src="../images/cup-icon.svg" alt="カップ">
+                  </div>
+                </div>  
+                <!-- 右側: 金の帯エリア -->
+                <div class="visual-side-band">
                   <div class="amount-box">
                     <span class="type">DRINK TICKET</span>
                     <span class="price-value">700</span>
@@ -16,31 +85,66 @@
                     <p class="ticket-name">eGift</p>  
                   </div>
                 </div>
+              </div><!-- .ticket-visual-upper.type-700 -->    
 
-    /* 共通設定(右側の帯エリア) */
-.visual-side-band {
-    position: absolute; 
-    width: 60px; 
-    height: 100%;
-    top: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-    /* 700・300 (eGift) */
-.type-700 .visual-side-band {
-    background-color: #C29341;/* ゴールド */
-}
-.type-300 .visual-side-band {
-    background-color: #E87C6F;/* ピンク */
-}
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            
+              <!-- 700チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">お好きなドリンク１杯(税込700円まで)と交換できます。</p>
+                <a href="#" class="detail-link">詳細はこちら</a>
+                <p class="expiry-text"><strong>有効期限 2026年02月28日(土)</strong></p>
+              </div>
+            </div><!-- .ticket-content-wrapper -->
+          </div><!-- .ticket-item (eGift700) -->
 
-.type-700 .amount-box,
-.type-300 .amount-box {
-    display: flex;
-    flex-direction: column;
-}
+          <!-- eGift 300チケット -->
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+              <div class="ticket-visual-upper type-300">
+                <!-- メインコンテンツエリア(水色背景)-->  
+                <div class="visual-main-area">
+                  <!-- QRコード: タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal()">
+                    <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
+                   <!-- 中央情報グループ: フード画像 -->
+                  <div class="cup-icon-area">
+                    <img src="../images/food-icon.svg" alt="フード">
+                  </div>
+                  <!-- 右側: ピンクの帯エリア -->
+                  <div class="visual-side-band">
+                    <div class="amount-box">
+                      <span class="type">FOOD TICKET</span>
+                      <span class="price-value">300</span>
+                      <p class="brand-name">STARBUCKS®</p>
+                      <p class="ticket-name">eGift</p>
+                    </div>  
+                  </div>
+                </div>  
+              </div><!-- .ticket-visual-upper.type-300 -->
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+             
+              <!-- 300チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">お好きなフード１点(税込300円まで)と交換できます。</p>
+                <a href="#" class="detail-link">詳細はこちら</a>
+                <p class="expiry-text"><strong>有効期限 2026年03月31日(火)</strong></p>
+              </div>
+            </div><!-- .ticket-content-wrapper -->
+          </div><!-- ticket-item (eGift300) -->
+
+        </div><!-- .ticket-carousel-innner -->
+
+        <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+      </div><!-- .card-back -->
+
 
 </body>
 </html>
