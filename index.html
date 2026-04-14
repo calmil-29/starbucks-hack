@@ -8,60 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="card-back">
-        <div class="carousel-dots">
-          <span class="dot active"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </div>
-
-        <div class="ticket-carousel-inner">
-          
-          <!-- eTicket 500チケット -->
-          <div class="ticket-item">
-            <div class="ticket-content-wrapper">
-              <div class="ticket-visual-upper type-500">
-                <!-- メインコンテンツエリア(暗緑色背景) -->
-                <div class="visual-main-area">
-                  <!-- QRコード:タップ領域 -->
-                  <div class="qr-tap-area-eticket" onclick="openQrModal()">
-                    <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
-                  </div>
-                  <!-- 中央情報グループ:タイトル / 500 / eTicket -->
-                  <div class="eticket-info-center">
-                    <div class="brand-title-group">
-                      <span class="brand-name">STARBUCKS®</span>
-                      <span class="brand-name-sub">REWARDS</span>
-                    </div>
-                    <div class="amount-box">
-                      <span class="price-value">500</span>
-                      <span class="ticket-name">eTicket</span>
-                    </div>
-                  </div>
-                </div>
-                <!-- 右側: 暗緑の帯エリア -->
-                <div class="visual-side-band">
-                  <div class="star-layer">
-                    <img src="../images/star-all-in-one3.svg" alt="星の群れ" class="star-svg">
-                  </div>
-                  <p class="side-detail-text">ドリンク/<br>フード/<br>コーヒー豆/<br>ティー</p>
-                </div>  
-              </div><!-- .ticket-visual-card.type-500 -->
-
-              <div class="ticket-perforation">
-                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-            
-              <!-- 500チケットの内容 -->
-              <div class="ticket-explanation">
-                <p class="desc-text">500円/505円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆/ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
-                <a href="#" class="detail-link">詳細はこちら</a>
-                <p class="expiry-text"><strong>有効期限 2026年01月31日(土)</strong></p>
-              </div>
-            </div><!-- .ticket-content-wrapper -->  
-          </div><!-- .ticket-item (REWARDS 500チケット) -->
-          
-         <!-- eGift 700チケット -->
+<!-- eGift 700チケット -->
           <div class="ticket-item">
             <div class="ticket-content-wrapper">
               <div class="ticket-visual-upper type-700">
@@ -71,17 +18,19 @@
                   <div class="qr-tap-area-eticket" onclick="openQrModal()">
                     <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
                   </div>
-                  <!-- 中央情報グループ: カップ画像 -->
-                  <div class="cup-icon-area">
-                    <img src="../images/cup-icon.svg" alt="カップ">
+                  <!-- 中央情報グループ:カップ画像 -->
+                  <div class="egift-info-center"></div>
+                    <div class="cup-icon-area">
+                      <img src="../images/cup-icon.svg" alt="カップ">
+                      <span class="brand-name">STARBUCKS®</span>
+                  </div>    
                   </div>
                 </div>  
-                <!-- 右側: 金の帯エリア -->
+                <!-- 右側:金の帯エリア -->
                 <div class="visual-side-band">
                   <div class="amount-box">
                     <span class="type">DRINK TICKET</span>
                     <span class="price-value">700</span>
-                    <p class="brand-name">STARBUCKS®</p>
                     <p class="ticket-name">eGift</p>  
                   </div>
                 </div>
@@ -110,20 +59,22 @@
                   <div class="qr-tap-area-eticket" onclick="openQrModal()">
                     <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
                   </div>
-                   <!-- 中央情報グループ: フード画像 -->
-                  <div class="cup-icon-area">
-                    <img src="../images/food-icon.svg" alt="フード">
-                  </div>
-                  <!-- 右側: ピンクの帯エリア -->
-                  <div class="visual-side-band">
-                    <div class="amount-box">
-                      <span class="type">FOOD TICKET</span>
-                      <span class="price-value">300</span>
-                      <p class="brand-name">STARBUCKS®</p>
-                      <p class="ticket-name">eGift</p>
-                    </div>  
-                  </div>
-                </div>  
+                   <!-- 中央情報グループ:フード画像 -->
+                  <div class="egift-info-center">
+                    <div class="cup-icon-area">
+                      <img src="../images/food-icon.svg" alt="フード">
+                    </div>
+                    <span class="brand-name">STARBUCKS®</span>
+                  </div>  
+                </div>   
+                <!-- 右側:ピンクの帯エリア -->
+                <div class="visual-side-band">
+                  <div class="amount-box">
+                    <span class="type">FOOD TICKET</span>
+                    <span class="price-value">300</span>
+                    <p class="ticket-name">eGift</p>
+                  </div>  
+                </div> 
               </div><!-- .ticket-visual-upper.type-300 -->
 
               <div class="ticket-perforation">
@@ -138,12 +89,144 @@
               </div>
             </div><!-- .ticket-content-wrapper -->
           </div><!-- ticket-item (eGift300) -->
+    /* --- 共通設定 --- */  
+.ticket-content-wrapper {
+    position: relative;
+    width: 100%;
+    background-color: white; /* 仮の色 */
+    overflow: hidden;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+    justify-content: center;
+}
 
-        </div><!-- .ticket-carousel-innner -->
+/* 共通設定(土台) */
+.ticket-visual-upper {
+    position: relative;
+    width: 92%;
+    max-width: 370px;
+    height: 141px;
+    aspect-ratio: 370 / 141;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    margin: 5px auto 0;
+}
+    /* 700・300(eGift) */
+.type-700 {
+    background-color: #103A31;
+}
+.type-300 {
+    background-color: #D4E8E3;
+}
+    /* 共通設定 (メインコンテンツ(パーツ土台エリア)) */
+.visual-main-area {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: -5px 0 0 15px;
+    height: 100%;
+    gap: 0;
+    flex: 1;
+}
 
-        <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+/* 共通設定 (QRコード:タップ領域) */
+.qr-tap-area-eticket {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+    background-color: white;
+    border-radius: 6px;
+    flex-shrink: 0;
+}
+.qr-eticket {          
+    width: 90%; 
+    height: 90%; 
+    object-fit: contain;
+    display: block;
+} 
+/* --- 中央情報グループ eGift(700 / 300)共通設定 --- */
+.visual-main-area .egift-info-center {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-left: 20px;
+}
+.type-700 .cup-icon-area {
+    margin-left: 30px;
+}
+.type-300 .cup-icon-area {
+    margin-top: 18px;
+    margin-left: 30px;
+}
 
-      </div><!-- .card-back -->
+/* --- 右側の帯エリア(eTicket / eGift)共通設定 */
+.visual-side-band {
+    position: absolute; 
+    width: 60px; 
+    height: 100%;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+    /* 700・300 (eGift) 右帯 */
+.type-700 .visual-side-band,
+.type-300 .visual-side-band {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding-bottom: 15px;
+    padding-right: 10px;
+}
+
+.type-700 .visual-side-band {
+    background-color: #C29341;/* ゴールド */
+}
+.type-300 .visual-side-band {
+    background-color: #E87C6F;/* ピンク */
+}
+
+.type-700 .amount-box,
+.type-300 .amount-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+    color: #ffffff;
+    font-weight: bold;
+}
+/* 「DRINK TICKET」 */
+.type-700 .type,
+.type-300 .type  {
+    font-size: 9px;
+    white-space: nowrap;
+    margin-bottom: -5px;
+}
+/* 金額の数字(700 / 300) */
+.type-700 .price-value,
+.type-300 .price-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1;
+}
+/* STARBUCKS®・eGift */
+.type-700 .brand-name,
+.type-300 .brand-name {
+    font-size: 7px;
+    margin-top: 5px;
+}
+.type-700 .ticket-name,
+.type-300 .ticket-name {
+    font-size: 14px;
+    margin-top: -2px;
+}
 
 
 </body>
