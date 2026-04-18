@@ -9,7 +9,74 @@
 </head>
 <body>
 
-    <div class="ticket-item">
+   <!-- ①カード表面(メインカード) -->
+  <div class="card-flip-container" id="cardFlip">
+    <div class="card-flip-inner">
+      
+      <div class="card-front">
+        <div class="card-main-visual">
+          <div class="qr-tap-area" onclick="openQrModal()">
+            <div class="card-qr-box">
+              <img src="../images/QRコード.png" alt="QR" class="qr-main">
+            </div>
+          </div>
+
+          <div class="card-info-side">
+            <img src="../images/starbucks-logo.png" alt="Logo" class="mini-logo">
+            <div class="balance-display">
+              <p class="card-label">Starbucks Card</p>
+              <p class="card-price"><span class="unit">¥</span>00,000</p>
+            </div>
+            
+            <button class="btn-etiket-trigger" onclick="flipCard(event)">
+              <div class="count-box">3</div>
+              <span class="eticket-label">eTicket</span>
+              <span class="eticket-badge"></span>
+            </button>
+          </div><!-- .card-info-side -->
+        </div><!-- .card-main-visual -->
+        
+        <div class="star-progress-overlay">
+          <div class="rewards-label">
+            <p>STARBUCKS® REWARDS</p>
+          </div>
+
+          <div class="current-stars-group">
+            <div class="current-reward">
+              <span class="big-number">160</span>.5 <img src="../images/Star-icon.svg" alt="★">
+            </div>
+            <p class="member-status">Green会員</p>
+          </div>
+
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar-track">
+              <div id="js-progressbar" class="progress-bar-fill"></div><!-- #js-progressbar -->
+              <div class="track-dots">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              </div>
+            </div>
+
+            <div class="progress-steps">
+              <span>25</span><span>90</span><span>130</span><span>190</span><span>400</span>
+            </div>
+          </div><!-- .progress-bar-wrapper -->
+          
+        </div><!-- .star-progress-overlay -->
+      </div><!-- .card-front -->
+      
+      
+      <!-- ②カード裏面(eTicket / eGift eTicket) -->
+      <div class="card-back">
+        <div class="carousel-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+
+        <div class="ticket-carousel-inner">
+          
+          <!-- eTicket 500チケット -->
+          <div class="ticket-item">
             <div class="ticket-content-wrapper">
               <div class="ticket-visual-upper type-500">
                 <!-- 500 メインコンテンツエリア(暗緑色背景) -->
@@ -29,7 +96,7 @@
                       <span class="ticket-name">eTicket</span>
                     </div>
                   </div>
-                </div>
+                </div><!-- .visual-main-area(メインコンテンツエリア) -->
                 <!-- 500 右側: 暗緑の帯エリア -->
                 <div class="visual-side-band">
                   <div class="star-layer">
@@ -51,34 +118,97 @@
               </div>
             </div><!-- .ticket-content-wrapper -->  
           </div><!-- .ticket-item (REWARDS 500チケット) -->
-    
-/* --- 共通設定 --- */   
-.ticket-content-wrapper {
-    position: relative;
-    width: 100%;
-    background-color: white; /* 仮の色 */
-    overflow: hidden;
-    display: flex; 
-    flex-direction: column; 
-    align-items: center;
-    justify-content: center;
-}
+          
+         <!-- eGift 700チケット -->
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+              <div class="ticket-visual-upper type-700">
+                <!-- 700 メインコンテンツエリア(深緑背景)-->  
+                <div class="visual-main-area">
+                  <!-- 700 QRコード: タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal()">
+                    <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
+                  <!-- 700 中央情報グループ:カップ画像 -->
+                  <div class="egift-info-center">
+                    <span class="brand-name">STARBUCKS®</span>
+                    <div class="cup-icon-area">
+                      <img src="../images/cup-icon.svg" alt="カップ">
+                    </div>  
+                  </div>    
+                </div>  
+                <!-- 700 右側:金の帯エリア -->
+                <div class="visual-side-band">
+                  <div class="amount-box">
+                    <span class="type">DRINK TICKET</span>
+                    <span class="price-value">700</span>
+                    <p class="ticket-name">eGift</p>  
+                  </div>
+                </div>
+              </div><!-- .ticket-visual-upper.type-700 -->    
 
-/* 共通設定(土台) */
-.ticket-visual-upper {
-    position: relative;
-    width: 92%;
-    max-width: 370px;
-    height: 141px;
-    aspect-ratio: 370 / 141;
-    border-radius: 8px 8px 0 0;
-    overflow: hidden;
-    margin: 5px auto 0;
-}
-/* 500(REWARDS) */
-.type-500 { background-color: #09231E;}
-/* 700・300(eGift) */
-.type-700 { background-color: #103A31;}
-.type-300 { background-color: #D4E8E3;}
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            
+              <!-- 700チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">お好きなドリンク１杯(税込700円まで)と交換できます。</p>
+                <a href="#" class="detail-link">詳細はこちら</a>
+                <p class="expiry-text"><strong>有効期限 2026年02月28日(土)</strong></p>
+              </div>
+            </div><!-- .ticket-content-wrapper -->
+          </div><!-- .ticket-item (eGift700) -->
+
+          <!-- eGift 300チケット -->
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+              <div class="ticket-visual-upper type-300">
+                <!-- 300 メインコンテンツエリア(水色背景)-->  
+                <div class="visual-main-area">
+                  <!-- 300 QRコード: タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal()">
+                    <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
+                   <!-- 300 中央情報グループ:フード画像 -->
+                  <div class="egift-info-center">
+                    <span class="brand-name">STARBUCKS®</span>
+                    <div class="cup-icon-area">
+                      <img src="../images/food-icon.svg" alt="フード">
+                    </div>
+                  </div>  
+                </div>   
+                <!-- 300 右側:ピンクの帯エリア -->
+                <div class="visual-side-band">
+                  <div class="amount-box">
+                    <span class="type">FOOD TICKET</span>
+                    <span class="price-value">300</span>
+                    <p class="ticket-name">eGift</p>
+                  </div>  
+                </div> 
+              </div><!-- .ticket-visual-upper.type-300 -->
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+             
+              <!-- 300チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">お好きなフード１点(税込300円まで)と交換できます。</p>
+                <a href="#" class="detail-link">詳細はこちら</a>
+                <p class="expiry-text"><strong>有効期限 2026年03月31日(火)</strong></p>
+              </div>
+            </div><!-- .ticket-content-wrapper -->
+          </div><!-- ticket-item (eGift300) -->
+
+        </div><!-- .ticket-carousel-innner -->
+
+        <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+      </div><!-- .card-back -->
+
+    </div><!-- .card-flip-inner -->
+  </div><!-- .card-flip-container #cardFlip -->
+
 </body>
 </html>
