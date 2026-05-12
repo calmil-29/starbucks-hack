@@ -9,114 +9,62 @@
 </head>
 <body>
 
-   <!-- ①カード表面(メインカード) -->
-  <div class="card-flip-container" id="cardFlip">
-    <div class="card-flip-inner">
-      
-      <div class="card-front">
-        <div class="card-main-visual">
-          <div class="qr-tap-area" onclick="openQrModal()">
-            <div class="card-qr-box">
-              <img src="../images/QRコード.png" alt="QR" class="qr-main">
-            </div>
-          </div>
+                 <div class="eticket-info-center">
+                    <div class="brand-title-group">
+                      <span class="brand-name">STARBUCKS®</span>
+                      <span class="brand-name-sub">REWARDS</span>
+                    </div>
+                    <div class="amount-box">
+                      <span class="price-value">500</span>
+                      <span class="ticket-name">eTicket</span>
+                    </div>
+                  </div>
 
-          <div class="card-info-side">
-           ...
-            </div>
-            
-            <button class="btn-etiket-trigger" onclick="flipCard(event)">
-              <div class="count-box">3</div>
-              <span class="eticket-label">eTicket</span>
-              <span class="eticket-badge"></span>
-            </button>
-          </div><!-- .card-info-side -->
-        </div><!-- .card-main-visual -->
-      ...
-      </div><!-- .card-front -->
-      
-      
-      <!-- ②カード裏面(eTicket / eGift eTicket) -->
-      <div class="card-back">
-       ...
-
-        <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
-
-      </div><!-- .card-back -->
-
-    </div><!-- .card-flip-inner -->
-  </div><!-- .card-flip-container #cardFlip -->
-
-   #cardFlip {
-    perspective: 1000px;
-    -webkit-perspective: 1000px;/* Safari用 */
-}
-
-.card-flip-container {
-    perspective: 1000px;/* 3D奥行き感(遠近感)用 */
-}
-
-/* 回転する軸 : ここをJSで動かす */
-.card-flip-inner {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    transition: transform 0.6s;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;/* これがないと3Dに見えない */ 
-}
-
-/* JSで付与するクラス */
-.card-flip-inner.is-flipped {
-    transform: rotateY(180deg);
-}
-
-/* 表と裏の共通設定 */
-.card-front, .card-back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;/* 裏側を向いているときは隠す */
-}
-
-/* 裏面 : あらかじめ１８０度回しておく */
-.card-back {
-    width: 100%;
-    transform: rotateY(180deg);
-}
-
-    * 共通設定(戻りボタン) */
-.btn-back-to-front {
-    position: absolute;
-    bottom: 20px;
-    right: 35px;
-    background-color: #006241;
+    .type-500 .eticket-info-center {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     color: white;
-    border: none;
-    padding: 8px 24px;
-    border-radius: 20px;
+    padding-left: 20px;
+    margin-top: -8px;
+    gap: 2;    
+}
+
+.type-500 .brand-title-group { 
+   margin-bottom: 7px;
+   letter-spacing: 0.05em;
+   z-index: 10; 
+   color: #d2a04a;  
+   font-weight: bold; 
+   opacity: 0.9; 
+}
+
+.type-500 .brand-name { font-size: 10px;}
+.brand-name-sub { font-size: 14px;}
+
+.type-500 .amount-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 1px;
+}
+
+.type-500 .price-value {
+    font-family: 'Poppins', sans-serif;
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 0.9; 
+    letter-spacing: 0.03em;
+}
+.type-500 .ticket-name { 
+    margin-left: 6px;
+    font-size: 12px; 
     font-weight: bold;
-    z-index: 999;
-    transform: translateZ(1px);
+    letter-spacing: 0.2em;  
+    opacity: 0.8; 
 }
 
-    * カード表裏の切り替え */
-function flipCard(event) {
-    //1.ボタンそのものの動作以外(親への連鎖)を止める
-    if(event) {
-        event.stopPropagation();
-    }
-    
-    //2.回転させる対象(inner)を取得
-    const cardInner =
-    document.querySelector('card-flip-inner');
-
-    //3.クラスを付け外して回転させる
-    cardInner.classLis.toggle ('is-flipped');
-}
 
 
 </body>
