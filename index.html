@@ -9,63 +9,28 @@
 </head>
 <body>
 
-                 <div class="eticket-info-center">
-                    <div class="brand-title-group">
-                      <span class="brand-name">STARBUCKS®</span>
-                      <span class="brand-name-sub">REWARDS</span>
-                    </div>
-                    <div class="amount-box">
-                      <span class="price-value">500</span>
-                      <span class="ticket-name">eTicket</span>
-                    </div>
-                  </div>
+               //カルーセルの要素を取得(カード裏)
+const carousel =
+document.querySelector('.ticket-carusel-inner');
+const dots =
+document.querySelectorAll('.carousel-dots .dot');
 
-    .type-500 .eticket-info-center {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    color: white;
-    padding-left: 20px;
-    margin-top: -8px;
-    gap: 2;    
-}
+//スクロールを監視するイベント
+carousel.addEventListener('scroll', () => {
+    const scrollLeft = carousel.scrollLeft;
+    const itemWidth = carousel.offsetWidth;
 
-.type-500 .brand-title-group { 
-   margin-bottom: 7px;
-   letter-spacing: 0.05em;
-   z-index: 10; 
-   color: #d2a04a;  
-   font-weight: bold; 
-   opacity: 0.9; 
-}
+    const currentIndex = 
+Math.round(scrollLeft / itemWidth);
 
-.type-500 .brand-name { font-size: 10px;}
-.brand-name-sub { font-size: 14px;}
-
-.type-500 .amount-box {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-top: 1px;
-}
-
-.type-500 .price-value {
-    font-family: 'Poppins', sans-serif;
-    font-size: 40px;
-    font-weight: 600;
-    line-height: 0.9; 
-    letter-spacing: 0.03em;
-}
-.type-500 .ticket-name { 
-    margin-left: 6px;
-    font-size: 12px; 
-    font-weight: bold;
-    letter-spacing: 0.2em;  
-    opacity: 0.8; 
-}
-
-
+dots.forEach((dot, index) => {
+    if(index === currentIndex) {
+        dot.classList.add('active');
+    } else {
+        dot.classList.remove('active');
+    }
+});
+});
 
 </body>
 </html>
