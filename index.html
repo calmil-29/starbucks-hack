@@ -8,42 +8,32 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<div class="carousel-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
     
-ピタッと止まるところまでCSSが効いたのは大きな進歩です！原因は完全にJavaScript側に絞られました。
-お送りいただいたコードを見ると、惜しい記述ミスが1箇所あります。
-### 修正ポイント：1行目の記述
- * **現在のコード:** webkitURL.onload = function() {
- * **正しいコード:** **window**.onload = function() {
-### なぜ動かないのか（理屈）
-webkitURL というのは、ブラウザが画像などのデータを扱うための全く別の特殊な仕組み（オブジェクト）です。そのため、そこに「画面が読み終わったら動かしてね」という onload を設定しても、ブラウザが無視してしまい、中のスクロール監視イベントが一切スタートしていませんでした。
-画面全体を指す **window** に書き換えることで、ブラウザが正しく「よし、画面の準備ができたからスクロールの見張りを始めよう」と認識してくれます。
-### 正しい記述（このままコピーして使ってください）
-```javascript
-// 画面が完全に読み込まれてから中の処理を実行する
-window.onload = function() {
-    const carousel = document.querySelector('.ticket-carousel-inner');
-    const dots = document.querySelectorAll('.carousel-dots .dot');
+carousel-dots {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 30;
+}
+    
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #ccc;
+    border-radius: 50%;
+    border: 1px solid rgb(55, 55, 55);
+}
 
-    // エラー防止のため、カルーセルが存在するときだけ動かす
-    if (carousel) {
-        carousel.addEventListener('scroll', () => {
-            const scrollLeft = carousel.scrollLeft;
-            const itemWidth = carousel.offsetWidth;
-
-            // 何枚目かを計算
-            const currentIndex = Math.round(scrollLeft / itemWidth);
-
-            // ドットのクラスを付け替え
-            dots.forEach((dot, index) => {
-                if (index === currentIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        });
-    }
-};
+.dot:active { background-color: red;}
 
 
 </body>
