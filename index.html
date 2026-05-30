@@ -9,31 +9,60 @@
 </head>
 <body>
 
-<div class="carousel-dots">
-          <span class="dot active"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </div>
-    
-carousel-dots {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 8px;
-    z-index: 30;
-}
-    
-.dot {
-    width: 8px;
-    height: 8px;
-    background-color: #ccc;
-    border-radius: 50%;
-    border: 1px solid rgb(55, 55, 55);
-}
+ <!-- 支払いカードタップ領域 -->    
+ <div class="qr-tap-area" onclick="openQrModal(event)" data-type="payment">
+            <div class="card-qr-box">
+              <img src="../images/QRコード.png" alt="QR" class="qr-main">
+            </div>
+          </div>
 
-.dot:active { background-color: red;}
+   <!-- 500 QRコード:タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal(event)" data-type="gift">
+                    <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
+    <!-- 700 QRコード: タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal(event)" data-type="gift">
+                    <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div> 
+     <!-- 300 QRコード: タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal(event)" data-type="gift">
+                    <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
+
+     <!-- ④QR拡大モーダル -->
+  <div id="qrModal" class="modal-overlay" onclick="closeQrModal()">
+
+    <div class="modal-content" onclick="event.stopPropagation ()">
+
+      <div class="modal-header">
+        <span class="close-btn" onclick="closeQrModal()">x</span>
+      </div>
+
+      <div class="modal-qr-zone">
+        <img id="modalQrImg" src="" alt="支払いコード">
+        <p class="code-toggle">コード番号を表示 v</p>
+        <p class="code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
+      </div>
+      
+      <div class="modal-card-zone">
+        <div class="card-meta">
+          <span class="card-name">Starbucks Card</span>
+          <span class="card-balance">¥00,000</span>
+        </div>
+        <button class="deposit-btn">入金</button>
+      </div>
+
+      <div class="modal-card-graphic">
+        <img src="../images/starbucks-card-design.png" alt="スタバカードデザイン">
+      </div>
+
+      <div class="modal-footer-tabs">
+        <div class="tab-item"><span>0</span> eGift ＞</div>
+        <div class="tab-item"><span>3</span>eTicket ＞</div>
+      </div>
+
+    </div><!-- .modal-content -->
+  </div><!-- #qrModal -->
 
 
 </body>
