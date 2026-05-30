@@ -9,6 +9,34 @@
 </head>
 <body>
 
+//モダール用の関数
+function openQrModal(event) {
+    // 非常に重要な一行 : 親要素(カード全体)にクリックイベントを伝えない
+    if(event) event.stopPropagation();
+
+    // 1.タップされた要素の「目印(payment か gift か)」を読み取る」
+    const clickedArea = event.currentTarget;
+    const dataType = clickedArea.getAttribute('data-type');
+
+    // 2.QRコードの画像パスをコピーしてはめ込む(これは共通)
+    const clickedImg = clickedArea.querySelector('img');
+    const qrSrc = clickedImg.getAttribute('src');
+    document.getElementById('modalQrImg').setAttribute('src , qrSrc');
+
+    // 3.目印によって、入金ゾーンを出す、出さないの切り替え
+    const cardZone = document.querySelector('.modal-card-zone');
+
+    if(dataType === 'gift'){
+        // 裏面のギフトカードが叩かれたら、入金ゾーンを非表示にする
+        cardZone.style.display = 'none';
+    } else {
+        //表面の支払いカードが叩かれたら、入金ゾーンを通常表示する
+        cardZone.style.display = 'flex';
+    }    
+    
+    // モダールを下から表示
+    document.gerElementById('qrModal').classList.add('is-open');
+    }
 
 
 </body>
