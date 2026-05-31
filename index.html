@@ -9,6 +9,43 @@
 </head>
 <body>
 
+    <!-- ④QR拡大モーダル -->
+  <div id="qrModal" class="modal-overlay" onclick="closeQrModal()">
+
+    <div class="modal-content" onclick="event.stopPropagation ()">
+
+      <div class="modal-header">
+        <span class="close-btn" onclick="closeQrModal()">x</span>
+      </div>
+
+      <div class="modal-qr-zone">
+        <img id="modalQrImg" src="" alt="支払いコード">
+        <p class="code-toggle">コード番号を表示 v</p>
+        <p class="code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
+      </div>
+      
+      <div class="modal-card-zone">
+        <div class="card-meta">
+          <span class="card-name">Starbucks Card</span>
+          <span class="card-balance">¥00,000</span>
+        </div>
+        <button class="deposit-btn">入金</button>
+      </div>
+
+      <div class="modal-card-graphic">
+        <img src="../images/starbucks-card-design.png" alt="スタバカードデザイン">
+      </div>
+
+      <div class="modal-footer-tabs">
+        <div class="tab-item"><span>0</span> eGift ＞</div>
+        <div class="tab-item"><span>3</span>eTicket ＞</div>
+      </div>
+
+    </div><!-- .modal-content -->
+  </div><!-- #qrModal -->
+
+
+
 //モダール用の関数
 function openQrModal(event) {
     // 非常に重要な一行 : 親要素(カード全体)にクリックイベントを伝えない
@@ -21,7 +58,7 @@ function openQrModal(event) {
     // 2.QRコードの画像パスをコピーしてはめ込む(これは共通)
     const clickedImg = clickedArea.querySelector('img');
     const qrSrc = clickedImg.getAttribute('src');
-    document.getElementById('modalQrImg').setAttribute('src , qrSrc');
+    document.getElementById('modalQrImg').setAttribute('src' , qrSrc);
 
     // 3.目印によって、入金ゾーンを出す、出さないの切り替え
     const cardZone = document.querySelector('.modal-card-zone');
@@ -35,7 +72,16 @@ function openQrModal(event) {
     }    
     
     // モダールを下から表示
-    document.gerElementById('qrModal').classList.add('is-open');
+    document.getElementById('qrModal').classList.add('is-open');
+    }
+
+    // モダールを閉じる
+    function closeQrModal() {
+        const modal = document.getElementById('qrModal');
+        if (modal) {
+            //is-open クラスを外すことで、CSSの元の状態(画面外へ隠す)に戻す
+            modal.classList.remove('is-open');
+        }
     }
 
 
