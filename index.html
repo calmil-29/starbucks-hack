@@ -8,7 +8,51 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+/* ==== ④QR拡大モーダル ========================================================================= */
+/* 背景の黒いマスク */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vh;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    display: flex;
+    align-items: flex-end;
+}
 
+/* 下から出てくるシート */
+.modal-content {
+    width: 100%;
+    height: 92vh;
+    background-color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 20px;
+    box-sizing: border-box;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1);
+}
+
+/* 開いた時の連動（背景をフィードイン、シートを競り上げ） */
+.modal-overlay.is-open {
+    opacity: 1;
+} 
+
+.modal-overlay.is-open .modal-content {
+    transform: translateY(0); /*　画面の下端にピタッと戻ってくる　*/
+}
+
+.close-btn {
+    font-size: 24px;
+    cursor: pointer;
+    display: inline-block;
+    padding: 15px;
+    margin: -15px;
+}
   
 
 </body>
