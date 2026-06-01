@@ -9,100 +9,19 @@
 </head>
 <body>
 
-   /* 表カード(プログレスバー) */
-window.addEventListener('load', () => {
-    const currentStars = 160.5;
-    const maxStars = 400;
-    const percentage = (currentStars / maxStars) * 100;
-    const progressBar = document.getElementById('js-progressbar');
+      
+          <!-- 支払いカードタップ領域 -->
+          <div class="qr-tap-area" onclick="openQrModal(event)" data-type="payment">
+            <div class="card-qr-box">
+              <img src="../images/QRコード.png" alt="QR" class="qr-main">
+            </div>
+          </div>
 
-    setTimeout(() => {
-        if (progressBar) {
-            progressBar.style.width = percentage + "%"; 
-            console.log("[UI Update] Progress intialized: " + percentage + "%")
-        }
-    }, 100);
-});
+      <!-- 500 QRコード:タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal(event)" data-type="gift">
+                    <img src="../images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
 
-/* カード表裏の切り替え */
-function flipCard(event) {
-    //1.ボタンそのものの動作以外(親への連鎖)を止める
-    if(event) {
-        event.stopPropagation();
-    }
-    
-    //2.回転させる対象(inner)を取得
-    const cardInner =
-    document.querySelector('.card-flip-inner');
-
-    //3.クラスを付け外して回転させる
-    cardInner.classList.toggle ('is-flipped');
-}
-
-//モダール用の関数
-function openQrModal(event) {
-    // 非常に重要な一行 : 親要素(カード全体)にクリックイベントを伝えない
-    if(event) event.stopPropagation();
-
-    // 1.タップされた要素の「目印(payment か gift か)」を読み取る」
-    const clickedArea = event.currentTarget;
-    const dataType = clickedArea.getAttribute('data-type');
-
-    // 2.QRコードの画像パスをコピーしてはめ込む(これは共通)
-    const clickedImg = clickedArea.querySelector('img');
-    const qrSrc = clickedImg.getAttribute('src');
-    document.getElementById('modalQrImg').setAttribute('src' , qrSrc);
-
-    // 3.目印によって、入金ゾーンを出す、出さないの切り替え
-    const cardZone = document.querySelector('.modal-card-zone');
-
-    if(dataType === 'gift'){
-        // 裏面のギフトカードが叩かれたら、入金ゾーンを非表示にする
-        cardZone.style.display = 'none';
-    } else {
-        //表面の支払いカードが叩かれたら、入金ゾーンを通常表示する
-        cardZone.style.display = 'flex';
-    }    
-    
-    // モダールを下から表示
-    document.getElementById('qrModal').classList.add('is-open');
-    }
-
-    // モダールを閉じる
-    function closeQrModal() {
-        const modal = document.getElementById('qrModal');
-        if (modal) {
-            //is-open クラスを外すことで、CSSの元の状態(画面外へ隠す)に戻す
-            modal.classList.remove('is-open');
-        }
-    }
-
-
-//カルーセルの要素を取得(カード裏)
-window.onload = function() {
-    const carousel = document.querySelector('.ticket-carousel-inner');
-    const dots = document.querySelectorAll('.carousel-dots .dot');
-
-    // エラー防止のため、カルーセルが存在するときだけ動かす
-    if (carousel) {
-        carousel.addEventListener('scroll', () => {
-            const scrollLeft = carousel.scrollLeft;
-            const itemWidth = carousel.offsetWidth;
-
-            // 何枚目かを計算
-            const currentIndex = Math.round(scrollLeft / itemWidth);
-
-            // ドットのクラスを付け替え
-            dots.forEach((dot, index) => {
-                if (index === currentIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        });
-    }
-};
 
 </body>
 </html>
