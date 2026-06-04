@@ -8,48 +8,55 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-// モダールを開く関数
-function openQrModal(event) {
-    // 非常に重要な一行 : 親要素(カード全体)にクリックイベントを伝えない
-    if(event) event.stopPropagation();
+/* --- ④QR拡大モーダル --- */
+/* モダールの背景(画面全体を暗くする黒いマスク) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opasity 0.4s ease;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
 
-    // 1.タップされた要素の「目印(payment, reward, gift のどれか)」を読み取る」
-    const clickedArea = event.currentTarget;
-    const dataType = clickedArea.getAttribute('data-type');
+/* モダールの中身の箱 */
+.qr-modal-content {
+    width: 100%;
+    background-color: white;
+    padding: 40px 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
 
-    // 2.タップされた場所のQRコードをモダール上部に拡大表示する
-    const clickedImg = clickedArea.querySelector('img');
-    const qrSrc = clickedImg.getAttribute('src');
-    document.getElementById('modalQrImg').setAttribute('src', qrSrc);
 
-    const cardZone = document.querySelector('.modal-card-zone');
-    const cardImg = document.getElementById('modalCardImg')
+.qr-modal {
+    position: fixed;
+    bottom: -100%; /* 最初は画面の下に隠す */
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    transition: bottom 0.4s ease;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+}
+.qr-modal.is-open { bottom: 0; }
 
-    // 3.条件分岐の切り替え。data-type(カードの種類)に合わせて、モダールの見た目を3パターンに切り替える
-    if (dataType === 'payment') {
-        // 【パターン1 : 表面の支払いカード】
-        cardZone.style.display = 'flex' // 入金ゾーンを出す
-        if (cardImg) cardImg.setAttribute('src', '../images/starbucks-card-design.png');
-
-    } else if (dataType === 'rewards') {
-         // 【パターン2 : 裏面のリワードカード】
-         cardZone.style.display ='none' // 入金ゾーンを隠す
-         if (cardImg) cardImg.setAttribute('src', '../images/starbucks-rewards500-design.png')
-
-    } else if (dataType === 'rewards') {
-         // 【パターン3 : 裏面のeGiftカード】
-         cardZone.style.display ='none' // 入金ゾーンを隠す
-         if (cardImg) cardImg.setAttribute('src', '../images/starbucks-egift700-design.png')
-
-    } else if (dataType === 'rewards') {
-         // 【パターン4 : 裏面のeGiftカード】
-         cardZone.style.display ='none' // 入金ゾーンを隠す
-         if (cardImg) cardImg.setAttribute('src', '../images/starbucks-egift300-design.png')
-    }
-    
-    // モダールを下から表示
-    document.getElementById('qrModal').classList.add('is-open');
-    }
+.qr-modal-content {
+    background: white;
+    width: 100%;
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    color: black;
+}
 
 </body>
 </html>
