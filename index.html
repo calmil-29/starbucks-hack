@@ -43,7 +43,7 @@
     </div><!-- .modal-content -->
   </div><!-- #qrModal -->
 
-    /* --- ④QR拡大モーダル --- */
+/* --- ④QR拡大モーダル --- */
 
 /* モダールの背景(画面全体を暗くする黒いマスク) */
 .modal-overlay {
@@ -55,9 +55,9 @@
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 10000;
     opacity: 0;
-    visibility: hiddin; /* 閉じてる時は完全に存在を消す */ 
+    visibility: hidden; /* 閉じてる時は完全に存在を消す */ 
     pointer-events: none; /* 閉じてる時はタップを貫通させる */
-    transition: opasity 0.4s ease, visibility 0.4s ease;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
     display: flex;
     justify-content: center;
     align-items: flex-end; /* 下から出すために下揃え */
@@ -66,7 +66,7 @@
 /* 開いた時の背景連動 */
 .modal-overlay.is-open {
     opacity: 1;
-    visibility: 1;
+    visibility:  visible;
     pointer-events: auto;
 }
 
@@ -125,7 +125,6 @@
     opacity: 1; /* くっきり表示 */
     margin-top: 10px;
 }
-
 
 </body>
 </html>
