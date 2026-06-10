@@ -8,123 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- ④QR拡大モーダル -->
-  <div id="qrModal" class="modal-overlay" onclick="closeQrModal(event)">
 
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <span class="close-btn" onclick="closeQrModal(event)">x</span>
-      </div>
-
-      <div class="modal-qr-zone">
-        <img id="modalQrImg" src="" alt="支払いコード">
-        <p class="code-toggle">コード番号を表示 v</p>
-        <p class="code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
-      </div>
-      
-      <div class="modal-card-zone">
-        <div class="card-meta">
-          <span class="card-name">Starbucks Card</span>
-          <span class="card-balance">¥00,000</span>
-        </div>
-        <button class="deposit-btn">入金</button>
-      </div>
-
-      <div class="modal-card-graphic">
-        <img id="modalCardImg" src="../images/starbucks-card-design.png" alt="スタバカードデザイン">
-      </div>
-
-      <div class="modal-footer-tabs">
-        <div class="tab-item"><span>0</span> eGift ＞</div>
-        <div class="tab-item"><span>3</span>eTicket ＞</div>
-      </div>
-
-    </div><!-- .modal-content -->
-  </div><!-- #qrModal -->
-
-/* --- ④QR拡大モーダル --- */
-
-/* モダールの背景(画面全体を暗くする黒いマスク) */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    z-index: 10000;
-    opacity: 0;
-    visibility: hidden; /* 閉じてる時は完全に存在を消す */ 
-    pointer-events: none; /* 閉じてる時はタップを貫通させる */
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end; /* 下から出すために下揃え */
-}
-
-/* 開いた時の背景連動 */
-.modal-overlay.is-open {
-    opacity: 1;
-    visibility:  visible;
-    pointer-events: auto;
-}
-
-/* モダールの中身の箱(下から出てくる白いシート) */
-.modal-content {
-    width: 100%;
-    background-color: red;
-    padding: 30px 20px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    box-sizing: border-box;
-    
-    /* 初期状態 : 画面の下に隠す */
-    transform: translateY(100%);
-    transition: transform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1);
-}
-
-/* 開いたときの白いシートの連動 */ 
-.modal-overlay.is-open .modal-content {
-    transform: translateY(0); /* 画面下端にピタッと出現 */
-}
-
-/* 閉じる(×)ボタン */
-.close-btn {
-    font-size: 24px;
-    cursor: pointer;
-    display: inline-block;
-    padding: 15px;
-    margin: -15px; /* タップ領域を広げつつ位置ズレを防ぐ */
-}
-
-/* 「コード番号を表示　v」の文字 */
-.code-toggle {
-    cursor: pointer;
-    user-select: none;
-    font-weight: bold;
-    margin: 15px 0 5px;
-    display: inline-block;
-}
-
-/* 16桁の数字(初期状態は高さを0にして隠す) */
-.code-number {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.3s ease, opacity o.3s ease;
-    font-family: monospace; /* 数字を綺麗に揃えるフォント */
-    font-size: 16px;
-    line-height: 1.5;
-    margin: 0;
-}
-
-/* トグルが開いたときの状態(JSでこのクラスを付け外しします) */
-.code-number.is-active {
-    max-height: 100px;
-    opacity: 1; /* くっきり表示 */
-    margin-top: 10px;
-}
 // モダールを開く関数
 function openQrModal(event) {
     // 非常に重要な一行 : 親要素(カード全体)にクリックイベントを伝えない
@@ -182,6 +66,15 @@ function closeQrModal(event) {
         //is-open クラスを外すことで、CSSの元の状態(画面外へ隠す)に戻す
         modal.classList.remove('is-open');
     }
+
+    // モダールが閉じると同時に、コード番号も閉じた状態に戻す
+    const codeNumber = document.querySelector('.code-number');
+    const toggleBtn = document.querySelector('code-toggle');
+
+    if (codeNumber && toggleBtn) {
+        codeNumber.classList.remove('is-active'); // 開閉クラスを強制的に外す
+        toggleBtn.textContent = 'コード番号を非表示 v'; // 文字も初期状態に戻す
+    }
 }
 
 //　モダール内の「コード番号を表示 v」の開閉(トグル)処理
@@ -205,7 +98,8 @@ window.addEventListener('load', () => {
             }
         });
     }
-});    
+});
+
     
 
 </body>
