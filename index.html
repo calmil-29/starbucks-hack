@@ -8,7 +8,19 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
- <div class="card-selector-window">
+ <div class="modal-card-zone">
+        <div class="card-meta">
+          <span class="card-name">Starbucks Card</span>
+
+          <div class="balance-wrapper" onclick="toggleCardSelector(event)"> 
+            <span class="card-balance">¥00,000</span>
+            <span class="arrow-v"> v </span>
+          </div>
+        </div>
+        <button class="deposit-btn" onclick="openDeposiModal(event)">入金</button>
+
+        <!-- カード切り替え別窓 -->
+        <div class="card-selector-window">
           <p class="selector-title">カードを選択</p>
           <div class="selector-item" data-change-type="payment" onclick="switchCard(event)">
             <span>Starbucks Card (メイン)</span>
@@ -17,8 +29,9 @@
             <span>Starbucks Card (サブ)</span>
           </div>
           <!-- 必要に応じて追加 -->
-        </div>  
-    
+        </div>   
+      </div>
+
 
 </body>
 </html>
