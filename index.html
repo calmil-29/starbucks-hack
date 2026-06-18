@@ -7,12 +7,30 @@
     <title>Starbucks Huck Project</title>
     <link rel="stylesheet" href="style.css">
 </head>
-if (codeNumber && toggleBtn && selectorWindow) {
-        codeNumber?.classList.remove('is-active'); // 開閉クラスを強制的に外す
-        if (toggleBtn) toggleBtn.textContent = 'コード番号を表示 v'; // 文字も初期状態に戻す
-        selectorWindow?.classList.remove('is-active')// カード切り替えを強制的に閉じる
-    }
+<body>    
+  <!-- カード切り替え別窓 -->
+        <div class="card-selector-window">
+          <p class="selector-title">カードを選択</p>
+          
+          <!-- メインカード -->
+          <div class="selector-item" data-change-item="payment" onclick="switchCard(event)">
+            <img src="../images/my-card.svg" alt="メインカード" class="selector-card-img">
+            <div class="selector-card-info">
+              <span class="selector-card-balance">¥0</span>
+            </div>
+          </div> 
 
+          <!-- サブカード -->
+           <div class="selector-item" data-change-item="payment" onclick="switchCard(event)">
+            <img src="../images/my-card(red).png" alt="サブカード" class="selector-card-img">
+            <div class="selector-card-info">
+              <span class="selector-card-balance">¥0</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
+        </div>   
+      </div>
 
 </body>
 </html>
