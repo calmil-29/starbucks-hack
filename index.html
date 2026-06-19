@@ -8,29 +8,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>    
-  <!-- カード切り替え別窓 -->
-        <div class="card-selector-window">
-          <p class="selector-title">カードを選択</p>
-          
-          <!-- メインカード -->
-          <div class="selector-item" data-change-item="payment" onclick="switchCard(event)">
-            <img src="../images/my-card.svg" alt="メインカード" class="selector-card-img">
-            <div class="selector-card-info">
-              <span class="selector-card-balance">¥0</span>
+  <div class="card-main-visual">
+          <!-- 支払いカードタップ領域 -->
+          <div class="qr-tap-area" onclick="openQrModal(event)" data-type="payment">
+            <div class="card-qr-box">
+              <img src="../images/QRコード.png" alt="QR" class="qr-main">
             </div>
-          </div> 
+          </div>
 
-          <!-- サブカード -->
-           <div class="selector-item" data-change-item="payment" onclick="switchCard(event)">
-            <img src="../images/my-card(red).png" alt="サブカード" class="selector-card-img">
-            <div class="selector-card-info">
-              <span class="selector-card-balance">¥0</span>
+          <div class="card-info-side">
+            <img src="../images/starbucks-logo.png" alt="Logo" class="mini-logo">
+            <div class="balance-display">
+              <p class="card-label">Starbucks Card</p>
+              <p class="card-price"><span class="unit">¥</span>00,000</p>
             </div>
-          </div> 
-          
-          <!-- 必要に応じて追加 -->
-        </div>   
-      </div>
+            
+            <button class="btn-etiket-trigger" onclick="flipCard(event)">
+              <div class="count-box">3</div>
+              <span class="eticket-label">eTicket</span>
+              <span class="eticket-badge"></span>
+            </button>
+          </div><!-- .card-info-side -->
+        </div><!-- .card-main-visual -->
 
 </body>
 </html>
