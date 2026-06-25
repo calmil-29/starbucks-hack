@@ -8,6 +8,47 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  
+   <div class="card-front">
+        <!-- 表のメインカード画像(IDを付与) -->
+        <img src="../images/my-card-main.svg" alt="メインカード" id="mainCardImg" class="main-card-visual-img">
+   ....<!-- 省略 --> 
+   </div>    
+  
+  <div class="modal-card-zone">
+        <div class="card-meta">
+          <span class="card-name">Starbucks Card</span>
+
+          <div class="balance-wrapper" onclick="toggleCardSelector(event)"> 
+            <span class="card-balance">¥00,000</span>
+            <span class="arrow-v"> v </span>
+          </div>
+        </div>
+        <button class="deposit-btn" onclick="openDepositModal(event)">入金</button>
+
+        <!-- カード切り替え別窓 -->
+        <div class="card-selector-window">
+          <p class="selector-title">カードを選択</p>
+          
+          <!-- メインカード -->
+          <div class="selector-item" data-change-type="main-card" onclick="switchCard(event)">
+            <img src="../images/my-card-main.svg" alt="メインカード" class="selector-card-img">
+            <div class="selector-card-info">
+              <span class="selector-card-balance">¥0</span>
+            </div>
+          </div> 
+
+          <!-- サブカード -->
+           <div class="selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <img src="../images/my-card-sub.png" alt="サブカード" class="selector-card-img">
+            <div class="selector-card-info">
+              <span class="selector-card-balance">¥0</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
+        </div>   
+      </div>
 
 / 別枠のカードをタップした時に、見た目と金額を切り替える関数
 function switchCard(event) {
