@@ -9,13 +9,21 @@
 </head>
 <body>
   
-   <div class="card-front">
-        <!-- 表のメインカード画像(IDを付与) -->
-        <img src="../images/my-card-main.svg" alt="メインカード" id="mainCardImg" class="main-card-visual-img">
-   ....<!-- 省略 --> 
-   </div>    
-  
-  <div class="modal-card-zone">
+<div id="qrModal" class="modal-overlay" onclick="closeQrModal(event)">
+
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <span class="close-btn" onclick="closeQrModal(event)">x</span>
+      </div>
+
+      <div class="modal-qr-zone">
+        <img id="modalQrImg" src="" alt="支払いコード">
+        <p class="code-toggle">コード番号を表示 v</p>
+        <p class="code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
+      </div>
+      
+      <div class="modal-card-zone">
         <div class="card-meta">
           <span class="card-name">Starbucks Card</span>
 
@@ -50,53 +58,18 @@
         </div>   
       </div>
 
-/ 別枠のカードをタップした時に、見た目と金額を切り替える関数
-function switchCard(event) {
-    // 1.安全装置(土台のファイルがあるか確認)
-    if (!event) return;
+      <div class="modal-card-graphic">
+        <img id="modalCardImg" src="../images/starbucks-card-design.png" alt="スタバカードデザイン">
+      </div>
 
-    // 2.超重要！モダール自体や別枠が閉じてしまうのを防ぐための防波堤
-    event.stopPropagation();
+      <div class="modal-footer-tabs">
+        <div class="tab-item"><span>0</span> eGift ＞</div>
+        <div class="tab-item"><span>3</span>eTicket ＞</div>
+      </div>
 
-    // 3.タップされた「選択肢(箱全体)」をガシッと掴む
-    const clickedItem = event.currentTarget;
+    </div><!-- .modal-content -->
+  </div><!-- #qrModal -->
 
-    // 4.タップされたカードの「目印(main-card か sub-card か)」を読み取る
-    // HTMLの「data-change-item」に合わせて指定
-    const changeType = clickedItem.getAttribute('data-change-item') || clickedItem.getAttribute('data-change-type');
-
-    //5. 掴む要素(モダールの中身 + 表のメイン画像の中身)
-    const modalCardImg = document.getElementById('modalCardImg')
-    const modalBalance = document.querySelector('.card-balance')
-    const maiinCardImg = document.getElementById('mainCardImg') // 表の画像
-    const mainCardBalance = document.getElementById('mainCardBalance') //　表の金額
-
-    // 6.条件分岐：目印に合わせて、画面と金額を書き換える
-    if (changeType === 'main-card') { 
-        // --- メインカード(通常)への切り替え ---
-        const mainSrc = '../images/my-card-main.svg';
-        const mainTxt ='00,000'
-        
-       if (modalCardImg) modalCardImg.setAttribute('src','mainSrc');
-       if (modalBalance) modalBalance.textContent = '¥' + mainTxt;
-       if (mainCardImg) mainCardImg.setAttribute('src', mainSrc); //　表も切り替え
-       if (mainCardBalance) mainCardBalance.textContent = mainTxt; // 表も切り替え
-
-    } else if (changeType === 'sub-card') { 
-       // サブカードへの切り替え
-       const subSrc = '../images/my-card-main.svg';
-       const subTxt = '3,500';
-       if (modalCardImg) modalCardImg.setAttribute('src', mainSrc); 
-       if (modalBalance) modalBalance.textContent = '¥' + mainTxt; 
-       if (mainCardImg) mainCardImg.setAttribute('src', mainSrc);
-       if (mainCardBalance) mainCardBalance.textContent = mainTxt;
-
-    }
-
-    // ７.切り替えが終わったら、カード選択の別枠を自動でシュッと閉じる
-    const selectorWindow = document.querySelector('.card-selector-window');
-    selectorWindow?.classList.remove('is-active')
-}
 
 
 </body>
