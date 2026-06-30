@@ -9,93 +9,16 @@
 </head>
 <body>
   
- <div id="qrModal" class="modal-overlay" onclick="closeQrModal(event)">
-
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <button class="close-btn" onclick="closeQrModal(event)">
-          <span></span>
-          <span></span>
+  <div class="modal-footer-tabs">
+        <button class="tab-item"><span>0</span>eGift
+          <span></span> <!-- 右向き矢印 -->
+          <span></span>  
+        </button>
+        <button class="tab-item"><span>3</span>eTicket
+          <span></span> <!-- 右向き矢印 -->
+          <span></span>  
         </button>
       </div>
-        
-    <!--- 省略 --->
-    </div><!-- .modal-content -->
-  </div><!-- #qrModal -->
-
-    .modal-content {
-    width: 100%;
-    min-height: calc(100vh - 80px);
-    background-color: white; 
-    padding: 30px 20px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    box-sizing: border-box;
-    
-    /* 初期状態 : 画面の下に隠す */
-    transform: translateY(100%);
-    transition: transform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1);
-}
-
-/* 開いたときの白いシートの連動 */ 
-.modal-overlay.is-open .modal-content {
-    transform: translateY(0); /* 画面下端にピタッと出現 */
-}
-
-.modal-header {
-    position: absolute;
-    top: 15px;
-    left: 20px;
-    /* ボタンとしの標準の見た目を全て消し去るリセットCSS */ 
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    /* ボタンのタップエリア */
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    
-    -wibkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
-    user-select: none;
-}
-
-/* 閉じる(×)ボタン */
-/* ２本の棒の共通の「太さ・大きさ」 */
-.close-btn span {
-    position: absolute;
-    display: block;
-    width: 20px;
-    height: 1.5px;
-    background-color: #000000;
-    border-radius: 2px;
-    top: 50%;
-    left: 50%;
-}
-
-.close-btn span:nth-child(1) {
-    transform: translate(-50%, -50%) rotate(45deg);
-}
-.close-btn span:nth-child(2) {
-    transform: translate(-50%, -50%) rotate(-45deg);
-}
-// モダールを閉じる
-function closeQrModal(event) {
-    // 1.もし「白いエリア(modal-content)」の内側がタップされた場合は、閉じる処理を完全にブロックする
-    if (event && event.target.closest('.modal-content') && !event.target.classList.contains('close-btn')) {
-        event.stopPropagation();
-        return;
-    }
-
-    // 2. 「背景(modal-overlay)」または「×ボタン(close-btn)」がタップされた場合のみ、ここが実行されて閉じます
-    const modal = document.getElementById('qrModal');
-    if (modal) {
-        //is-open クラスを外すことで、CSSの元の状態(画面外へ隠す)に戻す
-        modal.classList.remove('is-open');
-    }
 
 
 </body>
