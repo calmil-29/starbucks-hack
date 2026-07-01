@@ -83,7 +83,19 @@
 
     </div><!-- .modal-content -->
   </div><!-- #qrModal -->
-
+.modal-content {
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    background-color: white; 
+    padding: 30px 20px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-sizing: border-box;
+    
+    /* 初期状態 : 画面の下に隠す */
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1);
+}
 
 </body>
 </html>
