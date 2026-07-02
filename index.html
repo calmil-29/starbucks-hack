@@ -104,6 +104,27 @@
     transition: transform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1);
 }
 
+.card-selector-window {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    right: 10px;
+    bottom: 60px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 1);
+    z-index: 10;
+
+    /* アニメーションの初期状態 */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, visiblity 0.3s ease, transform 0.3s ease;
+}
+
+    
 /* 【eGift・eTicket（第１モーダル）】 */ 
 .modal-footer-tabs {
     position: absolute;
@@ -114,83 +135,9 @@
     display: flex;
     align-items: center;
     border-top: 1px solid #eaeaea;
-}
-
-/* ボタンを均等に２等分する */
-.tab-item {
-    flex: 1;
-    height: 100%;
-    position: relative;
-    padding: 0 20%;
-     /* ボタンとしての標準の見た目を全て消し去るリセットCSS */ 
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    /* ボタンのタップエリア */
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    
-    -wibkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
-    user-select: none;
-
-    display: flex;
-    align-items: center;
-    position: relative;
-}
-
-/* 真ん中の薄い縦線 */
-.tap-divider {
-    width: 1px;
-    height: 30px;
-    background-color: #eaeaea;
-}
-
-/* バッジ、文字、矢印の配置調節 */
-.badge {
     background-color: white;
-    color: #000000;
-    border-radius: 50%;
-    width: 18px;
-    height: 18px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    margin-right: 8px;
+    z-index: 20;
 }
-
-.tab-text {
-    font-size: 14px;
-    font-weight: bold;
-    color: #000000;
-}
-
-/* 矢印「＞」アイコン */
-.arrow-icon {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-
-    /* まずは目に見えない正方形を作る */
-    width: 8px;
-    height: 8px;
-
-    /* 上と右だけに枠線をつける（これで形になる）*/
-    border-top: 2px solid #000000;
-    border-right: 2px solid #000000;
-
-    /* 45度回転させて、上に50%ずれた位置を微調整する */
-    transform: translateY(-50%) rotate(45deg);
-
-    /* タップ対策 */
-    pointer-events: none; 
-}
-
-
 
 
 
