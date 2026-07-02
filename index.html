@@ -65,7 +65,7 @@
         <img id="modalCardImg" src="../images/starbucks-card-design.png" alt="スタバカードデザイン">
       </div>
 
-      <div class="modal-footer-tabs">
+     <div class="modal-footer-tabs">
         <button class="tab-item">
           <span class="badge">0</span>
           <span class="tab-text">eGift</span>
@@ -73,17 +73,24 @@
           <span class="arrow-icon">
         </button>
 
-       <button class="tab-item">
+        <div class="tab-divider"></div> <!-- 真ん中区切り線 -->
+
+        <button class="tab-item">
           <span class="badge">3</span>
           <span class="tab-text">eTicket</span>
           <!-- 右向き矢印用 -->
           <span class="arrow-icon">
         </button>
       </div>
-
+        
     </div><!-- .modal-content -->
   </div><!-- #qrModal -->
+    
 .modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 60px;
     width: 100%;
     min-height: calc(100vh - 80px);
     background-color: white; 
@@ -97,5 +104,96 @@
     transition: transform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1);
 }
 
+/* 【eGift・eTicket（第１モーダル）】 */ 
+.modal-footer-tabs {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    border-top: 1px solid #eaeaea;
+}
+
+/* ボタンを均等に２等分する */
+.tab-item {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    padding: 0 20%;
+     /* ボタンとしての標準の見た目を全て消し去るリセットCSS */ 
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    /* ボタンのタップエリア */
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    
+    -wibkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* 真ん中の薄い縦線 */
+.tap-divider {
+    width: 1px;
+    height: 30px;
+    background-color: #eaeaea;
+}
+
+/* バッジ、文字、矢印の配置調節 */
+.badge {
+    background-color: white;
+    color: #000000;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    margin-right: 8px;
+}
+
+.tab-text {
+    font-size: 14px;
+    font-weight: bold;
+    color: #000000;
+}
+
+/* 矢印「＞」アイコン */
+.arrow-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+
+    /* まずは目に見えない正方形を作る */
+    width: 8px;
+    height: 8px;
+
+    /* 上と右だけに枠線をつける（これで形になる）*/
+    border-top: 2px solid #000000;
+    border-right: 2px solid #000000;
+
+    /* 45度回転させて、上に50%ずれた位置を微調整する */
+    transform: translateY(-50%) rotate(45deg);
+
+    /* タップ対策 */
+    pointer-events: none; 
+}
+
+
+
+
+
+    
 </body>
 </html>
