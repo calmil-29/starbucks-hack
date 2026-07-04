@@ -8,103 +8,25 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+ <div class="modal-qr-zone">
+        <img id="modalQrImg" src="" alt="支払いコード">
+        <p class="code-toggle">コード番号を表示</p><span class="arrow-number"></span>
+        <p class="code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
+      </div>
+      
+      <div class="modal-card-zone">
+        <div class="card-meta">
+          <span class="card-name">Starbucks Card</span>
 
-    .modal-footer-tabs {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    border-top: 1px solid #eaeaea;
-    background-color: white;
-    z-index: 20;
-}
+          <div class="balance-wrapper" onclick="toggleCardSelector(event)"> 
+            <span class="card-balance">¥00,000</span>
+            <span class="arrow-balance"></span>
+          </div>
+        </div>
+        <button class="deposit-btn" onclick="openDepositModal(event)">入金</button>
 
-/* ボタンを均等に２等分する */
-.tab-item {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 016px;
-    flex: 1;
-    height: 100%;
-
-     /* ボタンの標準の見た目を消すリセットCSS */ 
-    background: none;
-    border: none;
-    margin: 0;
-    outline: none;
-
-    -wibkit-tap-highlight-color: transparent;
-    -webkit-user-select: none;
-    user-select: none;
-
-    /* 中身を横並び・上下中央にする */
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-/* 真ん中の薄い縦線 */
-.tab-divider {
-    width: 1px;
-    height: 60px;
-    background-color: #eaeaea;
-}
-
-/* バッジ、文字、矢印の配置調節 */
-.badge {
-    background-color: transparent;
-    color: #000000;
-    border: 1px solid #707070;
-    border-radius: 2px;
-    width: 20px;
-    height: 20px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    margin-right: 8px;
-    flex-shrink: 0;
-}
-
-.tab-text {  /* ⚠️テキストを左寄せにするには？ */
-    font-size: 15px; 
-    color: #000000;
-    letter-spacing: 0.02em;
-    margin-right: auto; /* これをつけることで、右側の余白が限界まで広がり、矢印を右側へ押し出す */
-}
-
-.notice-dot {
-    position: absolute;
-    top: 10px;
-    right: 80px;
-    width: 10px;
-    height: 10px;
-    background-color: #E03C31;
-    border-radius: 50%;
-}
-
-/* 矢印「＞」アイコン */
-.arrow-icon {
-    /* まずは目に見えない正方形を作る */
-    width: 10px;
-    height: 10px;
-
-    /* 上と右だけに枠線をつける（これで形になる）*/
-    border-top: 1px solid #696969;
-    border-right: 1px solid #696969;
-
-    /* 45度回転させて、上に50%ずれた位置を微調整する */
-    transform: rotate(45deg);
-
-    /* タップ対策 */
-    pointer-events: none; 
-}
-
-
+  ...........省略
+  </div>
     
 </body>
 </html>
