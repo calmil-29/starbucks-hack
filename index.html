@@ -74,6 +74,73 @@ function openQrModal(event) {
     // モダールを下から表示
     document.getElementById('qrModal').classList.add('is-open');
     }
+
+// モダールを閉じる
+function closeQrModal(event) {
+    // 1.もし「白いエリア(modal-content)」の内側がタップされた場合は、閉じる処理を完全にブロックする
+    if (event && event.target.closest('.qr-modal-content') && !event.target.classList.contains('qr-close-btn')) {
+        event.stopPropagation();
+        return;
+    }
+
+    // 2. 「背景(modal-overlay)」または「×ボタン(close-btn)」がタップされた場合のみ、ここが実行されて閉じます
+    const modal = document.getElementById('qrModal');
+    if (modal) {
+        //is-open クラスを外すことで、CSSの元の状態(画面外へ隠す)に戻す
+        modal.classList.remove('is-open');
+    }
+}
+
+//　モダール内の「コード番号を表示 v」の開閉(トグル)処理
+window.addEventListener('load', () => {
+    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');
+    const toggleBtn = document.querySelector('.qr-code-toggle');
+    const codeNumber = document.querySelector('.qr-code-number');
+
+    if (toggleWrapper && toggleBtn && codeNumber) {
+        toggleWrapper.addEventListener('click', (event) => {
+            // モダール自体が閉じてしまうのを防ぐ
+            event.stopPropagation();
+
+            // クラスを付け外ししてアニメーションさせる
+            codeNumber.classList.toggle('is-active');
+
+            //矢印を回転させるために、親の箱のクラス(is-open)を付け外し
+            toggleWrapper.classList.toggle('is-open');
+
+            // 文字の後ろの矢印(v と　＾)を切り分ける
+            if (codeNumber.classList.contains('is-active')) {
+                toggleBtn.textContent = 'コード番号を非表示';    
+            } else {
+                toggleBtn.textContent = 'コード番号を表示';
+            }
+        });
+    }
+});
+
+// カードの「v」を押した時に、カード切り替え窓を開閉する関数
+function toggleCardSelector(event) {
+    // 1.安全装置 (土台のファイルがあるか、?.でスマートに確認)
+    if(!event) return;
+
+    // 2.超重要！タップの衝撃波が、上のモダール全体に伝わるのをストップする
+    event.stopPropagation();
+    
+    // 3.HTMLから「カード切り替え別窓」の箱をガシッと掴む
+    const selectorWindow = document.querySelector('.qr-card-selector-window');
+    //矢印を回転させるために、クリックされた残高の親(balance-wrapper)を取得
+    const balanceWrapper = document.querySelector('.qr-balance-wrapper');
+
+    if(selectorWindow) {
+        // 4.「is-active」クラスがついていれば外し、なければつける(トグル)
+        selectorWindow.classList.toggle('is-active');
+    }
+
+    //別窓の開閉と連動して、矢印の親にもクラスを付け外しする
+    if(balanceWrapper) {
+        balanceWrapper.classList.toggle('is-open');
+    }
+}
         
 </body>
 </html>
