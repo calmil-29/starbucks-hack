@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<!-- ④【QR拡大モーダル（第１モーダル）】 ⚠️-->
+<!-- ④【QR拡大モーダル（第１モーダル）】 -->
   <div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
 
     <div class="qr-modal-content">
@@ -22,7 +22,7 @@
       </div>
 
       <div class="qr-modal-zone">
-        <img id="qrModalImg" src="" alt="支払いコード"> <!--⚠️-->
+        <img id="qrModalImg" src="" alt="支払いコード"> 
 
         <div class="code-toggle-wrapper">
           <p class="code-toggle">コード番号を表示</p>
@@ -69,6 +69,33 @@
         </div><!-- .card-selector-window -->   
       </div><!-- .qr-modal-card-zone -->
 
+      <div class="modal-card-graphic">
+        <img id="qrModalCardImg" src="../images/starbucks-card-design.png" alt="スタバカードデザイン">
+      </div>
+
+      <div class="modal-footer-tabs">
+        <button class="tab-item">
+          <span class="badge">0</span>
+          <span class="tab-text">eGift</span>
+          <!-- 右向き矢印用 -->
+          <span class="arrow-icon"></span>
+        </button>
+
+        <div class="tab-divider"></div> <!-- 真ん中区切り線 -->
+
+        <button class="tab-item">
+          <div class="notice-wrapper">
+            <span class="badge">3</span>
+            <span class="notice-dot"></span>
+          </div>  
+          <span class="tab-text">eTicket</span>
+          <!-- 右向き矢印用 -->
+          <span class="arrow-icon"></span>
+        </button>
+      </div>
+
+    </div><!-- .qr-modal-content -->
+  </div><!-- #qrModal -->
 
         
 </body>
