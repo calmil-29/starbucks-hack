@@ -8,42 +8,46 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+//　第２モーダルを開く
+function openDepositModal(event) {
+    if(!event) return;
 
-<div id="qrModal" class="modal-overlay" onclick="closeQrModal(event)">
-　<div class="modal-content">
-    <div class="modal-header">
-        <button class="close-btn" onclick="closeQrModal(event)">
-          <span></span>
-          <span></span>
-        </button>
-    </div>    
+    //1.タップの衝撃波で、第1モーダルが閉じてしまうのを防ぐ
+    event.stopPropagation ();
 
-    ・・・省略
-    
-    </div><!-- .modal-content -->
-  </div><!-- #qrModal -->   
+    //2.HTMLから「第2モーダル」の土台(オーバーレイ)をガシッと詰む 
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        //3.クラスを追加して、第２モーダルを画面に出現させる
+        depositModal.classList.add('is-open');
+    }     
+}
 
-<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
- <div class="deposit-modal-content">
+//　第2モーダルの「背景」をタップした時に閉じる
+function closeDepositModal(event) {
+    if (!event) return;
+   
+    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロック
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
 
-      <!-- モーダルのヘッダー -->
-      <div class="deposit-modal-header">
-        <div class="drag-bar"></div>
-        <button class="deposit-close-btn" onclick="closeDepositModalForce()">
-          <span></span>
-          <span></span>
-        </button>
-      </div>
+    // 背景(外側のグレーエリア)をタップした時だけここが実行されて閉じる
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
+}
 
-      <!-- 中身 -->
-      <div class="deposit-modal-body">
-      ・・・省略
-
-      </div><!-- .deposit-modal-body -->
-    </div><!-- .deposit-modal-content -->
-  </div><!-- #depositModal -->    
-    
-
+// 第2モーダルの「×」ボタンをタップした時に【強制的に】閉じる
+function closeDepositModalForce() {
+    // ボタンのタップ時は衝撃波を防ぐ必要がない(確実に閉じたい)ので、シンプルにクラスを付け外すだけ
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
+}
     
 </body>
 </html>
