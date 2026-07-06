@@ -9,53 +9,40 @@
 </head>
 <body>
 
-        <div class="code-toggle-wrapper">
-          <p class="code-toggle">コード番号を表示</p>
-          <span class="arrow-number"></span>
-        </div>
+<div id="qrModal" class="modal-overlay" onclick="closeQrModal(event)">
+　<div class="modal-content">
+    <div class="modal-header">
+        <button class="close-btn" onclick="closeQrModal(event)">
+          <span></span>
+          <span></span>
+        </button>
+    </div>    
 
-        <p class="code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
-      </div>  
-
-    ※抜粋
- const codeNumber = document.querySelector('.code-number');
-    const toggleWrapper = document.querySelector('code-toggle-wrapper');
-    const toggleBtn = document.querySelector('.code-toggle-wrapper');
-    const selectorWindow = document.querySelector('.card-selector-window');
-    const balanceWrapper = document.querySelector('.balance-wrapper');
-
-        codeNumber?.classList.remove('is-active'); // 開閉クラスを強制的に外す
-        toggleWrapper?.classList.remove('is-open');//矢印を元に戻すためにクラスを外す 
-        if (toggleBtn) toggleBtn.textContent = 'コード番号を表示'; // 文字も初期状態に戻す
-        selectorWindow?.classList.remove('is-active');// カード切り替えを強制的に閉じる
-        balanceWrapper?.classList.remove('is-open');//残高の矢印も元に戻す
+    ・・・省略
     
-    //　モダール内の「コード番号を表示 v」の開閉(トグル)処理
-window.addEventListener('load', () => {
-    const toggleWrapper = document.querySelector('.code-tpggle-wrapper');
-    const toggleBtn = document.querySelector('.code-toggle');
-    const codeNumber = document.querySelector('.code-number');
+    </div><!-- .modal-content -->
+  </div><!-- #qrModal -->   
 
-    if (toggleWrapper && toggleBtn && codeNumber) {
-        toggleBtn.addEventListener('click', (event) => {
-            // モダール自体が閉じてしまうのを防ぐ
-            event.stopPropagation();
+<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
+ <div class="deposit-modal-content">
 
-            // クラスを付け外ししてアニメーションさせる
-            codeNumber.classList.toggle('is-active');
+      <!-- モーダルのヘッダー -->
+      <div class="deposit-modal-header">
+        <div class="drag-bar"></div>
+        <button class="deposit-close-btn" onclick="closeDepositModalForce()">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
 
-            //矢印を回転させるために、親の箱のクラス(is-open)を付け外し
-            toggleWrapper.classList.toggle('is-open');
+      <!-- 中身 -->
+      <div class="deposit-modal-body">
+      ・・・省略
 
-            // 文字の後ろの矢印(v と　＾)を切り分ける
-            if (codeNumber.classList.contains('is-active')) {
-                toggleBtn.textContent = 'コード番号を非表示';    
-            } else {
-                toggleBtn.textContent = 'コード番号を表示';
-            }
-        });
-    }
-});
+      </div><!-- .deposit-modal-body -->
+    </div><!-- .deposit-modal-content -->
+  </div><!-- #depositModal -->    
+    
 
     
 </body>
