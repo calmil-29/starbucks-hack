@@ -9,118 +9,67 @@
 </head>
 <body>
 
-/* 第1モーダル(QR拡大) */  
-#qrModal {
-    z-index: 9999;
-}
+<!-- ④【QR拡大モーダル（第１モーダル）】 ⚠️-->
+  <div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
 
-/* モダールの背景(画面全体を暗くする黒いマスク) */
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
-    opacity: 0;
-    visibility: hidden; /* 閉じてる時は完全に存在を消す */ 
-    pointer-events: none; /* 閉じてる時はタップを貫通させる */
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end; /* 下から出すために下揃え */
-    z-index: 600; /* アプリ全体のメニューバー【Bottom Nav 500】より手間に持ってくる */
-}
+    <div class="qr-modal-content">
 
-/* 開いた時の背景連動 */
-.modal-overlay.is-open {
-    opacity: 1;
-    visibility:  visible;
-    pointer-events: auto;
-}
+      <div class="qr-modal-header">
+        <button class="qr-close-btn" onclick="closeQrModal(event)">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
 
-/* 第1モーダルの白い中身(画面下からニョキッと生えるアニメーション) */
-.modal-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 30px 20px 60px 20px;   
-    width: 100%;
-    min-height: calc(100vh - 80px);
-    background-color: white; 
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    box-sizing: border-box;
-    max-height: calc(100vh - 80px);
-    overflow-x: hidden;
-   
-    /* 初期状態 : 画面の下に隠す */
-    transform: translateY(100%);
-    transition: transform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1);
-}
+      <div class="qr-modal-zone">
+        <img id="qrModalImg" src="" alt="支払いコード"> <!--⚠️-->
 
-/* 開いたときの白いシートの連動 */ 
-.modal-overlay.is-open .modal-content {
-    transform: translateY(0); /* 画面下端にピタッと出現 */
-}
-    
-/* 第2モーダル(入金)の背景(オーバーレイ) */ 
-#depositModal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 薄い背景 */
+        <div class="code-toggle-wrapper">
+          <p class="code-toggle">コード番号を表示</p>
+          <span class="arrow-number"></span>
+        </div>
 
-    /* 第1モーダル(9999)よりも大きい数値を指定、さらに手間に重ねる */
-    z-index: 10000;
+        <p class="code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
+      </div>  
+      
+      <div class="qr-modal-card-zone">
+        <div class="card-meta">
+          <span class="card-name">Starbucks Card</span>
 
-    /* 初期状態は非表示(第1モーダルと同じ仕組み) */ /* ⚠️ここがあると第1モーダルが開かない */
-    opacity: 0;
-    visibility: hidden;
-}
+          <div class="balance-wrapper" onclick="toggleCardSelector(event)"> 
+            <span class="card-balance">¥00,000</span>
+            <span class="arrow-balance"></span>
+          </div>
+        </div>
 
-/* 第２モーダルが開いたとき */
-#depositModal.is-open {
-    opacity: 1;
-    visibility: visible;
-    background-color: rgba(0, 0, 0, 0.4); /* 背景がじんわり黒い半透明に */
-}
+        <button class="deposit-btn" onclick="openDepositModal(event)">入金</button>
 
-/* 第２モーダルの白い中身(画面下からニョキッと生えるアニメーション) */
-.deposit-modal-content {
-    position: relative;
-    width: 100%;
-    min-height: calc(100vh - 80px); /* 画面の下から80%の高さまで覆うサイズ */
-    background-color: white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    box-sizing: border-box;
+        <!-- カード切り替え別窓 -->
+        <div class="card-selector-window">
+          <p class="selector-title">カードを選択</p>
+          
+          <!-- メインカード -->
+          <div class="selector-item" data-change-type="main-card" onclick="switchCard(event)">
+            <img src="../images/my-card-main.svg" alt="メインカード" class="selector-card-img">
+            <div class="selector-card-info">
+              <span class="selector-card-balance">¥0</span>
+            </div>
+          </div> 
 
-    /* 初期状態 : 画面の下(100%)にはみ出せせて隠す */
-    transform: translateY(100%);
-    transition: trasform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1); /* スムーズなせり上がり */
-}
+          <!-- サブカード -->
+          <div class="selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <img src="../images/my-card-sub.png" alt="サブカード" class="selector-card-img">
+            <div class="selector-card-info">
+              <span class="selector-card-balance">¥0</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
 
-/* オートチャージ設定の緑のバナー枠 */
-.deposit-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0); /*最初は透明に*/
-    /* １個目のモーダル(100)より手前に出す */
-    z-index: 200;
-    /* アニメーションの初期状態(最初は非表示) */
-    opacity: 0;
-    visibility: hidden;
-    transition: background-color 0.4s ease, opacity 0.4s ease, visibilly 0.4s ease;
-}
+        </div><!-- .card-selector-window -->   
+      </div><!-- .qr-modal-card-zone -->
 
-#depositModal.is-open .deposit-modal-content {
-    transform: translateY(0); /* 画面内に出現 */
-}
+
+        
 </body>
 </html>
