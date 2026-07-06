@@ -8,6 +8,63 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+/* 第1モーダル(QR拡大) */  
+#qrModal {
+    z-index: 9999;
+}
+
+/* モダールの背景(画面全体を暗くする黒いマスク) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    visibility: hidden; /* 閉じてる時は完全に存在を消す */ 
+    pointer-events: none; /* 閉じてる時はタップを貫通させる */
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end; /* 下から出すために下揃え */
+    z-index: 600; /* アプリ全体のメニューバー【Bottom Nav 500】より手間に持ってくる */
+}
+
+/* 開いた時の背景連動 */
+.modal-overlay.is-open {
+    opacity: 1;
+    visibility:  visible;
+    pointer-events: auto;
+}
+
+/* 第1モーダルの白い中身(画面下からニョキッと生えるアニメーション) */
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px 60px 20px;   
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    background-color: white; 
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-sizing: border-box;
+    max-height: calc(100vh - 80px);
+    overflow-x: hidden;
+   
+    /* 初期状態 : 画面の下に隠す */
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1);
+}
+
+/* 開いたときの白いシートの連動 */ 
+.modal-overlay.is-open .modal-content {
+    transform: translateY(0); /* 画面下端にピタッと出現 */
+}
+    
+/* 第2モーダル(入金)の背景(オーバーレイ) */ 
 #depositModal {
     position: fixed;
     top: 0;
@@ -19,9 +76,51 @@
     /* 第1モーダル(9999)よりも大きい数値を指定、さらに手間に重ねる */
     z-index: 10000;
 
-    /* 初期状態は非表示(第1モーダルと同じ仕組み) */ /* ⚠️ここがあるとそもそも第1モーダルが開かない */
+    /* 初期状態は非表示(第1モーダルと同じ仕組み) */ /* ⚠️ここがあると第1モーダルが開かない */
     opacity: 0;
+    visibility: hidden;
+}
+
+/* 第２モーダルが開いたとき */
+#depositModal.is-open {
+    opacity: 1;
     visibility: visible;
+    background-color: rgba(0, 0, 0, 0.4); /* 背景がじんわり黒い半透明に */
+}
+
+/* 第２モーダルの白い中身(画面下からニョキッと生えるアニメーション) */
+.deposit-modal-content {
+    position: relative;
+    width: 100%;
+    min-height: calc(100vh - 80px); /* 画面の下から80%の高さまで覆うサイズ */
+    background-color: white;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-sizing: border-box;
+
+    /* 初期状態 : 画面の下(100%)にはみ出せせて隠す */
+    transform: translateY(100%);
+    transition: trasform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1); /* スムーズなせり上がり */
+}
+
+/* オートチャージ設定の緑のバナー枠 */
+.deposit-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0); /*最初は透明に*/
+    /* １個目のモーダル(100)より手前に出す */
+    z-index: 200;
+    /* アニメーションの初期状態(最初は非表示) */
+    opacity: 0;
+    visibility: hidden;
+    transition: background-color 0.4s ease, opacity 0.4s ease, visibilly 0.4s ease;
+}
+
+#depositModal.is-open .deposit-modal-content {
+    transform: translateY(0); /* 画面内に出現 */
 }
 </body>
 </html>
