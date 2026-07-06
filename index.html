@@ -8,46 +8,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-//　第２モーダルを開く
-function openDepositModal(event) {
-    if(!event) return;
+#depositModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 薄い背景 */
 
-    //1.タップの衝撃波で、第1モーダルが閉じてしまうのを防ぐ
-    event.stopPropagation ();
+    /* 第1モーダル(9999)よりも大きい数値を指定、さらに手間に重ねる */
+    z-index: 10000;
 
-    //2.HTMLから「第2モーダル」の土台(オーバーレイ)をガシッと詰む 
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        //3.クラスを追加して、第２モーダルを画面に出現させる
-        depositModal.classList.add('is-open');
-    }     
+    /* 初期状態は非表示(第1モーダルと同じ仕組み) */ /* ⚠️ここがあるとそもそも第1モーダルが開かない */
+    opacity: 0;
+    visibility: visible;
 }
-
-//　第2モーダルの「背景」をタップした時に閉じる
-function closeDepositModal(event) {
-    if (!event) return;
-   
-    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロック
-    if (event.target.closest('.deposit-modal-content')) {
-        event.stopPropagation();
-        return;
-    }
-
-    // 背景(外側のグレーエリア)をタップした時だけここが実行されて閉じる
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        depositModal.classList.remove('is-open');
-    }
-}
-
-// 第2モーダルの「×」ボタンをタップした時に【強制的に】閉じる
-function closeDepositModalForce() {
-    // ボタンのタップ時は衝撃波を防ぐ必要がない(確実に閉じたい)ので、シンプルにクラスを付け外すだけ
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        depositModal.classList.remove('is-open');
-    }
-}
-    
 </body>
 </html>
