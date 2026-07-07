@@ -9,138 +9,98 @@
 </head>
 <body>
 
-function openQrModal(event) {
-    // 非常に重要な一行 : 親要素(カード全体)にクリックイベントを伝えない
-    if(event) event.stopPropagation();
+ <!--- 【入金ページ (第2モーダル) 】 ---> 
+  <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
+    <div class="deposit-modal-content">
 
-    // モダールが閉じると同時に、コード番号も閉じた状態に戻す
-    const codeNumber = document.querySelector('.qr-code-number');
-    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');
-    const toggleBtn = document.querySelector('.qr-code-toggle');
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-    const balanceWrapper = document.querySelector('.qr-balance-wrapper');
+      <!-- モーダルのヘッダー -->
+      <div class="deposit-modal-header">
+        <div class="drag-bar"></div>
+        <button class="deposit-close-btn" onclick="closeDepositModalForce()">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
 
-        codeNumber?.classList.remove('is-active'); // 開閉クラスを強制的に外す
-        toggleWrapper?.classList.remove('is-open');//矢印を元に戻すためにクラスを外す 
-        if (toggleBtn) toggleBtn.textContent = 'コード番号を表示'; // 文字も初期状態に戻す
-        selectorWindow?.classList.remove('is-active');// カード切り替えを強制的に閉じる
-        balanceWrapper?.classList.remove('is-open');//残高の矢印も元に戻す
-    
+      <!-- 中身 -->
+      <div class="deposit-modal-body">
 
-    // 1.タップされた要素の「目印(payment, reward, gift のどれか)」を読み取る」
-    const clickedArea = event.currentTarget;
-    const dataType = clickedArea.getAttribute('data-type');
+        <!-- A : オートチャージ設定エリア -->
+        <div class="autocharge-banner">
+          <div class="banner-text">
+            <p class="banner-title">オートチャージ</p>
+            <p class="banner-sub">オートチャージ ¥2,000 (残高が¥1,000未満)</p>
+          </div>
+          <!-- タップしたら入金が閉じて、オートチャージが開く関数 -->
+          <button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button> 
+        </div>
 
-    // 2.タップされた場所のQRコードをモダール上部に拡大表示する
-    const clickedImg = clickedArea.querySelector('img');
-    const qrSrc = clickedImg.getAttribute('src');
-    document.getElementById('qrModalImg').setAttribute('src', qrSrc);
+        <!-- B. 各種設定メニュー一覧(タップで小窓を開く仕掛けを onclick に仕込む) -->
+        <div class="deposit-menu-list">
+          <!-- 1. カード選択 -->
+          <div class="deposit-menu-item" onclick="openMiniWindow('card', event)">
+            <span class="menu-label">カード選択</span>
+            <div class="menu-value-box">
+              <!-- 現在選ばれているカードと金額を表示するエリア -->
+              <span class="current-value">Sraebucks Card ¥00,000</span> <!-- ※画像と金額に変更 -->
+              <span></span> <!-- ※下向き矢印 -->
+              <span></span> 
+            </div>
+          </div> 
 
-    const cardZone = document.querySelector('.qr-modal-card-zone');
-    const cardImg = document.getElementById('qrModalCardImg')
+          <!-- 2. 入金額 -->
+          <div class="deposit-menu-item" onclick="optionMiniWindow('card', event)">
+            <spna class="menu-label">入金額</spna>
+            <div class="menu-value-box">
+              <span class="current-value">¥1,000</span>
+              <span></span> <!-- ※下向き矢印 -->
+              <span></span> 
+            </div>
+          </div> 
+          
+          <!-- 3. 支払い方法 -->
+          <div class="deposit-menu-item" onclick="optionMiniWindow('card', event)">
+            <span class="menu-label">支払い方法</span>
+            <div class="menu^label-box">
+              <!-- 初期設定は未登録状態 -->
+              <span class="current-value">未登録</span>
+              <span></span> <!-- ※下向き矢印 -->
+              <span></span> 
+            </div>
+          </div>
 
-    // 3.条件分岐の切り替え。data-type(カードの種類)に合わせて、モダールの見た目を3パターンに切り替える
-    if (dataType === 'main-card') {
-        // 【パターン1 : 表面の支払いカード】
-        cardZone.style.display = 'flex'; // 入金ゾーンを出す
+        </div> <!-- .deposit-menu-list -->
 
-        // 固定の画像を出すのではなく、表の画像(mainCardImg) の現在の「src」と「金額」を盗み見る
-        const currentMainImg = document.getElementById('mainCardImg')?.getAttribute('src');
-        const currentMainBalance = document.getElementById('mainCardBalance')?.textContent;
+        <!-- 一番下にある「次へ」ボタン -->
+        <button  class="deposit-next-stop-btn" onclick="goToDepositConfirm(event)">次へ</button> 
 
-        // 盗み見た情報を、そのままモーダルの画像と金額にコピーする　
-        if (cardImg && currentMainImg) {
-            cardImg.setAttribute('src', currentMainImg);
-        }
-        if (modalBalance && currentMainBalance) {
-            modalBalance.textContent = '¥' + currentMainBalance;
-        }
-    }    
+        <!-- 最終確認 -->
+        <div class="deposit-step-box step-confirm">
+          <p class="confirm-intro-title">以下の内容で入金します</p>
 
-    else if (dataType === 'rewards') {
-         // 【パターン2 : 裏面のリワードカード】
-         cardZone.style.display ='none' // 入金ゾーンを隠す
-         if (cardImg) cardImg.setAttribute('src', '../images/starbucks-rewards500-design.png')
-    } else if (dataType === 'eGift700') {
-         // 【パターン3 : 裏面のeGiftカード】
-         cardZone.style.display ='none' // 入金ゾーンを隠す
-         if (cardImg) cardImg.setAttribute('src', '../images/starbucks-egift700-design.png')
-    } else if (dataType === 'eGift300') {
-         // 【パターン4 : 裏面のeGiftカード】
-         cardZone.style.display ='none' // 入金ゾーンを隠す
-         if (cardImg) cardImg.setAttribute('src', '../images/starbucks-egift300-design.png')
-    }
-    
-    // モダールを下から表示
-    document.getElementById('qrModal').classList.add('is-open');
-    }
+          <!-- 自分で選択した内容が自動で反縁される箱 -->
+          <div class="confirm-receipt-card">
+            <div class="reciept-row">
+              <span class="receipt-label">入金先カード</span>
+              <span class="receipt-value" id="confirmvCard">--</span>
+            </div>
+            <div class="reciept-row">
+              <span class="receipt-label">支払い方法</span>
+              <span class="receipt-value" id="confirmMethot">--</span>
+            </div>
+          </div> 
 
-// モダールを閉じる
-function closeQrModal(event) {
-    // 1.もし「白いエリア(modal-content)」の内側がタップされた場合は、閉じる処理を完全にブロックする
-    if (event && event.target.closest('.qr-modal-content') && !event.target.classList.contains('qr-close-btn')) {
-        event.stopPropagation();
-        return;
-    }
+          <!-- 「〇〇入金する」ボタン(JSで書き換わる) -->
+          <button class="final-deposit-submit-btn" id="finalDepositBtn" onclick="executeDeposit(event)">¥1,000 入金する</button>
+          
+          <!-- キャンセルボタン(押したら選択画面に戻る) -->
+          <button class="confirm-back-btn" onclick="backToDepositInput(event)">キャンセル</button>
+        </div><!-- .deposit-step-box .step-confirm --> 
 
-    // 2. 「背景(modal-overlay)」または「×ボタン(close-btn)」がタップされた場合のみ、ここが実行されて閉じます
-    const modal = document.getElementById('qrModal');
-    if (modal) {
-        //is-open クラスを外すことで、CSSの元の状態(画面外へ隠す)に戻す
-        modal.classList.remove('is-open');
-    }
-}
+      </div><!-- .deposit-modal-body -->
+    </div><!-- .deposit-modal-content -->
+  </div><!-- #depositModal -->
 
-//　モダール内の「コード番号を表示 v」の開閉(トグル)処理
-window.addEventListener('load', () => {
-    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');
-    const toggleBtn = document.querySelector('.qr-code-toggle');
-    const codeNumber = document.querySelector('.qr-code-number');
-
-    if (toggleWrapper && toggleBtn && codeNumber) {
-        toggleWrapper.addEventListener('click', (event) => {
-            // モダール自体が閉じてしまうのを防ぐ
-            event.stopPropagation();
-
-            // クラスを付け外ししてアニメーションさせる
-            codeNumber.classList.toggle('is-active');
-
-            //矢印を回転させるために、親の箱のクラス(is-open)を付け外し
-            toggleWrapper.classList.toggle('is-open');
-
-            // 文字の後ろの矢印(v と　＾)を切り分ける
-            if (codeNumber.classList.contains('is-active')) {
-                toggleBtn.textContent = 'コード番号を非表示';    
-            } else {
-                toggleBtn.textContent = 'コード番号を表示';
-            }
-        });
-    }
-});
-
-// カードの「v」を押した時に、カード切り替え窓を開閉する関数
-function toggleCardSelector(event) {
-    // 1.安全装置 (土台のファイルがあるか、?.でスマートに確認)
-    if(!event) return;
-
-    // 2.超重要！タップの衝撃波が、上のモダール全体に伝わるのをストップする
-    event.stopPropagation();
-    
-    // 3.HTMLから「カード切り替え別窓」の箱をガシッと掴む
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-    //矢印を回転させるために、クリックされた残高の親(balance-wrapper)を取得
-    const balanceWrapper = document.querySelector('.qr-balance-wrapper');
-
-    if(selectorWindow) {
-        // 4.「is-active」クラスがついていれば外し、なければつける(トグル)
-        selectorWindow.classList.toggle('is-active');
-    }
-
-    //別窓の開閉と連動して、矢印の親にもクラスを付け外しする
-    if(balanceWrapper) {
-        balanceWrapper.classList.toggle('is-open');
-    }
-}
         
 </body>
 </html>
