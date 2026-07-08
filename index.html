@@ -8,73 +8,74 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-//1.「次へ」ボタンを押したときに最終確認画面へ切り替える
-function goToDepositConfirm(event) {
-    if(event) event.stopPropagation();
-
-    // 選択された値を画面から盗み見る（※HTMLの現在の表示を取得）
-    // !!本来はJS内の変数で管理するのがベストだが、まずは簡単な方法で実装
-    const currentCard = document.querySelector('.deposit-menu-item:nth-child(1) .current-value')?.textContent || '--';
-    const currentMethod = document.querySelector('.deposit-menu-item:nth-child(3) .current-value')?.textContent || '--';
-    const currentAmount = document.querySelector('deposit-menu-item:nth-child(2).current-value')?.text-Content || '¥1,000';
-
-    // 最終確認のレシートエリアへ値をコピーする 
-    const confirmCard = document.getElementById('confirmvCard');
-    const confirmMethod = document.getElementById('confirmMethot');
-    const finalBtn = document.getElementById('finalDepositBtn');
-
-    if (confirmCard) confirmCard.textContent = currentCard;
-    if (confirmMethod) confirmMethod.textContent = confirmMethod;
-    if (finalBtn) finalBtn.textContent = '${currentAmont} 入金する';
-
-    // 【重要】CSSで切り替えるために、確認画面（.step-confim）にクラスを付与する
-    const confirmBox = document.querySelector('.step-confirm');
-    if (confirmBox) {
-        confirmBox.classList.add('is-active');
-    }
-}
-
-//2. 確認画面の「キャンセル」を押して元の選択画面に戻る
-function backToDepositInput(event) {
-    if(event) event.stopPropagation();
-
-    // クラスを外して確認画面を非表示にする
-    const confirmBox =document.querySelector('step-confirm');
-    if (confirmBox) {
-        confirmBox.classList.remove('is-active');
-    }
-}
-
-// 3.最後の「〇〇入金する」ボタンを押したときの処理
-function executeDeposit(event) {
-    if (event) event.stopPropagation();
-
-    alert('入金が完了しました！') // 💡ここにあとで残高更新の処理を書く
-
-    // 入金が終わったら、第２モーダルを閉じる
-    closeDepositModalForce();
-}
-
-//4. 各メニュー（カード・金額・支払い方法）をタップした時の小窓処理
-function openMiniWindow(type,event) {
-    if (event) event.stopPropagation();
-
-    //引数の「type」に、'card'や'amount'などが入ってくるから
-    //それに合わせて下から別窓の選択肢をヌッと出す処理えおここに書く
-    console.kog('&{type}の選択小窓を開きます')
-}
-
-//5. オートチャージ設定ボランを押した時
-function openAutochargeModal(event) {
-    if (event) event.stopPropagation();
+/* 1. 小窓の背景（画面全体を覆う透明なレイヤー） */
+.deposit-mini-window {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3); /* モーダルより少し薄めの黒 */
     
-    closeDepositModalForce();
-
-    //2. 次のオートチャージ用モーダルを開く　（※後ほど関数を作る）
-    alert('オートチャージ設定画面を開きます(入金画面は閉じました)');
+    /* 💡 第2モーダル（10000）のさらに手前に重ねるため、10001にします */
+    z-index: 10001; 
+    
+    /* 初期状態：完全に非表示 */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    
+    display: flex;
+    align-items: flex-end; /* 中身を下揃えにする */
 }
 
+/* 2. 小窓が開いたとき */
+.deposit-mini-window.is-open {
+    opacity: 1;
+    visibility: visible;
+}
 
+/* 3. 小窓の白い中身（画面の下半分だけを覆うサイズ） */
+.mini-window-content {
+    width: 100%;
+    background-color: white;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    padding: 20px;
+    box-sizing: border-box;
+    
+    /* 💡 画面の下（100%）に最初は隠しておく */
+    transform: translateY(100%);
+    transition: transform 0.3s cubic-bezier(0.32, 0.94, 0.6, 1);
+}
+
+/* 小窓が開いたとき、白いシートを下端に引き上げる */
+.deposit-mini-window.is-open .mini-window-content {
+    transform: translateY(0);
+}
+
+/* 小窓のヘッダーのデザイン */
+.mini-window-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.mini-window-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.mini-close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
 
         
 </body>
