@@ -8,98 +8,73 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+//1.「次へ」ボタンを押したときに最終確認画面へ切り替える
+function goToDepositConfirm(event) {
+    if(event) event.stopPropagation();
 
- <!--- 【入金ページ (第2モーダル) 】 ---> 
-  <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
-    <div class="deposit-modal-content">
+    // 選択された値を画面から盗み見る（※HTMLの現在の表示を取得）
+    // !!本来はJS内の変数で管理するのがベストだが、まずは簡単な方法で実装
+    const currentCard = document.querySelector('.deposit-menu-item:nth-child(1) .current-value')?.textContent || '--';
+    const currentMethod = document.querySelector('.deposit-menu-item:nth-child(3) .current-value')?.textContent || '--';
+    const currentAmount = document.querySelector('deposit-menu-item:nth-child(2).current-value')?.text-Content || '¥1,000';
 
-      <!-- モーダルのヘッダー -->
-      <div class="deposit-modal-header">
-        <div class="drag-bar"></div>
-        <button class="deposit-close-btn" onclick="closeDepositModalForce()">
-          <span></span>
-          <span></span>
-        </button>
-      </div>
+    // 最終確認のレシートエリアへ値をコピーする 
+    const confirmCard = document.getElementById('confirmvCard');
+    const confirmMethod = document.getElementById('confirmMethot');
+    const finalBtn = document.getElementById('finalDepositBtn');
 
-      <!-- 中身 -->
-      <div class="deposit-modal-body">
+    if (confirmCard) confirmCard.textContent = currentCard;
+    if (confirmMethod) confirmMethod.textContent = confirmMethod;
+    if (finalBtn) finalBtn.textContent = '${currentAmont} 入金する';
 
-        <!-- A : オートチャージ設定エリア -->
-        <div class="autocharge-banner">
-          <div class="banner-text">
-            <p class="banner-title">オートチャージ</p>
-            <p class="banner-sub">オートチャージ ¥2,000 (残高が¥1,000未満)</p>
-          </div>
-          <!-- タップしたら入金が閉じて、オートチャージが開く関数 -->
-          <button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button> 
-        </div>
+    // 【重要】CSSで切り替えるために、確認画面（.step-confim）にクラスを付与する
+    const confirmBox = document.querySelector('.step-confirm');
+    if (confirmBox) {
+        confirmBox.classList.add('is-active');
+    }
+}
 
-        <!-- B. 各種設定メニュー一覧(タップで小窓を開く仕掛けを onclick に仕込む) -->
-        <div class="deposit-menu-list">
-          <!-- 1. カード選択 -->
-          <div class="deposit-menu-item" onclick="openMiniWindow('card', event)">
-            <span class="menu-label">カード選択</span>
-            <div class="menu-value-box">
-              <!-- 現在選ばれているカードと金額を表示するエリア -->
-              <span class="current-value">Sraebucks Card ¥00,000</span> <!-- ※画像と金額に変更 -->
-              <span></span> <!-- ※下向き矢印 -->
-              <span></span> 
-            </div>
-          </div> 
+//2. 確認画面の「キャンセル」を押して元の選択画面に戻る
+function backToDepositInput(event) {
+    if(event) event.stopPropagation();
 
-          <!-- 2. 入金額 -->
-          <div class="deposit-menu-item" onclick="optionMiniWindow('card', event)">
-            <spna class="menu-label">入金額</spna>
-            <div class="menu-value-box">
-              <span class="current-value">¥1,000</span>
-              <span></span> <!-- ※下向き矢印 -->
-              <span></span> 
-            </div>
-          </div> 
-          
-          <!-- 3. 支払い方法 -->
-          <div class="deposit-menu-item" onclick="optionMiniWindow('card', event)">
-            <span class="menu-label">支払い方法</span>
-            <div class="menu^label-box">
-              <!-- 初期設定は未登録状態 -->
-              <span class="current-value">未登録</span>
-              <span></span> <!-- ※下向き矢印 -->
-              <span></span> 
-            </div>
-          </div>
+    // クラスを外して確認画面を非表示にする
+    const confirmBox =document.querySelector('step-confirm');
+    if (confirmBox) {
+        confirmBox.classList.remove('is-active');
+    }
+}
 
-        </div> <!-- .deposit-menu-list -->
+// 3.最後の「〇〇入金する」ボタンを押したときの処理
+function executeDeposit(event) {
+    if (event) event.stopPropagation();
 
-        <!-- 一番下にある「次へ」ボタン -->
-        <button  class="deposit-next-stop-btn" onclick="goToDepositConfirm(event)">次へ</button> 
+    alert('入金が完了しました！') // 💡ここにあとで残高更新の処理を書く
 
-        <!-- 最終確認 -->
-        <div class="deposit-step-box step-confirm">
-          <p class="confirm-intro-title">以下の内容で入金します</p>
+    // 入金が終わったら、第２モーダルを閉じる
+    closeDepositModalForce();
+}
 
-          <!-- 自分で選択した内容が自動で反縁される箱 -->
-          <div class="confirm-receipt-card">
-            <div class="reciept-row">
-              <span class="receipt-label">入金先カード</span>
-              <span class="receipt-value" id="confirmvCard">--</span>
-            </div>
-            <div class="reciept-row">
-              <span class="receipt-label">支払い方法</span>
-              <span class="receipt-value" id="confirmMethot">--</span>
-            </div>
-          </div> 
+//4. 各メニュー（カード・金額・支払い方法）をタップした時の小窓処理
+function openMiniWindow(type,event) {
+    if (event) event.stopPropagation();
 
-          <!-- 「〇〇入金する」ボタン(JSで書き換わる) -->
-          <button class="final-deposit-submit-btn" id="finalDepositBtn" onclick="executeDeposit(event)">¥1,000 入金する</button>
-          
-          <!-- キャンセルボタン(押したら選択画面に戻る) -->
-          <button class="confirm-back-btn" onclick="backToDepositInput(event)">キャンセル</button>
-        </div><!-- .deposit-step-box .step-confirm --> 
+    //引数の「type」に、'card'や'amount'などが入ってくるから
+    //それに合わせて下から別窓の選択肢をヌッと出す処理えおここに書く
+    console.kog('&{type}の選択小窓を開きます')
+}
 
-      </div><!-- .deposit-modal-body -->
-    </div><!-- .deposit-modal-content -->
-  </div><!-- #depositModal -->
+//5. オートチャージ設定ボランを押した時
+function openAutochargeModal(event) {
+    if (event) event.stopPropagation();
+    
+    closeDepositModalForce();
+
+    //2. 次のオートチャージ用モーダルを開く　（※後ほど関数を作る）
+    alert('オートチャージ設定画面を開きます(入金画面は閉じました)');
+}
+
+
 
         
 </body>
