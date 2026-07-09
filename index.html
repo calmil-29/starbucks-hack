@@ -9,51 +9,11 @@
 </head>
 <body>
     
- <!-- 【QR拡大モーダル（第１モーダル）】 -->
-  <div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
-    <div class="qr-modal-content">
-       <!-- モーダルのヘッダー --> 
-       <div class="qr-modal-header">
-         <button class="qr-close-btn" onclick="closeQrModal(event)">
-          <span></span>
-          <span></span>    
-         </button>
-       </div>
-
-       <div class="qr-modal-zone">
-          <img id="qrModalImg" src="" alt="支払いコード">     
-           ...省略(コード番号の開閉トグル、コード番号表示など）
-       </div>
-
-       <div class="qr-modal-card-zone">
-         <div class="qr-card-meta">...省略</div>   
-
-         <!-- 別枠のカードをタップした時に、見た目と金額を切り替える場所 -->  
-         <div class="qr-card-selector-window">  
-          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">   
-          ...省略
-          </div> 
-          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
-          ...省略    
-         </div><!-- .qr-card-selector-window -->   
-       </div><!-- .qr-modal-card-zone -->
-
-        <div class="qr-modal-card-graphic">
-          <img id="qrModalCardImg" src="../images/starbucks-card-design.png" alt="スタバカードデザイン">
-        </div> 
-
-        <!-- フッター(他のページでも使いまわせるように、ここは共通のクラス名のまま) -->
-        <div class="modal-footer-tabs">
-        ...省略(eTicket >/ eGift > へのボタンが２つ)
-        </div>
-    </div><!-- .qr-modal-content -->
-  </div><!-- #qrModal -->  
-
   <!--- 【入金ページ (第2モーダル) 】 ---> 
   <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
     <div class="deposit-modal-content">  
         
-     <!-- モーダルのヘッダー -->
+      <!-- モーダルのヘッダー -->
       <div class="deposit-modal-header">
         <div class="drag-bar"></div>
         <button class="deposit-close-btn" onclick="closeDepositModalForce()">
@@ -66,55 +26,52 @@
 
         <!-- オートチャージ設定への入り口 -->  
         <div class="autocharge-banner">
-          <div class="banner-text">...省略()</div>  
-          <!-- タップしたら入金が閉じて、オートチャージ設定画面が開く関数 -->  
+          <div class="banner-text">
+            <p class="banner-title">オートチャージ</p>
+            <p class="banner-sub">オートチャージ ¥2,000 (残高が¥1,000未満)</p>
+          </div>  
           <button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button>
         </div>  
 
-        <!-- B. 各種設定メニュー一覧(タップで小窓を開く仕掛けを onclick に仕込む) -->
+        <!-- B. 各種設定メニュー一覧 -->
         <div class="deposit-menu-list">
+          
           <!-- 1. カード選択 -->
           <div class="deposit-menu-item" onclick="openMiniWindow('card', event)">
             <span class="menu-label">カード選択</span>
             <div class="menu-value-box">
-              <!-- 現在選ばれているカードと金額を表示するエリア -->
-              <span class="current-value">Sraebucks Card ¥00,000</span> <!-- ※画像と金額に変更 -->
-              <span></span> <!-- ※下向き矢印 -->
-              <span></span> 
+              <span class="current-value">Starbucks Card ¥00,000</span>
+              <span class="arrow-balance"></span> 
             </div>
           </div> 
 
-          <!-- 2. 入金額 -->
-          <div class="deposit-menu-item" onclick="openMiniWindow('card', event)">
+          <!-- 2. 入金額（💡引数を 'amount' に変更） -->
+          <div class="deposit-menu-item" onclick="openMiniWindow('amount', event)">
             <span class="menu-label">入金額</span>
             <div class="menu-value-box">
               <span class="current-value">¥1,000</span>
-              <span></span> <!-- ※下向き矢印 -->
-              <span></span> 
+              <span class="arrow-balance"></span> 
             </div>
           </div> 
           
-          <!-- 3. 支払い方法 -->
-          <div class="deposit-menu-item" onclick="openMiniWindow('card', event)">
+          <!-- 3. 支払い方法（💡引数を 'method' に変更） -->
+          <div class="deposit-menu-item" onclick="openMiniWindow('method', event)">
             <span class="menu-label">支払い方法</span>
-            <div class="menu-label-box">
-              <!-- 初期設定は未登録状態 -->
+            <div class="menu-value-box"> <!-- 💡タイポを修正 -->
               <span class="current-value">未登録</span>
-              <span></span> <!-- ※下向き矢印 -->
-              <span></span> 
+              <span class="arrow-balance"></span> 
             </div>
           </div>
 
         </div> <!-- .deposit-menu-list -->
 
         <!-- 一番下にある「次へ」ボタン -->
-        <button  class="deposit-next-stop-btn" onclick="goToDepositConfirm(event)">次へ</button> 
+        <button class="deposit-next-stop-btn" onclick="goToDepositConfirm(event)">次へ</button> 
 
-        <!-- 最終確認 -->
+        <!-- 最終確認画面（最初はCSSで隠しておきます） -->
         <div class="deposit-step-box step-confirm">
           <p class="confirm-intro-title">以下の内容で入金します</p>
 
-          <!-- 自分で選択した内容が自動で反縁される箱 -->
           <div class="confirm-receipt-card">
             <div class="reciept-row">
               <span class="receipt-label">入金先カード</span>
@@ -126,38 +83,46 @@
             </div>
           </div> 
 
-          <!-- 「〇〇入金する」ボタン(JSで書き換わる) -->
           <button class="final-deposit-submit-btn" id="finalDepositBtn" onclick="executeDeposit(event)">¥1,000 入金する</button>
-          
-          <!-- キャンセルボタン(押したら選択画面に戻る) -->
           <button class="confirm-back-btn" onclick="backToDepositInput(event)">キャンセル</button>
         </div><!-- .deposit-step-box .step-confirm --> 
 
       </div><!-- .deposit-modal-body -->
     </div><!-- .deposit-modal-content -->
-
-        <!-- 小窓のベース -->
-        <div class="deposit-mini-window" id="depositMiniWindow">
-          <div class="mini-window-content">
-
-            <!-- 小窓のヘッダー（タイトルと閉じるボタン）-->
-            <div class="mini-window-header">
-              <p class="mini-window-title" id="miniWindowTitle">選択してください</p> 
-              <button class="mini-close-btn" onclick="closeMiniWindow(event)">
-                <span></span>
-                <span></span> 
-              </button>
-            </div>  
-
-            <!--  小窓の中身（ここにJSで選択肢を流し込む）　-->
-            <div class="mini-window-body" id="miniWindowBody">
-              <!-- ここは最初は空っぽでOK -->
-            </div>  
-
-          </div>
-        </div>
   </div><!-- #depositModal -->
 
+
+  <!-- 💡【新配置】その場でフワッと浮き出る共通ドロップダウン小窓（モーダルの外側に配置） -->
+  <div class="dropdown-window" id="dropdownWindow" onclick="closeDropdown(event)">
+    <div class="dropdown-content" id="dropdownContent">
+      <!-- ここにJSで、選択肢（1,000円、3,000円など）のボタンを動的に流し込みます -->
+    </div>
+  </div>
+
+
+  <!-- 💡【新規追加】オートチャージ設定画面（第3モーダル：画面の80%ほどまでせり上がる） -->
+  <div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
+    <div class="autocharge-modal-content">
+      
+      <!-- ヘッダー -->
+      <div class="autocharge-modal-header">
+        <div class="drag-bar"></div>
+        <button class="autocharge-close-btn" onclick="closeAutochargeModalForce()">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <div class="autocharge-modal-body">
+        <p class="autocharge-title">オートチャージ設定</p>
+        <!-- 💡 ここにあとでオートチャージ用のメニュー（入金額・条件など）を作っていきます -->
+        
+        <!-- 一番下にあるボタンの切り替え（最初は保存、確認時は完了など） -->
+        <button class="autocharge-save-btn" onclick="executeAutochargeSave(event)">保存</button>
+      </div>
+
+    </div>
+  </div>
 
         
 
