@@ -8,74 +8,158 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-/* 1. 小窓の背景（画面全体を覆う透明なレイヤー） */
-.deposit-mini-window {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); /* モーダルより少し薄めの黒 */
     
-    /* 💡 第2モーダル（10000）のさらに手前に重ねるため、10001にします */
-    z-index: 10001; 
-    
-    /* 初期状態：完全に非表示 */
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    
-    display: flex;
-    align-items: flex-end; /* 中身を下揃えにする */
-}
+ <!-- 【QR拡大モーダル（第１モーダル）】 -->
+  <div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
+    <div class="qr-modal-content">
+       <!-- モーダルのヘッダー --> 
+       <div class="qr-modal-header">
+         <button class="qr-close-btn" onclick="closeQrModal(event)">
+          <span></span>
+          <span></span>    
+         </button>
+       </div>
 
-/* 2. 小窓が開いたとき */
-.deposit-mini-window.is-open {
-    opacity: 1;
-    visibility: visible;
-}
+       <div class="qr-modal-zone">
+          <img id="qrModalImg" src="" alt="支払いコード">     
+           ...省略(コード番号の開閉トグル、コード番号表示など）
+       </div>
 
-/* 3. 小窓の白い中身（画面の下半分だけを覆うサイズ） */
-.mini-window-content {
-    width: 100%;
-    background-color: white;
-    border-top-left-radius: 16px;
-    border-top-right-radius: 16px;
-    padding: 20px;
-    box-sizing: border-box;
-    
-    /* 💡 画面の下（100%）に最初は隠しておく */
-    transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.32, 0.94, 0.6, 1);
-}
+       <div class="qr-modal-card-zone">
+         <div class="qr-card-meta">...省略</div>   
 
-/* 小窓が開いたとき、白いシートを下端に引き上げる */
-.deposit-mini-window.is-open .mini-window-content {
-    transform: translateY(0);
-}
+         <!-- 別枠のカードをタップした時に、見た目と金額を切り替える場所 -->  
+         <div class="qr-card-selector-window">  
+          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">   
+          ...省略
+          </div> 
+          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+          ...省略    
+         </div><!-- .qr-card-selector-window -->   
+       </div><!-- .qr-modal-card-zone -->
 
-/* 小窓のヘッダーのデザイン */
-.mini-window-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #eaeaea;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-}
+        <div class="qr-modal-card-graphic">
+          <img id="qrModalCardImg" src="../images/starbucks-card-design.png" alt="スタバカードデザイン">
+        </div> 
 
-.mini-window-title {
-    font-size: 16px;
-    font-weight: bold;
-    margin: 0;
-}
+        <!-- フッター(他のページでも使いまわせるように、ここは共通のクラス名のまま) -->
+        <div class="modal-footer-tabs">
+        ...省略(eTicket >/ eGift > へのボタンが２つ)
+        </div>
+    </div><!-- .qr-modal-content -->
+  </div><!-- #qrModal -->  
 
-.mini-close-btn {
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-}
+  <!--- 【入金ページ (第2モーダル) 】 ---> 
+  <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
+    <div class="deposit-modal-content">  
+        
+     <!-- モーダルのヘッダー -->
+      <div class="deposit-modal-header">
+        <div class="drag-bar"></div>
+        <button class="deposit-close-btn" onclick="closeDepositModalForce()">
+          <span></span>
+          <span></span>
+        </button>
+      </div>    
+
+      <div class="deposit-modal-body">
+
+        <!-- オートチャージ設定への入り口 -->  
+        <div class="autocharge-banner">
+          <div class="banner-text">...省略()</div>  
+          <!-- タップしたら入金が閉じて、オートチャージ設定画面が開く関数 -->  
+          <button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button>
+        </div>  
+
+        <!-- B. 各種設定メニュー一覧(タップで小窓を開く仕掛けを onclick に仕込む) -->
+        <div class="deposit-menu-list">
+          <!-- 1. カード選択 -->
+          <div class="deposit-menu-item" onclick="openMiniWindow('card', event)">
+            <span class="menu-label">カード選択</span>
+            <div class="menu-value-box">
+              <!-- 現在選ばれているカードと金額を表示するエリア -->
+              <span class="current-value">Sraebucks Card ¥00,000</span> <!-- ※画像と金額に変更 -->
+              <span></span> <!-- ※下向き矢印 -->
+              <span></span> 
+            </div>
+          </div> 
+
+          <!-- 2. 入金額 -->
+          <div class="deposit-menu-item" onclick="openMiniWindow('card', event)">
+            <span class="menu-label">入金額</span>
+            <div class="menu-value-box">
+              <span class="current-value">¥1,000</span>
+              <span></span> <!-- ※下向き矢印 -->
+              <span></span> 
+            </div>
+          </div> 
+          
+          <!-- 3. 支払い方法 -->
+          <div class="deposit-menu-item" onclick="openMiniWindow('card', event)">
+            <span class="menu-label">支払い方法</span>
+            <div class="menu-label-box">
+              <!-- 初期設定は未登録状態 -->
+              <span class="current-value">未登録</span>
+              <span></span> <!-- ※下向き矢印 -->
+              <span></span> 
+            </div>
+          </div>
+
+        </div> <!-- .deposit-menu-list -->
+
+        <!-- 一番下にある「次へ」ボタン -->
+        <button  class="deposit-next-stop-btn" onclick="goToDepositConfirm(event)">次へ</button> 
+
+        <!-- 最終確認 -->
+        <div class="deposit-step-box step-confirm">
+          <p class="confirm-intro-title">以下の内容で入金します</p>
+
+          <!-- 自分で選択した内容が自動で反縁される箱 -->
+          <div class="confirm-receipt-card">
+            <div class="reciept-row">
+              <span class="receipt-label">入金先カード</span>
+              <span class="receipt-value" id="confirmvCard">--</span>
+            </div>
+            <div class="reciept-row">
+              <span class="receipt-label">支払い方法</span>
+              <span class="receipt-value" id="confirmMethot">--</span>
+            </div>
+          </div> 
+
+          <!-- 「〇〇入金する」ボタン(JSで書き換わる) -->
+          <button class="final-deposit-submit-btn" id="finalDepositBtn" onclick="executeDeposit(event)">¥1,000 入金する</button>
+          
+          <!-- キャンセルボタン(押したら選択画面に戻る) -->
+          <button class="confirm-back-btn" onclick="backToDepositInput(event)">キャンセル</button>
+        </div><!-- .deposit-step-box .step-confirm --> 
+
+      </div><!-- .deposit-modal-body -->
+    </div><!-- .deposit-modal-content -->
+
+        <!-- 小窓のベース -->
+        <div class="deposit-mini-window" id="depositMiniWindow">
+          <div class="mini-window-content">
+
+            <!-- 小窓のヘッダー（タイトルと閉じるボタン）-->
+            <div class="mini-window-header">
+              <p class="mini-window-title" id="miniWindowTitle">選択してください</p> 
+              <button class="mini-close-btn" onclick="closeMiniWindow(event)">
+                <span></span>
+                <span></span> 
+              </button>
+            </div>  
+
+            <!--  小窓の中身（ここにJSで選択肢を流し込む）　-->
+            <div class="mini-window-body" id="miniWindowBody">
+              <!-- ここは最初は空っぽでOK -->
+            </div>  
+
+          </div>
+        </div>
+  </div><!-- #depositModal -->
+
+
+        
 
         
 </body>
