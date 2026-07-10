@@ -8,54 +8,110 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-// 引数の「type」の中に、'card' や 'amount' や 'method' という文字が自動で入ってきます
+// ===================================================
+// 【第2モーダル】別窓の開閉 ＆ 値の上書き処理
+// ===================================================
+
+// 1. 各メニューをタップしたときに「対象の別窓だけ」を開閉する関数
 function toggleDepositWindow(type, event) {
-    if (event) event.stopPropagation(); // 衝撃波を止める
+    if (event) event.stopPropagation(); // モーダル自体が閉じちゃうのを防ぐ
 
-    // 1. まずは、今開いているかもしれない「他の小窓」をすべて一旦きれいに閉じます
-    // 💡 ここで「共通のクラス名」を使うことで、全ての小窓を一斉に取得してリセットできます！
+    // 💡【実務の工夫】今もし他の別窓が開いていたら、先にきれいに全部閉じます
     const allWindows = document.querySelectorAll('.deposit-selector-window');
-    allWindows.forEach(win => win.classList.remove('is-active'));
+    allWindows.forEach(win => {
+        // 今から開こうとしている別窓以外なら、クラスを外して閉じる
+        if (win.id !== `deposit${type.charAt(0).toUpperCase() + type.slice(1)}Window`) {
+            win.classList.remove('is-active');
+        }
+    });
 
-    // 2. 【ここが魔法！】押されたタイプに合わせて、狙い撃ちするIDの文字を合体させて作ります
-    // 例：typeが 'amount' なら ➔ 'deposit' + 'Amount' + 'Window' ➔ '#depositAmountWindow' になる！
-    // 💡 英語の頭文字を大文字にするために、ちょっとした文字変換を挟みます
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1); 
-    const targetId = `deposit${upperType}Window`;
+    // 💡【ID自動合成の魔法】引数の文字（例: 'amount'）を加工して、狙うIDを作ります
+    // typeの最初の1文字を大文字にする処理（'amount' ➔ 'Amount'）
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
+    const targetId = `deposit${upperType}Window`; // ➔ 'depositAmountWindow' になる！
 
-    // 3. 合体して作ったIDの小窓だけをピンポイントで掴んで、開閉（トグル）させます
+    // 合成したIDの別窓をピンポイントで掴んで、is-active クラスを付け外し（トグル）します
     const targetWindow = document.getElementById(targetId);
     if (targetWindow) {
-        targetWindow.classList.add('is-active');
+        targetWindow.classList.toggle('is-active');
     }
 }
-// 引数の「type」には 'amount' など、「value」には '¥3,000' などの文字が自動で入ります
+
+// 2. 別窓の中の選択肢をタップしたときに、文字を表の「看板」にコピーして閉じる関数
 function selectDepositOption(type, value, event) {
-    if (event) event.stopPropagation(); // 衝撃波を止める
+    if (event) event.stopPropagation(); // 衝撃波をストップ
 
-    // 1. 【手品の核心】タップされたメニュー（看板）の、文字を表示している場所を狙い撃ちで探します
-    // 💡 親要素（.deposit-menu-item）をたどって、その中の「.current-value」という看板クラスを掴みます
-    // typeが 'amount' なら、2番目のメニューアイテムの中を探しに行きます
+    // 💡【看板の特定】何番目のメニューの文字（.current-value）を書き換えるか決めます
     let menuIndex = 1;
-    if (type === 'amount') menuIndex = 2;
-    if (type === 'method') menuIndex = 3;
+    if (type === 'amount') menuIndex = 2; // 入金額なら2番目のメニュー
+    if (type === 'method') menuIndex = 3; // 支払い方法なら3番目のメニュー
 
+    // 対象のメニューアイテムの中にある、文字の入れ物（看板）をガシッと掴みます
     const currentLabel = document.querySelector(`.deposit-menu-list .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
 
-    // 2. 看板の文字を、別窓で選ばれた新しい文字（value）にガサッと上書きします
+    // 💡【手品の発動】看板のテキストを、選ばれた新しい文字（value）にガサッと上書きします
     if (currentLabel) {
         currentLabel.textContent = value;
     }
 
-    // 3. 文字を書き換えたら、用済みになった別窓をフワッと閉じます
-    // 💡 前回の「IDを自動合成する魔法」をここでも使い回します
+    // 💡【自動クローズ】文字をコピーし終わったら、用済みになった別窓を閉じます
     const upperType = type.charAt(0).toUpperCase() + type.slice(1);
     const targetWindow = document.getElementById(`deposit${upperType}Window`);
-    
     if (targetWindow) {
-        targetWindow.classList.remove('is-active'); // クラスを外して閉じる
+        targetWindow.classList.remove('is-active'); // クラスを外す
     }
 }
+
+/* 別窓（小窓）の初期状態（最初は隠しておく） */
+.deposit-selector-window {
+    position: absolute;
+    top: 50px; /* メニューボタンの少し下に配置 */
+    left: 10px;
+    right: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* スタバ風の上品な影 */
+    
+    /* 開閉用のz-index（メニューの一覧より手前に出す） */
+    z-index: 10;
+
+    /* アニメーションの初期状態（透明で、少し下に下げておく） */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+/* 💡 JSで .is-active がついた瞬間にフワッと浮き出て出現する */
+.deposit-selector-window.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* 定位置に戻る */
+}
+
+/* 別窓の中の選択肢（1行ずつ）の見た目 */
+.deposit-selector-item {
+    padding: 12px 10px;
+    font-size: 15px;
+    color: #333333;
+    cursor: pointer;
+    border-bottom: 1px solid #f5f5f5;
+}
+
+/* 最後の選択肢の線は消す */
+.deposit-selector-item:last-child {
+    border-bottom: none;
+}
+
+
+toggleDepositWindow('amount', event) をタップすると：JavaScriptが自動で #depositAmountWindow を作り出し、
+その別窓に .is-active が付いて、CSSのトリガーによってフワッと浮き出てきます。
+別窓の中の「¥3,000」をタップすると：selectDepositOption('amount', '¥3,000', event) が呼び出され、
+2番目のメニューアイテムの中にある文字を ¥3,000 にペーストし、別窓の .is-active を消し去ります。
+この一連の仕組み（HTML・CSS・JSの3点リレー）
+
 
         
 </body>
