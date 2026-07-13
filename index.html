@@ -8,109 +8,154 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-// ===================================================
-// 【第2モーダル】別窓の開閉 ＆ 値の上書き処理
-// ===================================================
+<!--- 【入金ページ (第2モーダル) 】 ⚠️⚠️---> 
+  <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
+    <div class="deposit-modal-content">  
+        
+      <!-- モーダルのヘッダー -->
+      <div class="deposit-modal-header">
+        <div class="drag-bar"></div>
+        <button class="deposit-close-btn" onclick="closeDepositModalForce()">
+          <span></span>
+          <span></span>
+        </button>
+      </div>    
 
-// 1. 各メニューをタップしたときに「対象の別窓だけ」を開閉する関数
-function toggleDepositWindow(type, event) {
-    if (event) event.stopPropagation(); // モーダル自体が閉じちゃうのを防ぐ
+      <div class="deposit-modal-body">
 
-    // 💡【実務の工夫】今もし他の別窓が開いていたら、先にきれいに全部閉じます
-    const allWindows = document.querySelectorAll('.deposit-selector-window');
-    allWindows.forEach(win => {
-        // 今から開こうとしている別窓以外なら、クラスを外して閉じる
-        if (win.id !== `deposit${type.charAt(0).toUpperCase() + type.slice(1)}Window`) {
-            win.classList.remove('is-active');
-        }
-    });
+       <!-- A.オートチャージ設定のエリア -->
+        <div class="autocharge-banner">
+          <div class="banner-text">
+            <p class="banner-title">オートチャージ設定</p>
+            <p class="banner-sub">カードの条件を設定</p>
+          </div>
+          <!-- タップしたら入金が閉じて、オートチャージが開く関数 -->
+          <button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button> 
+        </div>
 
-    // 💡【ID自動合成の魔法】引数の文字（例: 'amount'）を加工して、狙うIDを作ります
-    // typeの最初の1文字を大文字にする処理（'amount' ➔ 'Amount'）
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-    const targetId = `deposit${upperType}Window`; // ➔ 'depositAmountWindow' になる！
+        <!-- B. 各種設定メニュー一覧 -->
+        <div class="deposit-menu-list">
+          
+          <!-- 1. カード選択 -->
+          <div class="deposit-menu-item">
+            <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
+              <span class="menu-label">カード選択</span>
+              <div class="menu-value-box">
+                <span class="current-value">Starbucks Card ¥00,000</span>
+                <span class="arrow-balance"></span> 
+              </div>
+            </div>
 
-    // 合成したIDの別窓をピンポイントで掴んで、is-active クラスを付け外し（トグル）します
-    const targetWindow = document.getElementById(targetId);
-    if (targetWindow) {
-        targetWindow.classList.toggle('is-active');
-    }
-}
+            <!-- 「カード用の浮き出る別窓」 -->
+            <div class="deposit-selector-window" id="depositCardWindow">
+              <p class="deposit-selector-title">カードを選択</p>
+              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'Starbucks Card ¥5,780', event)">
+                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
+                <span>¥5,780</span>
+              </div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'サブカード ¥0', event)">
+                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
+                <span>¥0</span>
+              </div>
+            </div>
+          </div> 
 
-// 2. 別窓の中の選択肢をタップしたときに、文字を表の「看板」にコピーして閉じる関数
-function selectDepositOption(type, value, event) {
-    if (event) event.stopPropagation(); // 衝撃波をストップ
+          <!-- 2. 入金額 -->
+          <div class="deposit-menu-item">
+            <div class="menu-clickable-area" onclick="toggleDepositWindow('amount', event)">
+              <span class="menu-label">入金額</span>
+              <div class="menu-value-box">
+                <span class="current-value">¥1,000</span>
+                <span class="arrow-balance"></span> 
+              </div>
+            </div>
 
-    // 💡【看板の特定】何番目のメニューの文字（.current-value）を書き換えるか決めます
-    let menuIndex = 1;
-    if (type === 'amount') menuIndex = 2; // 入金額なら2番目のメニュー
-    if (type === 'method') menuIndex = 3; // 支払い方法なら3番目のメニュー
+            <!-- 「金額用の別窓」 -->
+            <div class="deposit-selector-window" id="depositAmountWindow">
+              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥1,000', event)">¥1,000</div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥3,000', event)">¥3,000</div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥5,000', event)">¥5,000</div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥10,000', event)">¥10,000</div>
+            </div>
+          </div> 
+          
+          <!-- 3. 支払い方法 -->
+          <div class="deposit-menu-item">
+            <div class="menu-clickable-area" onclick="toggleDepositWindow('method', event)">
+              <span class="menu-label">支払い方法</span>
+              <div class="menu-value-box">
+                <span class="current-value">未登録</span>
+                <span class="arrow-balance"></span> 
+              </div>
+            </div>
 
-    // 対象のメニューアイテムの中にある、文字の入れ物（看板）をガシッと掴みます
-    const currentLabel = document.querySelector(`.deposit-menu-list .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+            <!-- 「支払い方法用の別窓」 -->
+            <div class="deposit-selector-window" id="depositMethodWindow">
+              <div class="deposit-selector-item" onclick="selectDepositOption('method', 'Apple Pay', event)">Apple Pay</div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('method', 'PayPay', event)">PayPay</div>
+            </div>
+          </div>
 
-    // 💡【手品の発動】看板のテキストを、選ばれた新しい文字（value）にガサッと上書きします
-    if (currentLabel) {
-        currentLabel.textContent = value;
-    }
+        </div> <!-- .deposit-menu-list -->
 
-    // 💡【自動クローズ】文字をコピーし終わったら、用済みになった別窓を閉じます
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-    const targetWindow = document.getElementById(`deposit${upperType}Window`);
-    if (targetWindow) {
-        targetWindow.classList.remove('is-active'); // クラスを外す
-    }
-}
+        <!-- 一番下にある「次へ」ボタン -->
+        <button class="deposit-next-stop-btn" onclick="goToDepositConfirm(event)">次へ</button> 
 
-/* 別窓（小窓）の初期状態（最初は隠しておく） */
-.deposit-selector-window {
-    position: absolute;
-    top: 50px; /* メニューボタンの少し下に配置 */
-    left: 10px;
-    right: 10px;
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* スタバ風の上品な影 */
-    
-    /* 開閉用のz-index（メニューの一覧より手前に出す） */
-    z-index: 10;
+        <!-- 最終確認画面（最初はCSSで隠しておきます） -->
+        <div class="deposit-step-box step-confirm">
+          <p class="confirm-intro-title">以下の内容で入金します</p>
 
-    /* アニメーションの初期状態（透明で、少し下に下げておく） */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-}
+          <div class="confirm-receipt-card">
+            <div class="reciept-row">
+              <span class="receipt-label">入金先カード</span>
+              <span class="receipt-value" id="confirmvCard">--</span>
+            </div>
+            <div class="reciept-row">
+              <span class="receipt-label">支払い方法</span>
+              <span class="receipt-value" id="confirmMethot">--</span>
+            </div>
+          </div> 
 
-/* 💡 JSで .is-active がついた瞬間にフワッと浮き出て出現する */
-.deposit-selector-window.is-active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0); /* 定位置に戻る */
-}
+          <button class="final-deposit-submit-btn" id="finalDepositBtn" onclick="executeDeposit(event)">¥1,000 入金する</button>
+          <button class="confirm-back-btn" onclick="backToDepositInput(event)">キャンセル</button>
+        </div><!-- .deposit-step-box .step-confirm --> 
 
-/* 別窓の中の選択肢（1行ずつ）の見た目 */
-.deposit-selector-item {
-    padding: 12px 10px;
-    font-size: 15px;
-    color: #333333;
-    cursor: pointer;
-    border-bottom: 1px solid #f5f5f5;
-}
-
-/* 最後の選択肢の線は消す */
-.deposit-selector-item:last-child {
-    border-bottom: none;
-}
+      </div><!-- .deposit-modal-body -->
+    </div><!-- .deposit-modal-content -->
+  </div><!-- #depositModal -->
 
 
-toggleDepositWindow('amount', event) をタップすると：JavaScriptが自動で #depositAmountWindow を作り出し、
-その別窓に .is-active が付いて、CSSのトリガーによってフワッと浮き出てきます。
-別窓の中の「¥3,000」をタップすると：selectDepositOption('amount', '¥3,000', event) が呼び出され、
-2番目のメニューアイテムの中にある文字を ¥3,000 にペーストし、別窓の .is-active を消し去ります。
-この一連の仕組み（HTML・CSS・JSの3点リレー）
+  <!-- 💡【新配置】その場でフワッと浮き出る共通ドロップダウン小窓（モーダルの外側に配置） -->
+  <div class="dropdown-window" id="dropdownWindow" onclick="closeDropdown(event)">
+    <div class="dropdown-content" id="dropdownContent">
+      <!-- ここにJSで、選択肢（1,000円、3,000円など）のボタンを動的に流し込みます -->
+    </div>
+  </div>
+
+
+  <!-- 💡【新規追加】オートチャージ設定画面（第3モーダル：画面の80%ほどまでせり上がる） -->
+  <div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
+    <div class="autocharge-modal-content">
+      
+      <!-- ヘッダー -->
+      <div class="autocharge-modal-header">
+        <div class="drag-bar"></div>
+        <button class="autocharge-close-btn" onclick="closeAutochargeModalForce()">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <div class="autocharge-modal-body">
+        <p class="autocharge-title">オートチャージ設定</p>
+        <!-- 💡 ここにあとでオートチャージ用のメニュー（入金額・条件など）を作っていきます -->
+        
+        <!-- 一番下にあるボタンの切り替え（最初は保存、確認時は完了など） -->
+        <button class="autocharge-save-btn" onclick="executeAutochargeSave(event)">保存</button>
+      </div>
+
+    </div>
+  </div>
 
 
         
