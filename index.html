@@ -8,155 +8,31 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!--- 【入金ページ (第2モーダル) 】 ⚠️⚠️---> 
-  <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
-    <div class="deposit-modal-content">  
-        
-      <!-- モーダルのヘッダー -->
-      <div class="deposit-modal-header">
-        <div class="drag-bar"></div>
-        <button class="deposit-close-btn" onclick="closeDepositModalForce()">
-          <span></span>
-          <span></span>
-        </button>
-      </div>    
+//　第2モーダルの「背景」をタップした時に閉じる
+function closeDepositModal(event) {
+    if (!event) return;
+   
+    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロック
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
 
-      <div class="deposit-modal-body">
+    // 背景(外側のグレーエリア)をタップした時だけここが実行されて閉じる
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
+}
 
-       <!-- A.オートチャージ設定のエリア -->
-        <div class="autocharge-banner">
-          <div class="banner-text">
-            <p class="banner-title">オートチャージ設定</p>
-            <p class="banner-sub">カードの条件を設定</p>
-          </div>
-          <!-- タップしたら入金が閉じて、オートチャージが開く関数 -->
-          <button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button> 
-        </div>
-
-        <!-- B. 各種設定メニュー一覧 -->
-        <div class="deposit-menu-list">
-          
-          <!-- 1. カード選択 -->
-          <div class="deposit-menu-item">
-            <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-              <span class="menu-label">カード選択</span>
-              <div class="menu-value-box">
-                <span class="current-value">Starbucks Card ¥00,000</span>
-                <span class="arrow-balance"></span> 
-              </div>
-            </div>
-
-            <!-- 「カード用の浮き出る別窓」 -->
-            <div class="deposit-selector-window" id="depositCardWindow">
-              <p class="deposit-selector-title">カードを選択</p>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'Starbucks Card ¥5,780', event)">
-                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
-                <span>¥5,780</span>
-              </div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'サブカード ¥0', event)">
-                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
-                <span>¥0</span>
-              </div>
-            </div>
-          </div> 
-
-          <!-- 2. 入金額 -->
-          <div class="deposit-menu-item">
-            <div class="menu-clickable-area" onclick="toggleDepositWindow('amount', event)">
-              <span class="menu-label">入金額</span>
-              <div class="menu-value-box">
-                <span class="current-value">¥1,000</span>
-                <span class="arrow-balance"></span> 
-              </div>
-            </div>
-
-            <!-- 「金額用の別窓」 -->
-            <div class="deposit-selector-window" id="depositAmountWindow">
-              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥1,000', event)">¥1,000</div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥3,000', event)">¥3,000</div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥5,000', event)">¥5,000</div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥10,000', event)">¥10,000</div>
-            </div>
-          </div> 
-          
-          <!-- 3. 支払い方法 -->
-          <div class="deposit-menu-item">
-            <div class="menu-clickable-area" onclick="toggleDepositWindow('method', event)">
-              <span class="menu-label">支払い方法</span>
-              <div class="menu-value-box">
-                <span class="current-value">未登録</span>
-                <span class="arrow-balance"></span> 
-              </div>
-            </div>
-
-            <!-- 「支払い方法用の別窓」 -->
-            <div class="deposit-selector-window" id="depositMethodWindow">
-              <div class="deposit-selector-item" onclick="selectDepositOption('method', 'Apple Pay', event)">Apple Pay</div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('method', 'PayPay', event)">PayPay</div>
-            </div>
-          </div>
-
-        </div> <!-- .deposit-menu-list -->
-
-        <!-- 一番下にある「次へ」ボタン -->
-        <button class="deposit-next-stop-btn" onclick="goToDepositConfirm(event)">次へ</button> 
-
-        <!-- 最終確認画面（最初はCSSで隠しておきます） -->
-        <div class="deposit-step-box step-confirm">
-          <p class="confirm-intro-title">以下の内容で入金します</p>
-
-          <div class="confirm-receipt-card">
-            <div class="reciept-row">
-              <span class="receipt-label">入金先カード</span>
-              <span class="receipt-value" id="confirmvCard">--</span>
-            </div>
-            <div class="reciept-row">
-              <span class="receipt-label">支払い方法</span>
-              <span class="receipt-value" id="confirmMethot">--</span>
-            </div>
-          </div> 
-
-          <button class="final-deposit-submit-btn" id="finalDepositBtn" onclick="executeDeposit(event)">¥1,000 入金する</button>
-          <button class="confirm-back-btn" onclick="backToDepositInput(event)">キャンセル</button>
-        </div><!-- .deposit-step-box .step-confirm --> 
-
-      </div><!-- .deposit-modal-body -->
-    </div><!-- .deposit-modal-content -->
-  </div><!-- #depositModal -->
-
-
-  <!-- 💡【新配置】その場でフワッと浮き出る共通ドロップダウン小窓（モーダルの外側に配置） -->
-  <div class="dropdown-window" id="dropdownWindow" onclick="closeDropdown(event)">
-    <div class="dropdown-content" id="dropdownContent">
-      <!-- ここにJSで、選択肢（1,000円、3,000円など）のボタンを動的に流し込みます -->
-    </div>
-  </div>
-
-
-  <!-- 💡【新規追加】オートチャージ設定画面（第3モーダル：画面の80%ほどまでせり上がる） -->
-  <div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
-    <div class="autocharge-modal-content">
-      
-      <!-- ヘッダー -->
-      <div class="autocharge-modal-header">
-        <div class="drag-bar"></div>
-        <button class="autocharge-close-btn" onclick="closeAutochargeModalForce()">
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-
-      <div class="autocharge-modal-body">
-        <p class="autocharge-title">オートチャージ設定</p>
-        <!-- 💡 ここにあとでオートチャージ用のメニュー（入金額・条件など）を作っていきます -->
-        
-        <!-- 一番下にあるボタンの切り替え（最初は保存、確認時は完了など） -->
-        <button class="autocharge-save-btn" onclick="executeAutochargeSave(event)">保存</button>
-      </div>
-
-    </div>
-  </div>
-
+// 第2モーダルの「×」ボタンをタップした時に【強制的に】閉じる
+function closeDepositModalForce() {
+    // ボタンのタップ時は衝撃波を防ぐ必要がない(確実に閉じたい)ので、シンプルにクラスを付け外すだけ
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
+}
 
         
 </body>
