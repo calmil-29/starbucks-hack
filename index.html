@@ -8,30 +8,39 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-/* 最終確認ボックスの初期状態（最初は右側の見えない場所に隠しておく） */
-.deposit-step-box.step-confirm {
-    position: absolute;
-    top: 60px; /* ヘッダーの高さ分だけ下げる */
-    left: 0;
-    width: 100%;
-    height: calc(100% - 60px);
-    background-color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    
-    /* 💡 画面の右側（横幅100%分）に追いやる */
-    transform: translateX(100%);
-    /* 0.3秒かけて滑らかに動かす */
-    transition: transform 0.3s ease;
-    
-    /* メニュー一覧より手前に重ねる */
-    z-index: 5;
-}
+function goToDepositConfirm(event) {
+    if (event) event.stopPropagation();
 
-/* 💡 JSで .is-active がついたら、画面内（元の位置の0）に滑り込んでくる */
-.deposit-step-box.step-confirm.is-active {
-    transform: translateX(0);
-}
+    // 1番目のメニュー(カード選択)、２番目のメニュー(入金額)、３番目のメニュー(支払い方法)の文字を取得
+    const currentCard = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || 'Starbucks Card';
+    const currentAmount = document.querySelector('deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '1,000';
+    const currentMethod = document.querySelector('deposit-menu-list .deposit-menu-item:nth-child(3) .current-value')?.textContent || '未登録';
+
+    // HTML側にある、確認画面の各IDの入れ物をガシッと掴む
+    const confirmCard = document.getElementById('confirmvCard');
+    const confirmMethod = document.getElementById('confirmMethot');
+    const finalBtn = document.getElementById('finalDepositBtn');
+
+    // 掴んだ入れ物の中に、さっき盗んだ文字をコピーして貼り付ける
+    if (confirmCard) {
+        confirmCard.textContent = currentCard;
+    }
+    if (confirmMethod) {
+        confirmMethod.textContent = currentMethod;
+    }
+    if (finalBtn) {
+        // バッククォートを使って、選ばれた金額をボタンの文字に合体させる(例：「¥3,000 入金する」)
+        finalBtn.textContent = `${currentAmount} 入金する`;
+    }
+
+    // 【画面のスライド発動】
+    // 確認画面の箱（.step-confirm）を掴んで、is-active　クラスを付与
+    const confirmBox = document.querySelector('.step-confirm');
+    if (confirmBox) {
+    confirmBox.classList.add('is-active');
+    }
+}    
+
 
         
 </body>
