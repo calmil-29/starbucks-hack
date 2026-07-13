@@ -8,30 +8,29 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-//　第2モーダルの「背景」をタップした時に閉じる
-function closeDepositModal(event) {
-    if (!event) return;
-   
-    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロック
-    if (event.target.closest('.deposit-modal-content')) {
-        event.stopPropagation();
-        return;
-    }
-
-    // 背景(外側のグレーエリア)をタップした時だけここが実行されて閉じる
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        depositModal.classList.remove('is-open');
-    }
+/* 最終確認ボックスの初期状態（最初は右側の見えない場所に隠しておく） */
+.deposit-step-box.step-confirm {
+    position: absolute;
+    top: 60px; /* ヘッダーの高さ分だけ下げる */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    background-color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    
+    /* 💡 画面の右側（横幅100%分）に追いやる */
+    transform: translateX(100%);
+    /* 0.3秒かけて滑らかに動かす */
+    transition: transform 0.3s ease;
+    
+    /* メニュー一覧より手前に重ねる */
+    z-index: 5;
 }
 
-// 第2モーダルの「×」ボタンをタップした時に【強制的に】閉じる
-function closeDepositModalForce() {
-    // ボタンのタップ時は衝撃波を防ぐ必要がない(確実に閉じたい)ので、シンプルにクラスを付け外すだけ
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        depositModal.classList.remove('is-open');
-    }
+/* 💡 JSで .is-active がついたら、画面内（元の位置の0）に滑り込んでくる */
+.deposit-step-box.step-confirm.is-active {
+    transform: translateX(0);
 }
 
         
