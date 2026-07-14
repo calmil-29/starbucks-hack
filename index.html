@@ -9,33 +9,41 @@
 </head>
 <body>
 
- //　第２モーダルを開く
-function openDepositModal(event) {
-    if(!event) return;
+// 【第2モーダル】最終確認画面の「入金する」ボタンを押したときの関数
+function excuteDeposit(event) {
+    if (event) event.stopPropagation();
 
-    // タップの衝撃波で、第1モーダルが閉じてしまうのを防ぐ
-    event.stopPropagation ();
+    // 1.入力画面から「選ばれた金額」を文字として取得（例: "3,000"）
+    const selectorAmountText = document.querySelector('.deposit-menu-list deposit-menu-item;nth-child(2) .current-value')?.textContent || '0';
 
-    // 新しく開くときに、前回の確認画面(.step-confirm)が残っていたら is-active を剥がして非表示にする
-    document.querySelector('.step-confirm')?.classList.remove('is-active');
+    // 2.メイン表示の「現在の残高」を表示している要素をガシッと掴む
+    const mainBalanceEl = document.getElementById('mainCardBalance');
+    if (!mainBalanceEl) {
+        alert("メイン画像の残高要素 (id='mainBalance) が見つかりません");
+        return;
+    }
 
-    // 最初の入力画面の表示（文字）を初期値に強制リセットする
-    const inputCardText = document.querySelector('.deposit-selector-list .deposit-memu-item:nth-child(1) .current-value');
-    const inputAmountText = document.querySelector('.deposit-selector-list .deposit-memu-item:nth-child(2) .current-value');
-    const inputMethodText = document.querySelector('.deposit-selector-list .deposit-memu-item:nth-child(3) .current-value');
+    // 3.カンマ（,）を取り除き、文字から「純粋な数値」に変換する
+    const depositAmount = parseInt(selectedAmountText.replace(/,/g, ''), 10);
+    const currentBalance = parseInt(mainBalanceEl.textContent.replace(/,/g,''), 10);
 
-    if (inputCardText) inputCardText.textContent = 'Starbucks Card';
-    if (inputAmountText) inputAmountText.textContent = '1,000';
-    if (inputMethodText) inputMethodText.textContent = '未登録';
+    // 4.計算（現在の残高 + 入金額）
+    const newBalance = currentBalance + depositAmount;
 
+    // 5.計算結果をカンマ付きの文字に戻して、メイン画像を書き換える
+    mainBalanceEl.textContent = newBalance.toLocaleString();
 
-    // HTMLから「第2モーダル」の土台(オーバーレイ)をガシッと詰む 
+    // 6.入金が完了したので、第２モーダル全体を閉じる（is-openを剥がす）
     const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        // 3.クラスを追加して、第２モーダルを画面に出現させる
-        depositModal.classList.add('is-open');
-    }     
+    if (depositMpdal) {
+        depositModal.classList.remove('is-open');
+    }
+
+    // 完了メッセージを表示
+    alert(`¥${depositAmount.toLocaleString()} の入金が完了しました!`);
 }
+
+
         
 </body>
 </html>
