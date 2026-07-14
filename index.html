@@ -10,11 +10,13 @@
 <body>
 
 // 【第2モーダル】最終確認画面の「入金する」ボタンを押したときの関数
-function excuteDeposit(event) {
+function executeDeposit(event) {
     if (event) event.stopPropagation();
 
     // 1.入力画面から「選ばれた金額」を文字として取得（例: "3,000"）
-    const selectorAmountText = document.querySelector('.deposit-menu-list deposit-menu-item;nth-child(2) .current-value')?.textContent || '0';
+    const selectedAmountText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
+
+    console.log("「取得した文字」はこれです →", selectedAmountText);
 
     // 2.メイン表示の「現在の残高」を表示している要素をガシッと掴む
     const mainBalanceEl = document.getElementById('mainCardBalance');
@@ -35,7 +37,7 @@ function excuteDeposit(event) {
 
     // 6.入金が完了したので、第２モーダル全体を閉じる（is-openを剥がす）
     const depositModal = document.getElementById('depositModal');
-    if (depositMpdal) {
+    if (depositModal) {
         depositModal.classList.remove('is-open');
     }
 
