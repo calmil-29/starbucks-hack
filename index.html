@@ -9,27 +9,20 @@
 </head>
 <body>
 
-        <!-- 一番下にある「次へ」ボタン -->
-        <button class="deposit-next-stop-btn" onclick="goToDepositConfirm(event)">次へ</button> 
+       /　第２モーダルを開く
+function openDepositModal(event) {
+    if(!event) return;
 
-        <!-- 最終確認画面（最初はCSSで隠しておきます） -->
-        <div class="deposit-step-box step-confirm">
-          <p class="confirm-intro-title">以下の内容で入金します</p>
+    //1.タップの衝撃波で、第1モーダルが閉じてしまうのを防ぐ
+    event.stopPropagation ();
 
-          <div class="confirm-receipt-card">
-            <div class="reciept-row">
-              <span class="receipt-label">入金先カード</span>
-              <span class="receipt-value" id="confirmvCard">--</span>
-            </div>
-            <div class="reciept-row">
-              <span class="receipt-label">支払い方法</span>
-              <span class="receipt-value" id="confirmMethod">--</span>
-            </div>
-          </div> 
-
-          <button class="final-deposit-submit-btn" id="finalDepositBtn" onclick="executeDeposit(event)">¥1,000 入金する</button>
-          <button class="confirm-back-btn" onclick="backToDepositInput(event)">キャンセル</button>
-        </div><!-- .deposit-step-box .step-confirm --> 
+    //2.HTMLから「第2モーダル」の土台(オーバーレイ)をガシッと詰む 
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        //3.クラスを追加して、第２モーダルを画面に出現させる
+        depositModal.classList.add('is-open');
+    }     
+}
         
 </body>
 </html>
