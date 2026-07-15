@@ -8,8 +8,54 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+    if (event) event.stopPropagation();
 
-  const cleanAmountText = selectedAmountText.replace(/[^0-9]/g, '');
+    // 1.入力画面から「選ばれた金額」文字として取得
+    const selectedAmountText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
+
+    // 「¥」や「円」などの文字が混ざっていても強制的に数字だけにする
+    const cleanAmountText = selectedAmountText.replace(/[^0-9]/g, '');
+
+    // 2.メイン表示の「現在の残高」を表示している要素をガシッと掴む
+    const mainBalanceEl = document.getElementById('mainCardBalance');
+    if (!mainBalanceEl) {
+        alert("メイン画面の残高要素（id='mainCardBalance'）が見つかりません")
+        return;
+    }
+
+    // 現在の残高からも数字以外（¥やカンマ）を綺麗に排除する
+    const cleanedBalanceText = mainBalanceEl.textContent.replace(/[^0-9]/g, '');
+
+    // 3.文字から「純粋な数値」に変換する
+    const depositAmount = parseInt(cleanAmountText, 10);
+    const currentBalance = parseInt(cleanedBalanceText, 10);
+
+    // 金額が正常に取れているか念のためチェック
+    if (isNaN(depositAmount) || depositAmount === 0) {
+        alert("入金額が正しく取得できませんでした。選択画面を確認してください。");
+        return;
+    }
+
+    // 4.計算（現在の残高 + 入金額）💡ここからは同じ
+    const newBalance = currentBalance + depositAmount; 
+
+    // 5.計算結果をカンマ付きの文字に戻して、メイン画面を書き換える
+    mainBalanceEl.textContent = newBalance.toLocaleString();
+
+
+    // 6.入金が完了したので、第２モーダル全体を閉じる（is-openを剥がす）
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
+
+    // 完了メッセージを表示
+    alert(`¥${depositAmount.toLocaleString()} の入金が完了しました！`);
+
+});
+
+ 
 document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
     if (event) event.stopPropagation();
 
@@ -17,7 +63,7 @@ document.getElementById('finalDepositBtn')?.addEventListener('click', function(e
     const selectedAmountText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
 
     // 入金額の文字から数字だけを抽出（例: "3,000" ➔ 3000）
-    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
+    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);　
     if (isNaN(depositAmount) || depositAmount === 0) {
         alert("入金額が正しく取得できませんでした。");
         return;
