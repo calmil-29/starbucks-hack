@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
+    
+    
+    
+    
 document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
     if (event) event.stopPropagation();
 
@@ -103,6 +108,111 @@ document.getElementById('finalDepositBtn')?.addEventListener('click', function(e
     // 完了メッセージを表示
     alert(`¥${depositAmount.toLocaleString()} の入金が完了しました!`);
 });
+
+
+
+// ====================================================
+// 【超重要】アプリの「データ（状態）」を記憶する金庫
+// ====================================================
+// HTMLの最初の初期表示（00,000や3,500）に合わせた「本物の数値データ」を用意します
+let starbucksCardBalance = 0; // メインカードの本当の残高データ（例: 0）
+let subCardBalance = 3500;     // サブカードの本当の残高データ（例: 3500）
+
+
+// ====================================================
+// 最終確認画面の「入金する」ボタンを押したときの処理
+// ====================================================
+document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+    if (event) event.stopPropagation();
+
+    // 1. 入金第2モーダルから「選択されているカード名」と「入金額」を取得
+    const selectedCardText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || '';
+    const selectedAmountText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
+
+    // 入金額を数値に変換（例: "3,000" ➔ 3000）
+    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
+    if (isNaN(depositAmount) || depositAmount === 0) {
+        alert("入金額が正しく取得できませんでした。");
+        return;
+    }
+
+    // 2. 【論理的追加】選ばれたカード名に応じて、金庫（データ）の数字を直接足し算する
+    let updatedBalance = 0;
+
+    if (selectedCardText.includes('Starbucks Card')) {
+        // メインカードにお金を足して、最新の残高を覚える
+        starbucksCardBalance = starbucksCardBalance + depositAmount;
+        updatedBalance = starbucksCardBalance;
+    } else {
+        // サブカードにお金を足して、最新の残高を覚える
+        subCardBalance = subCardBalance + depositAmount;
+        updatedBalance = subCardBalance;
+    }
+
+    // 3. 計算された最新の金額（updatedBalance）を画面のパーツに同時反映
+    
+    // ① ヒーロー部分（表のメイン画面）の金額を更新
+    const mainBalanceEl = document.getElementById('mainCardBalance');
+    if (mainBalanceEl) {
+        mainBalanceEl.textContent = updatedBalance.toLocaleString();
+    }
+
+    // ② 第1モーダルの中にある残高表示（.qr-card-balance）も同時に更新
+    const modalBalanceEl = document.querySelector('.qr-modal-card-zone .qr-card-balance');
+    if (modalBalanceEl) {
+        modalBalanceEl.textContent = '¥' + updatedBalance.toLocaleString();
+    }
+
+    // 4. 入金第2モーダル全体を閉じる（is-openを剥がす）
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
+
+    // 完了メッセージを表示
+    alert(`【${selectedCardText}】へ ¥${depositAmount.toLocaleString()} の入金が完了しました!`);
+});
+
+
+// ====================================================
+// 【アップデート版】別枠のカードをタップした時に、見た目と「変動する金額」を切り替える関数
+// ====================================================
+function switchCard(event) {
+    if (!event) return;
+    event.stopPropagation();
+
+    const clickedItem = event.currentTarget;
+    const changeType = clickedItem.getAttribute('data-change-type') || clickedItem.getAttribute('data-change-item');
+
+    const modalCardImg = document.getElementById('qrModalCardImg');
+    const modalBalance = document.querySelector('.qr-card-balance');
+    const mainCardImg = document.getElementById('mainCardImg'); 
+    const mainCardBalance = document.getElementById('mainCardBalance'); 
+
+    // 💡 修正ポイント：固定の文字（'3,500'など）ではなく、金庫にしまってある最新の数値をカンマ付き文字にして代入します
+    if (changeType === 'main-card') { 
+        const mainSrc = '../images/my-card-main.svg';
+        const currentMainText = starbucksCardBalance.toLocaleString(); // 金庫からメインの残高を取り出す
+        
+        if (modalCardImg) modalCardImg.setAttribute('src', mainSrc);
+        if (modalBalance) modalBalance.textContent = '¥' + currentMainText;
+        if (mainCardImg)  mainCardImg.setAttribute('src', mainSrc); 
+        if (mainCardBalance) mainCardBalance.textContent = currentMainText;
+
+    } else if (changeType === 'sub-card') { 
+        const subSrc = '../images/my-card-sub.png';
+        const currentSubText = subCardBalance.toLocaleString(); // 金庫から入金で増えたサブの残高を取り出す
+        
+        if (modalCardImg) modalCardImg.setAttribute('src', subSrc); 
+        if (modalBalance) modalBalance.textContent = '¥' + currentSubText; 
+        if (mainCardImg)  mainCardImg.setAttribute('src', subSrc);
+        if (mainCardBalance) mainCardBalance.textContent = currentSubText;
+    }
+
+    const selectorWindow = document.querySelector('.qr-card-selector-window');
+    selectorWindow?.classList.remove('is-active');
+}
+
 
         
 </body>
