@@ -214,6 +214,77 @@ function switchCard(event) {
 }
 
 
+
+
+document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+    if (event) event.stopPropagation();
+
+    // 1. 入金第2モーダルから「選択されているカード名」と「入金額」を取得
+    const selectedCardText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || '';
+    const selectedAmountText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
+
+    // 入金額を数値に変換
+    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
+    if (isNaN(depositAmount) || depositAmount === 0) {
+        alert("入金額が正しく取得できませんでした。");
+        return;
+    }
+
+    // 2. 選ばれたカード名に応じて、金庫の数字を足し算し、さらに「画像パス」と「正しい名前」を用意する
+    let updatedBalance = 0;
+    let cardSrc = '';   // 💡【追加】切り替えるべき画像の通り道
+    let cardName = '';  // 💡【追加】切り替えるべきカード名の通り道
+
+    if (selectedCardText.includes('Starbucks Card')) {
+        // メインカードにお金を足す
+        starbucksCardBalance = starbucksCardBalance + depositAmount;
+        updatedBalance = starbucksCardBalance;
+        cardSrc = '../images/my-card-main.svg'; // 💡メインカードの画像
+        cardName = 'Starbucks Card';             // 💡メインカードの名前
+    } else {
+        // サブカードにお金を足す
+        subCardBalance = subCardBalance + depositAmount;
+        updatedBalance = subCardBalance;
+        cardSrc = '../images/my-card-sub.png';   // 💡サブカードの画像
+        cardName = selectedCardText;             // 💡サブカードの名前（選択した文字そのまま）
+    }
+
+    // 3. 最新の金額・画像・カード名をすべての画面パーツに同時反映（ここでカードが物理的に切り替わります）
+    
+    // ーー ① ヒーロー部分（表のメイン画面）の更新 ーー
+    const mainBalanceEl = document.getElementById('mainCardBalance');
+    if (mainBalanceEl) mainBalanceEl.textContent = updatedBalance.toLocaleString();
+
+    const mainCardImg = document.getElementById('mainCardImg');
+    if (mainCardImg) mainCardImg.setAttribute('src', cardSrc); // 💡【追加】表のカード画像を切り替え！
+
+    const mainCardLabel = document.querySelector('.balance-display .card-label');
+    if (mainCardLabel) mainCardLabel.textContent = cardName; // 💡【追加】表のカード名を切り替え！
+
+
+    // ーー ② 第1モーダル（QR画面）の更新 ーー
+    const modalBalanceEl = document.querySelector('.qr-modal-card-zone .qr-card-balance');
+    if (modalBalanceEl) modalBalanceEl.textContent = '¥' + updatedBalance.toLocaleString();
+
+    const qrModalCardImg = document.getElementById('qrModalCardImg');
+    if (qrModalCardImg) qrModalCardImg.setAttribute('src', cardSrc); // 💡【追加】QR画面のカード画像を切り替え！
+
+    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
+    if (qrCardNameEl) qrCardNameEl.textContent = cardName; // 💡【追加】QR画面のカード名を切り替え！
+
+
+    // 4. 入金第2モーダル全体を閉じる
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
+
+    // 完了メッセージを表示
+    alert(`【${cardName}】へ ¥${depositAmount.toLocaleString()} の入金が完了しました!`);
+});
+
+
+
         
 </body>
 </html>
