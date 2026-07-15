@@ -10,6 +10,53 @@
 <body>
 
   const cleanAmountText = selectedAmountText.replace(/[^0-9]/g, '');
+document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+    if (event) event.stopPropagation();
+
+    // 1. 入金第2モーダルの入力画面から「選ばれた金額」を文字として取得
+    const selectedAmountText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
+
+    // 入金額の文字から数字だけを抽出（例: "3,000" ➔ 3000）
+    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
+    if (isNaN(depositAmount) || depositAmount === 0) {
+        alert("入金額が正しく取得できませんでした。");
+        return;
+    }
+
+    // 2. ヒーロー部分（表のメイン画面）の残高要素をガシッと掴む
+    const mainBalanceEl = document.getElementById('mainCardBalance');
+    if (!mainBalanceEl) {
+        alert("メイン画面の残高要素 (id='mainCardBalance') が見つかりません");
+        return;
+    }
+
+    // 3. 現在のメイン画面の表示金額から、数字だけを抽出して数値に変換する
+    const cleanedBalanceText = mainBalanceEl.textContent.replace(/[^0-9]/g, '');
+    const currentBalance = parseInt(cleanedBalanceText, 10) || 0; // 万が一空っぽなら0にする
+
+    // 4. 計算（現在の残高 ＋ 入金額）
+    const newBalance = currentBalance + depositAmount;
+
+    // 5. 【重要】足し算した結果を、各画面のパーツへ同時に反映させる
+    
+    // ① ヒーロー部分（表のメイン画面）の金額を更新
+    mainBalanceEl.textContent = newBalance.toLocaleString();
+
+    // ② 第1モーダルの中にある残高表示（.qr-card-balance）も同時に更新してあげる
+    const modalBalanceEl = document.querySelector('.qr-modal-card-zone .qr-card-balance');
+    if (modalBalanceEl) {
+        modalBalanceEl.textContent = '¥' + newBalance.toLocaleString();
+    }
+
+    // 6. 入金第2モーダル全体を閉じる（is-openを剥がす）
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
+
+    // 完了メッセージを表示
+    alert(`¥${depositAmount.toLocaleString()} の入金が完了しました!`);
+});
 
         
 </body>
