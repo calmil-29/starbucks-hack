@@ -14,7 +14,7 @@
     
 
 // ====================================================
-// 【第１モーダル（QR拡大モーダル）】を開く関数
+// 【第１モーダル】QR拡大モーダルを開く関数
 // ====================================================
 function openQrModal(event) {
     // 非常に重要な一行 : 親要素(カード全体)にクリックイベントを伝えない
@@ -202,6 +202,30 @@ function switchCard(event) {
 }
 
 
+
+
+
+
+    // ーー ② 第1モーダル（QR画面）の更新 ーー
+    const modalBalanceEl = document.querySelector('.qr-modal-card-zone .qr-card-balance');
+    if (modalBalanceEl) modalBalanceEl.textContent = '¥' + updatedBalance.toLocaleString();
+
+    const qrModalCardImg = document.getElementById('qrModalCardImg');
+    if (qrModalCardImg) qrModalCardImg.setAttribute('src', cardSrc); 
+
+    const qrCardNameEl = document.querySelector('.qr-meta .qr-card-name'); // ※もしHTMLのクラス名がqr-card-metaなら .qr-card-meta にしてください
+    if (qrCardNameEl) qrCardNameEl.textContent = cardName; 
+
+    // 💡【ここを追加！】カード選択別窓（ミニメニュー）の中の金額も最新データに更新する
+    const menuMainBalanceEl = document.querySelector('.qr-selector-item[data-change-type="main-card"] .qr-selector-card-balance');
+    if (menuMainBalanceEl) {
+        menuMainBalanceEl.textContent = '¥' + starbucksCardBalance.toLocaleString(); // 金庫のメイン残高を反映
+    }
+
+    const menuSubBalanceEl = document.querySelector('.qr-selector-item[data-change-type="sub-card"] .qr-selector-card-balance');
+    if (menuSubBalanceEl) {
+        menuSubBalanceEl.textContent = '¥' + subCardBalance.toLocaleString(); // 金庫のサブ残高を反映
+    }
 
         
 </body>
