@@ -11,222 +11,38 @@
     
     
     
-    
+    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
+    const mainCardLabel = document.querySelector('.balance-display .card-label'); // 表のメイン画像のカード名
 
-// ====================================================
-// 【第１モーダル】QR拡大モーダルを開く関数
-// ====================================================
-function openQrModal(event) {
-    // 非常に重要な一行 : 親要素(カード全体)にクリックイベントを伝えない
-    if(event) event.stopPropagation();
-
-    // モダールが閉じると同時に、コード番号も閉じた状態に戻す
-    const codeNumber = document.querySelector('.qr-code-number');
-    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');
-    const toggleBtn = document.querySelector('.qr-code-toggle');
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-    const balanceWrapper = document.querySelector('.qr-balance-wrapper');
-
-        codeNumber?.classList.remove('is-active'); // 開閉クラスを強制的に外す
-        toggleWrapper?.classList.remove('is-open');//矢印を元に戻すためにクラスを外す 
-        if (toggleBtn) toggleBtn.textContent = 'コード番号を表示'; // 文字も初期状態に戻す
-        selectorWindow?.classList.remove('is-active');// カード切り替えを強制的に閉じる
-        balanceWrapper?.classList.remove('is-open');//残高の矢印も元に戻す
-    
-
-    // 1.タップされた要素の「目印(payment, reward, gift のどれか)」を読み取る」
-    const clickedArea = event.currentTarget;
-    const dataType = clickedArea.getAttribute('data-type');
-
-    // 2.タップされた場所のQRコードをモダール上部に拡大表示する
-    const clickedImg = clickedArea.querySelector('img');
-    const qrSrc = clickedImg.getAttribute('src');
-    document.getElementById('qrModalImg').setAttribute('src', qrSrc);
-
-    const cardZone = document.querySelector('.qr-modal-card-zone');
-    const cardImg = document.getElementById('qrModalCardImg')
-
-    // 3.条件分岐の切り替え。data-type(カードの種類)に合わせて、モダールの見た目を3パターンに切り替える
-    if (dataType === 'main-card') {
-        // 【パターン1 : 表面の支払いカード】
-        cardZone.style.display = 'flex'; // 入金ゾーンを出す
-
-        // 固定の画像を出すのではなく、表の画像(mainCardImg) の現在の「src」と「金額」を盗み見る
-        const currentMainImg = document.getElementById('mainCardImg')?.getAttribute('src');
-        const currentMainBalance = document.getElementById('mainCardBalance')?.textContent;
-
-        // 盗み見た情報を、そのままモーダルの画像と金額にコピーする　
-        if (cardImg && currentMainImg) {
-            cardImg.setAttribute('src', currentMainImg);
-        }
-        if (modalBalance && currentMainBalance) {
-            modalBalance.textContent = '¥' + currentMainBalance;
-        }
-    }    
-
-    else if (dataType === 'rewards') {
-         // 【パターン2 : 裏面のリワードカード】
-         cardZone.style.display ='none' // 入金ゾーンを隠す
-         if (cardImg) cardImg.setAttribute('src', '../images/starbucks-rewards500-design.png')
-    } else if (dataType === 'eGift700') {
-         // 【パターン3 : 裏面のeGiftカード】
-         cardZone.style.display ='none' // 入金ゾーンを隠す
-         if (cardImg) cardImg.setAttribute('src', '../images/starbucks-egift700-design.png')
-    } else if (dataType === 'eGift300') {
-         // 【パターン4 : 裏面のeGiftカード】
-         cardZone.style.display ='none' // 入金ゾーンを隠す
-         if (cardImg) cardImg.setAttribute('src', '../images/starbucks-egift300-design.png')
-    }
-    
-    // モダールを下から表示
-    document.getElementById('qrModal').classList.add('is-open');
-}
-// ====================================================
-// 【第１モーダル】QR拡大モーダルを閉じる
-// ====================================================
-function closeQrModal(event) {
-    // 1.もし「白いエリア(modal-content)」の内側がタップされた場合は、閉じる処理を完全にブロックする
-    if (event && event.target.closest('.qr-modal-content') && !event.target.classList.contains('qr-close-btn')) {
-        event.stopPropagation();
-        return;
-    }
-
-    // 2. 「背景(modal-overlay)」または「×ボタン(close-btn)」がタップされた場合のみ、ここが実行されて閉じます
-    const modal = document.getElementById('qrModal');
-    if (modal) {
-        //is-open クラスを外すことで、CSSの元の状態(画面外へ隠す)に戻す
-        modal.classList.remove('is-open');
-    }
-}
-// ====================================================
-//　モダール内の「コード番号を表示 v」の開閉(トグル)処理
-// ====================================================
-window.addEventListener('load', () => {
-    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');
-    const toggleBtn = document.querySelector('.qr-code-toggle');
-    const codeNumber = document.querySelector('.qr-code-number');
-
-    if (toggleWrapper && toggleBtn && codeNumber) {
-        toggleWrapper.addEventListener('click', (event) => {
-            // モダール自体が閉じてしまうのを防ぐ
-            event.stopPropagation();
-
-            // クラスを付け外ししてアニメーションさせる
-            codeNumber.classList.toggle('is-active');
-
-            //矢印を回転させるために、親の箱のクラス(is-open)を付け外し
-            toggleWrapper.classList.toggle('is-open');
-
-            // 文字の後ろの矢印(v と　＾)を切り分ける
-            if (codeNumber.classList.contains('is-active')) {
-                toggleBtn.textContent = 'コード番号を非表示';    
-            } else {
-                toggleBtn.textContent = 'コード番号を表示';
-            }
-        });
-    }
-});
-// ====================================================
-// カードの「v」を押した時に、カード切り替え窓を開閉する関数
-// ====================================================
-function toggleCardSelector(event) {
-    // 1.安全装置 (土台のファイルがあるか、?.でスマートに確認)
-    if(!event) return;
-
-    // 2.超重要！タップの衝撃波が、上のモダール全体に伝わるのをストップする
-    event.stopPropagation();
-    
-    // 3.HTMLから「カード切り替え別窓」の箱をガシッと掴む
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-    //矢印を回転させるために、クリックされた残高の親(balance-wrapper)を取得
-    const balanceWrapper = document.querySelector('.qr-balance-wrapper');
-
-    if(selectorWindow) {
-        // 4.「is-active」クラスがついていれば外し、なければつける(トグル)
-        selectorWindow.classList.toggle('is-active');
-    }
-
-    //別窓の開閉と連動して、矢印の親にもクラスを付け外しする
-    if(balanceWrapper) {
-        balanceWrapper.classList.toggle('is-open');
-    }
-}
-// ====================================================
-// 別枠のカードをタップした時に、見た目と金額を切り替える関数
-// ====================================================
-function switchCard(event) {
-    // 1.安全装置(土台のファイルがあるか確認)
-    if (!event) return;
-
-    // 2.超重要！モダール自体や別枠が閉じてしまうのを防ぐための防波堤
-    event.stopPropagation();
-
-    // 3.タップされた「選択肢(箱全体)」をガシッと掴む
-    const clickedItem = event.currentTarget;
-
-    // 4.タップされたカードの「目印(main-card か sub-card か)」を読み取る
-    // HTMLの「data-change-item」に合わせて指定
-    const changeType = clickedItem.getAttribute('data-change-type') || clickedItem.getAttribute('data-change-item');
-
-    //5. 掴む要素(モダールの中身 + 表のメイン画像の中身)
-    const modalCardImg = document.getElementById('qrModalCardImg')
-    const modalBalance = document.querySelector('.qr-card-balance')
-    const mainCardImg = document.getElementById('mainCardImg') // 表の画像
-    const mainCardBalance = document.getElementById('mainCardBalance') //　表の金額
-
-    // 6.条件分岐：目印に合わせて、画面と金額を書き換える
     if (changeType === 'main-card') { 
         // --- メインカード(通常)への切り替え ---
         const mainSrc = '../images/my-card-main.svg';
-        const mainTxt ='00,000'
+        const mainTxt = starbucksCardBalance.toLocaleString(); // 金庫から最新の数値をカンマ付きにして取り出す
         
        if (modalCardImg) modalCardImg.setAttribute('src', mainSrc);
        if (modalBalance) modalBalance.textContent = '¥' + mainTxt;
        if (mainCardImg) mainCardImg.setAttribute('src', mainSrc); //　表も切り替え
        if (mainCardBalance) mainCardBalance.textContent = mainTxt; // 表も切り替え
 
+       if (qrCardNameEl) qrCardNameEl.textContent = 'Starbucks Card'
+       if (mainCardLabel) mainCardLabel.textContent = 'Starbucks Card'
+
     } else if (changeType === 'sub-card') { 
        // サブカードへの切り替え
        const subSrc = '../images/my-card-sub.png';
-       const subTxt = '3,500';
+       const subTxt = subCardBalance.toLocaleString(); // 固有の文字「3,500」ではなく、金庫から最新の数値をカンマ付きにして取り出す
+      
+       const clickedSubName = 'サブカード'
+
        if (modalCardImg) modalCardImg.setAttribute('src', subSrc); 
        if (modalBalance) modalBalance.textContent = '¥' + subTxt; 
        if (mainCardImg) mainCardImg.setAttribute('src', subSrc);
        if (mainCardBalance) mainCardBalance.textContent = subTxt;
 
+       if (qrCardNameEl) qrCardNameEl.textContent = clickedSubName;
+       if (mainCardLabel) mainCardLabel.textContent =  clickedSubName;
+
     }
-
-    // ７.切り替えが終わったら、カード選択の別枠を自動でシュッと閉じる
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-    selectorWindow?.classList.remove('is-active')
-}
-
-
-
-
-
-
-    // ーー ② 第1モーダル（QR画面）の更新 ーー
-    const modalBalanceEl = document.querySelector('.qr-modal-card-zone .qr-card-balance');
-    if (modalBalanceEl) modalBalanceEl.textContent = '¥' + updatedBalance.toLocaleString();
-
-    const qrModalCardImg = document.getElementById('qrModalCardImg');
-    if (qrModalCardImg) qrModalCardImg.setAttribute('src', cardSrc); 
-
-    const qrCardNameEl = document.querySelector('.qr-meta .qr-card-name'); // ※もしHTMLのクラス名がqr-card-metaなら .qr-card-meta にしてください
-    if (qrCardNameEl) qrCardNameEl.textContent = cardName; 
-
-    // 💡【ここを追加！】カード選択別窓（ミニメニュー）の中の金額も最新データに更新する
-    const menuMainBalanceEl = document.querySelector('.qr-selector-item[data-change-type="main-card"] .qr-selector-card-balance');
-    if (menuMainBalanceEl) {
-        menuMainBalanceEl.textContent = '¥' + starbucksCardBalance.toLocaleString(); // 金庫のメイン残高を反映
-    }
-
-    const menuSubBalanceEl = document.querySelector('.qr-selector-item[data-change-type="sub-card"] .qr-selector-card-balance');
-    if (menuSubBalanceEl) {
-        menuSubBalanceEl.textContent = '¥' + subCardBalance.toLocaleString(); // 金庫のサブ残高を反映
-    }
-
         
 </body>
 </html>
