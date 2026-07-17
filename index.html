@@ -8,52 +8,56 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- 「カード用の浮き出る別窓」 -->
-            <div class="deposit-selector-window" id="depositCardWindow">
-              <p class="deposit-selector-title">カードを選択</p>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
-                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
-                <span>¥0</span>
-              </div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
-                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
-                <span>¥0</span>
-              </div>
+ <div class="qr-modal-card-zone">
+        <div class="qr-card-meta">
+          <span class="qr-card-name">Starbucks Card</span>
+
+          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
+            <span class="qr-card-balance">¥00,000</span>
+            <span class="qr-arrow-balance"></span>
+          </div>
+        </div>
+
+        <button class="qr-deposit-btn" onclick="openDepositModal(event)">入金</button>
+
+        <!-- カード切り替え別窓 -->
+        <div class="qr-card-selector-window">
+          <p class="qr-selector-title">カードを選択</p>
+          
+          <!-- メインカード -->
+          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
+            <img src="../images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-card-balance">¥0</span>
             </div>
+          </div> 
 
-// 【第２モーダル】別窓の中の選択肢をタップしたときに、文字を表の「看板」にコピーして閉じる関数 ←あと、このタイトルの意味あってる？
-function selectDepositOption(type, value, event) {
-    if (event) event.stopPropagation(); // 衝撃波を止める
+          <!-- サブカード -->
+          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <img src="../images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-card-balance">¥3,500</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
 
-    // 【看板の特定】何番目のメニューの文字 (.current-value) を書き換えるか決める
-    let menuIndex = 1;
-    if (type === 'amount') menuIndex = 2; // 入金額なら2番目のメニュー
-    if (type === 'method') menuIndex = 3; // 支払い方法なら3番目のメニュー
+        </div><!-- .qr-card-selector-window -->   
+      </div><!-- .qr-modal-card-zone -->
 
-    // 対象のメニューアイテムの中にある、文字の入れ物（看板）をガシッっと掴む              
-    const currentLabel = document.querySelector(`.deposit-menu-list .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+    function openDepositModal(event) {
+    if(!event) return;
 
-    // 【発動】もしカード選択（type === 'card'）だった場合は、送られてきた目印（main か sub）を見て、金庫の最新版を合体させる
-    if (type === 'card') {
-        if (value === 'main') {
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-        } else if (value === 'sub') {
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
-    } else {
-        // 入金額や支払い方法の時は、今まで通り選ばれた文字（value）をそのままガサッと上書き
-        currentLabel.textContent = value;
+    //1. タップの衝撃波で、第1モーダルが閉じてしまうのを防ぐ
+    event.stopPropagation ();
+
+    //2. 新しく開くときに、前回の確認画面(.step-confirm)が残っていたら is-active を剥がして非表示にする
+    document.querySelector('.step-confirm')?.classList.remove('is-active');
+
+    //3. 【第1モーダル】で現在「どちらのカードが選ばれているか」を名前から判断する　
+    const currentCardNameInModal1 = document.querySelector('.qr-card-selector-window .qr-card-name')?.textContent || 'Starbucks'; ⭐️　.qr-card-selector-window　これが違う？
+    ...省略
     }
-
-    // 【自動クローズ】文字をコピーし終わったら、用済みになった別窓を閉じる
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-    const targetWindow = document.getElementById(`deposit${upperType}Window`);
-    
-    if (targetWindow) {
-        targetWindow.classList.remove('is-active'); // クラスを外す
-    }
-}
-
 
     
 </body>
