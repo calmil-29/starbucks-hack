@@ -8,25 +8,44 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- 「カード用の浮き出る別窓」 -->
+            <div class="deposit-selector-window" id="depositCardWindow">
+              <p class="deposit-selector-title">カードを選択</p>
+              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
+                <span>¥0</span>
+              </div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
+                <span>¥0</span>
+              </div>
+            </div>
 
-/ 【第２モーダル】別窓の中の選択肢をタップしたときに、文字を表の「看板」にコピーして閉じる関数
+// 【第２モーダル】別窓の中の選択肢をタップしたときに、文字を表の「看板」にコピーして閉じる関数 ←あと、このタイトルの意味あってる？
 function selectDepositOption(type, value, event) {
     if (event) event.stopPropagation(); // 衝撃波を止める
 
-    // 💡 【看板の特定】何番目のメニューの文字 (.current-value) を書き換えるか決める
+    // 【看板の特定】何番目のメニューの文字 (.current-value) を書き換えるか決める
     let menuIndex = 1;
     if (type === 'amount') menuIndex = 2; // 入金額なら2番目のメニュー
     if (type === 'method') menuIndex = 3; // 支払い方法なら3番目のメニュー
 
-    // 対象のメニューアイテムの中にある、文字の入れ物（看板）をガシッっと掴む               //⭐️.deposit-menu-item:nth-child(${menuIndex})てどこ？
+    // 対象のメニューアイテムの中にある、文字の入れ物（看板）をガシッっと掴む              
     const currentLabel = document.querySelector(`.deposit-menu-list .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
 
-    // 💡【手品の発動】看板のテキストを、選ばれた新しい文字（value）にガサッと上書き
-    if (currentLabel) {
+    // 【発動】もしカード選択（type === 'card'）だった場合は、送られてきた目印（main か sub）を見て、金庫の最新版を合体させる
+    if (type === 'card') {
+        if (value === 'main') {
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+        } else if (value === 'sub') {
+            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
+    } else {
+        // 入金額や支払い方法の時は、今まで通り選ばれた文字（value）をそのままガサッと上書き
         currentLabel.textContent = value;
     }
 
-    // 💡【自動クローズ】文字をコピーし終わったら、用済みになった別窓を閉じる
+    // 【自動クローズ】文字をコピーし終わったら、用済みになった別窓を閉じる
     const upperType = type.charAt(0).toUpperCase() + type.slice(1);
     const targetWindow = document.getElementById(`deposit${upperType}Window`);
     
@@ -34,7 +53,8 @@ function selectDepositOption(type, value, event) {
         targetWindow.classList.remove('is-active'); // クラスを外す
     }
 }
-   
-        
+
+
+    
 </body>
 </html>
