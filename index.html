@@ -9,27 +9,33 @@
 </head>
 <body>
 
+//　第２モーダルを開く
+function openDepositModal(event) {
+    if(!event) return;
 
-   // ーー ② 第1モーダル（QR画面）の更新 ーー
-    ...省略
-    
-   // 【第2モーダル】のカード選択メニューの中の金額も最新にする
-    // 「現在表示されてるカード」の表示を更新
-    const depositCurrentValueEl = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value');
-    if (depositCurrentValueEl) {
-        depositCurrentValueEl.textContent = `${cardName} ¥${updatedBalance.toLocaleString()}`;
-    }
-    // 「カード用の浮き出る別窓」の中にある、メインカードの金額を更新
-    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
-    if (depositWindowMainEl) {
-        depositWindowMainEl.textContent = '¥' + starbucksCardBalance.toLocaleString();
-    }
-    // 「カード用の浮き出る別窓」の中にある、サブカードの金額を更新
-    const depositWindowSubEl = document.querySelectorAll('#depositCardWindow .deposit-selector-item:nth-child(3) span');
-    if (depositWindowSubEl) {
-        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
-    }
-    
+    // タップの衝撃波で、第1モーダルが閉じてしまうのを防ぐ
+    event.stopPropagation ();
+
+    // 新しく開くときに、前回の確認画面(.step-confirm)が残っていたら is-active を剥がして非表示にする
+    document.querySelector('.step-confirm')?.classList.remove('is-active');
+
+    // 最初の入力画面の表示（文字）を初期値に強制リセットする
+    const inputCardText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value');
+    const inputAmountText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value');
+    const inputMethodText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(3) .current-value');
+
+    if (inputCardText) inputCardText.textContent = 'Starbucks Card';
+    if (inputAmountText) inputAmountText.textContent = '1,000';
+    if (inputMethodText) inputMethodText.textContent = '未登録';
+
+
+    // HTMLから「第2モーダル」の土台(オーバーレイ)をガシッと詰む 
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        // 3.クラスを追加して、第２モーダルを画面に出現させる
+        depositModal.classList.add('is-open');
+    }     
+}
    
         
 </body>
