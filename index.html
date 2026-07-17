@@ -8,37 +8,28 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-    
-    <!-- B. 各種設定メニュー一覧 -->
-        <div class="deposit-menu-list">
-          
-          <!-- 1. カード選択 -->
-          <div class="deposit-menu-item">
-            <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-              <span class="menu-label">カード選択</span>
-              <div class="menu-value-box">
-                <span class="current-value">Starbucks Card ¥00,000</span>
-                <span class="arrow-balance"></span> 
-              </div>
-            </div>
 
-            <!-- 「カード用の浮き出る別窓」 -->
-            <div class="deposit-selector-window" id="depositCardWindow">
-              <p class="deposit-selector-title">カードを選択</p>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'Starbucks Card ¥0', event)">
-                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
-                <span>¥0</span>
-              </div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'サブカード ¥0', event)">
-                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
-                <span>¥0</span>
-              </div>
-            </div>
-          </div> 
 
-          ...省略(入金額、支払い方法)
-        </div> <!-- .deposit-menu-list -->
+   // ーー ② 第1モーダル（QR画面）の更新 ーー
+    ...省略
+    
+   // 【第2モーダル】のカード選択メニューの中の金額も最新にする
+    // 「現在表示されてるカード」の表示を更新
+    const depositCurrentValueEl = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value');
+    if (depositCurrentValueEl) {
+        depositCurrentValueEl.textContent = `${cardName} ¥${updatedBalance.toLocaleString()}`;
+    }
+    // 「カード用の浮き出る別窓」の中にある、メインカードの金額を更新
+    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
+    if (depositWindowMainEl) {
+        depositWindowMainEl.textContent = '¥' + starbucksCardBalance.toLocaleString();
+    }
+    // 「カード用の浮き出る別窓」の中にある、サブカードの金額を更新
+    const depositWindowSubEl = document.querySelectorAll('#depositCardWindow .deposit-selector-item:nth-child(3) span');
+    if (depositWindowSubEl) {
+        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
+    }
+    
    
         
 </body>
