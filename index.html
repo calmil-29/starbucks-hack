@@ -8,60 +8,57 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-// 【第２モーダル】を開く
-function openDepositModal(event) {
-    if(!event) return;
 
-    //1. タップの衝撃波で、第1モーダルが閉じてしまうのを防ぐ
-    event.stopPropagation ();
 
-    //2. 新しく開くときに、前回の確認画面(.step-confirm)が残っていたら is-active を剥がして非表示にする
-    document.querySelector('.step-confirm')?.classList.remove('is-active');
+  <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
+    <div class="deposit-modal-content" onclick="closeMiniWindow(event)">  
+    <div class="deposit-modal-header">
+        <div class="drag-bar"></div>
+        <button class="deposit-close-btn" onclick="closeDepositModalForce()">
+          <span></span>
+          <span></span>
+        </button>
+      </div>    
+    <div class="deposit-modal-body">
+    ...省略    
+    </div><!-- .deposit-modal-body -->
+    </div><!-- .deposit-modal-content -->
+  </div><!-- #depositModal -->
 
-    //3. 【第1モーダル】に映っている「カードの画像（src）」をチェックする　
-    const currentHeroImg = document.getElementById('mainCardImg')?.getAttribute('src') ||'';
 
-    let currentCardName = 'starbucks Card';
-    let currentBalance = 0;
-    
-    // 画像のファイル名に 'sub' という文字が含まれているかどうかで100%確実に判断する
-    if (currentHeroImg.includes('sub')){
-        currentCardName = 'サブカード';
-        currentBalance = subCardBalance; // サブの金庫
-    } else {
-        currentCardName = 'starbucks Card';
-        currentBalance = starbucksCardBalance; // メインの金庫
-    }
-    
-    //A.　「現在表示されているカード」の文字を、開いた瞬間の最新状態にする
-    const depositCurrentValueEl = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value');
-    if (depositCurrentValueEl) {
-        depositCurrentValueEl.textContent = `${currentCardNameInModal1} ¥${currentBalance.toLocaleString()}`;
-    }
+  <!-- その場でフワッと浮き出る共通ドロップダウン小窓（モーダルの外側に配置） -->
+  <div class="dropdown-window" id="dropdownWindow" onclick="closeDropdown(event)">
+    <div class="dropdown-content" id="dropdownContent">
+      <!-- ここにJSで、選択肢（1,000円、3,000円など）のボタンを動的に流し込みます -->
+    </div>
+  </div>
 
-    //B. 【リセット機能】入金額と支払い方法は、初期値に強制リセットする
-    const inputAmountText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value');
-    const inputMedhodText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(3) .current-value');
-    if (inputAmountText) inputAmountText.textContent = '1,000';
-    if (inputMedhodText) inputMedhodText.textContent = '未登録'
 
-    // カードの浮き出る別窓」の中のメイン・サブの金額も、開いた瞬間の最新にする　
-    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
-    if (depositWindowMainEl) {
-        depositWindowMainEl.textContent ='¥' + starbucksCardBalance.toLocaleString();
-    }
+  <!-- オートチャージ設定画面（第3モーダル：画面の80%ほどまでせり上がる） -->
+  <div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
+    <div class="autocharge-modal-content">
+      
+      <!-- ヘッダー -->
+      <div class="autocharge-modal-header">
+        <div class="drag-bar"></div>
+        <button class="autocharge-close-btn" onclick="closeAutochargeModalForce()">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
 
-    const depositWindowSubEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(3) span');
-    if (depositWindowSubEl) {
-        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
-    }
-    
-    //4. HTMLから「第2モーダル」の土台（オーバーレイ）をガシッと詰む 
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        //5. クラスを追加して、第２モーダルを画面に出現させる
-        depositModal.classList.add('is-open');
-    }    
-}
+      <div class="autocharge-modal-body">
+        <p class="autocharge-title">オートチャージ設定</p>
+        <!-- ここにあとでオートチャージ用のメニュー（入金額・条件など）を作っていく -->
+        
+        <!-- 一番下にあるボタンの切り替え（最初は保存、確認時は完了など） -->
+        <button class="autocharge-save-btn" onclick="executeAutochargeSave(event)">保存</button>
+      </div>
+
+    </div><!-- .autocharge-modal-content -->
+  </div><!-- #autochargeModal .autocharge-modal-overlay-->
+
+
+
 </body>
 </html>
