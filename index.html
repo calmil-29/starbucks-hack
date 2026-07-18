@@ -8,56 +8,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
- <div class="qr-modal-card-zone">
-        <div class="qr-card-meta">
-          <span class="qr-card-name">Starbucks Card</span>
-
-          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
-            <span class="qr-card-balance">¥00,000</span>
-            <span class="qr-arrow-balance"></span>
-          </div>
-        </div>
-
-        <button class="qr-deposit-btn" onclick="openDepositModal(event)">入金</button>
-
-        <!-- カード切り替え別窓 -->
-        <div class="qr-card-selector-window">
-          <p class="qr-selector-title">カードを選択</p>
-          
-          <!-- メインカード -->
-          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
-            <img src="../images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-card-balance">¥0</span>
-            </div>
-          </div> 
-
-          <!-- サブカード -->
-          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
-            <img src="../images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-card-balance">¥3,500</span>
-            </div>
-          </div> 
-          
-          <!-- 必要に応じて追加 -->
-
-        </div><!-- .qr-card-selector-window -->   
-      </div><!-- .qr-modal-card-zone -->
-
-    function openDepositModal(event) {
-    if(!event) return;
-
-    //1. タップの衝撃波で、第1モーダルが閉じてしまうのを防ぐ
-    event.stopPropagation ();
-
-    //2. 新しく開くときに、前回の確認画面(.step-confirm)が残っていたら is-active を剥がして非表示にする
-    document.querySelector('.step-confirm')?.classList.remove('is-active');
-
-    //3. 【第1モーダル】で現在「どちらのカードが選ばれているか」を名前から判断する　
-    const currentCardNameInModal1 = document.querySelector('.qr-card-selector-window .qr-card-name')?.textContent || 'Starbucks'; ⭐️　.qr-card-selector-window　これが違う？
-    ...省略
-    }
+// 入金第2モーダルから「選択されているカード名」と「入金額」を取得
+    const selectedCardText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || '';
+    const selectedAmountText = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
 
     
 </body>
