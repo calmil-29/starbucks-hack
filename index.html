@@ -9,41 +9,7 @@
 </head>
 <body>
 
-
-  <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
-    <div class="deposit-modal-content" onclick="closeMiniWindow(event)">  
-    <div class="deposit-modal-header">
-        <div class="drag-bar"></div>
-        <button class="deposit-close-btn" onclick="closeDepositModalForce()">
-          <span></span>
-          <span></span>
-        </button>
-      </div>    
-    <div class="deposit-modal-body">
-    <!-- A.オートチャージ設定のエリア -->
-        <div class="autocharge-banner">
-          <div class="banner-text">
-            <p class="banner-title">オートチャージ設定</p>
-            <p class="banner-sub">カードの条件を設定</p>
-          </div>
-          <!-- タップしたら入金が閉じて、オートチャージが開く関数 -->
-          <button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button> 
-        </div>    
-    ...省略    
-    </div><!-- .deposit-modal-body -->
-    </div><!-- .deposit-modal-content -->
-  </div><!-- #depositModal -->
-
-
-  <!-- その場でフワッと浮き出る共通ドロップダウン小窓（モーダルの外側に配置） -->
-  <div class="dropdown-window" id="dropdownWindow" onclick="closeDropdown(event)">
-    <div class="dropdown-content" id="dropdownContent">
-      <!-- ここにJSで、選択肢（1,000円、3,000円など）のボタンを動的に流し込みます -->
-    </div>
-  </div>
-
-
-  <!-- オートチャージ設定画面（第3モーダル：画面の80%ほどまでせり上がる） -->
+ <!-- オートチャージ設定画面（第3モーダル：画面の80%ほどまでせり上がる） -->
   <div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
     <div class="autocharge-modal-content">
       
@@ -57,13 +23,25 @@
       </div>
 
       <div class="autocharge-modal-body">
-        <p class="autocharge-title">オートチャージ設定</p>
-        <!-- ここにあとでオートチャージ用のメニュー（入金額・条件など）を作っていく -->
         
-        <!-- 一番下にあるボタンの切り替え（最初は保存、確認時は完了など） -->
-        <button class="autocharge-save-btn" onclick="executeAutochargeSave(event)">保存</button>
-      </div>
+        <p class="autocharge-title">オートチャージ設定</p>
+        <p class="autocharge-summary" id="autoSummaryText">¥2,000（入金条件：残高が¥1,000未満）</p>
+        
+        <!-- オートチャージ設定のメニュー一覧（第２モーダルのCSSクラスをそのまま流用） -->
+       <div class="autocharge-menu-list">
 
+       ...省略(オートチャージ用に入金条件をプラスし、あとは第２モーダルと同様のカード選択、入金額、支払い方法とそれぞれの別窓デザイン)
+       
+        </div><!-- deposit-menu-list" -->
+
+        <!-- 「次へ」ボタン -->
+        <button class="deposit-next-stop-btn autocharge-next-btn" onclick="goToAutochargeConfirm(event)">次へ</button> 
+
+    
+      </div><!-- .autocharge-modal-body -->
+
+       <!-- 一番下にあるボタンの切り替え（最初は保存、確認時は完了など） ⚠️？これどこに置けばいい？ -->
+        <button class="autocharge-save-btn" onclick="executeAutochargeSave(event)">保存</button>
     </div><!-- .autocharge-modal-content -->
   </div><!-- #autochargeModal .autocharge-modal-overlay-->
 
