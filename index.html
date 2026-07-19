@@ -9,42 +9,24 @@
 </head>
 <body>
 
- <!-- オートチャージ設定画面（第3モーダル：画面の80%ほどまでせり上がる） -->
-  <div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
-    <div class="autocharge-modal-content">
-      
-      <!-- ヘッダー -->
-      <div class="autocharge-modal-header">
-        <div class="drag-bar"></div>
-        <button class="autocharge-close-btn" onclick="closeAutochargeModalForce()">
-          <span></span>
-          <span></span>
-        </button>
-      </div>
+  // 2. 選ばれたカード名に応じて、金庫の数字を足し算し、さらに「画像パス」と「正しい名前」を用意する
+    let updatedBalance = 0;
+    let cardSrc = '';   // 💡【追加】切り替えるべき画像の通り道
+    let cardName = '';  // 💡【追加】切り替えるべきカード名の通り道
 
-      <div class="autocharge-modal-body">
-        
-        <p class="autocharge-title">オートチャージ設定</p>
-        <p class="autocharge-summary" id="autoSummaryText">¥2,000（入金条件：残高が¥1,000未満）</p>
-        
-        <!-- オートチャージ設定のメニュー一覧（第２モーダルのCSSクラスをそのまま流用） -->
-       <div class="autocharge-menu-list">
-
-       ...省略(オートチャージ用に入金条件をプラスし、あとは第２モーダルと同様のカード選択、入金額、支払い方法とそれぞれの別窓デザイン)
-       
-        </div><!-- deposit-menu-list" -->
-
-        <!-- 「次へ」ボタン -->
-        <button class="deposit-next-stop-btn autocharge-next-btn" onclick="goToAutochargeConfirm(event)">次へ</button> 
-
-    
-      </div><!-- .autocharge-modal-body -->
-
-       <!-- 一番下にあるボタンの切り替え（最初は保存、確認時は完了など） ⚠️？これどこに置けばいい？ -->
-        <button class="autocharge-save-btn" onclick="executeAutochargeSave(event)">保存</button>
-    </div><!-- .autocharge-modal-content -->
-  </div><!-- #autochargeModal .autocharge-modal-overlay-->
-
+    if (selectedCardText.includes('Starbucks Card')) {
+        // メインカードにお金を足す
+        starbucksCardBalance = starbucksCardBalance + depositAmount;
+        updatedBalance = starbucksCardBalance;
+        cardSrc = '../images/my-card-main.svg'; // 💡メインカードの画像
+        cardName = 'Starbucks Card';             // 💡メインカードの名前
+    } else {
+        // サブカードにお金を足す
+        subCardBalance = subCardBalance + depositAmount;
+        updatedBalance = subCardBalance;
+        cardSrc = '../images/my-card-sub.png';   // 💡サブカードの画像
+        cardName = 'サブカード';             // 直接きれいな固定の文字を代入する
+    }
 
 
 </body>
