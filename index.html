@@ -9,30 +9,39 @@
 </head>
 <body>
 
- function closeDepositModal(event) {
-    if (!event) return;
-   
-    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロック
-    if (event.target.closest('.deposit-modal-content')) {
+.autocharge-modal-overlay { 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 画面全体を薄暗くする */
+    z-index: 10001; /* 第２モーダル（10000）より手間に */
+    display: none;
+}
+
+/* JSで .is-open がついたら土台全体を表示する */
+.autocharge-modal-overlay .is-open {
+    display: flex;
+    align-items: flex-end; /* 中身の白い箱をぴったり下にくっつける */
+}
+
+書いてあるよ。もしかしてこれかな？さっきのcloseDepositModalForceの下にこっちもかいてあるけど
+//　開いている別窓を一斉に閉じる関数
+function closeMiniWindow(event) {
+    if (event) {
+        //　タップの衝撃波がさらに外側の「closeDepositModal」まで届くのをストップ
         event.stopPropagation();
-        return;
     }
 
-    // 背景(外側のグレーエリア)をタップした時だけここが実行されて閉じる
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        depositModal.classList.remove('is-open');
-    }
+    // すべての別枠(.deposit-selector-window)から is-active を外して非常時にする
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
 }
+        
 
-// 第2モーダルの「×」ボタンをタップした時に【強制的に】閉じる
-function closeDepositModalForce() {
-    // ボタンのタップ時は衝撃波を防ぐ必要がない(確実に閉じたい)ので、シンプルにクラスを付け外すだけ
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        depositModal.classList.remove('is-open');
-    }
-}
 
 </body>
 </html>
