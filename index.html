@@ -8,51 +8,26 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-       開かないよママ~~~~!!なんで？
-        <!-- 【オートチャージ設定の入力エリア】（初期状態で見せる画面） -->
-        <div class="autocharge-menu-list">
-          
-          <!-- 1. カード選択 -->
-          <div class="deposit-menu-item">
-            <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-              <span class="menu-label">カード選択</span>
-              <div class="menu-value-box">
-                <!-- 手動入力と同じ current-value　クラスを使って見た目を統一 -->
-                <span class="current-value" id="autoCarVal">Starbucks Card ¥00,000</span>
-                <span class="arrow-balance"></span> 
-              </div>
-            </div>
-            
-            <!-- 「カード用の浮き出る別窓」 -->
-            <div class="deposit-selector-window" id="depositCardWindow">
-              <p class="deposit-selector-title">カードを選択</p>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
-                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
-                <span>¥0</span>
-              </div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
-                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
-                <span>¥0</span>
-              </div>
-            </div>
-          </div> 
-          ...省略
-        </div>
-    
-     //　カード（Starbucks Card）の看板をガシッと掴む
-    const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
-    
-    if (autoCardValEl) {
-        // メモ帳（金庫）を覗きにいって、（if文）で文字を切り替える
-        if (currentSelectedCardType === 'main') {
-            // メインカードが選ばれているとき
-            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
-        } else {
-            // サブカードが選ばれているとき
-            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
-        }
+       まだ開かないよママ~~~~!!なんで？
+      <div class="menu-clickable-area" onclick="toggleAutochargeWindow('card', event)">
+
+      function toggleAutochargeWindow(type, event) {
+    if (event) event.stopPropagation();
+
+    // まず開いている他の別窓をリセット（closeMiniWindow）する
+    closeMiniWindow(event);
+
+    // 💡【第３モーダル】のID名（#autochargeModal）を基準にして、その中の別窓を指差しして掴む
+    // １文字の頭文字を大文字にする（card → Card）を使ってIDを作る
+    const upperType = type.charAt(0).upperCase() + type.slice(1);
+    const targetWindow = document.querySelector('#autochargeModal #deposit${upperType}Window');
+
+    // 無事に見つかったら、is-active クラスをつけてパッと表示させる
+    if (targetWindow) {
+        targetWindow.classList.add('is-active')
     }
-        
+}
+    
 
 
 </body>
