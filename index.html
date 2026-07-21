@@ -8,38 +8,50 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-.autocharge-modal-overlay { 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 画面全体を薄暗くする */
-    z-index: 10001; /* 第２モーダル（10000）より手間に */
-    display: none;
-}
-
-/* JSで .is-open がついたら土台全体を表示する */
-.autocharge-modal-overlay .is-open {
-    display: flex;
-    align-items: flex-end; /* 中身の白い箱をぴったり下にくっつける */
-}
-
-書いてあるよ。もしかしてこれかな？さっきのcloseDepositModalForceの下にこっちもかいてあるけど
-//　開いている別窓を一斉に閉じる関数
-function closeMiniWindow(event) {
-    if (event) {
-        //　タップの衝撃波がさらに外側の「closeDepositModal」まで届くのをストップ
-        event.stopPropagation();
+       開かないよママ~~~~!!なんで？
+        <!-- 【オートチャージ設定の入力エリア】（初期状態で見せる画面） -->
+        <div class="autocharge-menu-list">
+          
+          <!-- 1. カード選択 -->
+          <div class="deposit-menu-item">
+            <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
+              <span class="menu-label">カード選択</span>
+              <div class="menu-value-box">
+                <!-- 手動入力と同じ current-value　クラスを使って見た目を統一 -->
+                <span class="current-value" id="autoCarVal">Starbucks Card ¥00,000</span>
+                <span class="arrow-balance"></span> 
+              </div>
+            </div>
+            
+            <!-- 「カード用の浮き出る別窓」 -->
+            <div class="deposit-selector-window" id="depositCardWindow">
+              <p class="deposit-selector-title">カードを選択</p>
+              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
+                <span>¥0</span>
+              </div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
+                <span>¥0</span>
+              </div>
+            </div>
+          </div> 
+          ...省略
+        </div>
+    
+     //　カード（Starbucks Card）の看板をガシッと掴む
+    const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
+    
+    if (autoCardValEl) {
+        // メモ帳（金庫）を覗きにいって、（if文）で文字を切り替える
+        if (currentSelectedCardType === 'main') {
+            // メインカードが選ばれているとき
+            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
+        } else {
+            // サブカードが選ばれているとき
+            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
+        }
     }
-
-    // すべての別枠(.deposit-selector-window)から is-active を外して非常時にする
-    const allWindows = document.querySelectorAll('.deposit-selector-window');
-    allWindows.forEach(win => {
-        win.classList.remove('is-active');
-    });
-}
         
 
 
