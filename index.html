@@ -8,26 +8,90 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-       まだ開かないよママ~~~~!!なんで？
-      <div class="menu-clickable-area" onclick="toggleAutochargeWindow('card', event)">
+    できた!ありがとう。で、今度はカード切り替えができない。
+  <!-- 【オートチャージ設定の入力エリア】（初期状態で見せる画面） -->
+        <div class="autocharge-menu-list">
+          
+          <!-- 1. カード選択 -->
+          <div class="deposit-menu-item">
+            <div class="menu-clickable-area" onclick="toggleAutochargeWindow('card', event)">
+              <span class="menu-label">カード選択</span>
+              <div class="menu-value-box">
+                <!-- 手動入力と同じ current-value　クラスを使って見た目を統一 -->
+                <span class="current-value" id="autoCarVal">Starbucks Card ¥00,000</span>
+                <span class="arrow-balance"></span> 
+              </div>
+            </div>
 
-      function toggleAutochargeWindow(type, event) {
+            <!-- 「カード用の浮き出る別窓」 -->
+            <div class="deposit-selector-window" id="depositCardWindow">
+              <p class="deposit-selector-title">カードを選択</p>
+              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
+                <span>¥0</span>
+              </div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
+                <span>¥0</span>
+              </div>
+            </div>
+          </div> 
+         ...省略
+        </div>
+
+    // ================================================================
+// 【第３モーダル】入会画面から「オートチャージ設定」を開く関数
+// ================================================================
+function openAutochargeModal(event) {
     if (event) event.stopPropagation();
+    
+    // 閉じたい【第２モーダル】をIDでガシッと掴む
+    const depositModal = document.getElementById('depositModal');
 
-    // まず開いている他の別窓をリセット（closeMiniWindow）する
-    closeMiniWindow(event);
+    // 開きたい【第３モーダル】をIDでガシッと掴む
+    const autochargeModal = document.getElementById('autochargeModal');
 
-    // 💡【第３モーダル】のID名（#autochargeModal）を基準にして、その中の別窓を指差しして掴む
-    // １文字の頭文字を大文字にする（card → Card）を使ってIDを作る
-    const upperType = type.charAt(0).upperCase() + type.slice(1);
-    const targetWindow = document.querySelector('#autochargeModal #deposit${upperType}Window');
+    // 1. 先に【第２モーダル】を閉じる（is-open を取り除く）
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
 
-    // 無事に見つかったら、is-active クラスをつけてパッと表示させる
-    if (targetWindow) {
-        targetWindow.classList.add('is-active')
+    // 2. 次に【第３モーダル】を開く
+    if (autochargeModal) {
+        autochargeModal.classList.add('is-open');
+    }
+
+    // 開いた瞬間に、3つの看板を名指しして掴む
+    const summaryEl = document.getElementById('autoSummaryText');
+    const amountEl = document.getElementById('autoAmountVal');
+    const conditionEl = document.getElementById('autoConditonVal');
+
+    // 掴んだ看板の中身を、金庫のデータで上書きする
+    if (amountEl) {
+        amountEl.textContent =`¥${autochargeAmount.toLocaleString()}`;
+    }
+    if (conditionEl) {
+        conditionEl.textContent = `¥${autochargeCondition.toLocaleString()}`;
+    }
+    if (summaryEl) {
+        summaryEl.textContent = `¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満) `;
+    }
+
+    //　カード（Starbucks Card）の看板をガシッと掴む
+    const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
+    
+    if (autoCardValEl) {
+        // メモ帳（金庫）を覗きにいって、（if文）で文字を切り替える
+        if (currentSelectedCardType === 'main') {
+            // メインカードが選ばれているとき
+            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
+        } else {
+            // サブカードが選ばれているとき
+            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
+        }
     }
 }
-    
+
 
 
 </body>
