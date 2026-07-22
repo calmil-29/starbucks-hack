@@ -9,77 +9,154 @@
 </head>
 <body>
 
-第３モーダルはまだここまで    
-// 【第３モーダル】入金画面から「オートチャージ設定」を開く関数
-// ================================================================
-function openAutochargeModal(event) {
-    if (event) event.stopPropagation();
-    
-    // 閉じたい【第２モーダル】をIDでガシッと掴む
-    const depositModal = document.getElementById('depositModal');
+念の為第３モーダルの全部載せるね    
+<div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
+    <div class="autocharge-modal-content">
+      
+      <!-- ヘッダー -->
+      <div class="autocharge-modal-header">
+        <div class="drag-bar"></div>
+        <button class="autocharge-close-btn" onclick="closeAutochargeModalForce()">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
 
-    // 開きたい【第３モーダル】をIDでガシッと掴む
-    const autochargeModal = document.getElementById('autochargeModal');
+      <div class="autocharge-modal-body">
+        
+        <p class="autocharge-title">オートチャージ設定</p>
+        <p class="autocharge-summary" id="autoSummaryText">¥2,000（入金条件：残高が¥1,000未満）</p>
+        
+        <!-- 【オートチャージ設定の入力エリア】（初期状態で見せる画面） -->
+        <div class="autocharge-menu-list">
+          
+          <!-- 1. カード選択 -->
+          <div class="deposit-menu-item">
+            <div class="menu-clickable-area" onclick="toggleAutochargeWindow('card', event)">
+              <span class="menu-label">カード選択</span>
+              <div class="menu-value-box">
+                <!-- 手動入力と同じ current-value　クラスを使って見た目を統一 -->
+                <span class="current-value" id="autoCarVal">Starbucks Card ¥00,000</span>
+                <span class="arrow-balance"></span> 
+              </div>
+            </div>
 
-    // 1. 先に【第２モーダル】を閉じる（is-open を取り除く）
-    if (depositModal) {
-        depositModal.classList.remove('is-open');
-    }
+            <!-- 「カード用の浮き出る別窓」 -->
+            <div class="deposit-selector-window" id="autochargeCardWindow">
+              <p class="deposit-selector-title">カードを選択</p>
+              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
+                <span>¥0</span>
+              </div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
+                <span>¥0</span>
+              </div>
+            </div>
+          </div> 
 
-    // 2. 次に【第３モーダル】を開く
-    if (autochargeModal) {
-        autochargeModal.classList.add('is-open');
-    }
+          <!-- 2. 入金額 -->
+          <div class="deposit-menu-item">
+            <div class="menu-clickable-area" onclick="toggleAutochargeWindow('amount', event)">
+              <span class="menu-label">入金額</span>
+              <div class="menu-value-box">
+                <span class="current-value" id="autoAmountVal">¥2,000</span>
+                <span class="arrow-balance"></span> 
+              </div>
+            </div>
 
-    // 開いた瞬間に、3つの看板を名指しして掴む
-    const summaryEl = document.getElementById('autoSummaryText');
-    const amountEl = document.getElementById('autoAmountVal');
-    const conditionEl = document.getElementById('autoConditonVal');
+             <!-- 「入額用の別窓」 -->
+            <div class="deposit-selector-window" id="autochargeAmountWindow">
+              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥2,000', event)">¥1,000</div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥3,000', event)">¥3,000</div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥5,000', event)">¥5,000</div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('amount', '¥10,000', event)">¥10,000</div>
+            </div>
+          </div> 
+          
+          
+          <!-- 入金条件 -->  
+          <div class="deposit-menu-item">
+            <div class="menu-clickable-area" onclick="toggleAutochargeWindow('condition', event)">
+              <span class="menu-label">入金条件</span>
+              <div class="menu-value-box">
+                <span class="current-value" id="autoConditonVal">¥1,000</span>
+                <span class="arrow-balance"></span> 
+              </div>
+            </div>
+           
+            <!-- 入金条件用窓 -->
+            <div class="deposit-selector-window" id="autochargeConditionWindow">
+              <p class="deposit-selector-title">入金条件（残高がこれ以下の場合）</p>
 
-    // 掴んだ看板の中身を、金庫のデータで上書きする
-    if (amountEl) {
-        amountEl.textContent =`¥${autochargeAmount.toLocaleString()}`;
-    }
-    if (conditionEl) {
-        conditionEl.textContent = `¥${autochargeCondition.toLocaleString()}`;
-    }
-    if (summaryEl) {
-        summaryEl.textContent = `¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満) `;
-    }
+              <!-- 選択肢をタップしたら、目印の数字をJSに送る -->
+              <div class="deposit-selector-item" onclick="selectDepositOption('condition', 1000, event)">
+                <span>¥1,000</span>
+              </div>
+               <div class="deposit-selector-item" onclick="selectDepositOption('condition', 3000, event)">
+                <span>¥3,000</span>
+              </div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('condition', 5000, event)">
+                <span>¥5,000</span>
+              </div>
+            </div><!-- #depositConditionWindow --> 
+          </div>
+           
+        
+          <!-- 3. 支払い方法 -->
+          <div class="deposit-menu-item">
+            <div class="menu-clickable-area" onclick="toggleAutochargeWindow('method', event)">
+              <span class="menu-label">支払い方法</span>
+              <div class="menu-value-box">
+                <span class="current-value" id="autoMethodval">未登録</span>
+                <span class="arrow-balance"></span> 
+              </div>
+            </div>
 
-    //　カード（Starbucks Card）の看板をガシッと掴む
-    const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
-    
-    if (autoCardValEl) {
-        // メモ帳（金庫）を覗きにいって、（if文）で文字を切り替える
-        if (currentSelectedCardType === 'main') {
-            // メインカードが選ばれているとき
-            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
-        } else {
-            // サブカードが選ばれているとき
-            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
-        }
-    }
-}
+             <!-- 「支払い方法用の別窓」 -->
+            <div class="deposit-selector-window" id="autochargeMethodWindow">
+              <div class="deposit-selector-item" onclick="selectDepositOption('method', 'Apple Pay', event)">Apple Pay</div>
+              <div class="deposit-selector-item" onclick="selectDepositOption('method', 'PayPay', event)">PayPay</div>
+            </div>
+          </div>
 
-// ================================================================
-// 【第３モーダル】カード選択や入金額などの「別窓」を開く関数
-function toggleAutochargeWindow(type, event) {
-    if (event) event.stopPropagation();
+          <!-- 「次へ」ボタン -->
+          <button class="deposit-next-stop-btn autocharge-next-btn" onclick="goToAutochargeConfirm(event)">次へ</button> 
+        
+        </div><!-- .autocharge-menu-list -->
 
-    // まず開いている他の別窓をリセット（closeMiniWindow）する
-    closeMiniWindow(event);
+        <!-- 【最終確認画面】（手動入力と同様、最初はCSSのdisplay: none;で隠しておく箱） -->
+        <div class="deposit-step-box step-confirm" id="autochargeConfirmBox">
+          <p class="confirm-intro-title">以下の内容でオートチャージします</p>
 
-    // 💡【第３モーダル】のID名（#autochargeModal）を基準にして、その中の別窓を指差しして掴む
-    // １文字の頭文字を大文字にする（card → Card）を使ってIDを作る
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-    const targetWindow = document.querySelector(`#autochargeModal #deposit${upperType}Window`);
+          <div class="confirm-receipt-card">
+            <div class="receipt-row">
+              <span class="receipt-label">入金先カード</span>
+              <span class="receipt-value" id="autoConfirmvCard">--</span>
+            </div>
+            <div class="receipt-row">
+              <span class="receipt-label">入金額</span>
+              <span class="receipt-value" id="autoConfirmAmount">--</span>
+            </div>
+            <div class="receipt-row">
+              <span class="receipt-label">入金条件</span>
+              <span class="receipt-value" id="autoConfirmCondition">--</span>
+            </div>
+            <div class="receipt-row">
+              <span class="receipt-label">支払い方法</span>
+              <span class="receipt-value" id="autochargeconfirmMethod">--</span>
+            </div>
 
-    // 無事に見つかったら、is-active クラスをつけてパッと表示させる
-    if (targetWindow) {
-        targetWindow.classList.add('is-active');
-    }
-}
+          <!-- 一番下にあるボタンの切り替え（最初は保存、確認時は完了など） -->
+          <button class="final-deposit-submit-btn" id="autochargeSaveBtn" onclick="executeAutochargeSave(event)">保存する</button>
+          <button class="confirm-back-btn" onclick="backToAutochargeInput(event)">キャンセル</button>
+        
+        </div><!-- #autochargeConfirmBox --> 
+  
+
+      </div><!-- .autocharge-modal-body -->  
+    </div><!-- .autocharge-modal-content -->
+  </div><!-- #autochargeModal .autocharge-modal-overlay-->
 
 
 </body>
