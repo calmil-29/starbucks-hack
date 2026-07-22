@@ -9,36 +9,65 @@
 </head>
 <body>
 
-この部分だけでいいの？    
+// 【第２モーダル】別窓の中の選択肢をタップしたときに、文字を表の「看板」にコピーして閉じる関数
 function selectDepositOption(type, value, event) {
     if (event) event.stopPropagation(); // 衝撃波を止める
 
+    // 今クリックされたのが、【第３モーダル】か【第２モーダル】かを自動判定する
+    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
+
     // 【看板の特定】何番目のメニューの文字 (.current-value) を書き換えるか決める
     let menuIndex = 1;
-    if (type === 'amount') menuIndex = 2; // 入金額なら2番目のメニュー
-    if (type === 'method') menuIndex = 3; // 支払い方法なら3番目のメニュー
+    if (type === 'amount') menuIndex = 2; // 入金額
+    if (type === 'condition') menuIndex = 3; // 入金条件（オートチャージのみ）
+    if (type === 'method') {
+        // 支払い方法は、【第２モーダル】なら３番目、【第３モーダル】なら４番目になる
+        menuIndex = inAutocharge ? 4 : 3;
+    }    
 
-    // 対象のメニューアイテムの中にある、文字の入れ物（看板）をガシッっと掴む              
-    const currentLabel = document.querySelector(`.deposit-menu-list .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+    // 【看板を挟む】【第３モーダル】なら.autocharge-menu-list 【第２モーダル】なら.deposit-menu-list を掴む 
+    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
+    const currentLabel = document.querySelector(`${listClass}.deposit-menu-item:nth-child(${menuIndex}) .current-value`);
 
-    // 【発動】もしカード選択（type === 'card'）だった場合は、送られてきた目印（main か sub）を見て、金庫の最新版を合体させる
+    // 【安全ガード】もしHTML（看板）がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
+    if (!currentLabel) {
+        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
+        return;
+    }
+
+    // 【発動】もしカード選択（type === 'card'）だった場合
     if (type === 'card') {
-        if (value === 'main') {
-            currentSelectedCardType = 'main'; // メインに再び選び直されたことを金庫に報告
-        } else if (value === 'sub') {
-            currentSelectedCardType = 'sub';// サブに再び選び直されたことを金庫に報告
+        currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告
+
+        // 看板の文字を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
+        if (currentLabel) {
+            if (value === 'main') {
+                currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+            } else if (value === 'sub') {
+                currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+            }
         }
     } else {
-        // 入金額や支払い方法の時は、今まで通り選ばれた文字（value）をそのままガサッと上書き
-        currentLabel.textContent = value;
-    }
+        // 入金額、入金条件、支払い方法の時は、選ばれた文字（value）をそのまま上書き
+        if (currentLabel) {
+            // 数字だけが送られてきた時（1000など）のために、¥とカンマをつけるおまけつき
+            const numValue =Number(value);
+            if (!isNaN(numValue) && typeof value === 'number') {
+                currentLabel.textContent = `¥${numValue.toLocaleString()}`;
+            } else {
+                currentLabel.textContent = value;
+            }
+        }
+    }    
 
     // 【自動クローズ】文字をコピーし終わったら、用済みになった別窓を閉じる
     const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-    const targetWindow = document.getElementById(`deposit${upperType}Window`);
+    // 【窓を特定】第３なら autocharge...Window、第２なら deposit...Window を閉じる
+    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
+    const targetWindow = document.getElementById(windowId);
     
     if (targetWindow) {
-        targetWindow.classList.remove('is-active'); // クラスを外す
+        targetWindow.classList.remove('is-open, is-active'); // 念の為両方のクラスを外す
     }
 }
 
