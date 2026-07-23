@@ -9,51 +9,8 @@
 </head>
 <body>
 
-やっぱり最上部のサマリーテキストをリアルタム更新も、入金額が入金条件を下回っているかのチェックができてない、なぜか、入金条件が　¥1,000　以外の他の入金条件を選択した時にエラー表示が出る。
-あと、入金額が選択後にカンマが消えてしまって表示される。（例：¥2,000 → ¥2000）
     
-let starbucksCardBalance = 0; // メインカードの本当の残高データ（例: 0）
-let subCardBalance = 3500;     // サブカードの本当の残高データ（例: 3500）
-let currentSelectedCardType = 'main';
-
-// 【第３モーダル】オートチャージようのデータ
-let isAutochargeEnabled = false; // オートチャージがONかOFFか（最初はOFF）
-let autochargeCondition = 1000; // 判定基準（例：1000円以下になったら）
-let autochargeAmount = 2000; //  チャージ額（例：2000円チャージする）    
-
-それと、質問。
-if (Number(autochargeAmount) < Number(autochargeCondition)) { // ??Numberをつけると数字に対しての確実性が上がるの？⭐️
           
-
-
-   
-    
-    } else if (type === 'amount' || type === 'condition') {
-        // 💡 窓のタイトル文字（数字に変換できないもの）を拾うバグを防ぐガード
-        const numValue = Number(value);
-        if (!isNaN(numValue)) {
-            // 金庫の最新データを「数値」として確実に上書き更新する
-            if (isAutocharge) {
-                if (type === 'amount')  autochargeAmount = numValue;
-                if (type === 'condition') autochargeCondition = numValue;
-            }    
-            // 看板を「¥2,000」などの綺麗な表記にして書き換える
-            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
-        }
-        // 💡 すっきり化：ここにいた「内側のelse」は不要なので削除したよ！
-        
-    } else {
-        // 支払い方法（method）などの時は、選ばれた文字をそのまま看板に書き換える
-        currentLabel.textContent = value;
-    }
-
-
-
-    
-
-
-    
-      
 
 
                 
