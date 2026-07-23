@@ -23,7 +23,7 @@ function selectDepositOption(type, value, event) {
     if (type === 'condition') menuIndex = 3; // 入金条件（オートチャージのみ）
     if (type === 'method') {
         // 支払い方法は、【第２モーダル】なら３番目、【第３モーダル】なら４番目になる
-        menuIndex = inAutocharge ? 4 : 3;
+        menuIndex = isAutocharge ? 4 : 3;
     }    
 
     // 【看板を挟む】【第３モーダル】なら.autocharge-menu-list 【第２モーダル】なら.deposit-menu-list を掴む 
@@ -57,6 +57,7 @@ function selectDepositOption(type, value, event) {
             // 看板を「¥2,000」などの綺麗な表記にして書き換える
             currentLabel.textContent = `¥${numValue.toLocaleString()}`;
         } else {
+            // 支払い方法（medhod）などの時は、選ばれた文字をそのまま書き換える
             currentLabel.textContent = value;
         }
 
@@ -69,17 +70,17 @@ function selectDepositOption(type, value, event) {
 
             // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
             const errorBox = document.getElementById('autoErrorMessage');
-            const conditionMenu = document.querySelector('autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件の枠
-            const nextBtn = document.querySelector('autocharge-next-btn'); // 次へボタン
+            const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件の枠
+            const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
 
             if (autochargeAmount < autochargeCondition) {
                 // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
                 if (errorBox) errorBox.style.display = 'block';
                 if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
-                if (nextBtn) nextBtn.disabled = true; //???disabledて何？ 
+                if (nextBtn) nextBtn.disabled = true; 
             } else {
                 // 条件クリア：エラーを消して通常状態に戻す
-                if (errorBox) errorBox.style.display = 'nonne';
+                if (errorBox) errorBox.style.display = 'none';
                 if (conditionMenu)  conditionMenu.classList.remove('has-error');
                 if (nextBtn) nextBtn.disabled = false;
             }
@@ -88,7 +89,7 @@ function selectDepositOption(type, value, event) {
         // 4. 自動クローズ 文字をコピーし終わったら、用済みになった別窓を閉じる
         const upperType = type.charAt(0).toUpperCase() + type.slice(1);
         // 【窓を特定】第３なら autocharge...Window、第２なら deposit...Window を閉じる
-        const windowId = isAutocharge ? `autocharge${upperType}Winodw` : `deposit${upperType}Window`;
+        const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
         const targetWindow = document.getElementById(windowId);
 
         if (targetWindow) {
@@ -96,5 +97,6 @@ function selectDepositOption(type, value, event) {
         }
     }    
 } 
+
 </body>
 </html>
