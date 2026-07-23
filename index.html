@@ -8,29 +8,44 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-ここの if (currentLabel) {　}　がなくなってるけどどうしていらなくなったの？
- if (type === 'card') {
-        currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告
 
-        // 看板の文字を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
-        if (currentLabel) {
-            if (value === 'main') {
-                currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-            } else if (value === 'sub') {
-                currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-            }
-        }
-    } else {
+じゃあここは？なにがどうして増やされたのかを論理的に説明してくれる？
+ // 【発動】各項目のデータ更新と看板への文字反映   
+ } else {
         // 入金額、入金条件、支払い方法の時は、選ばれた文字（value）をそのまま上書き
-        if (currentLabel) {
+        const numValue =Number(value);
+        if (!isNaN(numValue) && typeof value === 'number') {
             // 数字だけが送られてきた時（1000など）のために、¥とカンマをつけるおまけつき
-            const numValue =Number(value);
-            if (!isNaN(numValue) && typeof value === 'number') {
-                currentLabel.textContent = `¥${numValue.toLocaleString()}`;
-            } else {
-                currentLabel.textContent = value;
-            }
+            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
+        } else {
+            currentLabel.textContent = value;
         }
     }    
+    
+ // 【発動】各項目のデータ更新と看板への文字反映
+    if (type === 'card') {
+        currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告
+        // 看板の文字を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
+        if (value === 'main') {
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+        } else if (value === 'sub') {
+            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
+    } else if (type === 'amount' || type === 'condition') {
+        // 窓のタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード{
+        const numValue = Number(value);
+        if (!isNaN(numValue)) {
+            // 金庫の最新データを上書き更新
+            if (inAutocharge) {
+                if (type === 'amount')  autochargeAmount = numValue;
+                if (type === 'condition') autochargeCondition = numValue;
+            }    
+            // 看板を「¥2,000」などの綺麗な表記にして書き換える
+            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
+        } else {
+            currentLabel.textContent = value;
+        }
+    }    
+
 </body>
 </html>
