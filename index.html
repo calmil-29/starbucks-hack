@@ -9,20 +9,34 @@
 </head>
 <body>
 
-じゃあここは？なにがどうして増やされたのかを論理的に説明してくれる？
- // 【発動】各項目のデータ更新と看板への文字反映   
- } else {
-        // 入金額、入金条件、支払い方法の時は、選ばれた文字（value）をそのまま上書き
-        const numValue =Number(value);
-        if (!isNaN(numValue) && typeof value === 'number') {
-            // 数字だけが送られてきた時（1000など）のために、¥とカンマをつけるおまけつき
-            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
-        } else {
-            currentLabel.textContent = value;
-        }
+第２モーダル（入金設定）は、カード選択はできるけど選択後自動で窓が閉じるはずなのに閉じなくなった（窓外タップでは閉じる）。支払い方法は選択自体はできなくなった（窓もカード選択時同様窓外タップでは閉じる）。
+第３モーダル（オートチャージ設定）は各自窓は開くけど、カード選択、入金額、入金条件は選択できてる。支払い選択はできない、窓は他のメニューを選択したら切り替わるけど閉じること自体はできない。    
+function selectDepositOption(type, value, event) {
+    if (event) event.stopPropagation(); // 衝撃波を止める
+
+    // 今クリックされたのが、【第３モーダル】か【第２モーダル】かを自動判定する
+    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
+
+    // 【看板の特定】何番目のメニューの文字 (.current-value) を書き換えるか決める
+    let menuIndex = 1;
+    if (type === 'amount') menuIndex = 2; // 入金額
+    if (type === 'condition') menuIndex = 3; // 入金条件（オートチャージのみ）
+    if (type === 'method') {
+        // 支払い方法は、【第２モーダル】なら３番目、【第３モーダル】なら４番目になる
+        menuIndex = inAutocharge ? 4 : 3;
     }    
-    
- // 【発動】各項目のデータ更新と看板への文字反映
+
+    // 【看板を挟む】【第３モーダル】なら.autocharge-menu-list 【第２モーダル】なら.deposit-menu-list を掴む 
+    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
+    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+
+    // 【安全ガード】もしHTML（看板）がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
+    if (!currentLabel) {
+        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
+        return;
+    }
+
+    // 1. 各項目のデータ更新と看板への文字反映
     if (type === 'card') {
         currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告
         // 看板の文字を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
@@ -32,11 +46,11 @@
             currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
         }
     } else if (type === 'amount' || type === 'condition') {
-        // 窓のタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード{
+        // 窓のタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
         const numValue = Number(value);
         if (!isNaN(numValue)) {
             // 金庫の最新データを上書き更新
-            if (inAutocharge) {
+            if (isAutocharge) {
                 if (type === 'amount')  autochargeAmount = numValue;
                 if (type === 'condition') autochargeCondition = numValue;
             }    
@@ -45,7 +59,42 @@
         } else {
             currentLabel.textContent = value;
         }
-    }    
 
+        // 2. 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する
+        if (isAutocharge) {
+            const summaryEl = document.getElementById('autoSummaryText');
+            if (summaryEl) {
+                summaryEl.textContent = `¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満)`; 
+            }
+
+            // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
+            const errorBox = document.getElementById('autoErrorMessage');
+            const conditionMenu = document.querySelector('autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件の枠
+            const nextBtn = document.querySelector('autocharge-next-btn'); // 次へボタン
+
+            if (autochargeAmount < autochargeCondition) {
+                // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
+                if (errorBox) errorBox.style.display = 'block';
+                if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
+                if (nextBtn) nextBtn.disabled = true; //???disabledて何？ 
+            } else {
+                // 条件クリア：エラーを消して通常状態に戻す
+                if (errorBox) errorBox.style.display = 'nonne';
+                if (conditionMenu)  conditionMenu.classList.remove('has-error');
+                if (nextBtn) nextBtn.disabled = false;
+            }
+        }
+
+        // 4. 自動クローズ 文字をコピーし終わったら、用済みになった別窓を閉じる
+        const upperType = type.charAt(0).toUpperCase() + type.slice(1);
+        // 【窓を特定】第３なら autocharge...Window、第２なら deposit...Window を閉じる
+        const windowId = isAutocharge ? `autocharge${upperType}Winodw` : `deposit${upperType}Window`;
+        const targetWindow = document.getElementById(windowId);
+
+        if (targetWindow) {
+            targetWindow.classList.remove('is-open', 'is-active');
+        }
+    }    
+} 
 </body>
 </html>
