@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-第２モーダル（入金設定）は、カード選択はできるけど選択後自動で窓が閉じるはずなのに閉じなくなった（窓外タップでは閉じる）。支払い方法は選択自体はできなくなった（窓もカード選択時同様窓外タップでは閉じる）。
-第３モーダル（オートチャージ設定）は各自窓は開くけど、カード選択、入金額、入金条件は選択できてる。支払い選択はできない、窓は他のメニューを選択したら切り替わるけど閉じること自体はできない。あと、サマリーのリアルタイム連動ができてない。 
 function selectDepositOption(type, value, event) {
     if (event) event.stopPropagation(); // 衝撃波を止める
 
@@ -22,81 +19,81 @@ function selectDepositOption(type, value, event) {
     if (type === 'amount') menuIndex = 2; // 入金額
     if (type === 'condition') menuIndex = 3; // 入金条件（オートチャージのみ）
     if (type === 'method') {
-        // 支払い方法は、【第２モーダル】なら３番目、【第３モーダル】なら４番目になる
         menuIndex = isAutocharge ? 4 : 3;
     }    
 
-    // 【看板を挟む】【第３モーダル】なら.autocharge-menu-list 【第２モーダル】なら.deposit-menu-list を掴む 
+    // 【看板を掴む】
     const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
     const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
 
-    // 【安全ガード】もしHTML（看板）がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
+    // 【安全ガード】もしHTML（看板）がまだ画面に存在しない場合は、ここで処理を中断する
     if (!currentLabel) {
-        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
+        console.warn(`看板が見つかりません。listClass: ${listClass}, menuIndex: ${menuIndex}`);
         return;
     }
 
     // 1. 各項目のデータ更新と看板への文字反映
     if (type === 'card') {
         currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告
-        // 看板の文字を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
         if (value === 'main') {
             currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
         } else if (value === 'sub') {
             currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
         }
     } else if (type === 'amount' || type === 'condition') {
-        // 窓のタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
+        // 💡 窓のタイトル文字（数字に変換できないもの）を拾うバグを防ぐガード
         const numValue = Number(value);
         if (!isNaN(numValue)) {
-            // 金庫の最新データを上書き更新
+            // 金庫の最新データを「数値」として確実に上書き更新する
             if (isAutocharge) {
                 if (type === 'amount')  autochargeAmount = numValue;
                 if (type === 'condition') autochargeCondition = numValue;
             }    
             // 看板を「¥2,000」などの綺麗な表記にして書き換える
             currentLabel.textContent = `¥${numValue.toLocaleString()}`;
+        }
+        // 💡 すっきり化：ここにいた「内側のelse」は不要なので削除したよ！
+        
+    } else {
+        // 支払い方法（method）などの時は、選ばれた文字をそのまま看板に書き換える
+        currentLabel.textContent = value;
+    }
+
+    // 2. 【第３モーダル専用】最上部のサマリーテキストをリアルタイム更新する
+    if (isAutocharge) {
+        const summaryEl = document.getElementById('autoSummaryText');
+        if (summaryEl) {
+            summaryEl.textContent = `¥${autochargeAmount.toLocaleString()}（入金条件：残高が¥${autochargeCondition.toLocaleString()}未満）`; 
+        }
+
+        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
+        const errorBox = document.getElementById('autoErrorMessage');
+        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件の枠
+        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
+
+        // 💡 厳格チェック：確実に数値同士で比較させることで「同じ金額なのにエラーが出るバグ」を完全回避！
+        if (Number(autochargeAmount) < Number(autochargeCondition)) {
+            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
+            if (errorBox) errorBox.style.display = 'block';
+            if (conditionMenu) conditionMenu.classList.add('has-error'); 
+            if (nextBtn) nextBtn.disabled = true; 
         } else {
-            // 支払い方法（medhod）などの時は、選ばれた文字をそのまま書き換える
-            currentLabel.textContent = value;
+            // 条件クリア：エラーを消して通常状態に戻す
+            if (errorBox) errorBox.style.display = 'none';
+            if (conditionMenu)  conditionMenu.classList.remove('has-error');
+            if (nextBtn) nextBtn.disabled = false;
         }
+    }
 
-        // 2. 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する
-        if (isAutocharge) {
-            const summaryEl = document.getElementById('autoSummaryText');
-            if (summaryEl) {
-                summaryEl.textContent = `¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満)`; 
-            }
+    // 4. 自動クローズ 
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
+    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
+    const targetWindow = document.getElementById(windowId);
 
-            // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
-            const errorBox = document.getElementById('autoErrorMessage');
-            const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件の枠
-            const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
-
-            if (autochargeAmount < autochargeCondition) {
-                // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
-                if (errorBox) errorBox.style.display = 'block';
-                if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
-                if (nextBtn) nextBtn.disabled = true; 
-            } else {
-                // 条件クリア：エラーを消して通常状態に戻す
-                if (errorBox) errorBox.style.display = 'none';
-                if (conditionMenu)  conditionMenu.classList.remove('has-error');
-                if (nextBtn) nextBtn.disabled = false;
-            }
-        }
-
-        // 4. 自動クローズ 文字をコピーし終わったら、用済みになった別窓を閉じる
-        const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-        // 【窓を特定】第３なら autocharge...Window、第２なら deposit...Window を閉じる
-        const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
-        const targetWindow = document.getElementById(windowId);
-
-        if (targetWindow) {
-            targetWindow.classList.remove('is-open', 'is-active');
-        }
-    }    
-} 
+    if (targetWindow) {
+        targetWindow.classList.remove('is-open', 'is-active');
+    }
+}
 
                 
 </body>
