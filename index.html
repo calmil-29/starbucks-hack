@@ -8,38 +8,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-function selectDepositOption(type, value, event) {
-    if (event) event.stopPropagation(); // 衝撃波を止める
 
-    // 今クリックされたのが、【第３モーダル】か【第２モーダル】かを自動判定する
-    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
+やっぱり最上部のサマリーテキストをリアルタム更新と入金額が入金条件を下回っているかチェックができてない。それとなぜか。入金条件¥1,000を選んだら入金額がいくらだろうが注意書きが消える。あと、入金額が選択後カンマが消えてしまって表示される。（例：¥2,000 → ¥2000）
+let starbucksCardBalance = 0; // メインカードの本当の残高データ（例: 0）
+let subCardBalance = 3500;     // サブカードの本当の残高データ（例: 3500）
+let currentSelectedCardType = 'main';
 
-    // 【看板の特定】何番目のメニューの文字 (.current-value) を書き換えるか決める
-    let menuIndex = 1;
-    if (type === 'amount') menuIndex = 2; // 入金額
-    if (type === 'condition') menuIndex = 3; // 入金条件（オートチャージのみ）
-    if (type === 'method') {
-        menuIndex = isAutocharge ? 4 : 3;
-    }    
+// 【第３モーダル】オートチャージようのデータ
+let isAutochargeEnabled = false; // オートチャージがONかOFFか（最初はOFF）
+let autochargeCondition = 1000; // 判定基準（例：1000円以下になったら）
+let autochargeAmount = 2000; //  チャージ額（例：2000円チャージする）    
 
-    // 【看板を掴む】
-    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+それと、質問。
+if (Number(autochargeAmount) < Number(autochargeCondition)) { // ??Numberをつけると数字に対しての確実性が上がるの？⭐️
+          
 
-    // 【安全ガード】もしHTML（看板）がまだ画面に存在しない場合は、ここで処理を中断する
-    if (!currentLabel) {
-        console.warn(`看板が見つかりません。listClass: ${listClass}, menuIndex: ${menuIndex}`);
-        return;
-    }
 
-    // 1. 各項目のデータ更新と看板への文字反映
-    if (type === 'card') {
-        currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告
-        if (value === 'main') {
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-        } else if (value === 'sub') {
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
+   
+    
     } else if (type === 'amount' || type === 'condition') {
         // 💡 窓のタイトル文字（数字に変換できないもの）を拾うバグを防ぐガード
         const numValue = Number(value);
@@ -59,41 +45,14 @@ function selectDepositOption(type, value, event) {
         currentLabel.textContent = value;
     }
 
-    // 2. 【第３モーダル専用】最上部のサマリーテキストをリアルタイム更新する
-    if (isAutocharge) {
-        const summaryEl = document.getElementById('autoSummaryText');
-        if (summaryEl) {
-            summaryEl.textContent = `¥${autochargeAmount.toLocaleString()}（入金条件：残高が¥${autochargeCondition.toLocaleString()}未満）`; 
-        }
 
-        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
-        const errorBox = document.getElementById('autoErrorMessage');
-        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件の枠
-        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
 
-        // 💡 厳格チェック：確実に数値同士で比較させることで「同じ金額なのにエラーが出るバグ」を完全回避！
-        if (Number(autochargeAmount) < Number(autochargeCondition)) {
-            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
-            if (errorBox) errorBox.style.display = 'block';
-            if (conditionMenu) conditionMenu.classList.add('has-error'); 
-            if (nextBtn) nextBtn.disabled = true; 
-        } else {
-            // 条件クリア：エラーを消して通常状態に戻す
-            if (errorBox) errorBox.style.display = 'none';
-            if (conditionMenu)  conditionMenu.classList.remove('has-error');
-            if (nextBtn) nextBtn.disabled = false;
-        }
-    }
+    
 
-    // 4. 自動クローズ 
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
-    const targetWindow = document.getElementById(windowId);
 
-    if (targetWindow) {
-        targetWindow.classList.remove('is-open', 'is-active');
-    }
-}
+    
+      
+
 
                 
 </body>
