@@ -9,6 +9,65 @@
 </head>
 <body>
 
+あらためて確認したら第１モーダルの閉じる処理では target !== currentTarget の処理されてた。でも、ここで気になるのが第２モーダルも第１モーダルと同じく、閉じる時は「×」ボタンと背景（オーバーレイ）両方で反応するようにしてるんだけど、
+第２モーダルには target !== currentTarget　は書いていないこと。あと、第３モーダル   
+    
+
+// 【第１モーダル】QR拡大モーダルを閉じる
+function closeQrModal(event) {
+    // 1.もし「白いエリア(modal-content)」の内側がタップされた場合は、閉じる処理を完全にブロックする
+    if (event && event.target.closest('.qr-modal-content') && !event.target.classList.contains('qr-close-btn')) {
+        event.stopPropagation();
+        return;
+    }
+
+    // 2. 「背景(modal-overlay)」または「×ボタン(close-btn)」がタップされた場合のみ、ここが実行されて閉じます
+    const modal = document.getElementById('qrModal');
+    if (modal) {
+        //is-open クラスを外すことで、CSSの元の状態(画面外へ隠す)に戻す
+        modal.classList.remove('is-open');
+    }
+}
+// 【第2モーダル】「背景」をタップした時に閉じる
+function closeDepositModal(event) {
+    if (!event) return;
+   
+    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロック
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
+
+    // 背景(外側のグレーエリア)をタップした時だけここが実行されて閉じる
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
+}
+
+// 第2モーダルの「×」ボタンをタップした時に【強制的に】閉じる
+function closeDepositModalForce() {
+    // ボタンのタップ時は衝撃波を防ぐ必要がない(確実に閉じたい)ので、シンプルにクラスを付け外すだけ
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open');
+    }
+}
+
+//　開いている別窓を一斉に閉じる関数
+function closeMiniWindow(event) {
+    if (event) {
+        //　タップの衝撃波がさらに外側の「closeDepositModal」まで届くのをストップ
+        event.stopPropagation();
+    }
+
+    // すべての別枠(.deposit-selector-window)から is-active を外して非常時にする
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
+}
+
     
           
 
