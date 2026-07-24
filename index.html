@@ -9,11 +9,8 @@
 </head>
 <body>
 
-第２で入金設定画面から「次へ」ボタンで確認画面に進んだ時、入金画面が閉じないで開いたままで確認画面の後ろにいるままになってる。なんでだろ？
-    
-// 【第2モーダル】都度入金の開閉・遷移処理（
+修正したけど、確認画面を開いた後も入金画面が閉じないまま
 
-// 背景（オーバーレイ）をタップした時に閉じる
 function closeDepositModal(event) {
     if (!event) return;
    
@@ -35,8 +32,8 @@ function closeDepositModalForce() {
         // ユーザーが次にこのモーダルを開いた時のために、画面の初期化を裏で行っておく
         // 500ミリ秒（0.5秒）後に元の「入力画面」の状態に戻しておくで、次回開いた時に確認画面が残るバグを防ぐ
         setTimeout(() => {
-            const inputArea = document.quaryselector('.deoposit-menu-list');
-            const nextBtn = document.quaryselector('.deposit-next-stop-btn');
+            const inputArea = document.queryselector('.deoposit-menu-list');
+            const nextBtn = document.queryselector('.deposit-next-stop-btn');
             const confimBox = document.getElementById('depositConfirmBox');
 
             if (inputArea) inputArea.style.display = 'block';
@@ -50,9 +47,9 @@ function closeDepositModalForce() {
 function goToDepositConfirm(event) {
     if (event) event.stopPropagation();
 
-    const inputArea = document.quaryselector('.deposit-menu-list'); // 各メニュー一覧
-    const nextBtn = document.quaryselector('deposit-next-btn'); // 一番下の「次へ」ボタン
-    const confimBox = document.getElementById('depositConfirBox'); // 【最終確認画面】の箱
+    const inputArea = document.queryselector('.deposit-menu-list'); // 各メニュー一覧
+    const nextBtn = document.queryselector('.deposit-next-btn'); // 一番下の「次へ」ボタン
+    const confimBox = document.getElementById('depositConfirmBox'); // 【最終確認画面】の箱
 
     // 確認画面に進む瞬間に、入力画面と次へボタンを完全に非表示（display: none）にする
     if (inputArea) inputArea.style.display ='none';
@@ -60,7 +57,8 @@ function goToDepositConfirm(event) {
 
     // 最終確認画面をパッと表示させる
     if (confimBox) confimBox.style.display = 'block';
-} 
-                
+}     
+    
+
 </body>
 </html>
