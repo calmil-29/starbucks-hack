@@ -9,137 +9,58 @@
 </head>
 <body>
 
-ごめん紛らわしい説明してた。第２は最終確認画面（キャンセル）で第１モーダルに戻る設定にしてなくて、
-設定での情報を記憶したまま一つ前の設定画面に戻れる構成になってるから、シンプルに第３モーダルと同様、確認画面の「×」「キャンセル」で第１モーダルの画面に戻る、記憶は保持させない
-って構成にしたい。ちなみに理由は公式がその構成だから。でも、入力設定の場合は、確認画面の「×」「キャンセル」で第１モーダルに戻るより、一つ前に設定画面に記憶を保持させたまま
-戻る方がいいのかな？ 今の流行り（？）というかUX（UI?）設計だとどちらが使いやすい？スタバのやり方のように、今はサクッと統一に戻すやり方の方が使いやすいの？あまり、手動チャージしない派
-だからそこらへんの考えは迷う。 で、念の為に第２モーダルの全体、ボタン .deposit-step-box .step-confirm の　.confirm-intro-title の下に置くの？　：
+第２で入金設定画面から「次へ」ボタンで確認画面に進んだ時、入金画面が閉じないで開いたままで確認画面の後ろにいるままになってる。なんでだろ？
     
- <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
-    <div class="deposit-modal-content" onclick="closeMiniWindow(event)">  
-        
-      <!-- モーダルのヘッダー -->
-      <div class="deposit-modal-header">
-        <div class="drag-bar"></div>
-        <button class="deposit-close-btn" onclick="closeDepositModalForce()">
-          <span></span>
-          <span></span>
-        </button>
-      </div>    
+// 【第2モーダル】都度入金の開閉・遷移処理（
 
-      <div class="deposit-modal-body">
+// 背景（オーバーレイ）をタップした時に閉じる
+function closeDepositModal(event) {
+    if (!event) return;
+   
+    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
+    
+    closeDepositModalForce();
+}
 
-       <!-- A.オートチャージ設定のエリア -->
-        <div class="autocharge-banner">
-          <div class="banner-text">
-            <p class="banner-title">オートチャージ設定</p>
-            <p class="banner-sub">カードの条件を設定</p>
-          </div>
-          <!-- タップしたら入金が閉じて、オートチャージが開く関数 -->
-          <button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button> 
-        </div>
+// 「×」ボタン、キャンセルボタンをタップした時に【強制的に】閉じて【第１モーダル】に戻る
+function closeDepositModalForce() {
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open'); // 【第２モーダル】全体を閉じる
 
-        <!-- B. 各種設定メニュー一覧 -->
-        <div class="deposit-menu-list">
-          
-          <!-- 1. カード選択 -->
-          <div class="deposit-menu-item">
-            <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-              <span class="menu-label">カード選択</span>
-              <div class="menu-value-box">
-                <span class="current-value">Starbucks Card ¥00,000</span>
-                <span class="arrow-balance"></span> 
-              </div>
-            </div>
+        // ユーザーが次にこのモーダルを開いた時のために、画面の初期化を裏で行っておく
+        // 500ミリ秒（0.5秒）後に元の「入力画面」の状態に戻しておくで、次回開いた時に確認画面が残るバグを防ぐ
+        setTimeout(() => {
+            const inputArea = document.quaryselector('.deoposit-menu-list');
+            const nextBtn = document.quaryselector('.deposit-next-stop-btn');
+            const confimBox = document.getElementById('depositConfirmBox');
 
-            <!-- 「カード用の浮き出る別窓」 -->
-            <div class="deposit-selector-window" id="depositCardWindow">
-              <p class="deposit-selector-title">カードを選択</p>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
-                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
-                <span>¥0</span>
-              </div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
-                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
-                <span>¥0</span>
-              </div>
-            </div>
-          </div> 
+            if (inputArea) inputArea.style.display = 'block';
+            if (nextBtn)  nextBtn.style.display = 'block';
+            if (confimBox) confimBox.style.display = 'none';
+        }, 500);
+    }
+}
 
-          <!-- 2. 入金額 -->
-          <div class="deposit-menu-item">
-            <div class="menu-clickable-area" onclick="toggleDepositWindow('amount', event)">
-              <span class="menu-label">入金額</span>
-              <div class="menu-value-box">
-                <span class="current-value">¥1,000</span>
-                <span class="arrow-balance"></span> 
-              </div>
-            </div>
+// 入力画面から確認画面へ「進む」関数
+function goToDepositConfirm(event) {
+    if (event) event.stopPropagation();
 
-            <!-- 「入金額用の別窓」 -->
-            <div class="deposit-selector-window" id="depositAmountWindow">
-              <div class="deposit-selector-item" onclick="selectDepositOption('amount', 1000, event)">¥1,000</div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('amount', 3000, event)">¥3,000</div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('amount', 5000, event)">¥5,000</div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('amount', 10000, event)">¥10,000</div>
-            </div>
-          </div> 
-          
-          <!-- 3. 支払い方法 -->
-          <div class="deposit-menu-item">
-            <div class="menu-clickable-area" onclick="toggleDepositWindow('method', event)">
-              <span class="menu-label">支払い方法</span>
-              <div class="menu-value-box">
-                <span class="current-value">未登録</span>
-                <span class="arrow-balance"></span> 
-              </div>
-            </div>
+    const inputArea = document.quaryselector('.deposit-menu-list'); // 各メニュー一覧
+    const nextBtn = document.quaryselector('deposit-next-btn'); // 一番下の「次へ」ボタン
+    const confimBox = document.getElementById('depositConfirBox'); // 【最終確認画面】の箱
 
-            <!-- 「支払い方法用の別窓」 -->
-            <div class="deposit-selector-window" id="depositMethodWindow">
-              <div class="deposit-selector-item" onclick="selectDepositOption('method', 'Apple Pay', event)">Apple Pay</div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('method', 'PayPay', event)">PayPay</div>
-            </div>
-          </div>
+    // 確認画面に進む瞬間に、入力画面と次へボタンを完全に非表示（display: none）にする
+    if (inputArea) inputArea.style.display ='none';
+    if (nextBtn) nextBtn.style.display = 'none';
 
-        </div> <!-- .deposit-menu-list -->
-
-        <!-- 一番下にある「次へ」ボタン -->
-        <button class="deposit-next-stop-btn" onclick="goToDepositConfirm(event)">次へ</button> 
-        
-        <!-- 【最終確認画面】（最初はCSSで隠しておく） -->
-        <div class="deposit-step-box step-confirm">
-          <p class="confirm-intro-title">以下の内容で入金します</p>
-
-          <div class="confirm-receipt-card">
-            <div class="receipt-row">
-              <span class="receipt-label">入金先カード</span>
-              <span class="receipt-value" id="confirmvCard">--</span>
-            </div>
-            <div class="receipt-row">
-              <span class="receipt-label">支払い方法</span>
-              <span class="receipt-value" id="confirmMethod">--</span>
-            </div>
-          </div> 
-
-          <button class="final-deposit-submit-btn" id="finalDepositBtn">¥1,000 入金する</button>
-          <button class="confirm-back-btn" onclick="backToDepositInput(event)">キャンセル</button>
-        </div><!-- .deposit-step-box .step-confirm --> 
-
-      </div><!-- .deposit-modal-body -->
-    </div><!-- .deposit-modal-content -->
-  </div><!-- #depositModal -->
-
-
-  <!-- その場でフワッと浮き出る共通ドロップダウン小窓（モーダルの外側に配置） -->
-  <div class="dropdown-window" id="dropdownWindow" onclick="closeDropdown(event)">
-    <div class="dropdown-content" id="dropdownContent">
-      <!-- ここにJSで、選択肢（1,000円、3,000円など）のボタンを動的に流し込みます -->
-    </div>
-  </div>
-
-
-
+    // 最終確認画面をパッと表示させる
+    if (confimBox) confimBox.style.display = 'block';
+} 
                 
 </body>
 </html>
