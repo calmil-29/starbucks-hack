@@ -9,45 +9,88 @@
 </head>
 <body>
 
+ const menuItems = document.querySelectorAll('.deposit-item-list .deposit-menu-item'); //　！！私が　「querySelectorAll」じゃなくて「querySelector」て書いてたから「入金」タップしても開かなかったみたい。
+    if (menuItems.length >= 3) {
+        const inputAmountText = menuItems[1].querySelector('.current-value');
+        const inputMedhodText = menuItems[2].querySelector('.current-value');
+        if (inputAmountText) inputAmountText.textContent = '1,000';
+        if (inputMedhodText) inputMedhodText.textContent = '未登録'
+    }
 
-// A.「現在表示されているカード」の文字を、開いた瞬間の最新状態にする 
-    // 確実に狙い撃ちできるように、クラス名ではなくID名（#autoCarVal や手動側のIDなど）で掴むのが実務上安全です。
-    // もし第２モーダルのカード看板にIDがついていなければ、HTML側で id="depositCarval" を付けて、ここを getElemuntById('depositCalVal') にするとさらに強固になります
-    const depositCurrentValueEl = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value');
+    でも、「querySelectorAll」に修正しても、今君が題してくれたコードに書き直しても、今度は第２モーダルの入金設定画面での「次へ」が開かなくなった、その場合の原因はなに？ちなみにコンソールでのエラーは出てくれない。
+
+    // 【第２モーダル】を開く
+function openDepositModal(event) {
+    if(!event) return;
+
+    // 1. タップの衝撃波で、第1モーダルが閉じてしまうのを防ぐ
+    event.stopPropagation ();
+
+    // 2. 【ルール統一】新しく開くときは、前回の確認画面を確実に非表示（none）にしておく
+    const confirmBox = document.getElementById('depositConfirmBox');
+    if (confirmBox) confirmBox.style.display = 'none'
+
+    // 【ルール統一】新しく開くときは、入力画面と次へボタンを確実に表示（block）にしておく 
+    const inputArea = document.querySelector('.deposit-menu-list');
+    const nextBtn = document.querySelector('.deposit-next-stop-btn');
+    if (inputArea) inputArea.style.display = 'block';
+    if (nextBtn) nextBtn.style.display = 'block';
+
+    // 3. 【第１モーダル】に写っている「カードの画像（src）」をチェック
+    const currentHeroImg = document.getElementById('mainCardimg')?.getAttribute('src') || '';
+
+    let currentCardName = 'starbucks Card';
+    let currentBalance = 0;
+    
+    //  画像のファイル名に 'sub' という文字が含まれているかどうかで100%確実に判断する
+    if (currentHeroImg.includes('sub')){
+        currentCardName = 'サブカード';
+        currentBalance = subCardBalance; // サブの金庫
+    } else {
+        currentCardName = 'starbucks Card';
+        currentBalance = starbucksCardBalance; // メインの金庫
+    }
+    
+    // A.「現在表示されているカード」の文字を、開いた瞬間の最新状態にする 
+    // 確実に狙い撃ちできるように、クラス名ではなくID名（#autoCarVal や手動側のIDなど）で掴むのが実務上安全!
+    const depositCurrentValueEl = document.getElementById('depositCardVal');
     if (depositCurrentValueEl) {
         depositCurrentValueEl.textContent = `${currentCardName} ¥${currentBalance.toLocaleString()}`;
     }
-での、『もし第２モーダルのカード看板にIDがついていなければ』てどこの場所を指してる？
-    
-    
-  <div class="deposit-menu-list">
-          
-          <!-- 1. カード選択 -->
-          <div class="deposit-menu-item">
-            <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-              <span class="menu-label">カード選択</span>
-              <div class="menu-value-box">
-                <span class="current-value">Starbucks Card ¥00,000</span>
-                <span class="arrow-balance"></span> 
-              </div>
-            </div>
 
-            <!-- 「カード用の浮き出る別窓」 -->
-            <div class="deposit-selector-window" id="depositCardWindow">
-              <p class="deposit-selector-title">カードを選択</p>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
-                <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
-                <span>¥0</span>
-              </div>
-              <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
-                <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
-                <span>¥0</span>
-              </div>
-            </div>
-          </div> 
-      ...省略
-  </div>    
+    // B.【リセット機能】入金額と支払い方法は、初期値に強制リセットする
+    // :nth-child. のズレでエラーになるのを防ぐため、確実に対象のメニューを1つずつの狙い撃ちして文字をリセット！
+    const allItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
     
+    // ２番目のメニュー（入金額）の中身をリセット
+    if (allItems[1]) {
+        const amtLabel = allItems[1].querySelector('.current-value');
+        if (amtLabel) amtLabel.textContent = '¥1,000';
+    }
+    // ３番目のメニュー（支払い方法）の中身をリセット
+    if (allItems[2]) {
+        const methodLabel = allItems[2].querySelector('.current-value');
+        if (methodLabel) methodLabel.textContent = '未登録'
+    }
+
+    // 「カードの浮き出る別窓」の中のメイン・サブの金額も、開いた瞬間の最新にする　
+    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
+    if (depositWindowMainEl) {
+        depositWindowMainEl.textContent ='¥' + starbucksCardBalance.toLocaleString();
+    }
+
+    const depositWindowSubEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(3) span');
+    if (depositWindowSubEl) {
+        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
+    }
+    
+    // 4. HTMLから「第２モーダル」の土台（オーバーレイ）をガシッと詰む 
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        // 5. クラスを追加して、第２モーダルを画面に出現させる
+        depositModal.classList.add('is-open');
+    }    
+}
 
 </body>
 </html>
