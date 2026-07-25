@@ -9,40 +9,32 @@
 </head>
 <body>
 
-    button class="deposit-next-step-btn"に修正したけど「次へ」ボタン反応なし、あとはどこが怪しい？探すのは面倒じゃないよ、今のうちに修正能力作る穂が大事だと思って。
-        <div>
-        ...省略    
-        </div> <!-- .deposit-menu-list -->
 
-        <!-- 一番下にある「次へ」ボタン  ⭐️ここを訂正済み-->
-        <button class="deposit-next-step-btn" onclick="goToDepositConfirm(event)">次へ</button> 
-        
-        <!-- 【最終確認画面】（最初はCSSで隠しておく） -->
-        <div class="deposit-step-box step-confirm" id="depositConfirmBox"> <!-- depositConfirmBox同じ -->
-        ...省略
-         <button class="final-deposit-submit-btn" id="finalDepositBtn">¥1,000 入金する</button>
-          <!-- キャンセルボタンも【第１モーダルに戻る（強制クローズ）】を呼び出すよう onclick を同じに：（.deposit-close-btn） -->
-         <button class="confirm-back-btn" onclick="closeDepositModalForce()">キャンセル</button>    
-        ...省略  
-        </div>   
+アラートは何も反応なし。
+あと、第２モーダルの設定画面を閉じるとエラーが出る。閉じることはできる。
+.is-activeにしてるのが問題ってこと?    
 
+    /* 最終確認ボックスの初期設定（隠しておく） */
+.eposit-step-box.step-confirm {
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    background-color: white;
+    padding: 20px;
+    box-sizing: border-box;
 
-    // 入力画面から確認画面へ「進む」関数 ！button class="deposit-next-step-btn"に修正したけど「次へ」ボタン反応なし、
-function goToDepositConfirm(event) {
-    if (event) event.stopPropagation();
+    /* 初期設定：右側に隠しておく */
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 5;
+}
 
-    // 💡 修正：querySelector（Sは大文字）、クラス名とドットを100%正確に修正
-    const inputArea = document.querySelector('.deposit-menu-list');       // 各メニュー一覧
-    const nextBtn = document.querySelector('.deposit-next-step-btn');     // 一番下の「次へ」ボタン ⭐️eposit-next-step-btn同じに修正
-    const confirmBox = document.getElementById('depositConfirmBox');       // 【最終確認画面】の箱  ⭐️depositConfirmBox　先に修正済み
-
-    // 確認画面に進む瞬間に、入力画面と次へボタンを完全に非表示（display: none）にする
-    if (inputArea) inputArea.style.display = 'none';
-    if (nextBtn) nextBtn.style.display = 'none';
-
-    // 最終確認画面をパッと表示させる
-    if (confirmBox) confirmBox.style.display = 'block';
-}  
-
+/* 「次へ」が押されて .is-active  がついたら画面内に滑り込んでくる*/
+ .eposit-step-box.step-confirm.is-active {
+    transform: translateX(0);
+ }
+    
 </body>
 </html>
