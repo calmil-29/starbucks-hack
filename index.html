@@ -22,6 +22,9 @@ function closeDepositModal(event) {
     closeDepositModalForce();
 }
 
+
+    
+
 // 「×」ボタン、キャンセルボタンをタップした時に【強制的に】閉じて【第１モーダル】に戻る
 function closeDepositModalForce() {
     const depositModal = document.getElementById('depositModal');
@@ -42,6 +45,8 @@ function closeDepositModalForce() {
     }
 }
 
+    
+
 // 入力画面から確認画面へ「進む」関数
 function goToDepositConfirm(event) {
     if (event) event.stopPropagation();
@@ -57,7 +62,9 @@ function goToDepositConfirm(event) {
 
     // 最終確認画面をパッと表示させる
     if (confirmBox) confirmBox.style.display = 'block';
-}     
+}  
+
+
 
     
 
