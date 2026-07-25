@@ -9,15 +9,32 @@
 </head>
 <body>
 
-今こんな状態だったけど、全部修正が必要ってこと？    
-// 入力画面から確認画面へ「進む」関数
+    button class="deposit-next-step-btn"に修正したけど「次へ」ボタン反応なし、あとはどこが怪しい？探すのは面倒じゃないよ、今のうちに修正能力作る穂が大事だと思って。
+        <div>
+        ...省略    
+        </div> <!-- .deposit-menu-list -->
+
+        <!-- 一番下にある「次へ」ボタン  ⭐️ここを訂正済み-->
+        <button class="deposit-next-step-btn" onclick="goToDepositConfirm(event)">次へ</button> 
+        
+        <!-- 【最終確認画面】（最初はCSSで隠しておく） -->
+        <div class="deposit-step-box step-confirm" id="depositConfirmBox"> <!-- depositConfirmBox同じ -->
+        ...省略
+         <button class="final-deposit-submit-btn" id="finalDepositBtn">¥1,000 入金する</button>
+          <!-- キャンセルボタンも【第１モーダルに戻る（強制クローズ）】を呼び出すよう onclick を同じに：（.deposit-close-btn） -->
+         <button class="confirm-back-btn" onclick="closeDepositModalForce()">キャンセル</button>    
+        ...省略  
+        </div>   
+
+
+    // 入力画面から確認画面へ「進む」関数 ！button class="deposit-next-step-btn"に修正したけど「次へ」ボタン反応なし、
 function goToDepositConfirm(event) {
     if (event) event.stopPropagation();
 
     // 💡 修正：querySelector（Sは大文字）、クラス名とドットを100%正確に修正
     const inputArea = document.querySelector('.deposit-menu-list');       // 各メニュー一覧
-    const nextBtn = document.querySelector('.deposit-next-stop-btn');     // 一番下の「次へ」ボタン
-    const confirmBox = document.getElementById('depositConfirmBox');       // 【最終確認画面】の箱
+    const nextBtn = document.querySelector('.deposit-next-step-btn');     // 一番下の「次へ」ボタン ⭐️eposit-next-step-btn同じに修正
+    const confirmBox = document.getElementById('depositConfirmBox');       // 【最終確認画面】の箱  ⭐️depositConfirmBox　先に修正済み
 
     // 確認画面に進む瞬間に、入力画面と次へボタンを完全に非表示（display: none）にする
     if (inputArea) inputArea.style.display = 'none';
