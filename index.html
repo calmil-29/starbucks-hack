@@ -9,28 +9,118 @@
 </head>
 <body>
 
+// ================================================================
+// 【第２モーダル】都度入金の開閉・遷移処理（エラー完全解消版）
+// ================================================================
 
-/* 最終確認ボックスの初期設定（隠しておく） */
-.deposit-step-box.step-confirm {
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 60px);
-    background-color: white;
-    padding: 20px;
-    box-sizing: border-box;
-
-    /* 初期設定：右側に隠しておく */
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 5;
+// 1. 💡 解決：エラーでフリーズするのを防ぐため、問題の関数を一番安全な形で最上部に配置！
+function closeMiniWindow(event) {
+    if (event) event.stopPropagation();
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
 }
 
-/* 「次へ」が押されて .is-active  がついたら画面内に滑り込んでくる*/
- .deposit-step-box.step-confirm.is-active {
-    transform: translateX(0);
- }
+// 2. 入力画面から確認画面へ「進む」関数
+function goToDepositConfirm(event) {
+    if (event) event.stopPropagation();
+
+    // 🔬 実験用のアラート（今回は絶対に画面に出現します！）
+    alert("次へボタンがクリックされたよ！");
+
+    const inputArea = document.querySelector('.deposit-menu-list');       
+    const nextBtn = document.querySelector('.deposit-next-step-btn');     
+    const confirmBox = document.getElementById('depositConfirmBox');       
+
+    if (inputArea) inputArea.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+
+    if (confirmBox) {
+        confirmBox.classList.add('is-active');
+    }  
+}
+
+// 3. 「×」ボタン、キャンセルボタンをタップした時に閉じる
+function closeDepositModalForce() {
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-open'); 
+
+        setTimeout(() => {
+            const inputArea = document.querySelector('.deposit-menu-list');
+            const nextBtn = document.querySelector('.deposit-next-stop-btn');
+            const confirmBox = document.getElementById('depositConfirmBox');
+
+            if (inputArea) inputArea.style.display = 'block';
+            if (nextBtn)  nextBtn.style.display = 'block';
+            if (confirmBox) confirmBox.classList.remove('is-active'); 
+        }, 500);
+    }
+}
+
+// 4. 背景（オーバーレイ）をタップした時に閉じる
+function closeDepositModal(event) {
+    if (!event) return;
+    if (event.target.closest('.deposit-modal-content')) return;
+    closeDepositModalForce();
+}
+
+// 5. 【第２モーダル】を開く
+function openDepositModal(event) {
+    if(!event) return;
+    event.stopPropagation();
+
+    const confirmBox = document.getElementById('depositConfirmBox');
+    if (confirmBox) confirmBox.classList.remove('is-active');
+
+    const inputArea = document.querySelector('.deposit-menu-list');
+    const nextBtn = document.querySelector('.deposit-next-stop-btn');
+    if (inputArea) inputArea.style.display = 'block';
+    if (nextBtn) nextBtn.style.display = 'block';
+
+    const currentHeroImg = document.getElementById('mainCardImg')?.getAttribute('src') || '';
+    let currentCardName = 'Starbucks Card';
+    let currentBalance = 0;
+    
+    if (currentHeroImg.includes('sub')){
+        currentCardName = 'サブカード';
+        currentBalance = subCardBalance; 
+    } else {
+        currentCardName = 'Starbucks Card';
+        currentBalance = starbucksCardBalance; 
+    }
+    
+    const depositCurrentValueEl = document.getElementById('depositCardVal');
+    if (depositCurrentValueEl) {
+        depositCurrentValueEl.textContent = `${currentCardName} ¥${currentBalance.toLocaleString()}`;
+    }
+
+    const allItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
+    if (allItems && allItems[1]) {
+        const amtLabel = allItems[1].querySelector('.current-value');
+        if (amtLabel) amtLabel.textContent = '¥1,000';
+    }
+    if (allItems && allItems[2]) {
+        const methodLabel = allItems[2].querySelector('.current-value');
+        if (methodLabel) methodLabel.textContent = '未登録';
+    }
+
+    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
+    if (depositWindowMainEl) {
+        depositWindowMainEl.textContent = '¥' + starbucksCardBalance.toLocaleString();
+    }
+
+    const depositWindowSubEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(3) span');
+    if (depositWindowSubEl) {
+        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
+    }
+    
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.add('is-open');
+    }    
+}
 
 
     
