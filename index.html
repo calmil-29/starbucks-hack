@@ -9,6 +9,46 @@
 </head>
 <body>
 
+    
+<!-- B. 各種設定メニュー一覧（カード選択、入金額、入金方法） -->
+<div class="deposit-menu-list">...省略</div> <!-- .deposit-menu-list -->    
+<!-- ここが問題の「次へ」ボタン 、ついでに場所は一つ上の deposit-menu-list の中に入れるべき？次へのボタンが有効だったときは問題なかったんだけど　-->    
+<button class="deposit-next-step-btn" onclick="goToDepositConfirm(event)">次へ</button> 
+<!-- 【最終確認画面】最初はCSSで隠しておく（入金先カード、支払い方法） -->
+<div class="deposit-step-box step-confirm" id="depositConfirmBox">
+...省略    
+<button class="final-deposit-submit-btn" id="finalDepositBtn">¥1,000 入金する</button>
+<!-- キャンセルボタンも【第１モーダルに戻る（強制クローズ）】を呼び出すよう onclick を同じに：（.deposit-close-btn） -->
+<button class="confirm-back-btn" onclick="closeDepositModalForce()">キャンセル</button>
+</div><!-- .deposit-step-box .step-confirm --> 
+    
+
+function goToDepositConfirm(event) {
+    if (event) event.stopPropagation();
+
+    alert("ボタンがクリックされたよ！");
+    
+    const inputArea = document.querySelector('.deposit-menu-list');       // 各メニュー一覧
+    const nextBtn = document.querySelector('.deposit-next-step-btn');     // 一番下の「次へ」ボタン 
+    const confirmBox = document.getElementById('depositConfirmBox');       // 【最終確認画面】の箱
+
+    // 確認画面に進む瞬間に、入力画面と次へボタンを完全に非表示（display: none）にする
+    if (inputArea) inputArea.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
+
+    // 最終確認画面をパッと表示させる
+    if (confirmBox) {
+        confirmBox.classList.add('is-active');
+    } 
+}      
+        
+
+
+
+
+
+Gemmini案（未実行）    
+
 // ================================================================
 // 【第２モーダル】都度入金の開閉・遷移処理（エラー完全解消版）
 // ================================================================
