@@ -14,6 +14,43 @@ index.html:540 Uncaught ReferenceError: closeMiniWindow is not defined
     at HTMLDivElement.onclick (index.html:540:73)
 onclick @ index.html:540
 
+ーーーーーーーーーーーーーーーーーー
+
+function goToDepositConfirm_old(event) {
+    if (event) event.stopPropagation();
+
+    // 1番目のメニュー（カード選択）、２番目のメニュー（入金額）、３番目のメニュー（支払い方法）の文字を取得
+    const currentCard = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || 'Starbucks Card';
+    const currentAmount = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '1,000';
+    const currentMethod = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(3) .current-value')?.textContent || '未登録';
+
+    // HTML側にある、確認画面の各IDの入れ物をガシッと掴む
+    const confirmCard = document.getElementById('confirmvCard');
+    const confirmMethod = document.getElementById('confirmMethod');
+    const finalBtn = document.getElementById('finalDepositBtn');
+    
+    // 掴んだ入れ物の中に、さっき盗んだ文字をコピーして貼り付ける
+    if (confirmCard) {
+        confirmCard.textContent = currentCard;
+    }
+    if (confirmMethod) {
+        confirmMethod.textContent = currentMethod;
+    }
+    if (finalBtn) {
+        // バッククォートを使って、選ばれた金額をボタンの文字に合体させる(例：「¥3,000 入金する」)
+        finalBtn.textContent = `${currentAmount} 入金する`;
+    }
+
+    // 【画面のぱっと切り替え表示】
+    // 確認画面の箱（.step-confirm）を掴んで、is-active　クラスを付与
+    const confirmBox = document.querySelector('.step-confirm'); // ここのconfirmBoxが最新goToDepositConfirm(event)の方でも使われているのも原因？
+    if (confirmBox) {
+    confirmBox.classList.add('is-active');
+    }
+}   
+    
+    
+ーーーーーーーーーーーーーーーーーーーー    
     
 
 // 入力画面から確認画面へ「進む」関数 ⭐️ここ
