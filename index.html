@@ -9,27 +9,17 @@
 </head>
 <body>
 
-/* 【最終確認画面】の初期設定（隠しておく） */
-.deposit-step-box.step-confirm {
-    position: absolute;
-    top: 60px;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 60px);
-    background-color: white;
-    padding: 20px;
-    box-sizing: border-box;
-
-    /* 初期設定、隠しておく */
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 5;
+#depositModal.is-open {
+    opacity: 1;
+    visibility: visible;
+    background-color: rgba(0, 0, 0, 0.4); /* 背景がじんわり黒い半透明に */
+}
+#depositModal.is-open .deposit-modal-content {
+    transform: translateY(0); /* 画面内に出現 */
 }
 
-/* 「次へ」が押されて .is-active  がついたら画面表示 */
- .deposit-step-box.step-confirm.is-active {
-    transform: translateX(0);
- }    
+
+    
 
 <!-- 次へボタンが解決してからの、第２モーダルが閉じたときにでるコンソールからのエラー -->
 index.html:540 Uncaught ReferenceError: closeMiniWindow is not defined
