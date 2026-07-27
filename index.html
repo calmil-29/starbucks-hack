@@ -10,7 +10,7 @@
 <body>
 
 <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)"> <!-- CSS→is.opne JS→classList.add('is-open') -->
- <div class="deposit-modal-content" onclick="closeMiniWindow(event)">  
+ <div class="deposit-modal-content" onclick="closeMiniWindow(event)"> 　<!-- ここのcloseMinWindow(event) は closeDepositModal(event) へ１つの関数にまとめられる？ --> 
      
   <div class="deposit-modal-header">
    <div class="drag-bar"></div>
@@ -20,9 +20,17 @@
      </button>
     </div> 
      
-  <div class="deposit-modal-body">              
+  <div class="deposit-modal-body">       
+   <!-- A.オートチャージ設定のエリア -->
+  <div>...省略　<button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button>
+  </div>   
+   <!-- B. 各種設定メニュー一覧 -->
+   <div class="deposit-menu-list"> <!-- CSSなし、JS→①第２モーダルを開く style.display = 'block';　②初期値に強制リセット　③画面の初期化　③バツボタン、キャンセルボタンをタップした時に画面の初期化 setTimeout(...style.display = 'block'; ④【入力画面】から【確認画面】へ「進む」style.display = 'none';　　-->   
   ...省略
   </div><!-- .deposit-modal-body -->
+  <button class="deposit-next-step-btn" onclick="goToDepositConfirm(event)">次へ</button> <!-- CSSなし　JS→①第２モーダルを開くstyle.display = 'block'; ②【入力画面】から【確認画面】へ「進む」style.display = 'none';-->  
+  <!-- 【最終確認画面】（最初はCSSで隠しておく） -->
+  <div class="deposit-step-box step-confirm" id="depositConfirmBox"> <!-- CSSで.is-active display: block; JS→最終確認画面で'is-active' -->  
  </div><!-- .deposit-modal-content -->
 </div><!-- #depositModal -->        
 
