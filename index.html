@@ -9,6 +9,28 @@
 </head>
 <body>
 
+#depositConfirmBox {
+    position: absolute;
+    top: 60px; /* ヘッダーの高さ分だけ下げる */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    background-color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    
+    /* 初期状態は非表示（ぱっと切り替えるため非表示にする） */
+    display: none;
+    
+    /* メニュー一覧より手前に重ねる */
+    z-index: 5;
+}
+
+/* 💡 JSで .is-active がついたら、ぱっと表示する */
+#depositConfirmBox.is-active {
+    display: block;
+}    
+
 <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)"> <!-- CSS→is.opne JS→classList.add('is-open') -->
  <div class="deposit-modal-content" onclick="closeMiniWindow(event)"> 　<!-- ここのcloseMinWindow(event) は closeDepositModal(event) へ１つの関数にまとめられる？ --> 
      
