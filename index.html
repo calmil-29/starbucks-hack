@@ -18,48 +18,7 @@
      <span></span>
      <span></span>
      </button>
-    </div>  
-
-#depositModal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 薄い背景 */
-
-    /* 第1モーダル(9999)よりも大きい数値を指定、さらに手間に重ねる */
-    z-index: 10000;
-
-    /* 初期状態は非表示(第1モーダルと同じ仕組み) */ /* ⚠️ここがあると第1モーダルが開かない */
-    opacity: 0;
-    visibility: hidden;
-}
-/* 【第２モーダル表示時】閉経全体のフェードイン */
-#depositModal.is-open {
-    opacity: 1;
-    visibility: visible;
-    background-color: rgba(0, 0, 0, 0.4); /* 背景がじんわり黒い半透明に */
-}
-/* 【第２モーダル表示時】中身のスライドイン */
-#depositModal.is-open .deposit-modal-content {
-    transform: translateY(0); /* 画面内に出現 */
-}
-
-/* 第２モーダルの白いシートの連動(画面下からニョキッと生えるアニメーション) */
-.deposit-modal-content {
-    position: relative;
-    width: 100%;
-    min-height: calc(100vh - 80px); /* 画面の下から80%の高さまで覆うサイズ */
-    background-color: white;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    box-sizing: border-box;
-
-    /* 初期状態 : 画面の下(100%)にはみ出させて隠す */
-    transform: translateY(100%);
-    transition: trasform 0.4s cubic-bezier(0.32, 0.94, 0.6, 1); /* スムーズなせり上がり */
-}     
+    </div> 
      
   <div class="deposit-modal-body">              
   ...省略
