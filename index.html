@@ -12,13 +12,22 @@
 つまり今は
 <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)"> <!-- 第２モーダル全体の箱 -->   
 <div class="deposit-modal-content" onclick="closeMiniWindow(event)"> <!--第２モーダル内側の箱 💡ここ必要なんだよね？いまいち重要性ががわかっていない -->    
-<div class="deposit-modal-header"> <!-- 第２モーダルの設定画面のバツボタンの箱 💡確認画面に移動するときはここは非表示、設定画面にもバツボタンがいるから...一つにまとめろってこと？でも設定と確認だと縦の幅わかるけど、変わってもCSSで自動調節できるのか... -->
+<div class="deposit-modal-header"> <!-- 第２モーダルの設定画面のバツボタンの箱 💡確認画面に移動するときはここは非表示、設定画面内にもバツボタンがいるから...一つにまとめろってこと？でも設定と確認だと縦の幅わかるけど、そっか、変わってもCSSで自動調節できるのんだっけ？ -->
 <div class="deposit-modal-body"> <!-- オートチャージ（第３モーダルへの）へ行くためののボタン、入金設定画面、最終確認画面、の箱 --> 
 <div class="autocharge-banner"> <!-- オートチャージ（第３モーダル）へ行くためのボタンの箱 -->    
 <div class="deposit-menu-list"> <!-- 入金設定画面の箱 -->    
 <button class="deposit-next-step-btn" onclick="goToDepositConfirm(event)">次へ</button>  <!-- 設定画面から確認画面に行くための次へボタン -->    
 <div class="deposit-step-box deposit-confirm" id="depositConfirmBox"> <!-- 最終確認の箱 💡第３モーダルと分けるため step-confirm → deposit-confirm に変更 -->    
-だけど、これを、新たな div　.screen-input .screen-confirm　で包み直せってこと？で、<div class="deposit-modal-body">　
+だけど、これを、新たな div　.screen-input .screen-confirm　で包み直してまとめるてことだよね？その場合こう包めばいい？
+<div class="deposit-modal-content" onclick="closeMiniWindow(event)">
+<div class="screen-input">    
+<div class="deposit-modal-header"> 
+<div class="deposit-modal-body"> <!-- ここいらない？ --> 
+<div class="autocharge-banner"> 
+<div class="deposit-menu-list"> <!-- ここは必要だよね？設定画面のメニュー一覧をまとめる箱はCSSで装飾するときのためにも？ -->
+<button class="deposit-next-step-btn" onclick="goToDepositConfirm(event)">次へ</button>  
+<div class="screen-confirm">  
+<div class="deposit-step-box deposit-confirm" id="depositConfirmBox">     
     
     
     
