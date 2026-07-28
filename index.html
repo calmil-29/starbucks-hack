@@ -9,28 +9,18 @@
 </head>
 <body>
 
-！実は入金設定画面(.deposit-menu-list)は非表示にはなってるけど、その他の、第２モーダルのヘッダー・バツボタン（.deposit-modal-header）、オートチャージ設定のエリア（.autocharge-banner）を非表示にする
-処理を書いてないからってこと？で、下に第１モーダルのフッター（[0]eGift/[3]eTicket）が黒い半透明のプレートのように見えてるのは第１モーダルのCSS設定のまま見えてるだけか。本来の設計では第２、３モーダルを表示するときは
-このフッターを見せる気はない（ここでは選択しない）から、第２、３モーダルは下にピタっとくっついて(物理的に見えない設計)、かつ第１モーダルに表示されている現在のカード画面が表示されているのがわかるように表示させるのがベスト
-（ここは理想をいうと私のデザインだと上部に拡大QRコード下にカード画面になるから第２、３を開いたとき専用の設定が必要になりそうだけど...）。だけど、そもそもCSSでそれぞれの画面の位置、大きさの指定をしてないのが原因（装飾系はあとでしようと思ってた）？
-    /* 【最終確認画面】の初期設定（隠しておく）💡idからクラス名に変更 */
-.deposit-confirm {
-    position: absolute;
-    top: 60px; /* ヘッダーの高さ分だけ下げる */
-    left: 0;
-    width: 100%;
-    height: calc(100% - 60px);
-    background-color: white;
-    padding: 20px;
-    box-sizing: border-box;
+つまり今は
+<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)"> <!-- 第２モーダル全体の箱 -->   
+<div class="deposit-modal-content" onclick="closeMiniWindow(event)"> <!--第２モーダル内側の箱 💡ここ必要なんだよね？いまいち重要性ががわかっていない -->    
+<div class="deposit-modal-header"> <!-- 第２モーダルの設定画面のバツボタンの箱 💡確認画面に移動するときはここは非表示、設定画面にもバツボタンがいるから...一つにまとめろってこと？でも設定と確認だと縦の幅わかるけど、変わってもCSSで自動調節できるのか... -->
+<div class="deposit-modal-body"> <!-- オートチャージ（第３モーダルへの）へ行くためののボタン、入金設定画面、最終確認画面、の箱 --> 
+<div class="autocharge-banner"> <!-- オートチャージ（第３モーダル）へ行くためのボタンの箱 -->    
+<div class="deposit-menu-list"> <!-- 入金設定画面の箱 -->    
+<button class="deposit-next-step-btn" onclick="goToDepositConfirm(event)">次へ</button>  <!-- 設定画面から確認画面に行くための次へボタン -->    
+<div class="deposit-step-box deposit-confirm" id="depositConfirmBox"> <!-- 最終確認の箱 💡第３モーダルと分けるため step-confirm → deposit-confirm に変更 -->    
+だけど、これを、新たな div　.screen-input .screen-confirm　で包み直せってこと？で、<div class="deposit-modal-body">　
     
-    /* 初期状態は非表示（ぱっと切り替えるため非表示にする） */
-    display: none;
     
-    /* メニュー一覧より手前に重ねる */
-    z-index: 5;
-}
-
     
     
 <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)"> <!-- CSS→is.opne JS→classList.add('is-open') -->
