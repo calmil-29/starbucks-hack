@@ -9,17 +9,26 @@
 </head>
 <body>
 
+あるんだけどね。だからエラーが出るのが謎。    
+<div class="deposit-modal-content" onclick="closeMiniWindow(event)">  
+ちなみにJSでの場所はここにしかない。
+// 【第３モーダル】カード選択や入金額などの「別窓」を開く関数
+function toggleAutochargeWindow(type, event) {
+    if (event) event.stopPropagation();
 
-<!-- 次へボタンが解決してからの、第２モーダルが閉じたときにでるコンソールからのエラー -->
-index.html:540 Uncaught ReferenceError: closeMiniWindow is not defined
-    at HTMLDivElement.onclick (index.html:540:73)
-onclick @ index.html:540    
-    
-<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)"> <!-- CSS→is.opne JS→classList.add('is-open') -->
- <div class="deposit-modal-content" onclick="closeMiniWindow(event)"> 　<!-- ここのcloseMinWindow(event) は closeDepositModal(event) へ１つの関数にまとめられる？そもそも名前の意味自体がなんか違うかも -->     
+    // まず開いている他の別窓をリセット（closeMiniWindow）する
+    closeMiniWindow(event); 
 
+    // 💡【第３モーダル】のID名（#autochargeModal）を基準にして、その中の別窓を指差しして掴む
+    // １文字の頭文字を大文字にする（card → Card）を使ってIDを作る
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
+    const targetWindow = document.querySelector(`#autochargeModal #autocharge${upperType}Window`);
 
-    
+    // 無事に見つかったら、is-active クラスをつけてパッと表示させる
+    if (targetWindow) {
+        targetWindow.classList.add('is-active');
+    }
+}
 
 <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
     <div class="deposit-modal-content" onclick="closeMiniWindow(event)">  
