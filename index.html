@@ -9,8 +9,7 @@
 </head>
 <body>
 
-こういう書き方もあるんだなと、『closeMiniWindow(event);』だけでいいのかと思っていた（反省）。    
-で、closeDropdown(event)はポップアップ用↓で使ってる、けど、これ後から聞こうと思っていたんんだけど、このコード、モーダル全体の一番下にに置く方がいい？てかそもそもJSで一回もどのクラス名もIDも使っていないんだけど、必要？ポップアップ小窓はすでにちゃんと動いているんだけど。
+いや。まじでJSで一回もどのクラス名（.dropdown-window .ropdown-content）も、ID（dropdownWindow　ropdownContent）も、closeDropdown(event) も、何度も検索したけど「結果はありません」て出てくる。なのにポップアップ小窓はすでにちゃんと動いているから、なんで必要なのかなって思ってて。
 <!-- その場でフワッと浮き出る共通ドロップダウン小窓（モーダルの外側に配置）-->    
 <div class="dropdown-window" id="dropdownWindow" onclick="closeDropdown(event)">
     <div class="dropdown-content" id="dropdownContent">
