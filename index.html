@@ -9,6 +9,40 @@
 </head>
 <body>
 
+//　ここ？    
+function goToDepositConfirm(event) {...
+    
+ const confirmBox = document.querySelector('.deposit-screen-confirm'); // 【最終確認画面】の箱   
+    
+ if (confirmBox) {
+        confirmBox.classList.add('is-active');
+    } 
+}    
+
+function fillDepositConfirm(event) {...
+
+const confirmBox = document.querySelector('.deposit-screen-confirm'); 
+    if (confirmBox) {
+    confirmBox.classList.add('is-active');
+    }
+} 
+// あとここもいらない？
+function backToDepositInput(event) {
+    if (event) event.stopPropagation();
+
+    const confirmBox = document.querySelector('.deposit-screen-confirm'); 
+    if (confirmBox) {
+        confirmBox.classList.remove('is-active');
+    }
+}    
+    
+    
+
+
+
+
+    
+
 <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
     <div class="deposit-modal-content" onclick="closeMiniWindow(event)">  
 
