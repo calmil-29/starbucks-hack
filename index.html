@@ -9,33 +9,59 @@
 </head>
 <body>
 
-//　ここ？fillDepositConfirm(event) の方を消せばいいんだよね？    
-function goToDepositConfirm(event) {...
-    
- const confirmBox = document.querySelector('.deposit-screen-confirm'); // 【最終確認画面】の箱   
-    
- if (confirmBox) {
-        confirmBox.classList.add('is-active');
-    } 
-}    
-
-function fillDepositConfirm(event) {...
-
-const confirmBox = document.querySelector('.deposit-screen-confirm'); 
-    if (confirmBox) {
-    confirmBox.classList.add('is-active');
-    }
-} 
-// あとここもいらない？
-function backToDepositInput(event) {
+// 「次へ」ボタン【入力画面】から【確認画面】へ進む関数  
+// ================================================================
+// 画面を切り替える担当
+function goToDepositConfirm(event) {
     if (event) event.stopPropagation();
 
-    const confirmBox = document.querySelector('.deposit-screen-confirm'); 
-    if (confirmBox) {
-        confirmBox.classList.remove('is-active');
-    }
-}    
+    console.log("1");
+    alert("ボタンがクリックされたよ！");
     
+    const inputArea = document.querySelector('.deposit-screen-input'); // 【入金設定画面】の箱
+    const confirmBox = document.querySelector('.deposit-screen-confirm'); // 【最終確認画面】の箱
+
+    console.log("2");
+    // 確認画面に進む瞬間に、入力画面を完全に非表示（display: none）にする
+    if (inputArea) inputArea.style.display = 'none';
+
+    console.log("3");
+    console.log(inputArea.style.display); 
+    // 確認画面を表示
+    if (confirmBox) {
+        confirmBox.classList.add('is-active');
+    } 
+
+    fillDepositConfirm(event); //　ここもういらない？消しても動きに問題はないように見えたけど
+}  
+
+// 確認画面へ文字を書く担当
+function fillDepositConfirm(event) {
+    if (event) event.stopPropagation();
+
+    // 現在の設定値を取得
+    const currentCard = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || 'Starbucks Card';
+    const currentAmount = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '1,000';
+    const currentMethod = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(3) .current-value')?.textContent || '未登録';
+
+    // HTML側にある、確認画面の各IDの入れ物をガシッと掴む
+    const confirmCard = document.getElementById('confirmCard');
+    const confirmMethod = document.getElementById('confirmMethod');
+    const finalBtn = document.getElementById('finalDepositBtn');
+    
+    // 確認画面へ反映
+    if (confirmCard) {
+        confirmCard.textContent = currentCard;
+    }
+    if (confirmMethod) {
+        confirmMethod.textContent = currentMethod;
+    }
+    if (finalBtn) {
+        finalBtn.textContent = `${currentAmount} 入金する`;
+    }
+
+}   
+
     
 
 
