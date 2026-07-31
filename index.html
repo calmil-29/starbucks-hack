@@ -12,7 +12,7 @@
 ドロップダウンを閉じるときの背景のタップ範囲は全域だから .deposit-modal-overlay（JSではiD depositModal で統一してるからid使った方がいいかな？）の余白に対して
 ドロップダウンのcloseAllSelectorWindows()・仮名　を呼ぶってこと？    
         
-現状のドロップダウンの開閉の処理だけど、ここからどう整理すればいい？正直まだ未知なるJSコード（forEach(win => とか）とかIDの自動合成とかよくわかってないのが混ざっててあやふや；    
+現状のドロップダウンの開閉の処理だけど、ここからどう整理すればいい？正直まだ未知なるJSコード（forEach(win => とか）とかIDの自動合成とかよくわかってないのが混ざってて理解があやふや；    
 // 【第2モーダル】ドロップダウンの開閉 & 値の上書き処理  
 function toggleDepositWindow(type, event) {
     if (event) event.stopPropagation(); 
