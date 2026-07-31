@@ -8,7 +8,18 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+例えばこれだったら、idは depositCardWindow　だ！みたいなってこと?
+<div class="deposit-selector-window" id="depositCardWindow">
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+                  <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
+                  <span>¥0</span>
+                </div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                  <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
+                  <span>¥0</span>
+                </div>
+              </div>    
+    
 ドロップダウンを閉じるときの背景のタップ範囲は全域だから .deposit-modal-overlay（JSではiD depositModal で統一してるからid使った方がいいかな？）の余白に対して
 ドロップダウンのcloseAllSelectorWindows()・仮名　を呼ぶってこと？    
         
