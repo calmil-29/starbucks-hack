@@ -9,27 +9,34 @@
 </head>
 <body>
 
-いや。まじでJSで一回もどのクラス名（.dropdown-window .ropdown-content）も、ID（dropdownWindow　ropdownContent）も、closeDropdown(event) も、何度も検索したけど「結果はありません」て出てくる。なのにポップアップ小窓はすでにちゃんと動いているから、なんで必要なのかなって思ってて。
-<!-- その場でフワッと浮き出る共通ドロップダウン小窓（モーダルの外側に配置）-->    
-<div class="dropdown-window" id="dropdownWindow" onclick="closeDropdown(event)">
-    <div class="dropdown-content" id="dropdownContent">
-      <!-- ここにJSで、選択肢（1,000円、3,000円など）のボタンを動的に流し込みます -->
-    </div>
-</div>
-
-<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
-    <div class="deposit-modal-content" onclick="closeMiniWindow(event)"> ←ここのonclick="closeMiniWindow(event)"（仮名）いらなくない？第２モーダルの大元の箱（？）のonclick="closeDepositModal(event)" があればいいんじゃないの？それと、共通ドロップダウン小窓（.dropdown-window）と。
-
-
- 第１モーダルの箱の書き方がこうだから、第２モーダルも統一した方がいいのかなと思ってて、でも第２と第１じゃ中身が少し違うし...第２では設定画面の他に確認画面もあるし？？？
-<div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
-  <div class="qr-modal-content">
-  ...
-  </div><!-- .qr-modal-content -->
-</div><!-- #qrModal -->      
+ドロップダウンを閉じるときの背景のタップ範囲は全域だから .deposit-modal-overlay（JSではiD depositModal で統一してるからid使った方がいいかな？）の余白に対して
+ドロップダウンのcloseAllSelectorWindows()・仮名　を呼ぶってこと？    
         
-説明伝わってる？笑
-    
+現状のドロップダウンの開閉の処理だけど、ここからどう整理すればいい？正直まだ未知なるJSコード（forEach(win => とか）とかIDの自動合成とかよくわかってないのが混ざってて崩すの怖い；    
+// 【第2モーダル】ドロップダウンの開閉 & 値の上書き処理  
+function toggleDepositWindow(type, event) {
+    if (event) event.stopPropagation(); 
+    // もし他の別窓が開いていたら、先にきれいに全部閉じる
+    // ここで「共通のクラス名」を使うことで、全ての小窓を一斉に取得してリセットできる
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+    allWindows.forEach(win => {
+        // 今から開こうとしている別窓以外なら、クラスを外して閉じる
+        if (win.id !== `deposit${type.charAt(0).toUpperCase() + type.slice(1)}Window`) {
+            win.classList.remove('is-active');
+        }
+    });
+
+    // typeの最初の１文字を大文字にする処理（'amount'　→　'Amount'） 'depositAmountWindow' になる
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1); 
+    const targetId = `deposit${upperType}Window`;
+
+    // 合体したIDの別窓をピンポイントで掴んで、is-active クラスを付け外し(トグル)
+    const targetWindow = document.getElementById(targetId); 
+    if (targetWindow) {
+        targetWindow.classList.add('is-active');
+    }
+}    
+
 
 
 
