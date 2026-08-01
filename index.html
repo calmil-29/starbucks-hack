@@ -10,30 +10,11 @@
 <body>
 
 
-function closeAllSelectorWindows() {
-    const allWindows = document.querySelectorAll('.deposit-selector-window');
+function closeDepositBackground(event) {
 
-    allWindows.forEach(win => {
-        win.classList.remove('is-active');
-    });
-}
-
-function toggleDepositWindow(type, event) {   // 引数の「type」の中に、'card' や 'amount' や 'method' という文字が自動で入ってくる
-    if (event) event.stopPropagation(); 
-
-    // 他の別窓を全部閉じる
-    closeAllSelectorWindows();
-
-    // 開きたい別枠を探す
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1); 
-    const targetId = `deposit${upperType}Window`;
-
-    // 開く
-    const targetWindow = document.getElementById(targetId); 
-    if (targetWindow) {
-        targetWindow.classList.add('is-active');
-    }
-}
+    // まずドロップウィンドウが開いてるか？もし開いてたら閉じる、閉じてたら背景本来の処理
+    // 「ドロップウィンドウが開いてる」かの判断
+    const activeWindow = document.querySelector('.deposit-selector-window.is-active'); 
 
 
 
