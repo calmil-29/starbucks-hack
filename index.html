@@ -10,16 +10,18 @@
 <body>
 
 
-function closeDepositBackground(event) {
-
-    // まずドロップウィンドウが開いてるか→もし開いてたら閉じる、閉じてたら背景本来の処理
-    // 「ドロップウィンドウが開いてる」かの判断
-    const activeWindow = document.querySelector('.deposit-selector-window.is-active'); 
-    // もし開いてたら
-    if (activeSelectorWindow) {
-    activeSelectorWindow.closeAllSelectorWindow();
-    return;
-
+/ 背景（オーバーレイ）をタップした時に閉じる
+function closeDepositModal(event) {
+    if (!event) return;
+   
+    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
+    
+    closeDepositModalForce();
+}
 
 
 
