@@ -9,10 +9,17 @@
 </head>
 <body>
 
-つまり、「背景をタップした時の共通入り口」は それぞれの全体のコンテンツを包む箱である、現状、第１（closeQrModal(event)）、第２（closeDepositModal(event)）、第３（closeAutochargeModal(event)） 
-だから、このそれぞれの onclick の名前をまず変更・統一してから、「ドロップダウンを閉じる処理」と「モーダルを閉じる処理」を分けるって流れ？ちなみに名前は handleBackgroundTap() がいい？あと()の中に何も
-入れる必要がないのは中に入れるデータが必要ないから？JSで条件さえ入れたらその条件に沿ってスイッチを入れるだけだから？    
-
+function closeDepositModal(event) {
+    if (!event) return;
+   
+    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
+    
+    closeDepositModalForce();
+}
     
 <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
     <div class="deposit-modal-content" onclick="closeMiniWindow(event)">  
