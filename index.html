@@ -10,27 +10,30 @@
 <body>
 
 
-function toggleDepositWindow(type, event) {
+function closeAllSelectorWindows() {
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
+}
+
+function toggleDepositWindow(type, event) {   // 引数の「type」の中に、'card' や 'amount' や 'method' という文字が自動で入ってくる
     if (event) event.stopPropagation(); 
 
-    // ① 他の別窓を全部閉じる
-    const allWindows = document.querySelectorAll('.deposit-selector-window');
-    allWindows.forEach(win => {
-        if (win.id !== `deposit${type.charAt(0).toUpperCase() + type.slice(1)}Window`) {
-            win.classList.remove('is-active');
-        }
-    });
+    // 他の別窓を全部閉じる
+    closeAllSelectorWindows();
 
-    // ② 開きたい別枠を探す
+    // 開きたい別枠を探す
     const upperType = type.charAt(0).toUpperCase() + type.slice(1); 
     const targetId = `deposit${upperType}Window`;
 
-    // ③ 開く
+    // 開く
     const targetWindow = document.getElementById(targetId); 
     if (targetWindow) {
         targetWindow.classList.add('is-active');
     }
-}    
+}
 
 
 
