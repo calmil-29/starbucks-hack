@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+//【第2モーダル】を閉じる（入金画面の開閉・遷移処理）
 function closeDepositModal(event) {
     if (!event) return;
    
@@ -20,6 +20,56 @@ function closeDepositModal(event) {
     
     closeDepositModalForce();
 }
+
+// 【第２モーダル】「設定」「最終確認」のバツボタン、キャンセルボタンをタップした時に【強制的に】閉じて【第１モーダル】に戻る    
+function closeDepositModalForce() {
+    const depositModal = document.getElementById('depositModal'); 
+    if (depositModal) {
+        depositModal.classList.remove('is-open'); // 【第２モーダル】全体を閉じる
+
+        // 次にこのモーダルを開いた時のために、画面の初期化を裏で行っておく
+        // 500ミリ秒（0.5秒）後に元の「入力画面」の状態に戻しておくで、次回開いた時に確認画面が残るバグを防ぐ
+         setTimeout(() => {
+            const inputArea = document.querySelector('.deposit-screen-input'); 
+            const confirmBox = document.querySelector('.deposit-screen-confirm');
+
+            if (inputArea) inputArea.style.display = 'block';
+            if (confirmBox) confirmBox.classList.remove('is-active'); 
+        }, 500);
+    }
+}    
+
+// ドロップダウンの開閉 & 値の上書き処理      
+function closeAllSelectorWindows() {
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
+}
+
+function toggleDepositWindow(type, event) {   // 引数の「type」の中に、'card' や 'amount' や 'method' という文字が自動で入ってくる
+    if (event) event.stopPropagation(); 
+
+    // 他の別窓を全部閉じる
+    closeAllSelectorWindows();
+
+    // 開きたい別枠を探す
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1); 
+    const targetId = `deposit${upperType}Window`;
+
+    // 開く
+    const targetWindow = document.getElementById(targetId); 
+    if (targetWindow) {
+        targetWindow.classList.add('is-active');
+    }
+}
+
+
+
+
+
+    
     
 <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
     <div class="deposit-modal-content" onclick="closeMiniWindow(event)">  
