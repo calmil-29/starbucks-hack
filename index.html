@@ -8,6 +8,24 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+function closeDepositModal(event) {
+    if (!event) return;
+
+const depositSelectorWindow = document.querySelectorAll('.deposit-selector-window.is-active');
+    if (depositSelectorWindow) {
+    if (event.target('.deposit-selector-window')) {
+        event.stopPropagation();
+        return;  
+        
+    } else {
+        closeAllSelectorWindows();
+        return;
+    }}
+
+
+
+    
 //【第2モーダル】を閉じる（入金画面の開閉・遷移処理）
 function closeDepositModal(event) {
     if (!event) return;
