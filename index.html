@@ -8,6 +8,27 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+// 【背景（黒背景や白いシート）がタップされた時の関数】
+function closeDepositModal(event) {
+    
+    // 💡 1. まず、いま画面に開いているドロップダウン（窓）があるか探す
+    const activeWindow = document.querySelector('.deposit-selector-window.is-active');
+
+    if (activeWindow) {
+        // ➔ もし窓が開いていたなら、窓「だけ」を全部閉じる！（ステップ3クリア）
+        closeAllSelectorWindows(); 
+        return; // ➔ ここで終了！下の「モーダルを閉じる処理」には進ませない（防衛成功）
+    }
+
+    // 💡 2. 窓が開いていない通常時なら、背景タップで第2モーダル自体を閉じる
+    // （クリックされたのが白いシートの中身なら、すり抜け防止で何もしない）
+    if (event.target !== event.currentTarget) return;
+    
+    // ➔ 第2モーダルを閉じる（ステップ5クリア）
+    document.getElementById('depositModal').classList.remove('is-open');
+}
+
+
 
 function closeDepositModal(event) {
     if (!event) return;
