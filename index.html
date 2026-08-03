@@ -23,9 +23,10 @@ function closeDepositModal(event) {
     // closeDepositModal(event)をタップしたら→ function closeDepositModal(event) {...}内に書いてるからのその条件は最初に宣言済み
     // でもこれだけだと入金画面のボタンには反応してしまう、 
     // からドロップダウンを閉じる時の条件をさらに追加、ターゲットは設定画面内をクリックしたかどうを判定する.deposit-screen-input
-       (event.target.closest('.deposit-screen-input .button')) //.deposit-screen-input（設定画面内）をタップした場合は
+       if (event.target.closest('.deposit-screen-input .button')) { //.deposit-screen-input（設定画面内）のボタンをタップした場合は
         event.stopPropagation();
         return;
+       }
     }
 
     // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
@@ -37,7 +38,7 @@ function closeDepositModal(event) {
     closeDepositModalForce();
    
 }
-    
+
     
     
     
