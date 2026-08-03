@@ -12,28 +12,32 @@
 function closeDepositModal(event) {...}の直下に置いたら（.deposit-modal-contentの処理と順番入れ替えたら）、ドロップダウン内で選択しなくても外側をタップしても閉じれる仕様にはできた。けど、入金画面のボタンには反応してしまう、
 event.stopPropagation() を置くだけじゃだめなんだね...これを反応させないようにするには、closeDepositModal(event)に event.stopPropagation(); 
 
-    
-function closeAllSelectorWindows() {
-    const allWindows = document.querySelectorAll('.deposit-selector-window');
-
-    allWindows.forEach(win => {
-        win.classList.remove('is-active');
-    });
-}
-    
-// 【背景（黒背景や白いシート）がタップされた時の関数】
 function closeDepositModal(event) {
-    
+    if (!event) return;
+   
     // 今はドロップダウン内で選択しないと閉じれない仕様、そこを改善したい
     // ドロップダウンが開いている条件を追加（is-active）
     const activeWindow = document.querySelector('.deposit-selector-window.is-active');
     // どの状態にしたいか？ →開いてたら閉じたい
     if (activeWindow) {
-       closeAllSelectorWindows() 
+       closeAllSelectorWindows() //ドロップダウンを閉じる
+       event.stopPropagation(); //衝撃波を止める
        return; //モーダルは閉じない
     // どうやって？　→ドロップダウン内で選択しなくても外側をタップしても閉じれる仕様にもしたい
-
+    // closeDepositModal(event)をタップしたら→ function closeDepositModal(event) {...}内に書いてるからのその条件は最初に宣言済み
+    // でもこれだけだと入金画面のボタンには反応してしまう、
+   
     }
+
+
+    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
+    
+    closeDepositModalForce();
+   
 }
 
 
