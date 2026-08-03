@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+こう？でもこれでもでもこれだけだと入金画面内のボタンには反応してしまう。    
 function closeDepositModal(event) {
     if (!event) return;
    
@@ -16,17 +18,17 @@ function closeDepositModal(event) {
     const activeWindow = document.querySelector('.deposit-selector-window.is-active');
     // どの状態にしたいか？ →開いてたら閉じたい
     if (activeWindow) {
+        if (!win.classList.contains('.deposit-selector-window')) { //.deposit-selector-window以外のクラスをタップした場合は
+        event.stopPropagation();
+        return;
+       }
+       
        closeAllSelectorWindows() //ドロップダウンを閉じる
        event.stopPropagation(); //衝撃波を止める
        return; //モーダルは閉じない
     // どうやって？　→ドロップダウン内で選択しなくても外側をタップしても閉じれる仕様にもしたい
     // closeDepositModal(event)をタップしたら→ function closeDepositModal(event) {...}内に書いてるからのその条件は最初に宣言済み
-    // でもこれだけだと入金画面のボタンには反応してしまう、 
-    // からドロップダウンを閉じる時の条件をさらに追加、ターゲットは設定画面内をクリックしたかどうを判定する.deposit-screen-input
-       if (event.target.closest('.deposit-screen-input .button')) { //.deposit-screen-input（設定画面内）のボタンをタップした場合は
-        event.stopPropagation();
-        return;
-       }
+       
     }
 
     // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
@@ -38,7 +40,6 @@ function closeDepositModal(event) {
     closeDepositModalForce();
    
 }
-
     
     
     
