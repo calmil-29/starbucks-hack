@@ -9,9 +9,8 @@
 </head>
 <body>
 
-function closeDepositModal(event) {...}の直下に置いたら（順番入れ替えたら）、ドロップダウン内で選択しなくても外側をタップしても閉じれる仕様にはできた。けど、入金画面のボタンには反応してしまう、
-これを反応させないようにするには?
-
+function closeDepositModal(event) {...}の直下に置いたら（.deposit-modal-contentの処理と順番入れ替えたら）、ドロップダウン内で選択しなくても外側をタップしても閉じれる仕様にはできた。けど、入金画面のボタンには反応してしまう、
+event.stopPropagation() を置くだけじゃだめなんだね...これを反応させないようにするには、closeDepositModal(event)に event.stopPropagation(); 
 
     
 function closeAllSelectorWindows() {
