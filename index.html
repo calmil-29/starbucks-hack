@@ -8,10 +8,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+設定画面の内のボタンが前範囲入ってる箱として、第２モーダル全体（closeDepositModal(event) ＝　#depositModalか、.deposit-modal-contentか、どちらかと迷ってたけど、#depositModalは背景を押した時のボタンにもなってるから、ここを巻き込んだらだめだから、
+設定画面の内のボタンを反応させないための指定する区域は.deposit-modal-contentになるってこと？でも、　入金設定画面直属の箱として.deposit-screen-inputを後から追加してから、JSでの設定画面の処理は.deposit-screen-inputにほぼ一任してる状態で、
+.deposit-modal-contentはCSSで第２モーダル表示時のアニメーション指定の時、JSでは 今回のfunction closeDepositModal(event) {...}で if (event.target.closest('.deposit-modal-content')) {...}でのみ使ってる。もしかして、そもそも全部.deposit-screen-inputに統一するべき?
+.deposit-modal-contentはいらないとか？    
+    
+    
+    
+    
 
-function closeDepositModal(event) {...}の直下に置いたら（.deposit-modal-contentの処理と順番入れ替えたら）、ドロップダウン内で選択しなくても外側をタップしても閉じれる仕様にはできた。けど、入金画面のボタンには反応してしまう、
-event.stopPropagation() を置くだけじゃだめなんだね...これを反応させないようにするには、closeDepositModal(event)に event.stopPropagation(); 
-
+    
 function closeDepositModal(event) {
     if (!event) return;
    
@@ -40,21 +46,6 @@ function closeDepositModal(event) {
    
 }
 
-
-
-function closeDepositModal(event) {
-    if (!event) return;
-
-const depositSelectorWindow = document.querySelectorAll('.deposit-selector-window.is-active');
-    if (depositSelectorWindow) {
-    if (event.target('.deposit-selector-window')) {
-        event.stopPropagation();
-        return;  
-        
-    } else {
-        closeAllSelectorWindows();
-        return;
-    }}
 
 
 
