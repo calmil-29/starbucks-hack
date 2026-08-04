@@ -9,29 +9,18 @@
 </head>
 <body>
 
-ドロップダウンが開いていたら閉じる、つまり、closeAllSelectorWindows()でもしも.deposit-selector-windowniwにis-activeがついていたら閉じる？？？ で、このcloseAllSelectorWindows() はHTMLでは書いてないけど、JSでだけでもfunction closeAllSelectorWindows() {...}を作った場合、例えば.<div class="deposit-selector-window" id="depositCardWindow"onclick="closeAllSelectorWindows()">と同様になるの？あと、forEachてどういう意味？
-
-function closeAllSelectorWindows() {
-    const allWindows = document.querySelectorAll('.deposit-selector-window');
-
-    allWindows.forEach(win => {
-        win.classList.remove('is-active');
-    });
-}
-
-【第2モーダル】を閉じる（モーダルの背景の処理）、背景（<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">）をタップした時に閉じる　    
- closeDepositModal(event)で背景タップで閉じる（ただし.deposit-modal-contentの外） て意味？
-function closeDepositModal(event) {
-    if (!event) return;
-
-    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
-    if (event.target.closest('.deposit-modal-content')) {
-        event.stopPropagation();
-        return;
+ドロップウィンドウの外側をタップしたら閉じる処理作りたくて、JSでfunction isSelectorOpen() {...} 作ったんだけど、動かない。
+背景closeDepositModal()→タップされたら開いてるドロップダウンを閉じる、 バツボタンcloseDepositModalForce()→反応させない、カード選択.入金額.支払い方法toggleDepositWindow()→反応させない、次へボタンgoToDepositConfirm()→反応させない だから、バツボタン、カード選択.入金額.支払い方法、次へボタンはdeposit-screen-input内だから、.deposit-selector-window.is-activeのときはそこだけ反応させない、と思ったんだけど、でも.deposit-screen-inputの中には.deposit-selector-windowも含まれる。あれ？どう考えればいいの？
+  
+function isSelectorOpen() {
+    const activeWindow =  deposit.querySelector('.deposit-selector-window.is-active');
+    if (activeWindow) {
+        if (event.target.closest('.deposit-screen-input')) {
+            event.stopPropagation();
+        }
     }
-    
-    closeDepositModalForce(); // ボタンをタップした時に【強制的に】閉じて【第１モーダル】に戻る処理、別functionチーム
-   
+    closeAllSelectorWindows();
+    closeDepositModal(event);
 }
     
 
