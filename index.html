@@ -19,7 +19,8 @@ function closeAllSelectorWindows() {
     });
 }
 
-【第2モーダル】を閉じる（モーダルの背景の処理）、背景（オーバーレイ）をタップした時に閉じる　    
+【第2モーダル】を閉じる（モーダルの背景の処理）、背景（<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">）をタップした時に閉じる　    
+ closeDepositModal(event)で背景タップで閉じる（ただし.deposit-modal-contentの外） て意味？
 function closeDepositModal(event) {
     if (!event) return;
 
@@ -29,7 +30,7 @@ function closeDepositModal(event) {
         return;
     }
     
-    closeDepositModalForce();
+    closeDepositModalForce(); // ボタンをタップした時に【強制的に】閉じて【第１モーダル】に戻る処理、別functionチーム
    
 }
     
