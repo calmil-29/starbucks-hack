@@ -12,7 +12,7 @@
 ドロップウィンドウの外側をタップしたら閉じる処理作りたくて、JSでfunction isSelectorOpen() {...} 作ったんだけど、動かない。
 背景closeDepositModal()→タップされたら開いてるドロップダウンを閉じる、 バツボタンcloseDepositModalForce()→反応させない、カード選択.入金額.支払い方法toggleDepositWindow()→反応させない、次へボタンgoToDepositConfirm()→反応させない だから、バツボタン、カード選択.入金額.支払い方法、次へボタンはdeposit-screen-input内だから、.deposit-selector-window.is-activeのときはそこだけ反応させない、と思ったんだけど、でも.deposit-screen-inputの中には.deposit-selector-windowも含まれる。あれ？どう考えればいいの？
   
-function isSelectorOpen() {
+function isSelectorOpen(event) {
     const activeWindow =  deposit.querySelector('.deposit-selector-window.is-active');
     if (activeWindow) {
         if (event.target.closest('.deposit-screen-input')) {
@@ -21,6 +21,7 @@ function isSelectorOpen() {
     }
     closeAllSelectorWindows();
     closeDepositModal(event);
+    return;
 }
     
 
