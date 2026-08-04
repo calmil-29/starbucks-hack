@@ -23,6 +23,21 @@ function isSelectorOpen(event) {
     closeDepositModal(event);
     return;
 }
+
+
+function closeDepositModal(event) {
+    if (!event) return;
+   
+    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
+    
+    closeDepositModalForce();　//でもこの書き方の場合（ifで書かずに）はちゃんと動いてるけどなんで？
+   
+}
+    
     
 
     
