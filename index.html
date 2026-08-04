@@ -9,26 +9,20 @@
 </head>
 <body>
 
-やっぱできない。背景の画面も反応してしまう。    
-// 背景（オーバーレイ）をタップした時に閉じる
+ドロップダウンが開いていたら閉じる、つまり、closeAllSelectorWindows()でもしも.deposit-selector-windowni
+wにis-activeがついていたら閉じる？？？ でこのcloseAllSelectorWindows() はHTMLでは書いてないけど、JSでだけでもfunction closeAllSelectorWindows() {...}を作った場合、例えば.<div class="deposit-selector-window" id="depositCardWindow"　onclick="closeAllSelectorWindows()">と同様になるの？
+
+function closeAllSelectorWindows() {
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
+}
+
+【第2モーダル】を閉じる（モーダルの背景の処理）、背景（オーバーレイ）をタップした時に閉じる　    
 function closeDepositModal(event) {
     if (!event) return;
-   
-    // どこを.deposit-selector-window　どの状態のとき.is-active　どの状態にしたいか？ = if 開いてたら閉じたい
-    // どうやって？ = ドロップダウンの外側（#depositModal） = closeDepositModal(event)をタップ → function closeDepositModal(event) {...}内に書いてるからのその条件は最初に宣言
-    // でもこれだけだと入金画面のボタンには反応してしまう
-    // 条件追加、ターゲットは設定画面内（.deposit-screen-input）をクリックしたかどうを判定する
-    const activeWindow = document.querySelector('.deposit-selector-window.is-active');
-    if (activeWindow) {
-         if (event.target.closest('.deposit-screen-input'))  {
-             event.stopPropagation();
-            return;
-         }
-        closeAllSelectorWindows()
-        event.stopPropagation();
-        return;  
-    }
-       
 
     // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
     if (event.target.closest('.deposit-modal-content')) {
@@ -39,7 +33,6 @@ function closeDepositModal(event) {
     closeDepositModalForce();
    
 }
-
     
 
     
