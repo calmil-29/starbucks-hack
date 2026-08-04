@@ -9,8 +9,7 @@
 </head>
 <body>
 
-ドロップダウンが開いていたら閉じる、つまり、closeAllSelectorWindows()でもしも.deposit-selector-windowni
-wにis-activeがついていたら閉じる？？？ でこのcloseAllSelectorWindows() はHTMLでは書いてないけど、JSでだけでもfunction closeAllSelectorWindows() {...}を作った場合、例えば.<div class="deposit-selector-window" id="depositCardWindow"　onclick="closeAllSelectorWindows()">と同様になるの？
+ドロップダウンが開いていたら閉じる、つまり、closeAllSelectorWindows()でもしも.deposit-selector-windowniwにis-activeがついていたら閉じる？？？ で、このcloseAllSelectorWindows() はHTMLでは書いてないけど、JSでだけでもfunction closeAllSelectorWindows() {...}を作った場合、例えば.<div class="deposit-selector-window" id="depositCardWindow"onclick="closeAllSelectorWindows()">と同様になるの？あと、forEachてどういう意味？
 
 function closeAllSelectorWindows() {
     const allWindows = document.querySelectorAll('.deposit-selector-window');
