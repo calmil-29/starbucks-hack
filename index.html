@@ -9,6 +9,36 @@
 </head>
 <body>
 
+function closeDepositModal(event) {...}　の中に入れたけど、問題は振り出しに戻る。これだとドロップダウンの外タップでドロップダウンは閉じるけど、モーダルを閉じる closeDepositModal(), バツボタン closeDepositModalForce(),オートチャージ設定　openAutochargeModal(),各設定メニューtoggleDepositWindow(),は反応したままになる。やっぱここから理解不能。
+function closeDepositModal(event) {
+    if (!event) return;
+   console.log(event.target)
+
+    // ドロップダウンが開いていたら、外タップで閉じる
+    const activeWindow = document.querySelector('.deposit-selector-window')
+    if (activeWindow) {
+        closeAllSelectorWindows();
+        event.stopPropagation();
+    }
+    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
+    
+    closeDepositModalForce();
+   
+}
+    
+
+
+
+
+
+
+
+
+    
 function isSelectorOpen(event) {
     console.log(event.target)
      //　対象は開いてる状態のドロップダウン
