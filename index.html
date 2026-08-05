@@ -9,36 +9,19 @@
 </head>
 <body>
 
-JSでfunction isSelectorOpen() {...} 作ったんだけど、動かない。Geminiにも聞いたけど、よくわかんなかった。ちなみに今日はもうここでおしまい。ここまで3時間しかも強で今日も終わらなかった。もう終わってる感。
-背景closeDepositModal()→タップされたら開いてるドロップダウンを閉じる、 バツボタンcloseDepositModalForce()→反応させない、カード選択.入金額.支払い方法toggleDepositWindow()→反応させない、次へボタンgoToDepositConfirm()→反応させない だから、バツボタン、カード選択.入金額.支払い方法、次へボタンはdeposit-screen-input内だから、.deposit-selector-window.is-activeのときはそこだけ反応させない、と思ったんだけど、でも.deposit-screen-inputの中には.deposit-selector-windowも含まれる。あれ？どう考えればいいの？
-  
 function isSelectorOpen(event) {
+    console.log(event.target)
+     //　対象は開いてる状態のドロップダウン
     const activeWindow =  deposit.querySelector('.deposit-selector-window.is-active');
-    if (activeWindow) {
-        if (event.target.closest('.deposit-screen-input')) {
-            event.stopPropagation();
-        }
-    }
-    closeAllSelectorWindows();
-    closeDepositModal(event);
-    return;
-}
-
-
-function closeDepositModal(event) {
-    if (!event) return;
-   
-    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
-    if (event.target.closest('.deposit-modal-content')) {
-        event.stopPropagation();
-        return;
+    // 開いてるドロップダウンがある、なおかつ、触った場所がドロップダウン外ではない場合
+    if (activeWindow && !event.target.closest('.deposit-selector-window.is-active')) {
+       closeAllSelectorWindows(); // ドロップダウンを閉じる
+       return;
     }
     
-    closeDepositModalForce();　//でもこの書き方の場合（ifで書かずに）はちゃんと動いてるけどなんで？
-   
+     closeDepositModal(event);
 }
-    
-    
+  
 
     
 
