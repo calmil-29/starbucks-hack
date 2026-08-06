@@ -30,29 +30,34 @@ function closeDepositModal(event) {
    
 }
 
+/* 別窓（ドロップダウン）の初期状態・最初は隠しておく */
+.deposit-selector-window {
+    position: absolute;
+    top: 50px; /* メニューボタンの少し下に配置 */
+    left: 10px;
+    right: 10px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* スタバ風の上品な影 */
+    
+    /* 開閉用のz-index（メニューの一覧より手前に出す） */
+    z-index: 10;
 
-           <!-- 1. カード選択 -->
-            <div class="deposit-menu-item">
-              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-                <span class="menu-label">カード選択</span>
-                <div class="menu-value-box">
-                  <span class="current-value" id="depositCardVal">Starbucks Card ¥00,000</span>
-                  <span class="arrow-balance"></span> 
-                </div>
-              </div>
+    /* アニメーションの初期状態（透明で、少し下に下げておく） */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
 
-              <!-- 「カード用の浮き出る別窓」 -->
-              <div class="deposit-selector-window" id="depositCardWindow">
-                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
-                  <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
-                  <span>¥0</span>
-                </div>
-                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
-                  <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
-                  <span>¥0</span>
-                </div>
-              </div>
-            </div> 
+/* JSで .is-active がついた瞬間にフワッと浮き出て出現する */
+.deposit-selector-window.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* 定位置に戻る */
+}
     
 
 
