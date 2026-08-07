@@ -9,6 +9,31 @@
 </head>
 <body>
 
+
+deposit-screen-input
+        │
+        ▼
+handleDepositClick(event)
+        │
+        ├─ ドロップダウン開いてる？
+        │       │
+        │       ├─ YES → 閉じるだけで終了
+        │       └─ NO
+        ▼
+カード・次へ・× それぞれ本来の処理
+
+depositModal（背景）
+└── deposit-modal-content（白いカード）
+    └── deposit-screen-input ← 入力画面全体
+        ├── deposit-modal-header（×）
+        ├── カード選択
+        ├── 入金額
+        ├── 支払い方法
+        └── 次へ
+
+
+
+
     
   <!-- A.オートチャージ設定のエリア -->
           <div class="autocharge-banner">
