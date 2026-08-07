@@ -9,6 +9,20 @@
 </head>
 <body>
 
+    
+<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
+    <div class="deposit-modal-content">  
+
+      <div class="deposit-screen-input">
+        
+        <!-- 【第２モーダル】の【入金設定画面】ヘッダー（バツボタン） -->
+        <div class="deposit-modal-header">
+
+
+
+
+⭐️見直してみるために置いておく （どう考え、見方が変わったのか知りたいから）  
+②            
 function closeDepositModal(event) {...}　の中に入れたけど、問題は振り出しに戻る。これだとドロップダウンの外タップでドロップダウンは閉じるけど、モーダルを閉じる closeDepositModal(), バツボタン closeDepositModalForce(),オートチャージ設定　openAutochargeModal(),各設定メニューtoggleDepositWindow(),は反応したままになる。やっぱここから理解不能。
 function closeDepositModal(event) {
     if (!event) return;
@@ -29,35 +43,7 @@ function closeDepositModal(event) {
     closeDepositModalForce();
    
 }
-
-    
-.menu-clickable-areaはまだCSSにて記載なし。.deposit-menu-item　はオートチャージ画面での注意書きメッセージ」と「注意アイコン」をいれる時用の指定のものしか書いてない。
-/* エラーが発生しているメニュー枠のスタイル  */
-.deposit-menu-item.has-error {
-    border-bottom: 2px solid #de4343;
-} 
-
-/* エラー状態のとき、矢印の「前（左隣）」に「注意アイコン」を出現させる */
-.deposit-menu-item.has-error .arrow-balance::before {
-    content: "";
-    display: inline-block;
-    width: 16px; /* アイコンの横幅 */
-    height: 16px; /* アイコンの縦幅 */
-    background-image: url('../images/error-triangle.svg'); /* 「注意アイコン」のパス */
-    background-size: contain;
-    background-repeat: no-repeat;
-    vertical-align: middle;
-    margin-right: 8px; /* 「注意アイコン」と「矢印」のすき間 */
-}
-
-
-
-
-
-
-
-
-    
+①           
 function isSelectorOpen(event) {
     console.log(event.target)
      //　対象は開いてる状態のドロップダウン
