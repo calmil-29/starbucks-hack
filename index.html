@@ -42,8 +42,9 @@ depositModal（背景）
          ├── 支払い方法 ──ドロップダウン 
          └── 次へ	
 
+	
 【第2モーダル入金設定画面エリア】	
-depositModal（背景 / overlay）onclick="closeDepositModal(event)☑️
+depositModal（背景 / overlay）onclick="closeDepositModal(event)
 └── deposit-modal-content（白いカード）
     └── deposit-screen-input（入力画面全体）
         ├── deposit-modal-header（×ボタンエリア）onclick="closeDepositModalForce()
@@ -52,7 +53,7 @@ depositModal（背景 / overlay）onclick="closeDepositModal(event)☑️
             │   └── setting-trigger-btn（設定するボタン）onclick=openAutochargeModal(event)
             ├── deposit-menu-list（各種設定メニュー一覧）
             │   ├── deposit-menu-item（1. カード選択）
-            │   │   ├── menu-clickable-area（表示・クリックエリア）onclick="toggleDepositWindow('card', event)" ☑️
+            │   │   ├── menu-clickable-area（表示・クリックエリア）onclick="toggleDepositWindow('card', event)" 
             │   │   └── deposit-selector-window（カード用別窓）onclick=selectDepositOption('card', 'main', event)...'sub'が続く
             │   ├── deposit-menu-item（2. 入金額）
             │   │   ├── menu-clickable-area（表示・クリックエリア）onclick=toggleDepositWindow('amount', event)"
@@ -60,7 +61,7 @@ depositModal（背景 / overlay）onclick="closeDepositModal(event)☑️
             │   └── deposit-menu-item（3. 支払い方法）
             │       ├── menu-clickable-area（表示・クリックエリア）onclick="toggleDepositWindow('method', event)
             │       └── deposit-selector-window（支払い方法用別窓）onclick="selectDepositOption('method', 'Apple Pay', event)...'PayPay'が続く
-            └── deposit-next-step-btn（「次へ」ボタン）onclick=goToDepositConfirm(event)☑️
+            └── deposit-next-step-btn（「次へ」ボタン）onclick=goToDepositConfirm(event)
 
 この下にさらに【確認画面エリア（deposit-screen-confirm）】が続く
 
