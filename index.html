@@ -9,7 +9,32 @@
 </head>
 <body>
 
+'ドロップダウンの中をタップした'	だけが出てこない。
+const depositModal = document.getElementById('depositModal');
 
+depositModal.addEventListener('click', function(event) {
+    console.log('キャプチャ係がクリックを受け取った');
+
+    const activeWindow = document.querySelector('.deposit-selector-window.is-active');
+
+    if (activeWindow) {
+        console.log('ドロップダウンが開いている');    
+    } else {
+        console.log('ドロップダウンが開いていない');
+
+        if (event.target.closest('.deposit-selector-window')) {
+            console.log('ドロップダウンの中をタップした');
+        } else {
+            console.log('ドロップダウンの外をタップした');
+        }
+    }
+
+}, { capture: true });
+
+-----------------
+	
+
+	
 deposit-screen-input
         │
         ▼
