@@ -38,8 +38,9 @@
     // モダール自体や別枠が閉じてしまうのを防ぐための防波堤
     event.stopPropagation();
 
-    // 2. タップされた「選択肢(箱全体)」をガシッと掴む
-    const clickedItem = event.currentTarget; //ちなみにこのcurrentTargetて何？どこから来た？
+    // 2. タップを監視している「大元の枠組み（要素）」をガシッと掴む
+    // ※中にある文字や画像を触っても、必ずこの枠全体（currentTarget）が掴める
+    const clickedItem = event.currentTarget; 
 
     // 3. タップされたカードの「目印(main-card か sub-card か)」を読み取る
     // HTMLの「data-change-item」に合わせて指定
