@@ -9,28 +9,86 @@
 </head>
 <body>
 
-const depositModal = document.getElementById('depositModal');
+<div class="qr-card-selector-window">
+          <p class="qr-selector-title">カードを選択</p>
+          
+          <!-- 「カード用の浮き出る別窓」 -->
+          <!-- メインカード -->
+          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
+            <img src="../images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-card-balance">¥0</span>
+            </div>
+          </div> 
 
-depositModal.addEventListener('click', function(event) {
-    console.log('キャプチャ係がクリックを受け取った');
+          <!-- サブカード -->
+          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <img src="../images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-card-balance">¥3,500</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
+        </div><!-- .qr-card-selector-window -->   
 
-    const activeWindow = document.querySelector('.deposit-selector-window.is-active');
+  function switchCard(event) {
+    // 1. 安全装置(土台のファイルがあるか確認)
+    if (!event) return;
+    // モダール自体や別枠が閉じてしまうのを防ぐための防波堤
+    event.stopPropagation();
 
-    if (activeWindow) {
-        console.log('ドロップダウンが開いている');    
+    // 2. タップされた「選択肢(箱全体)」をガシッと掴む
+    const clickedItem = event.currentTarget; //ちなみにこのcurrentTargetて何？どこから来た？
 
-        if (event.target.closest('.deposit-selector-window')) {
-            console.log('ドロップダウンの中をタップした');  　//別記載の処理（選択肢をタップした時）が動くから、特にコードはここには必要ない？ドロップダウンが開いてる状態をここで確認してるだけ、て認識で合ってる？  
-           
-        } else {
-            console.log('ドロップダウンの外をタップした');
-            closeAllSelectorWindows(); //ドロップダウンを外タップで閉じることはできた、でもこれだと　×、オートチャージ設定、カード選択、入金額、支払い方法、次へ、#depositModalのonclicたちの処理は止められず
-        }
-    } else {
-        console.log('ドロップダウンが開いていない');    
+    // 3. タップされたカードの「目印(main-card か sub-card か)」を読み取る
+    // HTMLの「data-change-item」に合わせて指定
+    const changeType = clickedItem.getAttribute('data-change-type') || clickedItem.getAttribute('data-change-item');
+
+    // 4. 掴む要素(モダールの中身 + 表のメイン画像の中身)
+    const modalCardImg = document.getElementById('qrModalCardImg')
+    const modalBalance = document.querySelector('.qr-card-balance')
+    const mainCardImg = document.getElementById('mainCardImg') // 表の画像
+    const mainCardBalance = document.getElementById('mainCardBalance') // 表の金額
+
+    // 5.条件分岐：目印に合わせて、画面と金額を書き換える
+    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
+    const mainCardLabel = document.querySelector('.balance-display .card-label'); // 表のメイン画像のカード名
+
+    if (changeType === 'main-card') { 
+        // --- メインカード(通常)への切り替え ---
+        currentSelectedCardType = 'main'; // メインに切り替わったことを金庫に報告
+        const mainSrc = '../images/my-card-main.svg';
+        const mainTxt = starbucksCardBalance.toLocaleString(); // 金庫から最新の数値をカンマ付きにして取り出す
+        
+       if (modalCardImg) modalCardImg.setAttribute('src', mainSrc);
+       if (modalBalance) modalBalance.textContent = '¥' + mainTxt;
+       if (mainCardImg) mainCardImg.setAttribute('src', mainSrc); // 表も切り替え
+       if (mainCardBalance) mainCardBalance.textContent = mainTxt; // 表も切り替え
+
+       if (qrCardNameEl) qrCardNameEl.textContent = 'Starbucks Card'
+       if (mainCardLabel) mainCardLabel.textContent = 'Starbucks Card'
+
+    } else if (changeType === 'sub-card') { 
+       // サブカードへの切り替え
+       currentSelectedCardType = 'sub'; // サブに切り替わったことを金庫に報告
+       const subSrc = '../images/my-card-sub.png';
+       const subTxt = subCardBalance.toLocaleString(); // 固有の文字「3,500」ではなく、金庫から最新の数値をカンマ付きにして取り出す
+
+       if (modalCardImg) modalCardImg.setAttribute('src', subSrc); 
+       if (modalBalance) modalBalance.textContent = '¥' + subTxt; 
+       if (mainCardImg) mainCardImg.setAttribute('src', subSrc);
+       if (mainCardBalance) mainCardBalance.textContent = subTxt;
+
+       if (qrCardNameEl) qrCardNameEl.textContent = 'サブカード';
+       if (mainCardLabel) mainCardLabel.textContent = 'サブカード';
+
     }
 
-}, { capture: true });
+    // ７. 切り替えが終わったら、カード選択の別枠を自動でシュッと閉じる
+    const selectorWindow = document.querySelector('.qr-card-selector-window');
+    selectorWindow?.classList.remove('is-active')
+}
 
 -----------------
 	
@@ -137,46 +195,6 @@ depositModal（背景 / overlay）onclick="closeDepositModal(event)
               
 
 
-
-
-⭐️見直してみるために置いておく （どう考え、見方が変わったのか知りたいから）  
-②            
-function closeDepositModal(event) {...}　の中に入れたけど、問題は振り出しに戻る。これだとドロップダウンの外タップでドロップダウンは閉じるけど、モーダルを閉じる closeDepositModal(), バツボタン closeDepositModalForce(),オートチャージ設定　openAutochargeModal(),各設定メニューtoggleDepositWindow(),は反応したままになる。やっぱここから理解不能。
-function closeDepositModal(event) {
-    if (!event) return;
-   console.log(event.target)
-
-    // ドロップダウンが開いていたら、外タップで閉じる
-    const activeWindow = document.querySelector('.deposit-selector-window')
-    if (activeWindow) {
-        closeAllSelectorWindows();
-        event.stopPropagation();
-    }
-    // 白い中身('.deposit-modal-content')がタップされた場合は、完全に処理をブロックして閉じない
-    if (event.target.closest('.deposit-modal-content')) {
-        event.stopPropagation();
-        return;
-    }
-    
-    closeDepositModalForce();
-   
-}
-①           
-function isSelectorOpen(event) {
-    console.log(event.target)
-     //　対象は開いてる状態のドロップダウン
-    const activeWindow =  deposit.querySelector('.deposit-selector-window.is-active');
-    // 開いてるドロップダウンがある、なおかつ、触った場所がドロップダウン外ではない場合
-    if (activeWindow && !event.target.closest('.deposit-selector-window.is-active')) {
-       closeAllSelectorWindows(); // ドロップダウンを閉じる
-       return;
-    }
-    
-     closeDepositModal(event); //　通常のモーダル等が閉じる処理実行
-}
-  
-
-    
 
 
 
