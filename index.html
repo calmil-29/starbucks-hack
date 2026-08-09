@@ -9,7 +9,6 @@
 </head>
 <body>
 
-'ドロップダウンの中をタップした'	だけが出てこない。
 const depositModal = document.getElementById('depositModal');
 
 depositModal.addEventListener('click', function(event) {
@@ -19,14 +18,16 @@ depositModal.addEventListener('click', function(event) {
 
     if (activeWindow) {
         console.log('ドロップダウンが開いている');    
-    } else {
-        console.log('ドロップダウンが開いていない');
 
         if (event.target.closest('.deposit-selector-window')) {
-            console.log('ドロップダウンの中をタップした');
+            console.log('ドロップダウンの中をタップした');  　//別記載の処理（選択肢をタップした時）が動くから、特にコードはここには必要ない？ドロップダウンが開いてる状態をここで確認してるだけ、て認識で合ってる？  
+           
         } else {
             console.log('ドロップダウンの外をタップした');
+            closeAllSelectorWindows(); //ドロップダウンを外タップで閉じることはできた、でもこれだと　×、オートチャージ設定、カード選択、入金額、支払い方法、次へ、#depositModalのonclicたちの処理は止められず
         }
+    } else {
+        console.log('ドロップダウンが開いていない');    
     }
 
 }, { capture: true });
