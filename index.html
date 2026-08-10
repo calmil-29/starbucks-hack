@@ -9,77 +9,50 @@
 </head>
 <body>
 
-depositCardVal は【第2モーダル】【入金設定画面】を開くの中
+【第２・第３共通】選択肢をタップした時の処理
+function selectDepositOption(type, value, event) {
+...
+if (type === 'card') {
+        currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告
+        // 看板の文字を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
+        if (value === 'main') {
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+        } else if (value === 'sub') {
+            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }	
+...}
+	
+【第2モーダル】入金設定用のデータ
+let currentSelectedCardType = 'main';	
 
-function openDepositModal(event) {
-    if(!event) return;
+【第2モーダル】【最終確認画面】の「入金する」ボタンの処理（残高更新・カード切り替え）
+document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+...
+ if (currentSelectedCardType === 'main') {
+        // メインカードにお金を足す
+        starbucksCardBalance = starbucksCardBalance + depositAmount;
+        updatedBalance = starbucksCardBalance;
+        cardSrc = '../images/my-card-main.svg'; // メインカードの画像
+        cardName = 'Starbucks Card';             // メインカードの名前	
+...}
 
-    // 1. タップの衝撃波で、第１モーダルが閉じてしまうのを防ぐ
-    event.stopPropagation ();
-
-    // 2. 【ルール統一】新しく開くときは、前回の確認画面を確実に非表示（none）にしておく
-    const confirmBox = document.querySelector('.deposit-screen-confirm');
-    if (confirmBox) confirmBox.classList.remove('is-active'); 
-
-    // 【ルール統一】新しく開くときは、入力画面を確実に表示（block）にしておく 
-    const inputArea = document.querySelector('.deposit-screen-input'); // 入金設定の箱
-    if (inputArea) inputArea.style.display = 'block';
-
-    // 3. 【第１モーダル】に写っている「カードの画像（src）」をチェック
-    const currentHeroImg = document.getElementById('mainCardimg')?.getAttribute('src') || '';
-
-    let currentCardName = 'starbucks Card';
-    let currentBalance = 0;
+【第３モーダル】入金画面（第２モーダル）から「オートチャージ設定」を開く関数
+function openAutochargeModal(event) {
+...
+ const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
     
-    //  画像のファイル名に 'sub' という文字が含まれているかどうかで100%確実に判断する
-    if (currentHeroImg.includes('sub')){
-        currentCardName = 'サブカード';
-        currentBalance = subCardBalance; // サブの金庫
-    } else {
-        currentCardName = 'starbucks Card';
-        currentBalance = starbucksCardBalance; // メインの金庫
-    }
-    
-    // A. 「現在表示されているカード」の文字を、開いた瞬間の最新状態にする ⭐️ここ
-    // 確実に狙い撃ちできるように、クラス名ではなくID名（#autoCarVal や手動側のIDなど）で掴むのが実務上安全!
-    const depositCurrentValueEl = document.getElementById('depositCardVal');
-    if (depositCurrentValueEl) {
-        depositCurrentValueEl.textContent = `${currentCardName} ¥${currentBalance.toLocaleString()}`;
-    }
-
-    // B.【リセット機能】入金額と支払い方法は、初期値に強制リセットする
-    // :nth-child. のズレでエラーになるのを防ぐため、確実に対象のメニューを1つずつの狙い撃ちして文字をリセット！
-    const allItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
-    
-    // ２番目のメニュー（入金額）の中身をリセット
-    if (allItems[1]) {
-        const amtLabel = allItems[1].querySelector('.current-value');
-        if (amtLabel) amtLabel.textContent = '¥1,000';
-    }
-    // ３番目のメニュー（支払い方法）の中身をリセット
-    if (allItems[2]) {
-        const methodLabel = allItems[2].querySelector('.current-value');
-        if (methodLabel) methodLabel.textContent = '未登録';
-    }
-
-    // 「カードの浮き出る別窓」の中のメイン・サブの金額も、開いた瞬間の最新にする　
-    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
-    if (depositWindowMainEl) {
-        depositWindowMainEl.textContent ='¥' + starbucksCardBalance.toLocaleString();
-    }
-
-    const depositWindowSubEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(3) span');
-    if (depositWindowSubEl) {
-        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
-    }
-    
-    // 4. HTMLから「第２モーダル」の土台（オーバーレイ）をガシッと詰む 
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        // 5. クラスを追加して、第２モーダルを画面に出現させる
-        depositModal.classList.add('is-open');
-    }    
-}
+    if (autoCardValEl) {
+        // メモ帳（金庫）を覗きにいって、（if文）で文字を切り替える
+        if (currentSelectedCardType === 'main') {
+            // メインカードが選ばれているとき
+            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
+        } else {
+            // サブカードが選ばれているとき
+            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
+        }
+    }	
+...}
+	
 
 
 	
