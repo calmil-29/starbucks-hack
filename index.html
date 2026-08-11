@@ -9,86 +9,27 @@
 </head>
 <body>
 
-
-function switchCard(event) {
-    // 1. 安全装置(土台のファイルがあるか確認)
-    if (!event) return;
-    // モダール自体や別枠が閉じてしまうのを防ぐための防波堤
-    event.stopPropagation();
-
-    // 2. タップを監視している「大元の枠組み（要素）」をガシッと掴む
-    // ※中にある文字や画像を触っても、必ずこの枠全体（currentTarget）が掴める
-    const clickedItem = event.currentTarget;
-
-    // 3. タップされたカードの「目印(main-card か sub-card か)」を読み取る
-    // 「data-change-item」に合わせて指定　
-    const changeType = clickedItem.getAttribute('data-change-type') || clickedItem.getAttribute('data-change-item');
-
-    // 4. 掴む要素(第１モダールの中身 + 表のヒーロー画像の中身)
-    const modalCardImg = document.getElementById('qrModalCardImg')
-    const modalBalance = document.querySelector('.qr-card-balance')
-    const mainCardImg = document.getElementById('mainCardImg') 
-    const mainCardBalance = document.getElementById('mainCardBalance') 
-
-    // 5.条件分岐：目印に合わせて、画面と金額を書き換える
-    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
-    const mainCardLabel = document.querySelector('.balance-display .card-label'); 
-
-    if (changeType === 'main-card') { 
-        // メインカードへの切り替え    
-        currentSelectedCardType = 'main';  // switchCard(event)　→ 書く　第１モーダル・ヒーローのカード変更
-        const mainSrc = '../images/my-card-main.svg';
-        const mainTxt = starbucksCardBalance.toLocaleString(); 
-        
-       if (modalCardImg) modalCardImg.setAttribute('src', mainSrc);
-       if (modalBalance) modalBalance.textContent = '¥' + mainTxt;
-       if (mainCardImg) mainCardImg.setAttribute('src', mainSrc); 
-       if (mainCardBalance) mainCardBalance.textContent = mainTxt;
-
-       if (qrCardNameEl) qrCardNameEl.textContent = 'Starbucks Card'
-       if (mainCardLabel) mainCardLabel.textContent = 'Starbucks Card'
-
-    } else if (changeType === 'sub-card') { 
-       // サブカードへの切り替え
-       currentSelectedCardType = 'sub'; // switchCard(event)　→　書く　第１モーダル・ヒーローのカード変更
-       const subSrc = '../images/my-card-sub.png';
-       const subTxt = subCardBalance.toLocaleString(); 
-
-       if (modalCardImg) modalCardImg.setAttribute('src', subSrc); 
-       if (modalBalance) modalBalance.textContent = '¥' + subTxt; 
-       if (mainCardImg) mainCardImg.setAttribute('src', subSrc);
-       if (mainCardBalance) mainCardBalance.textContent = subTxt;
-
-       if (qrCardNameEl) qrCardNameEl.textContent = 'サブカード';
-       if (mainCardLabel) mainCardLabel.textContent = 'サブカード';
-
-    }
-
-    // ７. 切り替えが終わったら、カード選択の別枠を自動でシュッと閉じる
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-    selectorWindow?.classList.remove('is-active')
-}
-
---------------------------------------------------------------------------------
-
-
-
-
-
-
+※入金したら第１・ヒーローも変わる、けど入金しなかったら（カード選択だけなら）影響しない＝処理を完了したら影響されるってこと？	
+つまり、今回のコード（全４箇所）はみんな繋がっているから、何かしらこの影響を止める処理を書かないとすべてに影響されるってこと？
 	
 【第１モーダル】別窓のカードをタップした時に、見た目と金額を切り替える関数
 currentSelectedCardType = 'main';  // switchCard(event)　→ 書く　第１モーダル・ヒーローのカード変更
 currentSelectedCardType = 'sub'; // switchCard(event)　→　書く　第１モーダル・ヒーローのカード変更	
+影響　→ 第２・第３のカード選択にも影響
 	
 【第２・第３共通】選択肢をタップした時の処理
- currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告　  //  selectDepositOption() → 書く 第２、３モーダルのメニュー画面表示変更
+ currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告　  //  selectDepositOption() →  書く 第２・３のカード選択情報を書き換える
+影響　→ 	ヒーロー・第１・第２・第３のカード画面（選択）にも影響
 	
 【第2モーダル】の【確認画面】の「入金する」ボタンの処理（残高更新・カード切り替え）	
-if (currentSelectedCardType === 'main') {  //　finalDepositBtn → 読む　第２モーダルの入金対象の判断 	
+if (currentSelectedCardType === 'main') {  //　finalDepositBtn → 読む　第２モーダルの入金対象の判断 
+影響　→ 	ヒーロー・第１・第３のカード画面（選択）にも影響
 	
 【入金画面（第２モーダル）】の「第３モーダル（オートチャージ）】」を開く関数	
-if (currentSelectedCardType === 'main') {  // openAutochargeModal() → 読む　第３モーダルのオートチャージ対象カードの判断？
+if (currentSelectedCardType === 'main') {  // openAutochargeModal() → 読む　第３モーダルのオートチャージ対象カードの判断
+影響　→ 	
+
+	
 ----------------------------------------
 	
 
