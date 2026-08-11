@@ -9,59 +9,23 @@
 </head>
 <body>
 
-// 【入金画面（第２モーダル）】の「第３モーダル（オートチャージ）】」を開く関数
-// ========================================================================
-function openAutochargeModal(event) {
-    if (event) event.stopPropagation();
-    
-    // 閉じたい【第２モーダル】をIDでガシッと掴む
-    const depositModal = document.getElementById('depositModal');
+	
+【第１モーダル】別窓のカードをタップした時に、見た目と金額を切り替える関数
+currentSelectedCardType = 'main';  // switchCard(event)　→ 書く　第１モーダル・ヒーローのカード変更
+currentSelectedCardType = 'sub'; // switchCard(event)　→　書く　第１モーダル・ヒーローのカード変更	
+	
+【第２・第３共通】選択肢をタップした時の処理
+ currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告　  //  selectDepositOption() → 書く 第２、３モーダルのメニュー画面表示変更
+	
+【第2モーダル】の【確認画面】の「入金する」ボタンの処理（残高更新・カード切り替え）	
+if (currentSelectedCardType === 'main') {  //　finalDepositBtn → 読む　第２モーダルの入金対象の判断 	
+	
+【入金画面（第２モーダル）】の「第３モーダル（オートチャージ）】」を開く関数	
+if (currentSelectedCardType === 'main') {  // openAutochargeModal() → 読む　第３モーダルのオートチャージ対象カードの判断？
 
-    // 開きたい【第３モーダル】をIDでガシッと掴む
-    const autochargeModal = document.getElementById('autochargeModal');
 
-    // 1. 先に【第２モーダル】を閉じる（is-open を取り除く）
-    if (depositModal) {
-        depositModal.classList.remove('is-open');
-    }
 
-    // 2. 次に【第３モーダル】を開く
-    if (autochargeModal) {
-        autochargeModal.classList.add('is-open');
-    }
 
-    // 開いた瞬間に、3つの看板を名指しして掴む
-    const summaryEl = document.getElementById('autoSummaryText');
-    const amountEl = document.getElementById('autoAmountVal');
-    const conditionEl = document.getElementById('autoConditonVal');
-
-    // 掴んだ看板の中身を、金庫のデータ（let autochargeAmount = 2000;, let autochargeCondition = 1000;）で上書きする
-    if (amountEl) {
-        amountEl.textContent =`¥${autochargeAmount.toLocaleString()}`;
-    }
-    if (conditionEl) {
-        conditionEl.textContent = `¥${autochargeCondition.toLocaleString()}`;
-    }
-    if (summaryEl) {
-        summaryEl.textContent = `¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満) `;
-    }
-
-    //　カード（Starbucks Card）の看板をガシッと掴む
-    const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
-    
-    if (autoCardValEl) {
-        // 金庫（let）を覗きにいって、（if文）で文字を切り替える
-        if (currentSelectedCardType === 'main') {  // openAutochargeModal() → 読む　第３モーダルのメニュー画面表示判断？ここが何をしているのかいまいちしっくりこない
-            // メインカードが選ばれているとき
-            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
-        } else {
-            // サブカードが選ばれているとき
-            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
-        }
-    }
-}
-
-＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 	
 	
 
