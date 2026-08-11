@@ -51,7 +51,7 @@ function openAutochargeModal(event) {
     
     if (autoCardValEl) {
         // 金庫（let）を覗きにいって、（if文）で文字を切り替える
-        if (currentSelectedCardType === 'main') {  // openAutochargeModal() → 読む　第３モーダルのメニュー画面表示判断？
+        if (currentSelectedCardType === 'main') {  // openAutochargeModal() → 読む　第３モーダルのメニュー画面表示判断？ここが何をしているのかいまいちしっくりこない
             // メインカードが選ばれているとき
             autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
         } else {
