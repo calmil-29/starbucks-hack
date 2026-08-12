@@ -9,7 +9,9 @@
 </head>
 <body>
 
+const currentHeroImg = document.getElementById('mainCardImg')?.getAttribute('src') || '';
 
+	
 つまり、今回のコード（全４箇所）はみんな繋がっているから、何かしらこの影響を止める処理を書かないとすべてに影響されるってこと？
 
 【第１モーダル】別窓のカードをタップした時に、見た目と金額を切り替える関数
