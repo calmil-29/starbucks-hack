@@ -9,6 +9,7 @@
 </head>
 <body>
 
+	
 function openDepositModal(event) {
 // A. 「現在表示されているカード」の文字を、開いた瞬間の最新状態にする	
 const depositCurrentValueEl = document.getElementById('depositCardVal');
@@ -17,12 +18,20 @@ const depositCurrentValueEl = document.getElementById('depositCardVal');
     }
 	
 const depositWindowMainEl ...	
-	
-	
+
+
+<div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
+                <span class="menu-label">カード選択</span>
+                <div class="menu-value-box">
+                  <span class="current-value" id="depositCardVal">Starbucks Card ¥00,000</span>
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div>	
 document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
 
 // 「現在表示されてるカード」の表示を更新	
-const depositCurrentValueElObj = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value');
+const depositCurrentValueElObj = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value'); //
     if (depositCurrentValueElObj) {
         depositCurrentValueElObj.textContent = `${cardName} ¥${updatedBalance.toLocaleString()}`;
     }
