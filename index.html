@@ -9,8 +9,21 @@
 </head>
 <body>
 
-const currentHeroImg = document.getElementById('mainCardImg')?.getAttribute('src') || '';
+ // 1.タップされた要素の「目印(payment, reward, gift のどれか)」を読み取る」
+    const clickedArea = event.currentTarget;
+    const dataType = clickedArea.getAttribute('data-type');
 
+    // 2.タップされた場所のQRコードをモダール上部に表示する
+    const clickedImg = clickedArea.querySelector('img');
+    const qrSrc = clickedImg.getAttribute('src');
+    document.getElementById('qrModalImg').setAttribute('src', qrSrc);
+
+    const cardZone = document.querySelector('.qr-modal-card-zone');
+    const cardImg = document.getElementById('qrModalCardImg')
+
+
+
+	
 	
 つまり、今回のコード（全４箇所）はみんな繋がっているから、何かしらこの影響を止める処理を書かないとすべてに影響されるってこと？
 
