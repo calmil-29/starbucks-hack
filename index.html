@@ -9,9 +9,48 @@
 </head>
 <body>
 
+<div class="deposit-selector-window" id="depositCardWindow">
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+                  <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
+                  <span>¥0</span>
+                </div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                  <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
+                  <span>¥0</span>
+                </div>
+              </div>	
+
+function openDepositModal(event) {
+	
+// 「カードのドロップダウン」の中のメイン・サブの金額も、開いた瞬間の最新にする　　
+    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
+    if (depositWindowMainEl) {
+        depositWindowMainEl.textContent ='¥' + starbucksCardBalance.toLocaleString();
+    }
+
+    const depositWindowSubEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(3) span');
+    if (depositWindowSubEl) {
+        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
+    }
+
+
+	
+document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+	
+// 「カード用の浮き出る別窓」の中にある、メインカードの金額を更新
+    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
+    if (depositWindowMainEl) {
+        depositWindowMainEl.textContent = '¥' + starbucksCardBalance.toLocaleString();
+    }
+    // 「カード用の浮き出る別窓」の中にある、サブカードの金額を更新
+    const depositWindowSubEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(3) span');
+    if (depositWindowSubEl) {
+        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
+    }	
 
 	
 	
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー	
 つまり、今回のコード（全４箇所）はみんな繋がっているから、何かしらこの影響を止める処理を書かないとすべてに影響されるってこと？
 
 【第１モーダル】別窓のカードをタップした時に、見た目と金額を切り替える関数
