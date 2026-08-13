@@ -10,38 +10,7 @@
 <body>
 
 	
-// 【第２・第３共通】ドロップダウン選択肢をタップした時の画面表示の処理
-function selectDepositOption(type, value, event) { ...　　
-の中の
-// 1. 各項目のデータ更新とDOM要素への文字反映
-    if (type === 'card') {
-        currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告　  //　ここのcurrentSelectedCardTypeは、誰が書く、誰が読む、何を表す　だと、どう当てはめられる？
-        // 看板の文字を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
-        if (value === 'main') {
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-        } else if (value === 'sub') {
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
-    } else if (type === 'amount' || type === 'condition') {
-        // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
-        const numValue = Number(value);
-        if (!isNaN(numValue)) {
-            // 金庫の最新データを上書き更新
-            if (isAutocharge) {
-                if (type === 'amount')  autochargeAmount = numValue;
-                if (type === 'condition') autochargeCondition = numValue;
-            }    
-            // DOM要素を「¥2,000」などの綺麗な表記にして書き換える
-            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
-        } else {
-            currentLabel.textContent = value;
-        }
-    
-    } else {
-        // 支払い方法（method）などの時は、選ばれた文字をそのまま看板に書き換える
-        currentLabel.textContent = value;
-    }    
-   	
+
 	
 
 
@@ -52,119 +21,41 @@ function selectDepositOption(type, value, event) { ...　　
 
 
 	
-    if (event) event.stopPropagation(); // 衝撃波を止める
-
-    // 今クリックされたのが、【第３モーダル】か【第２モーダル】かを自動判定する
-    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
-
-    // 【看板の特定】何番目のメニューの文字 (.current-value) を書き換えるか決める
-    let menuIndex = 1;
-    if (type === 'amount') menuIndex = 2; // 入金額
-    if (type === 'condition') menuIndex = 3; // 入金条件（オートチャージのみ）
-    if (type === 'method') {
-        // 支払い方法は、【第２モーダル】なら３番目、【第３モーダル】なら４番目になる
-        menuIndex = isAutocharge ? 4 : 3;
-    }    
-
-    // 【看板を挟む】【第３モーダル】なら.autocharge-menu-list 【第２モーダル】なら.deposit-menu-list を掴む 
-    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
-
-    // 【安全ガード】もしHTML（看板）がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
-    if (!currentLabel) {
-        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
-        return;
-    }
-
-    // 1. 各項目のデータ更新と看板への文字反映
-    if (type === 'card') {
-        currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告　  //⭐️selectDepositOption() → 書く 第２・３のカード選択情報を書き換える
-        // 看板の文字を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
-        if (value === 'main') {
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-        } else if (value === 'sub') {
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
-    } else if (type === 'amount' || type === 'condition') {
-        // 窓のタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
-        const numValue = Number(value);
-        if (!isNaN(numValue)) {
-            // 金庫の最新データを上書き更新
-            if (isAutocharge) {
-                if (type === 'amount')  autochargeAmount = numValue;
-                if (type === 'condition') autochargeCondition = numValue;
-            }    
-            // 看板を「¥2,000」などの綺麗な表記にして書き換える
-            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
-        } else {
-            currentLabel.textContent = value;
-        }
-    
-    } else {
-        // 支払い方法（method）などの時は、選ばれた文字をそのまま看板に書き換える
-        currentLabel.textContent = value;
-    }    
-   
-    // 2. 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する
-    if (isAutocharge) {
-        const summaryEl = document.getElementById('autoSummaryText');
-        if (summaryEl) {
-            summaryEl.textContent = `¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満)`; 
-        }
-
-        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
-        const errorBox = document.getElementById('autoErrorMessage');
-        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件の枠
-        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
-
-       if (Number(autochargeAmount) < Number(autochargeCondition)) {
-            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
-            if (errorBox) errorBox.style.display = 'block';
-            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
-            if (nextBtn) nextBtn.disabled = true; 
-        } else {
-            // 条件クリア：エラーを消して通常状態に戻す
-            if (errorBox) errorBox.style.display = 'none';
-            if (conditionMenu)  conditionMenu.classList.remove('has-error');
-            if (nextBtn) nextBtn.disabled = false;
-        }
-    }
-
-    // 4. 自動クローズ 文字をコピーし終わったら、用済みになった「別窓」を閉じる 
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-     // 【窓を特定】第３なら autocharge-selector-Window、第２なら deposit-selector-Window を閉じる
-     const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
-     const targetWindow = document.getElementById(windowId);
-
-    if (targetWindow) {
-        targetWindow.classList.remove('is-open', 'is-active');
-    }  
-} 
-
-
-		   
 	
 ------------------------------------------------------
 
-		   
-つまり、今回のコード（全４箇所）はみんな繋がっているから、何かしらこの影響を止める処理を書かないとすべてに影響されるってこと？
 
+	
 【第１モーダル】別窓のカードをタップした時に、見た目と金額を切り替える関数
-currentSelectedCardType = 'main';  // switchCard(event)　→ 書く　第１モーダル・ヒーローのカード変更
-currentSelectedCardType = 'sub'; // switchCard(event)　→　書く　第１モーダル・ヒーローのカード変更	
+currentSelectedCardType = 'main';  // switchCard(event)　→ 書く　・第１モーダル・ヒーローのカード変更
+currentSelectedCardType = 'sub'; // switchCard(event)　→　書く　・第１モーダル・ヒーローのカード変更	
 影響　→ 第２・第３のカード選択にも影響
+
+・誰が書く：switchCard(event)　・誰が読む：？　・何を表す：メイン・第１モーダルの中で、現在選ばれているカード。第２・３モーダルの初期値として選ばれているカード
+	
 	
 【第２・第３共通】選択肢をタップした時の処理
- currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告　  //  selectDepositOption() →  書く 第２・３のカード選択情報を書き換える
+ currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告　  //  selectDepositOption() →  書く　・第２・３のカード選択情報を書き換える
 影響　→ 	第２・第３の自身のカード画面（選択）だけその場だけで影響　	
+
+・誰が書く：selectDepositOption()　・誰が読む：finalDepositBtn / openAutochargeModal()　・何を表す：第２・３モーダルの中で、入金対象/オートチャージ対象として選ばれているカード	
+
 	
 【第2モーダル】の【確認画面】の「入金する」ボタンの処理（残高更新・カード切り替え）	
-if (currentSelectedCardType === 'main') {  //　finalDepositBtn → 読む　第２モーダルの入金対象の判断 
+if (currentSelectedCardType === 'main') {  //　finalDepositBtn → 読む　・第２モーダルの入金対象の判断 
 影響　→ 	ヒーロー・第１・第３のカード画面（選択）にも影響
 	
+・誰が書く：selectDepositOption()　　・誰が読む：finalDepositBtn 　・何を表す：第２モーダルの中で、入金対象としてのカードを判断
+	
+
+	
 【入金画面（第２モーダル）】の「第３モーダル（オートチャージ）】」を開く関数	
-if (currentSelectedCardType === 'main') {  // openAutochargeModal() → 読む　第３モーダルのオートチャージ対象カードの判断
+if (currentSelectedCardType === 'main') {  // openAutochargeModal() → 読む　・第３モーダルのオートチャージ対象カードの判断
 影響　→ 	状態がまず、オートチャージ設定のコードは未完成
+
+・誰が書く：selectDepositOption()　・誰が読む：openAutochargeModal()　・何を表す：第３モーダルの中で、オートチャージ対象としてのカードを判断
+
+	
 	
 ※第２では、入金処理（「入金する」ボタンの処理）完了まですれば、カード情報が第１・ヒーローにも影響される、だけど入金せず、カード選択だけ変えても（選択肢をタップしただけ）、そのあと戻るだけなら影響はしない＝処理を完了したら影響されるってこと？（第３はそもそもオートチャージの「保存する」コードが未完成）	
 
