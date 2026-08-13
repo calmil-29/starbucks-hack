@@ -8,13 +8,20 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-じゃあここも？
- // 1. 各項目のデータ更新と看板への文字反映
- if (type === 'card') {...
-// 看板を「¥2,000」などの綺麗な表記にして書き換える
-currentLabel.textContent = `¥${numValue.toLocaleString()}`;	
+
 	
-それと、そもそもこの部分がいまいち理解しきれてない。Number(value)、!isNaN(numValue　てなに？
+// 【第２・第３共通】ドロップダウン選択肢をタップした時の画面表示の処理
+function selectDepositOption(type, value, event) { ...　　
+の中の
+// 1. 各項目のデータ更新とDOM要素への文字反映
+    if (type === 'card') {
+        currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告　  //　ここのcurrentSelectedCardTypeは、誰が書く、誰が読む、何を表す　だと、どう当てはめられる？
+        // 看板の文字を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
+        if (value === 'main') {
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+        } else if (value === 'sub') {
+            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
     } else if (type === 'amount' || type === 'condition') {
         // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
         const numValue = Number(value);
@@ -24,20 +31,27 @@ currentLabel.textContent = `¥${numValue.toLocaleString()}`;
                 if (type === 'amount')  autochargeAmount = numValue;
                 if (type === 'condition') autochargeCondition = numValue;
             }    
-            // 看板を「¥2,000」などの綺麗な表記にして書き換える
+            // DOM要素を「¥2,000」などの綺麗な表記にして書き換える
             currentLabel.textContent = `¥${numValue.toLocaleString()}`;
         } else {
             currentLabel.textContent = value;
         }
+    
+    } else {
+        // 支払い方法（method）などの時は、選ばれた文字をそのまま看板に書き換える
+        currentLabel.textContent = value;
+    }    
+   	
+	
+
+
+
+
+
 
 
 
 	
-	
-
-	
-// 【第２・第３共通】ドロップダウン選択肢をタップした時の画面表示の処理
-function selectDepositOption(type, value, event) {
     if (event) event.stopPropagation(); // 衝撃波を止める
 
     // 今クリックされたのが、【第３モーダル】か【第２モーダル】かを自動判定する
