@@ -32,22 +32,18 @@ currentSelectedCardType = 'sub'; // switchCard(event)　→　書く　・第１
 影響　→ 第２・第３のカード選択にも影響
 
 ・誰が書く：switchCard(event)　・誰が読む：？　・何を表す：メイン・第１モーダルの中で、現在選ばれているカード。第２・３モーダルの初期値として選ばれているカード
-	
-	
+		
 【第２・第３共通】選択肢をタップした時の処理
  currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告　  //  selectDepositOption() →  書く　・第２・３のカード選択情報を書き換える
 影響　→ 	第２・第３の自身のカード画面（選択）だけその場だけで影響　	
 
 ・誰が書く：selectDepositOption()　・誰が読む：finalDepositBtn / openAutochargeModal()　・何を表す：第２・３モーダルの中で、入金対象/オートチャージ対象として選ばれているカード	
-
 	
 【第2モーダル】の【確認画面】の「入金する」ボタンの処理（残高更新・カード切り替え）	
 if (currentSelectedCardType === 'main') {  //　finalDepositBtn → 読む　・第２モーダルの入金対象の判断 
 影響　→ 	ヒーロー・第１・第３のカード画面（選択）にも影響
 	
-・誰が書く：selectDepositOption()　　・誰が読む：finalDepositBtn 　・何を表す：第２モーダルの中で、入金対象としてのカードを判断
-	
-
+・誰が書く：selectDepositOption()　　・誰が読む：finalDepositBtn 　・何を表す：第２モーダルの中で、最終的な入金対象としてのカードを判断	
 	
 【入金画面（第２モーダル）】の「第３モーダル（オートチャージ）】」を開く関数	
 if (currentSelectedCardType === 'main') {  // openAutochargeModal() → 読む　・第３モーダルのオートチャージ対象カードの判断
