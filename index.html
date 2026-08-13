@@ -8,6 +8,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+じゃあここも？
+ // 1. 各項目のデータ更新と看板への文字反映
+ if (type === 'card') {...
+// 看板を「¥2,000」などの綺麗な表記にして書き換える
+currentLabel.textContent = `¥${numValue.toLocaleString()}`;	
+	
+それと、そもそもこの部分がいまいち理解しきれてない。Number(value)、!isNaN(numValue　てなに？
+    } else if (type === 'amount' || type === 'condition') {
+        // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
+        const numValue = Number(value);
+        if (!isNaN(numValue)) {
+            // 金庫の最新データを上書き更新
+            if (isAutocharge) {
+                if (type === 'amount')  autochargeAmount = numValue;
+                if (type === 'condition') autochargeCondition = numValue;
+            }    
+            // 看板を「¥2,000」などの綺麗な表記にして書き換える
+            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
+        } else {
+            currentLabel.textContent = value;
+        }
+
+
+
+	
+	
+
+	
 // 【第２・第３共通】ドロップダウン選択肢をタップした時の画面表示の処理
 function selectDepositOption(type, value, event) {
     if (event) event.stopPropagation(); // 衝撃波を止める
