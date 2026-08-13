@@ -8,80 +8,103 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+// 【第２・第３共通】ドロップダウン選択肢をタップした時の画面表示の処理
+function selectDepositOption(type, value, event) {
+    if (event) event.stopPropagation(); // 衝撃波を止める
 
-	
-function openDepositModal(event) {
-// A. 「現在表示されているカード」の文字を、開いた瞬間の最新状態にする	
-const depositCurrentValueEl = document.getElementById('depositCardVal');
-    if (depositCurrentValueEl) {
-        depositCurrentValueEl.textContent = `${currentCardName} ¥${currentBalance.toLocaleString()}`;
-    }
-	
-const depositWindowMainEl ...	
+    // 今クリックされたのが、【第３モーダル】か【第２モーダル】かを自動判定する
+    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
 
+    // 【看板の特定】何番目のメニューの文字 (.current-value) を書き換えるか決める
+    let menuIndex = 1;
+    if (type === 'amount') menuIndex = 2; // 入金額
+    if (type === 'condition') menuIndex = 3; // 入金条件（オートチャージのみ）
+    if (type === 'method') {
+        // 支払い方法は、【第２モーダル】なら３番目、【第３モーダル】なら４番目になる
+        menuIndex = isAutocharge ? 4 : 3;
+    }    
 
-<div class="deposit-menu-item">
-              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-                <span class="menu-label">カード選択</span>
-                <div class="menu-value-box">
-                  <span class="current-value" id="depositCardVal">Starbucks Card ¥00,000</span>
-                  <span class="arrow-balance"></span> 
-                </div>
-              </div>	
-document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+    // 【看板を挟む】【第３モーダル】なら.autocharge-menu-list 【第２モーダル】なら.deposit-menu-list を掴む 
+    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
+    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
 
-// 「現在表示されてるカード」の表示を更新	
-const depositCurrentValueElObj = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value'); //
-    if (depositCurrentValueElObj) {
-        depositCurrentValueElObj.textContent = `${cardName} ¥${updatedBalance.toLocaleString()}`;
-    }
-	
- const depositWindowMainEl...	
-
-
-	
-<div class="deposit-selector-window" id="depositCardWindow">
-                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
-                  <img src="../images/my-card-main.svg" alt="メイン" class="selector-card-img">
-                  <span>¥0</span>
-                </div>
-                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
-                  <img src="../images/my-card-sub.png" alt="サブ" class="selector-card-img">
-                  <span>¥0</span>
-                </div>
-              </div>	
-
-function openDepositModal(event) {
-	
-// 「カードのドロップダウン」の中のメイン・サブの金額も、開いた瞬間の最新にする　　
-    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
-    if (depositWindowMainEl) {
-        depositWindowMainEl.textContent ='¥' + starbucksCardBalance.toLocaleString();
+    // 【安全ガード】もしHTML（看板）がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
+    if (!currentLabel) {
+        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
+        return;
     }
 
-    const depositWindowSubEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(3) span');
-    if (depositWindowSubEl) {
-        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
+    // 1. 各項目のデータ更新と看板への文字反映
+    if (type === 'card') {
+        currentSelectedCardType = value; // 'main' か 'sub' を金庫に報告　  //⭐️selectDepositOption() → 書く 第２・３のカード選択情報を書き換える
+        // 看板の文字を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
+        if (value === 'main') {
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+        } else if (value === 'sub') {
+            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
+    } else if (type === 'amount' || type === 'condition') {
+        // 窓のタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
+        const numValue = Number(value);
+        if (!isNaN(numValue)) {
+            // 金庫の最新データを上書き更新
+            if (isAutocharge) {
+                if (type === 'amount')  autochargeAmount = numValue;
+                if (type === 'condition') autochargeCondition = numValue;
+            }    
+            // 看板を「¥2,000」などの綺麗な表記にして書き換える
+            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
+        } else {
+            currentLabel.textContent = value;
+        }
+    
+    } else {
+        // 支払い方法（method）などの時は、選ばれた文字をそのまま看板に書き換える
+        currentLabel.textContent = value;
+    }    
+   
+    // 2. 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する
+    if (isAutocharge) {
+        const summaryEl = document.getElementById('autoSummaryText');
+        if (summaryEl) {
+            summaryEl.textContent = `¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満)`; 
+        }
+
+        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
+        const errorBox = document.getElementById('autoErrorMessage');
+        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件の枠
+        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
+
+       if (Number(autochargeAmount) < Number(autochargeCondition)) {
+            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
+            if (errorBox) errorBox.style.display = 'block';
+            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
+            if (nextBtn) nextBtn.disabled = true; 
+        } else {
+            // 条件クリア：エラーを消して通常状態に戻す
+            if (errorBox) errorBox.style.display = 'none';
+            if (conditionMenu)  conditionMenu.classList.remove('has-error');
+            if (nextBtn) nextBtn.disabled = false;
+        }
     }
 
+    // 4. 自動クローズ 文字をコピーし終わったら、用済みになった「別窓」を閉じる 
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
+     // 【窓を特定】第３なら autocharge-selector-Window、第２なら deposit-selector-Window を閉じる
+     const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
+     const targetWindow = document.getElementById(windowId);
 
-	
-document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
-	
-// 「カード用の浮き出る別窓」の中にある、メインカードの金額を更新
-    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
-    if (depositWindowMainEl) {
-        depositWindowMainEl.textContent = '¥' + starbucksCardBalance.toLocaleString();
-    }
-    // 「カード用の浮き出る別窓」の中にある、サブカードの金額を更新
-    const depositWindowSubEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(3) span');
-    if (depositWindowSubEl) {
-        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
-    }	
+    if (targetWindow) {
+        targetWindow.classList.remove('is-open', 'is-active');
+    }  
+} 
 
+
+		   
 	
-	
-ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー	
+------------------------------------------------------
+
+		   
 つまり、今回のコード（全４箇所）はみんな繋がっているから、何かしらこの影響を止める処理を書かないとすべてに影響されるってこと？
 
 【第１モーダル】別窓のカードをタップした時に、見た目と金額を切り替える関数
