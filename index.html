@@ -9,37 +9,39 @@
 </head>
 <body>
 
+ // 3. 最新の金額・画像・カード名をすべての画面パーツに同時反映（ここでカードが物理的に切り替わる）　
+    // ① 【ヒーロー部分】（表のメイン画面）の更新 
+    const mainBalanceEl = document.getElementById('mainCardBalance');
+    if (mainBalanceEl) mainBalanceEl.textContent = updatedBalance.toLocaleString();
 
- if (changeType === 'main-card') { 
-        // メインカードへの切り替え    
-        currentSelectedCardType = 'main'; 
-        const mainSrc = '../images/my-card-main.svg';
-        const mainTxt = starbucksCardBalance.toLocaleString(); 
-        
-        if (modalCardImg) modalCardImg.setAttribute('src', mainSrc);
-        if (modalBalance) modalBalance.textContent = '¥' + mainTxt;
-        if (mainCardImg) mainCardImg.setAttribute('src', mainSrc); 
-        if (mainCardBalance) mainCardBalance.textContent = mainTxt;
+    const mainCardImg = document.getElementById('mainCardImg');
+    if (mainCardImg) mainCardImg.setAttribute('src', cardSrc); 
 
-        if (qrCardNameEl) qrCardNameEl.textContent = 'Starbucks Card'
-        if (mainCardLabel) mainCardLabel.textContent = 'Starbucks Card'
+    const mainCardLabel = document.querySelector('.balance-display .card-label');
+    if (mainCardLabel) mainCardLabel.textContent = cardName; 
 
-    } else if (changeType === 'sub-card') { 
-       // サブカードへの切り替え
-       currentSelectedCardType = 'sub'; 
-       const subSrc = '../images/my-card-sub.png';
-       const subTxt = subCardBalance.toLocaleString(); 
+    // ② 【第１モーダル】（QR画面）の更新 
+    const modalBalanceEl = document.querySelector('.qr-modal-card-zone .qr-card-balance');
+    if (modalBalanceEl) modalBalanceEl.textContent = '¥' + updatedBalance.toLocaleString();
 
-       if (modalCardImg) modalCardImg.setAttribute('src', subSrc); 
-       if (modalBalance) modalBalance.textContent = '¥' + subTxt; 
-       if (mainCardImg) mainCardImg.setAttribute('src', subSrc);
-       if (mainCardBalance) mainCardBalance.textContent = subTxt;
+    // 画像
+    const qrModalCardImg = document.querySelector('.qr-modal-card-graphic img');
+    if (qrModalCardImg) qrModalCardImg.setAttribute('src', cardSrc); 
+    
+    // 選択時表示タイトル
+    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
+    if (qrCardNameEl) qrCardNameEl.textContent = cardName; 
 
-       if (qrCardNameEl) qrCardNameEl.textContent = 'サブカード';
-       if (mainCardLabel) mainCardLabel.textContent = 'サブカード';
+    // ドロップダウンの金額を更新
+    const menuMainBalanceEl = document.querySelector('.qr-selector-item[data-change-type="main-card"] .qr-selector-card-balance');
+    if (menuMainBalanceEl) {
+        menuMainBalanceEl.textContent = '¥' + starbucksCardBalance.toLocaleString(); // 金庫のメイン残高を反映
+    }
 
-    }	
-
+    const menuSubBalanceEl = document.querySelector('.qr-selector-item[data-change-type="sub-card"] .qr-selector-card-balance');
+    if (menuSubBalanceEl) {
+        menuSubBalanceEl.textContent = '¥' + subCardBalance.toLocaleString(); // 金額のサブ残高を反映
+    }
 	
 -------------------------------------------------	
 	
