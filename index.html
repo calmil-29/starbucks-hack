@@ -9,23 +9,49 @@
 </head>
 <body>
 
-selectDepositOption の　depositTargetCardType = value;　の直前にlet currentSelectedCardType = 'main';　を書いてたんだけど	let depositTargetCardType = 'main'; の真下に書き直したらエラーが解決したなんで？
+
+ if (changeType === 'main-card') { 
+        // メインカードへの切り替え    
+        currentSelectedCardType = 'main'; 
+        const mainSrc = '../images/my-card-main.svg';
+        const mainTxt = starbucksCardBalance.toLocaleString(); 
+        
+        if (modalCardImg) modalCardImg.setAttribute('src', mainSrc);
+        if (modalBalance) modalBalance.textContent = '¥' + mainTxt;
+        if (mainCardImg) mainCardImg.setAttribute('src', mainSrc); 
+        if (mainCardBalance) mainCardBalance.textContent = mainTxt;
+
+        if (qrCardNameEl) qrCardNameEl.textContent = 'Starbucks Card'
+        if (mainCardLabel) mainCardLabel.textContent = 'Starbucks Card'
+
+    } else if (changeType === 'sub-card') { 
+       // サブカードへの切り替え
+       currentSelectedCardType = 'sub'; 
+       const subSrc = '../images/my-card-sub.png';
+       const subTxt = subCardBalance.toLocaleString(); 
+
+       if (modalCardImg) modalCardImg.setAttribute('src', subSrc); 
+       if (modalBalance) modalBalance.textContent = '¥' + subTxt; 
+       if (mainCardImg) mainCardImg.setAttribute('src', subSrc);
+       if (mainCardBalance) mainCardBalance.textContent = subTxt;
+
+       if (qrCardNameEl) qrCardNameEl.textContent = 'サブカード';
+       if (mainCardLabel) mainCardLabel.textContent = 'サブカード';
+
+    }	
 
 	
 -------------------------------------------------	
-
 	
 currentSelectedCardType
         ↓
 「現在のカード」
 第1モーダル・ヒーロー
 
-
 depositTargetCardType
         ↓
 「今回の入金対象」
 第2モーダル
-
 
 autochargeTargetCardType
         ↓
