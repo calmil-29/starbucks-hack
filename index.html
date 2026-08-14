@@ -9,73 +9,7 @@
 </head>
 <body>
 
-	
-function switchCard(event) {
-    // 1. 安全装置(土台のファイルがあるか確認)
-    if (!event) return;
-    // モダール自体や別枠が閉じてしまうのを防ぐための防波堤
-    event.stopPropagation();
-
-    // 2. タップを監視している「大元の枠組み（要素）」をガシッと掴む
-    // ※中にある文字や画像を触っても、必ずこの枠全体（currentTarget）が掴める
-    const clickedItem = event.currentTarget;
-
-    // 3. タップされたカードの「目印(main-card か sub-card か)」を読み取る
-    // 「data-change-item」に合わせて指定
-    const changeType = clickedItem.getAttribute('data-change-type') || clickedItem.getAttribute('data-change-item');
-
-    // 4. 掴む要素(第１モダールの中身 + 表のヒーロー画像の中身)　//ここ？
-    const modalCardImg = document.getElementById('qrModalCardImg')
-    const modalBalance = document.querySelector('.qr-card-balance')
-    const mainCardImg = document.getElementById('mainCardImg') 
-    const mainCardBalance = document.getElementById('mainCardBalance') 
-
-    // 5.条件分岐：目印に合わせて、画面と金額を書き換える　
-    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
-    const mainCardLabel = document.querySelector('.balance-display .card-label'); 
-
-    if (changeType === 'main-card') { 
-        // メインカードへの切り替え    
-        currentSelectedCardType = 'main';  
-        const mainSrc = '../images/my-card-main.svg';
-        const mainTxt = starbucksCardBalance.toLocaleString(); 
-        
-       if (modalCardImg) modalCardImg.setAttribute('src', mainSrc);
-       if (modalBalance) modalBalance.textContent = '¥' + mainTxt;
-       if (mainCardImg) mainCardImg.setAttribute('src', mainSrc); 
-       if (mainCardBalance) mainCardBalance.textContent = mainTxt;
-
-       if (qrCardNameEl) qrCardNameEl.textContent = 'Starbucks Card'
-       if (mainCardLabel) mainCardLabel.textContent = 'Starbucks Card'
-
-    } else if (changeType === 'sub-card') { 
-       // サブカードへの切り替え
-       currentSelectedCardType = 'sub'; 
-       const subSrc = '../images/my-card-sub.png';
-       const subTxt = subCardBalance.toLocaleString(); 
-
-       if (modalCardImg) modalCardImg.setAttribute('src', subSrc); 
-       if (modalBalance) modalBalance.textContent = '¥' + subTxt; 
-       if (mainCardImg) mainCardImg.setAttribute('src', subSrc);
-       if (mainCardBalance) mainCardBalance.textContent = subTxt;
-
-       if (qrCardNameEl) qrCardNameEl.textContent = 'サブカード';
-       if (mainCardLabel) mainCardLabel.textContent = 'サブカード';
-
-    }
-
-    // ７. 切り替えが終わったら、カード選択の別枠を自動でシュッと閉じる
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-    selectorWindow?.classList.remove('is-active')
-}
-
-	
-
-
-
-
-
-
+入金先が対象のカードが第１で選ばれてるカードの状態
 
 
 	
