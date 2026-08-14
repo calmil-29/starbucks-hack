@@ -8,9 +8,45 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+    if (event) event.stopPropagation();
 
-入金先が対象のカードが第１で選ばれてるカードの状態
+    // 1. 【第2モーダル】から「選択されているカード名」と「入金額」を取得　
+    const selectedCardText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || '';
+    const selectedAmountText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
 
+    // 入金額を数値に変換
+    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
+    if (isNaN(depositAmount) || depositAmount === 0) {
+        alert("入金額が正しく取得できませんでした。");
+        return;
+    }
+
+    // 2. 【第2モーダル】で選ばれたカード名に応じて、金庫の数字を足し算し、さらに「画像パス」と「正しい名前」を用意する
+    let updatedBalance = 0;
+    let cardSrc = '';   // 切り替えるべき画像の通り道
+    let cardName = '';  // 切り替えるべきカード名の通り道
+
+
+    // 金庫の中身を直球で確認
+    if (depositTargetCardType === 'main') {  // ⭐️ currentSelectedCardType から変更済み 
+        // メインカードにお金を足す
+        starbucksCardBalance = starbucksCardBalance + depositAmount;
+        updatedBalance = starbucksCardBalance;
+        cardSrc = '../images/my-card-main.svg'; // メインカードの画像
+        cardName = 'Starbucks Card';        // メインカードの名前
+    } else {
+        // サブカードにお金を足す
+        subCardBalance = subCardBalance + depositAmount;
+        updatedBalance = subCardBalance;
+        cardSrc = '../images/my-card-sub.png';   // サブカードの画像
+        cardName = 'サブカード';             // サビカードの名前
+    }
+
+
+-------------------------------------------------	
+
+	
 currentSelectedCardType
         ↓
 「現在のカード」
