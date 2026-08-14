@@ -9,16 +9,8 @@
 </head>
 <body>
 
-	A.入金そのものをするコード
-	
-	B.入金後の残高表示を更新するコード
-	
-	C.第１・ヒーローの「現在のカード」を更新するコード
-
-	document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
-    if (event) event.stopPropagation();
-
-    // 1. 【第2モーダル】から「選択されているカード名」と「入金額」を取得　
+	A. 入金そのものをするコード
+	// 1. 【第2モーダル】から「選択されているカード名」と「入金額」を取得　
     const selectedCardText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || '';
     const selectedAmountText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
 
@@ -46,39 +38,21 @@
         subCardBalance = subCardBalance + depositAmount;
         updatedBalance = subCardBalance;
         cardSrc = '../images/my-card-sub.png';   // サブカードの画像
-        cardName = 'サブカード';                   // サビカードの名前
+        cardName = 'サブカード';                   // サブカードの名前
     }
-
-    // 3. 最新の金額・画像・カード名をすべての画面パーツに同時反映（ここでカードが物理的に切り替わる）　
-    // ① 【ヒーロー部分】（表のメイン画面）の更新 
-    const mainBalanceEl = document.getElementById('mainCardBalance');
+	
+	B. 入金後の残高表示を更新するコード
+	 const mainBalanceEl = document.getElementById('mainCardBalance');
     if (mainBalanceEl) mainBalanceEl.textContent = updatedBalance.toLocaleString();
 
-    const mainCardImg = document.getElementById('mainCardImg');
-    if (mainCardImg) mainCardImg.setAttribute('src', cardSrc); 
-
-    const mainCardLabel = document.querySelector('.balance-display .card-label');
-    if (mainCardLabel) mainCardLabel.textContent = cardName; 
-
-    // ② 【第１モーダル】（QR画面）の更新 
-    const modalBalanceEl = document.querySelector('.qr-modal-card-zone .qr-card-balance');
+	 const modalBalanceEl = document.querySelector('.qr-modal-card-zone .qr-card-balance');
     if (modalBalanceEl) modalBalanceEl.textContent = '¥' + updatedBalance.toLocaleString();
 
-    // 画像
-    const qrModalCardImg = document.querySelector('.qr-modal-card-graphic img');
-    if (qrModalCardImg) qrModalCardImg.setAttribute('src', cardSrc); 
-    
-    // 選択時表示タイトル
-    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
-    if (qrCardNameEl) qrCardNameEl.textContent = cardName; 
-
-    // ドロップダウンの金額を更新
-    // メイン
-    const menuMainBalanceEl = document.querySelector('.qr-selector-item[data-change-type="main-card"] .qr-selector-card-balance');
+	const menuMainBalanceEl = document.querySelector('.qr-selector-item[data-change-type="main-card"] .qr-selector-card-balance');
     if (menuMainBalanceEl) {
         menuMainBalanceEl.textContent = '¥' + starbucksCardBalance.toLocaleString(); // 金庫のメイン残高を反映
     }
-    // サブ
+	
     const menuSubBalanceEl = document.querySelector('.qr-selector-item[data-change-type="sub-card"] .qr-selector-card-balance');
     if (menuSubBalanceEl) {
         menuSubBalanceEl.textContent = '¥' + subCardBalance.toLocaleString(); // 金額のサブ残高を反映
@@ -100,14 +74,22 @@
     if (depositWindowSubEl) {
         depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
     }
-    
-    // 【第２モーダル】全体を閉じる
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        depositModal.classList.remove('is-open');
-    }
+	
+	C. 第１・ヒーローの「現在のカード」を更新するコード
+	 const mainCardImg = document.getElementById('mainCardImg');
+    if (mainCardImg) mainCardImg.setAttribute('src', cardSrc); 
 
-});
+    const mainCardLabel = document.querySelector('.balance-display .card-label');
+    if (mainCardLabel) mainCardLabel.textContent = cardName; 
+
+	 const qrModalCardImg = document.querySelector('.qr-modal-card-graphic img');
+    if (qrModalCardImg) qrModalCardImg.setAttribute('src', cardSrc); 
+    
+    // 選択時表示タイトル
+    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
+    if (qrCardNameEl) qrCardNameEl.textContent = cardName; 
+
+    
 
 
 
