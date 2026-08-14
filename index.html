@@ -9,6 +9,16 @@
 </head>
 <body>
 
+
+const mainBalanceEl = document.getElementById('mainCardBalance');   // 　→ あくまでヒーロー画面に写す金額であって、カードの種類を見てるわけじゃないから？
+    if (mainBalanceEl) mainBalanceEl.textContent = updatedBalance.toLocaleString();
+const modalBalanceEl = document.querySelector('.qr-modal-card-zone .qr-card-balance');  // → ここも同上。カードの種類で判断してるわけじゃないから？
+    if (modalBalanceEl) modalBalanceEl.textContent = '¥' + updatedBalance.toLocaleString();
+const depositCurrentValueElObj = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value');　// → そもそも考えがわからなくなった。
+    if (depositCurrentValueElObj) {
+        depositCurrentValueElObj.textContent = `${cardName} ¥${updatedBalance.toLocaleString()}`;
+    }	
+	
 	A. 入金そのものをするコード
 	// 1. 【第2モーダル】から「選択されているカード名」と「入金額」を取得　
     const selectedCardText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || '';
