@@ -58,8 +58,6 @@
         menuSubBalanceEl.textContent = '¥' + subCardBalance.toLocaleString(); // 金額のサブ残高を反映
     }
 
-    // 入金したあと【第２モーダル】のカードの金額も最新にする　　
-    // 「現在表示されてるカード」の表示を更新
     const depositCurrentValueElObj = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value');
     if (depositCurrentValueElObj) {
         depositCurrentValueElObj.textContent = `${cardName} ¥${updatedBalance.toLocaleString()}`;
