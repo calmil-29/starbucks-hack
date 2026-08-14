@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+let updatedBalance = 0;
+    let cardSrc = '';   
+    let cardName = '';  
 
 const mainBalanceEl = document.getElementById('mainCardBalance');   // 　→ あくまでヒーロー画面に写す金額であって、カードの種類を見てるわけじゃないから？
     if (mainBalanceEl) mainBalanceEl.textContent = updatedBalance.toLocaleString();
