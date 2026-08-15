@@ -9,6 +9,12 @@
 </head>
 <body>
 
+	let updatedBalance = 0;
+    // 「 '' 」 ：入金対象のカードに応じて、あとで画面を書き換えるための「一時的な入れ物」 
+    let cardSrc = '';   // 画像
+    let cardName = '';  // 名前
+
+	
 	selectedAmountText = HTMLで「選択されている入金額」
 	↓
 	depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10); で¥1,000 を計算できる1000に保存
@@ -16,7 +22,9 @@
 	starbucksCardBalance = [let]starbucksCardBalance + depositAmount
 	↓
 	updatedBalance「今回入金したカードの残高」 の中身は starbucksCardBalance って認識で合ってる？
-	
+
+
+	depositTargetCardType
 
 
 	これを第１・ヒーローにも適応すればいいのかなとも思ったけど。
