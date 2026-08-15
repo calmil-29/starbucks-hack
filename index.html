@@ -9,14 +9,14 @@
 </head>
 <body>
 
-	selectedCardText :HTML
-
-	selectDepositOption の中の
-	//のコメントこれで認識合ってる？
-	// 【表示ラベルのDOM要素を掴む】【第３モーダル】なら.autocharge-menu-list 【第２モーダル】なら.deposit-menu-list を掴む
-    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    // HTML側入金画面での「例：¥1,000」をターゲットにする
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+	selectedAmountText = HTMLで「選択されている入金額」
+	↓
+	depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10); で¥1,000 を計算できる1000に保存
+	↓
+	starbucksCardBalance = [let]starbucksCardBalance + depositAmount
+	↓
+	updatedBalance「今回入金したカードの残高」 の中身は starbucksCardBalance って認識で合ってる？
+	
 
 
 	これを第１・ヒーローにも適応すればいいのかなとも思ったけど。
