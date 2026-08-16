@@ -50,53 +50,17 @@ D.
 第１・ヒーロー　サブ ¥3,500 （ドロップダウン：メイン¥1,000 サブ¥3,500）
 第２ サブ ¥3,500 （ドロップダウン　メイン¥1,000 サブ¥3,500）   
   
-
----------------------------------------------
-document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
-    if (event) event.stopPropagation();
-
-    // ============================================
-    // A. 【第2モーダル】から「今回の入金額」を取得
-    // ============================================
-    
-    const selectedAmountText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
-
-    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
-
-    if (isNaN(depositAmount) || depositAmount === 0) {
-        alert("入金額が正しく取得できませんでした。");
-        return;
-    }
-
-    // =====================================================
-    // B. 【第2モーダル】で選ばれた「入金対象カード」に入金する
-    // =====================================================
-
-    let updatedBalance = 0;
-
-    if (depositTargetCardType === 'main') { 
-
-        // メインカードにお金を足す
-        starbucksCardBalance = starbucksCardBalance + depositAmount;
-
-        // 今回入金したカードの「入金残高」を保存
-        updatedBalance = starbucksCardBalance;
-       
-    } else {
-
-        // サブカードにお金を足す
-        subCardBalance = subCardBalance + depositAmount;
-
-        // 今回入金したカードの「入金残高」を保存
-        updatedBalance = subCardBalance;
-      
-    }
-
-    // ==================================================
-    // C. 第１・ヒーローには「残高が変わった」という結果だけ反映
+ここ変えたけど解決せず。
+ // ==================================================
+    // C. 第１・ヒーローには「現在のカード」の結果だけ反映
     // ==================================================
 
-    // 【ヒーロー】の残高表示だけ更新  ※紛らわしかったので mainBalanceEl mainCardBalance の main 部分を hero HTML・JSともに変更
+    const currentBalance = 
+       currentSelectedCardType === 'main'
+           ? starbucksCardBalance 
+           : subCardBalance;
+
+    // 【ヒーロー】の残高表示だけ更新 
     const heroBalanceEl = 
         document.getElementById('heroCardBalance');   
 
@@ -116,7 +80,7 @@ document.getElementById('finalDepositBtn')?.addEventListener('click', function(e
             '¥' + updatedBalance.toLocaleString();
     }
 
-    // 第1モーダルのカード選択ドロップダウン　※第１にもドロップダウンあるので追記
+    // 第1モーダルのカード選択ドロップダウン　
     const modalWindowMainEl = 
         document.querySelector(
             '.qr-card-selector-window .qr-selector-item:nth-child(2) span'
@@ -139,58 +103,6 @@ document.getElementById('finalDepositBtn')?.addEventListener('click', function(e
         modalWindowsubEl.textContent =
             '¥' + subCardBalance.toLocaleString(); 
     }   
-
-    // =================================================
-    // D. 第２モーダル内の残高表示を最新状態にする
-    // =================================================
-    const depositCurrentValueEl = 
-        document.querySelector(
-            '.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value'
-        );
-
-    if (depositCurrentValueEl) {
-
-        // 第２モーダルで「今回選んだカード」を
-        // そのまま表示しておく
-        if (depositTargetCardType === 'main') {
-            depositCurrentValueEl.textContent =
-                `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;     
-        } else {
-            depositCurrentValueEl.textContent =
-                `サブカード ¥${subCardBalance.toLocaleString()}`; 
-        }
-    }    
-
-    // 第２モーダルのカード選択ドロップダウン
-    // メインカードの最新情報
-    const depositWindowMainEl = 
-        document.querySelector(
-            '#depositCardWindow .deposit-selector-item:nth-child(1) span'
-        );
-
-    if (depositWindowMainEl) {
-        depositWindowMainEl.textContent =
-            '¥' + starbucksCardBalance.toLocaleString(); 
-    }   
-    
-    // 第２モーダルのカード選択ドロップダウン
-    // サブカードの最新情報
-    const depositWindowSubEl =
-        document.querySelector(
-            '#depositCardWindow .deposit-selector-item:nth-child(2) span'
-        );
-    if (depositWindowSubEl) {
-        depositWindowSubEl.textContent =
-        '¥' + subCardBalance.toLocaleString();
-    }    
-    
-    // 【第２モーダル】全体を閉じる
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        depositModal.classList.remove('is-open');
-    }
-
-});	
 
 	
 	  
