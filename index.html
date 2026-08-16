@@ -9,45 +9,50 @@
 </head>
 <body>
 
-	let updatedBalance = 0;
-    // 「 '' 」 ：入金対象のカードに応じて、あとで画面を書き換えるための「一時的な入れ物」 
-    let cardSrc = '';   // 画像
-    let cardName = '';  // 名前
+<!-- カード選択 --> 
+        <div class="qr-card-selector-window">
+          <p class="qr-selector-title">カードを選択</p>
+          
+          <!-- 「カード用のドロップダウン」 -->
+          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
+            <img src="../images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-card-balance">¥0</span>
+            </div>
+          </div> 
 
-	
-	selectedAmountText = HTMLで「選択されている入金額」
-	↓
-	depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10); で¥1,000 を計算できる1000に保存
-	↓
-	starbucksCardBalance = [let]starbucksCardBalance + depositAmount
-	↓
-	updatedBalance「今回入金したカードの残高」 の中身は starbucksCardBalance って認識で合ってる？
+          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <img src="../images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-card-balance">¥3,500</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
+        </div><!-- .qr-card-selector-window -->   
+ // 第1モーダルのカード選択ドロップダウン
+    const modalWindowMainEl = 
+        document.querySelector(
+            '.qr-card-selector-window .qr-selector-card-balance:nth-child(1) span'
+        );
 
+    // メインカードの最新情報
+    if (modalWindowMainEl) {
+        modalWindowMainEl.textContent =
+            '¥' + starbucksCardBalance.toLocaleString(); 
+    }   
 
-	depositTargetCardType
+     // 第1モーダルのカード選択ドロップダウン
+    const modalWindowsubEl = 
+        document.querySelector(
+            '.qr-card-selector-window .qr-selector-card-balance:nth-child(2) span'
+        );
 
-
-	これを第１・ヒーローにも適応すればいいのかなとも思ったけど。
-    // 2. 【第2モーダル】で選ばれたカード名に応じて、金庫の数字を足し算し、さらに「画像パス」と「正しい名前」を用意する
-    let updatedBalance = 0;
-    let cardSrc = '';   // 切り替えるべき画像の通り道
-    let cardName = '';  // 切り替えるべきカード名の通り道
-
-    // 金庫の中身を直球で確認
-    if (depositTargetCardType === 'main') {  // ⭐️ currentSelectedCardType から変更済み 
-        // メインカードにお金を足す
-        starbucksCardBalance = starbucksCardBalance + depositAmount;
-        updatedBalance = starbucksCardBalance;
-        cardSrc = '../images/my-card-main.svg'; // メインカードの画像
-        cardName = 'Starbucks Card';            // メインカードの名前
-    } else {
-        // サブカードにお金を足す
-        subCardBalance = subCardBalance + depositAmount;
-        updatedBalance = subCardBalance;
-        cardSrc = '../images/my-card-sub.png';   // サブカードの画像
-        cardName = 'サブカード';                   // サビカードの名前
-    }
-
+    // サブカードの最新情報    
+    if (modalWindowsubEl) {
+        modalWindowsubEl.textContent =
+            '¥' + subCardBalance.toLocaleString(); 
+    }   
 	
 -------------------------------------------------	
 	
