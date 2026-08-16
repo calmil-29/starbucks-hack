@@ -8,51 +8,51 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
- '.qr-card-selector-window .qr-selector-item:nth-child(1) span'
-<!-- カード選択 --> 
-        <div class="qr-card-selector-window">
-          <p class="qr-selector-title">カードを選択</p>
-          
-          <!-- 「カード用のドロップダウン」 -->
-          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
-            <img src="../images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-card-balance">¥0</span>
-            </div>
-          </div> 
+○ 第１から第２、第２から第１のカード・カードの名前の引き渡しかたはできてる。
 
-          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
-            <img src="../images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-card-balance">¥3,500</span>
-            </div>
-          </div> 
-          
-          <!-- 必要に応じて追加 -->
-        </div><!-- .qr-card-selector-window -->   
- // 第1モーダルのカード選択ドロップダウン
-    const modalWindowMainEl = 
-        document.querySelector(
-            '.qr-card-selector-window .qr-selector-card-balance:nth-child(1) span'
-        );
+A.
+第１・ヒーロー　メイン ¥0
+第２メイン ¥0 ←¥1,000入金
+↓
+第１・ヒーロー　メイン ¥1,000 （ドロップダウン：メイン¥1,000 サブ¥3,500）
+第２メイン ¥1,000 （ドロップダウン　メイン¥1,000 サブ¥3,500）
 
-    // メインカードの最新情報
-    if (modalWindowMainEl) {
-        modalWindowMainEl.textContent =
-            '¥' + starbucksCardBalance.toLocaleString(); 
-    }   
+B. 
+第１・ヒーロー　サブ ¥3,500   
+第２サブ ¥3,500 ←¥1,000入金
+↓
+第１・ヒーロー　サブ ¥1,000 （ドロップダウン：メイン¥1,000 サブ¥3,500）   
+第２サブ ¥1,000 （ドロップダウン　メイン¥1,000 サブ¥3,500）
 
-     // 第1モーダルのカード選択ドロップダウン
-    const modalWindowsubEl = 
-        document.querySelector(
-            '.qr-card-selector-window .qr-selector-card-balance:nth-child(2) span'
-        );
+!本来求めてる結果
+第１・ヒーロー　サブ ¥4,500 （ドロップダウン：メイン¥0 サブ¥4,500）   
+第２サブ ¥4,500 （ドロップダウン　メイン¥0 サブ¥4,500）  
 
-    // サブカードの最新情報    
-    if (modalWindowsubEl) {
-        modalWindowsubEl.textContent =
-            '¥' + subCardBalance.toLocaleString(); 
-    }   
+C.  
+第１・ヒーロー　メイン ¥0
+第２サブ ¥3,500 ←¥1,000入金
+↓
+第１・ヒーロー　メイン ¥4,500 （ドロップダウン：メイン¥0 サブ¥4,500）
+第２メイン ¥0 （ドロップダウン　メイン¥0 サブ¥4,500） 
+
+!本来求めてる結果
+第１・ヒーロー　メイン ¥0 （ドロップダウン：メイン¥0 サブ¥4,500）
+第２メイン ¥0 （ドロップダウン　メイン¥0 サブ¥4,500）   
+
+D.  
+第１・ヒーロー　サブ ¥3,500
+第２メイン ¥0 ←¥1,000入金
+↓
+第１・ヒーロー　サブ ¥1,000 （ドロップダウン：メイン¥1,000 サブ¥3,500）
+第２ サブ ¥3,500 （ドロップダウン　メイン¥1,000 サブ¥3,500） 
+
+!本来求めてる結果  
+第１・ヒーロー　サブ ¥3,500 （ドロップダウン：メイン¥1,000 サブ¥3,500）
+第２ サブ ¥3,500 （ドロップダウン　メイン¥1,000 サブ¥3,500）   
+  
+  
+	  
+  
 	
 -------------------------------------------------	
 	
