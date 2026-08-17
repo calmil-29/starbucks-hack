@@ -8,9 +8,45 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-function openDepositModal(event) {...}
-の中に第１モーダルで現在選ばれているカードを、今回の入金対象の「初期値」として引き継ぐために　depositTargetCardType = currentSelectedCardType; を書いているけど、その結果（値？）を 
-document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) { ... } の中でも支えているのはなぜ？	
+
+じゃあここは？ selectedAmountText depositAmount で計算する入金額が決定されるけど、ここで選ばれる前に入金額の選択肢は実際にはドロップダウンの中で選択されてから決まるはずだけど、toggleDepositWindow　は別の関数でしょ？ここからどうやってその結果を finalDepositBtn は読んでるの？ 	
+	
+function toggleDepositWindow(type, event) {   
+    if (event) event.stopPropagation(); 
+
+    // 他の別窓を全部閉じる
+    closeAllSelectorWindows();
+    
+    // 開きたい別枠を探す
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1); 
+    const targetId = `deposit${upperType}Window`;
+
+    // 開く
+    const targetWindow = document.getElementById(targetId); 
+    if (targetWindow) {
+        targetWindow.classList.add('is-active');
+    }
+}
+............	
+
+
+document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+
+    if (event) event.stopPropagation();
+
+    // ============================================
+    // A. 【第2モーダル】から「今回の入金額」を取得
+    // ============================================
+    
+    const selectedAmountText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
+
+    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
+
+    if (isNaN(depositAmount) || depositAmount === 0) {
+        alert("入金額が正しく取得できませんでした。");
+        return;
+    }
+............	
 	
 	
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
