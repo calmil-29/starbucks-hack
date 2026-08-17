@@ -9,9 +9,29 @@
 </head>
 <body>
 
-じゃあここは？ selectedAmountText depositAmount で計算する入金額が決定されるけど、ここで選ばれる前に入金額の選択肢は実際にはドロップダウンの中で選択されてから決まるはずだけど、toggleDepositWindow　は別の関数でしょ？ここからどうやってその結果を finalDepositBtn は読んでるの？ 	
-	
-function toggleDepositWindow(type, event) {   
+
+
+function selectDepositOption(type, value, event) { ... } のタイトルを「【第２・第３共通】ドロップダウン選択肢をタップした時の画面表示の処理」　にしているけど、パッと見でわかるようにしたい。
+「画面表示の処理」	だとわかりずらいかも。
+あと、ここもタイトルの整理したい。なんて表現すればいい？
+
+// ================================================================
+// 【第2モーダル】ドロップダウンの開閉とそれに伴う画面上の値の上書き処理  　
+// ================================================================
+
+// 「.deposit-selector-windowからis-activeを外せ」まずはドロップダウンを閉じとく
+function closeAllSelectorWindows() {
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
+}
+
+// ================================================================
+// ドロップダウンの開閉とそれに伴う画面上の値の上書き処理
+// ================================================================
+function toggleDepositWindow(type, event) {   // 引数の「type」の中に、'card' や 'amount' や 'method' という文字が自動で入ってくる
     if (event) event.stopPropagation(); 
 
     // 他の別窓を全部閉じる
@@ -27,26 +47,7 @@ function toggleDepositWindow(type, event) {
         targetWindow.classList.add('is-active');
     }
 }
-............	
-
-
-document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
-
-    if (event) event.stopPropagation();
-
-    // ============================================
-    // A. 【第2モーダル】から「今回の入金額」を取得
-    // ============================================
-    
-    const selectedAmountText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
-
-    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
-
-    if (isNaN(depositAmount) || depositAmount === 0) {
-        alert("入金額が正しく取得できませんでした。");
-        return;
-    }
-............	
+ 	
 	
 	
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
