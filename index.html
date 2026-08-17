@@ -10,44 +10,33 @@
 <body>
 
 
+あと、ここもタイトルの整理したい。なんて表現すればいい？ドロップダウンの外をタップした時ドロップダウンだけを閉じれるようにした処理なんだけど。構造上、キャプチャを使わないとできなくて。
+// ====================================
+// ドロップダウンのキャプチャ係　　　
+// ====================================
+const depositModal = document.getElementById('depositModal');
 
-function selectDepositOption(type, value, event) { ... } のタイトルを「【第２・第３共通】ドロップダウン選択肢をタップした時の画面表示の処理」　にしているけど、パッと見でわかるようにしたい。
-「画面表示の処理」	だとわかりずらいかも。
-あと、ここもタイトルの整理したい。なんて表現すればいい？
+depositModal.addEventListener('click', function(event) {
+    console.log('キャプチャ係がクリックを受け取った');
 
-// ================================================================
-// 【第2モーダル】ドロップダウンの開閉とそれに伴う画面上の値の上書き処理  　
-// ================================================================
+    const activeWindow = document.querySelector('.deposit-selector-window.is-active');
 
-// 「.deposit-selector-windowからis-activeを外せ」まずはドロップダウンを閉じとく
-function closeAllSelectorWindows() {
-    const allWindows = document.querySelectorAll('.deposit-selector-window');
+    if (activeWindow) {
+        console.log('ドロップダウンが開いている');    
 
-    allWindows.forEach(win => {
-        win.classList.remove('is-active');
-    });
-}
-
-// ================================================================
-// ドロップダウンの開閉とそれに伴う画面上の値の上書き処理
-// ================================================================
-function toggleDepositWindow(type, event) {   // 引数の「type」の中に、'card' や 'amount' や 'method' という文字が自動で入ってくる
-    if (event) event.stopPropagation(); 
-
-    // 他の別窓を全部閉じる
-    closeAllSelectorWindows();
-    
-    // 開きたい別枠を探す
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1); 
-    const targetId = `deposit${upperType}Window`;
-
-    // 開く
-    const targetWindow = document.getElementById(targetId); 
-    if (targetWindow) {
-        targetWindow.classList.add('is-active');
+        if (event.target.closest('.deposit-selector-window')) {
+            console.log('ドロップダウンの中をタップした');
+           
+        } else {
+            console.log('ドロップダウンの外をタップした');
+            closeAllSelectorWindows();
+            event.stopPropagation();
+        }
+    } else {
+        console.log('ドロップダウンが開いていない');    
     }
-}
- 	
+
+}, { capture: true });
 	
 	
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
