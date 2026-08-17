@@ -8,7 +8,96 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+ 
+document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+    if (event) event.stopPropagation();
+
+    // ============================================
+    // A. 【第2モーダル】から「今回の入金額」を取得
+    // ============================================
     
+    const selectedAmountText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
+
+    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
+
+    if (isNaN(depositAmount) || depositAmount === 0) {
+        alert("入金額が正しく取得できませんでした。");
+        return;
+    }
+
+    // =====================================================
+    // B. 【第2モーダル】で選ばれた「入金対象カード」に入金する
+    // =====================================================
+
+    let updatedBalance = 0;
+
+    if (depositTargetCardType === 'main') { 
+
+        // メインカードにお金を足す
+        starbucksCardBalance = starbucksCardBalance + depositAmount;
+
+        // 今回入金したカードの「入金残高」を保存
+        updatedBalance = starbucksCardBalance;
+       
+    } else {
+
+        // サブカードにお金を足す
+        subCardBalance = subCardBalance + depositAmount;
+
+        // 今回入金したカードの「入金残高」を保存
+        updatedBalance = subCardBalance;
+      
+    }
+
+    // ==================================================
+    // C. 第１・ヒーローには「現在のカード」の結果だけ反映
+    // ==================================================
+
+    // 「現在のカード」と「今回入金したカード」が同じ場合だけ、第１・ヒーローの残高を更新する
+    if (currentSelectedCardType === depositTargetCardType) {
+
+        // 現在のカードがメインなら、メインの最新残高を表示
+        if (currentSelectedCardType === 'main') {
+            
+            const heroBalanceEl = document.getElementById('heroCardBalance');
+
+            if (heroBalanceEl) {
+                heroBalanceEl.textContent = 
+                    starbucksCardBalance.toLocaleString();                    
+            }
+
+            const modalBalanceEl = 
+                document.querySelector(
+                    '.qr-modal-card-zone .qr-card-balance'
+                );
+
+            if (modalBalanceEl) {
+                modalBalanceEl.textContent = 
+                    starbucksCardBalance.toLocaleString(); 
+            }
+        
+        // 現在のカードがサブなら、サブの最新情報を表示    
+        } else {
+
+            const heroBalanceEl = document.getElementById('heroCardBalance');
+            if (heroCardBalance) {
+                heroCardBalance.textContent = 
+                    subCardBalance.toLocaleString();
+            }
+
+            const modalBalanceEl  =  document.querySelector(
+                    '.qr-modal-card-zone .qr-card-balance')
+            if (modalBalanceEl) {
+                modalBalanceEl.textContent = 
+                       subCardBalance.toLocaleString();
+            }
+        }
+    }
+	
+...............
+	
+ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
+	
     
 ○ 第１・ヒーローから第２、第２から第１・ヒーローのカード・カードの名前の引き渡しかたはできてる。
 
