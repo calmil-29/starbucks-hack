@@ -9,9 +9,17 @@
 </head>
 <body>
 
-保存してるだけ! selectorWindow が実行できているのは関数switchCard() の中に入れてるからなの!? なんかずっと勘違いしてた。というか単独で動けるものだと、昨日の「関数の外？HTMLで事前に書き換えたもの？自身の変数？なのか」でさらに発展（勘違い）させて昇華（勘違い）してた。取得と処理と分けて考えないといけなんだね？？
-いや、矢印の部分はそもそもコードがおかしくなっていると思ってたから、今回ので動かなくても、そこ根本原因じゃないと思ってて気にしてなかった。「.」は単なる打ち損ないを見逃してた。
-is-open → is-active は HTML/CSS/JS 全部統一済みだよ。
+
+じゃあ、那２モーダルのキャプチャ制御 depositModal で closeAllSelectorWindows() が成立したのは。
+function closeAllSelectorWindows() {
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
+}
+これを整理すれば理解できそう。	
+
 
 
 	
