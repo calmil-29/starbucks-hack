@@ -9,6 +9,70 @@
 </head>
 <body>
 
+第２でも第１と同じで、自分のモダールを閉じるため用に closeDepositModal()ついてるよ。だから第２にも event.stopPropagation() を書いているんでしょ？
+<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)"> 
+
+で、一応自分でも答えもらう前に書いてみたんだけど（やっぱ失敗してたけど）。
+
+自分（動かなかった）：	
+const qrModal = document.getElementById('qrtModal');
+
+qrModal.addEventListener('click', function(event) {
+    
+    const activeWindow = document.querySelector('.qr-card-selector-window.is-active');
+
+    if (activeWindow) {
+       
+        if (event.target.closest('.qr-card-selector-window')) {     
+           
+        } else {
+
+	        // 第１モーダル専用 switchCard(event) {...} に中に書いてある、第１ドロップダウンを閉じる処理：
+	        // const selectorWindow = document.querySelector('.qr-card-selector-window');
+            // selectorWindow?.classList.remove('is-active') 	
+	        // この selectorWindow 入れればいいと思ってた。
+            selectorWindow();
+            event.stopPropagation();
+        }
+    }
+
+}, { capture: true });
+
+答え ：
+const qrModal = document.getElementById('qrModal');
+
+qrModal.addEventListener('click' , function(event) {
+
+    const activeWindow = document.querySelector(
+        '.qr-card-selector-window.is-active'
+    );
+
+    if (activeWindow) {
+
+        if (event.target.closest('.qr-card-selector-window')) {
+
+            return;  // 第２のコードでは書いていなかったからいらないと思ってた。
+            
+        } else {
+
+            activeWindow.classList.remove('is-active');
+
+            const balanceWrapper = document.querySelector('qr-balance-wrapper');
+            if (balanceWrapper) {
+                balanceWrapper.classList.remove('is-active');
+            }
+
+            event.stopPropagation();
+        }
+    }
+}, { capture: true });
+	
+	
+	
+
+
+----------------------------------------------------------------------	
+	
 //【第２モーダルキャプチャ制御】メニュー内タップと外側タップを判定し、ドロップダウンを閉じる処理　　	
 // 【効率化】ブラウザの検索負荷を減らすため、土台となるDOM要素を事前に１回だけ取得・保持しておく
 const depositModal = document.getElementById('depositModal');
@@ -90,7 +154,6 @@ const selectorWindow = document.querySelector('.qr-card-selector-window');
 🔥 自分で考えたコード（動かなかった）-------------------------------------------------------------	
 const qrModal = document.getElementById('qrtModal');
 
-// クリックされたときは、メモリに保持している depositModal をそのまま再利用する
 qrModal.addEventListener('click', function(event) {
     
     const activeWindow = document.querySelector('.qr-card-selector-window.is-active');
@@ -100,56 +163,13 @@ qrModal.addEventListener('click', function(event) {
         if (event.target.closest('.qr-card-selector-window')) {     
            
         } else {
-            console.log('ドロップダウンの外をタップした');
+            
             selectorWindow();
             event.stopPropagation();
         }
     }
 
 }, { capture: true });
-
-🔥HTML ---------------------------------------------------------
-<div class="qr-modal-card-zone">
-        <div class="qr-card-meta">
-          <span class="qr-card-name">Starbucks Card</span>
-          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
-            <span class="qr-card-balance">¥0</span>
-            <span class="qr-arrow-balance"></span>
-          </div>
-        </div>
-
-        <button class="qr-deposit-btn" onclick="openDepositModal(event)">入金</button>
-
-        <!-- カードを選択 「カード選択のドロップダウン」--> 
-        <div class="qr-card-selector-window">
-          <p class="qr-selector-title">カードを選択</p>
-          
-          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
-            <img src="../images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-card-balance">¥0</span>
-            </div>
-          </div> 
-
-          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
-            <img src="../images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-card-balance">¥3,500</span>
-            </div>
-          </div> 
-          
-          <!-- 必要に応じて追加 -->
-        </div><!-- .qr-card-selector-window -->   
-
-      </div><!-- .qr-modal-card-zone -->	
-	
-
-
-
-
-
-
-
 
 
 
