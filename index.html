@@ -31,28 +31,15 @@ depositModal.addEventListener('click', function(event) {
 
 }, { capture: true });
 
-💡----------	
-第２キャプチャで開いているドロップダウンの窓をすべて同時に閉じる処理：closeAllSelectorWindows() を使っているから
-第１にも当てはめるのかなと思ったんだけど
-第２：	
-function closeAllSelectorWindows() {
-    const allWindows = document.querySelectorAll('.deposit-selector-window');
 
-    allWindows.forEach(win => {
-        win.classList.remove('is-active');
-    });
-}
-
-第１：
-const selectorWindow = document.querySelector('.qr-card-selector-window');
-    selectorWindow?.classList.remove('is-active')	
-
-	
-	
 第１情報 ======================================================================
+		
+💡----------
+
+貼り忘れてた。第１にも第２のと同じ役割のIDあるよ	
+<div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
 	
-🔥【第１モーダル】カードの「v」を押した時に、カード切り替え窓を開閉する関数---------------------------------------------------------
-	
+あと、【第１モーダル】カードの「v」を押した時に、カード切り替え窓を開閉する関数	
 function toggleCardSelector(event) {
 
     if(!event) return;
@@ -76,6 +63,24 @@ function toggleCardSelector(event) {
         balanceWrapper.classList.toggle('is-open');
     }
 }
+
+それと、第２キャプチャで開いているドロップダウンの窓をすべて同時に閉じる処理：closeAllSelectorWindows() を使っているから
+第１にも当てはめるのかなとも思ったんだけど
+第２：	
+function closeAllSelectorWindows() {
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
+}
+
+第１：
+const selectorWindow = document.querySelector('.qr-card-selector-window');
+    selectorWindow?.classList.remove('is-active')	
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^	
+	
 
 🔥第１モーダルのドロップダウンのを閉じる処理 ---------------------------------
  const selectorWindow = document.querySelector('.qr-card-selector-window');
