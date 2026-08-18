@@ -31,8 +31,125 @@ depositModal.addEventListener('click', function(event) {
 
 }, { capture: true });
 
+💡----------	
+第２キャプチャで開いているドロップダウンの窓をすべて同時に閉じる処理：closeAllSelectorWindows() を使っているから
+第１にも当てはめるのかなと思ったんだけど
+第２：	
+function closeAllSelectorWindows() {
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
+}
+
+第１：
+const selectorWindow = document.querySelector('.qr-card-selector-window');
+    selectorWindow?.classList.remove('is-active')	
+
+	
+	
+第１情報 ======================================================================
+	
+🔥【第１モーダル】カードの「v」を押した時に、カード切り替え窓を開閉する関数---------------------------------------------------------
+	
+function toggleCardSelector(event) {
+
+    if(!event) return;
+
+    // 2.超重要！タップの衝撃波が、上のモダール全体に伝わるのをストップする
+    event.stopPropagation();
+    
+    // 3.HTMLから「カード切り替え別窓」の箱をガシッと掴む
+    const selectorWindow = document.querySelector('.qr-card-selector-window');
+    //矢印を回転させるために、クリックされた残高の親(balance-wrapper)を取得
+    const balanceWrapper = document.querySelector('.qr-balance-wrapper');
+
+	// ※ちなみに、このドロップダウンの開閉時のトグルの動きも修正対象：動かない
+    if(selectorWindow) {
+        // 4.「is-active」クラスがついていれば外し、なければつける(トグル)
+        selectorWindow.classList.toggle('is-active');
+    }
+
+    //別窓の開閉と連動して、矢印の親にもクラスを付け外しする
+    if(balanceWrapper) {
+        balanceWrapper.classList.toggle('is-open');
+    }
+}
+
+🔥第１モーダルのドロップダウンのを閉じる処理 ---------------------------------
+ const selectorWindow = document.querySelector('.qr-card-selector-window');
+    selectorWindow?.classList.remove('is-active')
+	
+
+🔥 自分で考えたコード（動かなかった）-------------------------------------------------------------	
+const qrModal = document.getElementById('qrtModal');
+
+// クリックされたときは、メモリに保持している depositModal をそのまま再利用する
+qrModal.addEventListener('click', function(event) {
+    
+    const activeWindow = document.querySelector('.qr-card-selector-window.is-active');
+
+    if (activeWindow) {
+       
+        if (event.target.closest('.qr-card-selector-window')) {     
+           
+        } else {
+            console.log('ドロップダウンの外をタップした');
+            selectorWindow();
+            event.stopPropagation();
+        }
+    }
+
+}, { capture: true });
+
+🔥HTML ---------------------------------------------------------
+<div class="qr-modal-card-zone">
+        <div class="qr-card-meta">
+          <span class="qr-card-name">Starbucks Card</span>
+          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
+            <span class="qr-card-balance">¥0</span>
+            <span class="qr-arrow-balance"></span>
+          </div>
+        </div>
+
+        <button class="qr-deposit-btn" onclick="openDepositModal(event)">入金</button>
+
+        <!-- カードを選択 「カード選択のドロップダウン」--> 
+        <div class="qr-card-selector-window">
+          <p class="qr-selector-title">カードを選択</p>
+          
+          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
+            <img src="../images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-card-balance">¥0</span>
+            </div>
+          </div> 
+
+          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <img src="../images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-card-balance">¥3,500</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
+        </div><!-- .qr-card-selector-window -->   
+
+      </div><!-- .qr-modal-card-zone -->	
+	
 
 
+
+
+
+
+
+
+
+
+
+	
 	
 	
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
