@@ -16,14 +16,11 @@ const depositModal = document.getElementById('depositModal');
 // クリックされたときは、メモリに保持している depositModal をそのまま再利用する
 depositModal.addEventListener('click', function(event) {
     
-
     const activeWindow = document.querySelector('.deposit-selector-window.is-active');
 
     if (activeWindow) {
        
-
-        if (event.target.closest('.deposit-selector-window')) {
-            
+        if (event.target.closest('.deposit-selector-window')) {     
            
         } else {
             console.log('ドロップダウンの外をタップした');
