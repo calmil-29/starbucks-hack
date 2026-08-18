@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
+	
+const depositModal = document.getElementById('depositModal');
 
 第２モーダルのキャプチャ制御 depositModal で closeAllSelectorWindows() が成立したのは。
 function closeAllSelectorWindows() {
@@ -18,7 +19,7 @@ function closeAllSelectorWindows() {
         win.classList.remove('is-active');
     });
 }
-はそもそもどの関数の中にも入らずに自立して処理されてるからか！野生だから！...そういうこと？
+はそもそもどの関数の中にも入らずに自立して処理されてるからか！野生だから！const で書いてあるからだめとかそうじゃなくて、どこに書いてあるか、誰{}に囲われているか...そういうこと？
 
 
 	
