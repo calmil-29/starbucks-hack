@@ -8,47 +8,29 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+* 閉じているとき「^」 */
+.qr-arrow-number { 
+    width: 10px;
+    height: 10px;
+    border-top: 1.5px solid #4DA66C;
+    border-right: 1.5px solid #4DA66C;
 
-このJSの説明をしてほしい。特にこの部分： classList.toggle() と　classList.contains() の部分。classList.add()、　classList.remove()じゃないのはなぜ？	
-	
-<div class="qr-modal-zone">
-        <img id="qrModalImg" src="" alt="支払いコード"> 
-        <div class="qr-code-toggle-wrapper">
-          <p class="qr-code-toggle">コード番号を表示</p>
-          <span class="qr-arrow-number"></span>
-        </div>
-        <p class="qr-code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
-      </div>  
+    /* 135度回転させて、右上が下向きに変わる */
+    transform: rotate(135deg);
 
-//【第１モーダル】「コード番号を表示 v」の開閉(トグル)処理	
-window.addEventListener('load', () => {
-    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');  // コード番号を表示」の箱
-    const toggleBtn = document.querySelector('.qr-code-toggle');              //「コード番号を表示」
-    const codeNumber = document.querySelector('.qr-code-number');             // コード番号「16桁の数字」
+    margin-left: 6px;
+    margin-top: -4px;
+    transition: transform 0.3s ease; /* JSで矢印を上にひっくり返す用 */
 
-    if (toggleWrapper && toggleBtn && codeNumber) {
-        toggleWrapper.addEventListener('click', (event) => {
-            
-            event.stopPropagation();
+    /* タップ対策 */
+    pointer-events: none; 
+}
 
-            // コード番号「16桁の数字」
-            codeNumber.classList.toggle('is-active');
-
-            // コード番号の「v / ^」部分
-            toggleWrapper.classList.toggle('is-active');
-
-            // 文字の後ろの矢印「v」と「^」を切り分ける　　
-            if (codeNumber.classList.contains('is-active')) {
-                toggleBtn.textContent = 'コード番号を非表示';  
-
-            } else {
-                toggleBtn.textContent = 'コード番号を表示';
-            }
-        });
-    }
-});
-
-
+/* 開いているとき「v」 */
+.qr-code-toggle-wrapper.is-active .qr-arrow-number {
+    transform: rotate(-45deg);
+    margin-top: 2px;
+}
 	
 	
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
