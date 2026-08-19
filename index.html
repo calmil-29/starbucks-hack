@@ -8,29 +8,14 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-* 閉じているとき「^」 */
-.qr-arrow-number { 
-    width: 10px;
-    height: 10px;
-    border-top: 1.5px solid #4DA66C;
-    border-right: 1.5px solid #4DA66C;
 
-    /* 135度回転させて、右上が下向きに変わる */
+
+こう？	
+/* 「v」：右に135度回転させて、右上角が下向きに変わる */
     transform: rotate(135deg);
-
-    margin-left: 6px;
-    margin-top: -4px;
-    transition: transform 0.3s ease; /* JSで矢印を上にひっくり返す用 */
-
-    /* タップ対策 */
-    pointer-events: none; 
-}
-
-/* 開いているとき「v」 */
-.qr-code-toggle-wrapper.is-active .qr-arrow-number {
+	
+/* 「^」：左に45度回転させて、左上が上向きに変わる */
     transform: rotate(-45deg);
-    margin-top: 2px;
-}
 	
 	
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
