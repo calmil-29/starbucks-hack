@@ -8,131 +8,68 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-	
-const depositModal = document.getElementById('depositModal');
-
-第２モーダルのキャプチャ制御 depositModal で closeAllSelectorWindows() が成立したのは。
-function closeAllSelectorWindows() {
-    const allWindows = document.querySelectorAll('.deposit-selector-window');
-
-    allWindows.forEach(win => {
-        win.classList.remove('is-active');
-    });
-}
-は、そもそもどの関数の中にも入らずに自立して処理されてる野生だから。const で書いてあるからだめとかそうじゃなくて、どこに書いてあるか、誰{}に囲われているか...そういうこと？
-
 
 	
-第２でも第１と同じで、自分のモダールを閉じるため用に closeDepositModal()ついてるよ。だから第２にも event.stopPropagation() を書いているんでしょ？
-<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)"> 
+じゃ、次ね。	
+第１モーダルのコード番号、カードの「v」を押した時に、カード切り替え窓に合わせて「v」「^」を切り替えをしたいんだけど。
+<div class="qr-modal-zone">
+        <img id="qrModalImg" src="" alt="支払いコード"> 
+        <div class="qr-code-toggle-wrapper">
+          <p class="qr-code-toggle">コード番号を表示</p>
+          <span class="qr-arrow-number"></span>
+        </div>
+        <p class="qr-code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
+      </div>  
 
-で、一応自分でも答えもらう前に書いてみたんだけど（やっぱ失敗してたけど）。
 
-自分（動かなかった）：	
-const qrModal = document.getElementById('qrtModal');
+<div class="qr-modal-card-zone">
+        <div class="qr-card-meta">
+          <span class="qr-card-name">Starbucks Card</span>
+          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
+            <span class="qr-card-balance">¥0</span>
+            <span class="qr-arrow-balance"></span>
+          </div>
+        </div>
+...
+	
+window.addEventListener('load', () => {
+    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');
+    const toggleBtn = document.querySelector('.qr-code-toggle');
+    const codeNumber = document.querySelector('.qr-code-number');
 
-qrModal.addEventListener('click', function(event) {
-    
-    const activeWindow = document.querySelector('.qr-card-selector-window.is-active');
-
-    if (activeWindow) {
-       
-        if (event.target.closest('.qr-card-selector-window')) {     
-           
-        } else {
-
-	        // 第１モーダル専用 switchCard(event) {...} に中に書いてある、第１ドロップダウンを閉じる処理：
-	        // const selectorWindow = document.querySelector('.qr-card-selector-window');
-            // selectorWindow?.classList.remove('is-active') 	
-	        // この selectorWindow 入れればいいと思ってた。
-            selectorWindow();
+    if (toggleWrapper && toggleBtn && codeNumber) {
+        toggleWrapper.addEventListener('click', (event) => {
+            // モダール自体が閉じてしまうのを防ぐ
             event.stopPropagation();
-        }
-    }
 
-}, { capture: true });
+            // クラスを付け外ししてアニメーションさせる
+            codeNumber.classList.toggle('is-active');
 
-答え（動いたよ） ：
-const qrModal = document.getElementById('qrModal');
+            //矢印を回転させるために、親の箱のクラス(is-active)を付け外し
+            toggleWrapper.classList.toggle('is-active');
 
-qrModal.addEventListener('click' , function(event) {
-
-    const activeWindow = document.querySelector(
-        '.qr-card-selector-window.is-active'
-    );
-
-    if (activeWindow) {
-
-        if (event.target.closest('.qr-card-selector-window')) {
-
-            return;  // 第２のコードでは書いていなかったからいらないと思ってた。
-            
-        } else {
-
-            activeWindow.classList.remove('is-active');
-
-            const balanceWrapper = document.querySelector('qr-balance-wrapper');
-            if (balanceWrapper) {
-                balanceWrapper.classList.remove('is-active');
+            // 文字の後ろの矢印(v と　＾)を切り分ける
+            if (codeNumber.classList.contains('is-active')) {
+                toggleBtn.textContent = 'コード番号を非表示';    
+            } else {
+                toggleBtn.textContent = 'コード番号を表示';
             }
-
-            event.stopPropagation();
-        }
+        });
     }
-}, { capture: true });
+});
 
-※ is-open は今の自分には紛らわしくて、全て is-active に変更済み	
-	
-	
-	
-
-
-----------------------------------------------------------------------	
-	
-//【第２モーダルキャプチャ制御】メニュー内タップと外側タップを判定し、ドロップダウンを閉じる処理　　	
-// 【効率化】ブラウザの検索負荷を減らすため、土台となるDOM要素を事前に１回だけ取得・保持しておく
-const depositModal = document.getElementById('depositModal');
-
-// クリックされたときは、メモリに保持している depositModal をそのまま再利用する
-depositModal.addEventListener('click', function(event) {
-    
-    const activeWindow = document.querySelector('.deposit-selector-window.is-active');
-
-    if (activeWindow) {
-       
-        if (event.target.closest('.deposit-selector-window')) {     
-           
-        } else {
-            console.log('ドロップダウンの外をタップした');
-            closeAllSelectorWindows();
-            event.stopPropagation();
-        }
-    }
-
-}, { capture: true });
-
-
-第１情報 ======================================================================
-		
-💡----------
-
-貼り忘れてた。第１にも第２のと同じ役割のIDあるよ	
-<div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
-	
-あと、【第１モーダル】カードの「v」を押した時に、カード切り替え窓を開閉する関数	
 function toggleCardSelector(event) {
-
+    // 安全装置 (土台のファイルがあるか確認)
     if(!event) return;
 
-    // 2.超重要！タップの衝撃波が、上のモダール全体に伝わるのをストップする
+    // タップの衝撃波が、上のモダール全体に伝わるのをストップする
     event.stopPropagation();
     
-    // 3.HTMLから「カード切り替え別窓」の箱をガシッと掴む
+    // HTMLから「カード切り替え別窓」の箱をガシッと掴む
     const selectorWindow = document.querySelector('.qr-card-selector-window');
-    //矢印を回転させるために、クリックされた残高の親(balance-wrapper)を取得
+    // 矢印を回転させるために、クリックされた残高の親(balance-wrapper)を取得
     const balanceWrapper = document.querySelector('.qr-balance-wrapper');
 
-	// ※ちなみに、このドロップダウンの開閉時のトグルの動きも修正対象：動かない
     if(selectorWindow) {
         // 4.「is-active」クラスがついていれば外し、なければつける(トグル)
         selectorWindow.classList.toggle('is-active');
@@ -140,56 +77,16 @@ function toggleCardSelector(event) {
 
     //別窓の開閉と連動して、矢印の親にもクラスを付け外しする
     if(balanceWrapper) {
-        balanceWrapper.classList.toggle('is-open');
+        balanceWrapper.classList.toggle('is-active');
     }
 }
 
-それと、第２キャプチャで開いているドロップダウンの窓をすべて同時に閉じる処理：closeAllSelectorWindows() を使っているから
-第１にも当てはめるのかなとも思ったんだけど
-第２：	
-function closeAllSelectorWindows() {
-    const allWindows = document.querySelectorAll('.deposit-selector-window');
-
-    allWindows.forEach(win => {
-        win.classList.remove('is-active');
-    });
-}
-
-第１switchCard(event) {...} 内：
-const selectorWindow = document.querySelector('.qr-card-selector-window');
-    selectorWindow?.classList.remove('is-active')	
-
-^^^^^^^^^^^^^^^^^^^^^^^^^^	
+qrModal{...}の中	
+ const balanceWrapper = document.querySelector('.qr-balance-wrapper');
+            if (balanceWrapper) {
+                balanceWrapper.classList.remove('is-active');
+            }	
 	
-
-🔥第１モーダルのドロップダウンのを閉じる処理 ---------------------------------
- const selectorWindow = document.querySelector('.qr-card-selector-window');
-    selectorWindow?.classList.remove('is-active')
-	
-
-🔥 自分で考えたコード（動かなかった）-------------------------------------------------------------	
-const qrModal = document.getElementById('qrtModal');
-
-qrModal.addEventListener('click', function(event) {
-    
-    const activeWindow = document.querySelector('.qr-card-selector-window.is-active');
-
-    if (activeWindow) {
-       
-        if (event.target.closest('.qr-card-selector-window')) {     
-           
-        } else {
-            
-            selectorWindow();
-            event.stopPropagation();
-        }
-    }
-
-}, { capture: true });
-
-
-
-
 	
 	
 	
@@ -291,28 +188,6 @@ D.
         modalWindowsubEl.textContent =
             '¥' + subCardBalance.toLocaleString(); 
     }   
-
-	
-	  
-  
-	
--------------------------------------------------	
-	
-currentSelectedCardType
-        ↓
-「現在のカード」
-第1モーダル・ヒーロー
-
-depositTargetCardType
-        ↓
-「今回の入金対象」
-第2モーダル
-
-autochargeTargetCardType
-        ↓
-「オートチャージ対象」
-第3モーダル
-
 
 	
 	
