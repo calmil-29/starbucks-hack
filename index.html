@@ -9,99 +9,46 @@
 </head>
 <body>
 
-
-第１のカード選択のドロップダウンの開閉時でqr-arrow-balance の「v/^」の切り替えができてないのを修正したい。	
-<div class="qr-modal-card-zone">
-        <div class="qr-card-meta">
-          <span class="qr-card-name">Starbucks Card</span>
-          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
-            <span class="qr-card-balance">¥0</span>
-            <span class="qr-arrow-balance"></span>
-          </div>
-        </div>
-
-        <button class="qr-deposit-btn" onclick="openDepositModal(event)">入金</button>
-
-        <!-- カード選択 「カード選択のドロップダウン」--> 
-        <div class="qr-card-selector-window">
-          <p class="qr-selector-title">カードを選択</p>
-          
-          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
-            <img src="../images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-card-balance">¥0</span>
-            </div>
-          </div> 
-
-          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
-            <img src="../images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-card-balance">¥3,500</span>
-            </div>
-          </div> 
-          
-        </div>
-      </div>
-
-.qr-arrow-balance { 
-    position: absolute;
-    right: 0;
-    top: 50%;
-
-    width: 10px;
-    height: 10px;
-    border-top: 1.5px solid #707070;
-    border-right: 1.5px solid #707070;
-
-    transform: translateY(-50%) rotate(135deg);
-
-    margin-top: -2px;
-    pointer-events: none;
-    transition: transform 0.3s ease; /* JSで別窓が空いたときに矢印を上に向ける用 */
-}	
+このJSの説明をしてほしい。特にこの部分： classList.toggle() と　classList.contains() の部分。classList.add()、　classList.remove()じゃないのはなぜ？	
 	
-JSで関係ありそうなとこと抜粋：
-// 第１モーダルを開く	
-openQrModal()
-// モダールが閉じると同時に、コード番号・カード選択も閉じた状態に戻す	
-const selectorWindow = document.querySelector('.qr-card-selector-window');
-const balanceWrapper = document.querySelector('.qr-balance-wrapper');	
+<div class="qr-modal-zone">
+        <img id="qrModalImg" src="" alt="支払いコード"> 
+        <div class="qr-code-toggle-wrapper">
+          <p class="qr-code-toggle">コード番号を表示</p>
+          <span class="qr-arrow-number"></span>
+        </div>
+        <p class="qr-code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
+      </div>  
 
-selectorWindow?.classList.remove('is-active'); 
-balanceWrapper?.classList.remove('is-active'); 
+//【第１モーダル】「コード番号を表示 v」の開閉(トグル)処理	
+window.addEventListener('load', () => {
+    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');  // コード番号を表示」の箱
+    const toggleBtn = document.querySelector('.qr-code-toggle');              //「コード番号を表示」
+    const codeNumber = document.querySelector('.qr-code-number');             // コード番号「16桁の数字」
 
-// 【第１モーダル】のドロップダウン開閉 
-function toggleCardSelector(event) {
-    // タップの衝撃波がモーダル全体に伝わるのを止める
-    if(!event) return;
-    event.stopPropagation();
+    if (toggleWrapper && toggleBtn && codeNumber) {
+        toggleWrapper.addEventListener('click', (event) => {
+            
+            event.stopPropagation();
 
-    // カード選択ドロップダウン
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
+            // コード番号「16桁の数字」
+            codeNumber.classList.toggle('is-active');
 
-    // カード選択の「v / ^」部分
-    const balanceWrapper = document.querySelector('.qr-balance-wrapper');
+            // コード番号の「v / ^」部分
+            toggleWrapper.classList.toggle('is-active');
 
-    if (selectorWindow) {
-        // カード選択窓を開閉
-        selectorWindow.classList.toggle('is-active');
-    }    
+            // 文字の後ろの矢印「v」と「^」を切り分ける　　
+            if (codeNumber.classList.contains('is-active')) {
+                toggleBtn.textContent = 'コード番号を非表示';  
 
-    // カード選択の矢印
-    if (balanceWrapper) {
-            balanceWrapper.classList.toggle('is-active');
+            } else {
+                toggleBtn.textContent = 'コード番号を表示';
+            }
+        });
     }
-}	
+});
 
-// 【第１モーダル キャプチャ制御】
-qrModal()
-// カード選択の矢印を「v」に戻す
-const balanceWrapper = document.querySelector('.qr-balance-wrapper');
 
-    if (balanceWrapper) {
-            balanceWrapper.classList.remove('is-active');
-    }	
-	
 	
 	
 ーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーーー
