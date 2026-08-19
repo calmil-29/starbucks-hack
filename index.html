@@ -10,7 +10,7 @@
 <body>
 
 
-第１のカード選択のドロップダウンの開閉時でqr-arrow-balance の「v/^」にしたい。	
+第１のカード選択のドロップダウンの開閉時でqr-arrow-balance の「v/^」の切り替えができてないのを修正したい。	
 <div class="qr-modal-card-zone">
         <div class="qr-card-meta">
           <span class="qr-card-name">Starbucks Card</span>
@@ -40,12 +40,27 @@
             </div>
           </div> 
           
-          <!-- 必要に応じて追加 -->
-        </div><!-- .qr-card-selector-window -->   
+        </div>
+      </div>
 
-      </div><!-- .qr-modal-card-zone -->
+.qr-arrow-balance { 
+    position: absolute;
+    right: 0;
+    top: 50%;
 
-JSで関係ありそうなとこと抜粋
+    width: 10px;
+    height: 10px;
+    border-top: 1.5px solid #707070;
+    border-right: 1.5px solid #707070;
+
+    transform: translateY(-50%) rotate(135deg);
+
+    margin-top: -2px;
+    pointer-events: none;
+    transition: transform 0.3s ease; /* JSで別窓が空いたときに矢印を上に向ける用 */
+}	
+	
+JSで関係ありそうなとこと抜粋：
 // 第１モーダルを開く	
 openQrModal()
 // モダールが閉じると同時に、コード番号・カード選択も閉じた状態に戻す	
