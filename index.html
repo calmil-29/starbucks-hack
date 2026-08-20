@@ -13,15 +13,22 @@ HTML/CSSの整理と【キャプチャ制御】カード選択窓の中をタッ
 オートチャージ入金設定画面の「次へ」ボタンから【確認画面】へ切り替えの【確認画面】の中が表示されない。
 
 
-console.log('currentCard:', currentCard);
-console.log('currentAmount:', currentAmount);
-console.log('currentCondition:', currentCondition);
-console.log('currentMethod:', currentMethod);
 
-console.log('confirmCard:', confirmCard);
-console.log('confirmAmount:', confirmAmount);
-console.log('confirmCondition:', confirmCondition);
-console.log('confirmMethod:', confirmMethod);
+	
+コンソール結果
+script.js:957 確認画面のclass autocharge-screen-confirm is-active
+script.js:997 currentCard: Starbucks Card¥0
+script.js:998 currentAmount: ¥2,000
+script.js:999 currentCondition: ¥1,000
+script.js:1000 currentMethod: 未登録
+script.js:1002 confirmCard: <span class=​"receipt-value" id=​"autoConfirmCard">​Starbucks Card¥0​</span>​
+script.js:1003 confirmAmount: <span class=​"receipt-value" id=​"autoConfirmAmount">​¥2,000​</span>​
+script.js:1004 confirmCondition: <span class=​"receipt-value" id=​"autoConfirmCondition">​¥1,000​</span>​
+script.js:1005 confirmMethod: <span class=​"receipt-value" id=​"autochargeconfirmMethod">​未登録​</span>​
+
+で。設定画面の中に確認画面の内容がいっしょに表示されてる。次へボタン→確認画面の中はバツボタンが２つあるだけ。HTMLで設定画面と確認画面それぞれにおなじバツボタン（.autocharge-modal-header）書いてる。でも第２モーダルでは同じ書き方してるけど、それぞれ別画面で表示別れてる。
+	
+
 　🔥 ----------------------------------------
 
 
