@@ -13,52 +13,37 @@ HTML/CSSの整理と【キャプチャ制御】カード選択窓の中をタッ
 オートチャージ入金設定画面の「次へ」ボタンから【確認画面】へ切り替えの【確認画面】の中が表示されない。
 
 
-        <div class="autocharge-modal-header">　<!-- ここ元から.autocharge-modal-header 全体を閉じてるよ？ -->
-          <div class="drag-bar"></div>
-          <button class="autocharge-close-btn" onclick="closeAutochargeModalForce()">
-            <span></span>
-            <span></span>
-          </button>
-        </div>	
-
-
-/* 【最終確認画面】の初期設定（隠しておく）*/
-.autocharge-screen-confirm {
-    position: absolute;
-    top: 60px; /* ヘッダーの高さ分だけ下げる */
-    left: 0;
-    width: 100%;
-    height: calc(100% - 60px);
-    background-color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    
-    /* 初期状態は非表示 */
-    display: none;
-}
-
-/* JSで .is-active がついたら、ぱっと表示する */
-.autocharge-screen-confirm.is-active {
-    display: block;
-}
+コンソールに 確認画面のclass autocharge-screen-confirm is-active て出た。
 	
-function goToAutochargeConfirm(event) {
-    if (event) event.stopPropagation();
+function fillAutochargeConfirm() {
+
+    // 現在の設定値を取得
+    const currentCard = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || 'Starbucks Card';    // オートチャージ先カード
+    const currentAmount = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '2,000';           // 入金額
+	const currentCondition = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3) .current-value')?.textContent || '1,000';        // 入金条件
+    const currentMethod = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(4) .current-value')?.textContent || '未登録';           // 支払い方法
+
+    // HTML側にある、確認画面の各ID
+    const confirmCard = document.getElementById('autoConfirmCard');                // オートチャージ先カード
+    const confirmAmount = document.getElementById('autoConfirmAmount');            // 入金額
+	const confirmCondition = document.getElementById('autoConfirmCondition');      // 入金条件
+    const confirmMethod = document.getElementById('autochargeconfirmMethod')       // 支払い方法
     
-    const inputArea = document.querySelector('.autocharge-screen-input');    // 【オートチャージ設定画面】の箱
-    const confirmBox = document.querySelector('.autocharge-screen-confirm');  // 【最終確認画面】の箱
-
-    if (inputArea) inputArea.classList.remove('is-active'); 
-
-    // 確認画面を表示
-    if (confirmBox) {
-        confirmBox.classList.add('is-active');
-    } 
-
-    fillAutochargeConfirm();
-}  
-
-
+    
+    // 【確認画面】へ反映
+    if (confirmCard) {
+        confirmCard.textContent = currentCard;
+    }
+	if (confirmAmount) {
+	    confirmAmount.textContent = currentAmount;
+	}
+	if (confirmCondition) {
+	   confirmCondition.textContent = currentCondition;
+	}
+    if (confirmMethod) {
+        confirmMethod.textContent = currentMethod;
+    }
+}   
 
 　🔥 ----------------------------------------
 
