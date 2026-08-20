@@ -10,9 +10,67 @@
 <body>
 
 HTML/CSSの整理と【キャプチャ制御】カード選択窓の中をタップしたか、窓の外をタップしたかを判定して閉じる、までしてて、
+オートチャージ入金設定画面の「次へ」ボタンから【確認画面】へ切り替えの【確認画面】の中が表示されない。
 
-8/20。今、第３モーダル（オートチャージ設定）のオートチャージ入金設定画面の「次へ」ボタンから【確認画面】へ切り替えの【確認画面】の中が表示されない。
-まず、第３のHTML
+
+        <div class="autocharge-modal-header">　<!-- ここ元から.autocharge-modal-header 全体を閉じてるよ？ -->
+          <div class="drag-bar"></div>
+          <button class="autocharge-close-btn" onclick="closeAutochargeModalForce()">
+            <span></span>
+            <span></span>
+          </button>
+        </div>	
+
+
+/* 【最終確認画面】の初期設定（隠しておく）*/
+.autocharge-screen-confirm {
+    position: absolute;
+    top: 60px; /* ヘッダーの高さ分だけ下げる */
+    left: 0;
+    width: 100%;
+    height: calc(100% - 60px);
+    background-color: white;
+    padding: 20px;
+    box-sizing: border-box;
+    
+    /* 初期状態は非表示 */
+    display: none;
+}
+
+/* JSで .is-active がついたら、ぱっと表示する */
+.autocharge-screen-confirm.is-active {
+    display: block;
+}
+	
+function goToAutochargeConfirm(event) {
+    if (event) event.stopPropagation();
+    
+    const inputArea = document.querySelector('.autocharge-screen-input');    // 【オートチャージ設定画面】の箱
+    const confirmBox = document.querySelector('.autocharge-screen-confirm');  // 【最終確認画面】の箱
+
+    if (inputArea) inputArea.classList.remove('is-active'); 
+
+    // 確認画面を表示
+    if (confirmBox) {
+        confirmBox.classList.add('is-active');
+    } 
+
+    fillAutochargeConfirm();
+}  
+
+
+
+　🔥 ----------------------------------------
+
+
+
+
+
+
+
+
+
+	
 
 <div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
     <div class="autocharge-modal-content">
