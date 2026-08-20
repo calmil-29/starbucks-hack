@@ -13,38 +13,15 @@ HTML/CSSの整理と【キャプチャ制御】カード選択窓の中をタッ
 オートチャージ入金設定画面の「次へ」ボタンから【確認画面】へ切り替えの【確認画面】の中が表示されない。
 
 
-コンソールに 確認画面のclass autocharge-screen-confirm is-active て出た。
-	
-function fillAutochargeConfirm() {
+console.log('currentCard:', currentCard);
+console.log('currentAmount:', currentAmount);
+console.log('currentCondition:', currentCondition);
+console.log('currentMethod:', currentMethod);
 
-    // 現在の設定値を取得
-    const currentCard = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || 'Starbucks Card';    // オートチャージ先カード
-    const currentAmount = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '2,000';           // 入金額
-	const currentCondition = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3) .current-value')?.textContent || '1,000';        // 入金条件
-    const currentMethod = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(4) .current-value')?.textContent || '未登録';           // 支払い方法
-
-    // HTML側にある、確認画面の各ID
-    const confirmCard = document.getElementById('autoConfirmCard');                // オートチャージ先カード
-    const confirmAmount = document.getElementById('autoConfirmAmount');            // 入金額
-	const confirmCondition = document.getElementById('autoConfirmCondition');      // 入金条件
-    const confirmMethod = document.getElementById('autochargeconfirmMethod')       // 支払い方法
-    
-    
-    // 【確認画面】へ反映
-    if (confirmCard) {
-        confirmCard.textContent = currentCard;
-    }
-	if (confirmAmount) {
-	    confirmAmount.textContent = currentAmount;
-	}
-	if (confirmCondition) {
-	   confirmCondition.textContent = currentCondition;
-	}
-    if (confirmMethod) {
-        confirmMethod.textContent = currentMethod;
-    }
-}   
-
+console.log('confirmCard:', confirmCard);
+console.log('confirmAmount:', confirmAmount);
+console.log('confirmCondition:', confirmCondition);
+console.log('confirmMethod:', confirmMethod);
 　🔥 ----------------------------------------
 
 
