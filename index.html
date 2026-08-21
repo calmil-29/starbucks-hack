@@ -9,10 +9,27 @@
 </head>
 <body>
 
-	const currentHeroImg = document.getElementById('heroCardImg')?.getAttribute('src') || ''; の
-	?.getAttribute('src') || ''　てどんな意味？
+ここのコードで let があるけど。
+let currentCardName = 'Starbucks Card';
+let currentBalance = 0;
+の部分を消しても問題なく動く。なぜなのかをロジカルに説明（推理？）してくれる？例えば他の場所ですでに let があるから見たいな。
 	
+ const currentHeroImg = document.getElementById('heroCardImg')?.getAttribute('src') || '';
 
+    let currentCardName = 'Starbucks Card';
+    let currentBalance = 0;
+    
+    //  画像のファイル名に 'sub' という文字が含まれているかどうかで100%確実に判断する
+    if (currentHeroImg.includes('sub')){
+        currentCardName = 'サブカード';
+        currentBalance = subCardBalance; // サブの金庫
+    } else {
+        currentCardName = 'Starbucks Card';
+        currentBalance = starbucksCardBalance; // メインの金庫
+    }
+
+	
+	
 
 🔥 第２	
 function openDepositModal(event) {
