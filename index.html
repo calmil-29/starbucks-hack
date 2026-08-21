@@ -53,14 +53,33 @@ A カード以外はオートチャージ初期設定の状態（第１モーダ
   </button> 
 </div>
 
-オートチャージの設定保存後は #autoSummaryText と同じ処理を第２モーダルの.autocharge-banner と切り替える(この場合第２モーダルに追記すればいいの？)。
-あと「今オートチャージ設定が有効」の状態だと分かるように「ONだと分かるボタン」もオートチャージ設定表示の横に設置（CSSで実装）、つまりボタンは「設定する」のボタンと切り替わる。
-	
-#autochargeModal	
-<p class="autocharge-summary" id="autoSummaryText">¥2,000（入金条件：残高が¥1,000未満）</p>
-※ autoSummaryText をリアルタム更新する処理は、実行済み。ちなみに合計で３箇所、リアルタム更新する処理の表示場所があるけど（第３設定、確認画面のヘッダー直下、設定保存後は第２設定画面のヘッダー直下）この場合、IDは使わないでclass名を統一で作ったほうがいいの？それとも一つだけ作って、JSで表示場所を指定するとか？
-        
-	
+.autocharge-switch {
+    position: relative;
+    width: 50px;
+    height: 28px;
+    border: none;
+    border-radius: 999px;
+    background-color: #999;
+}
+
+.autocharge-switch-circle {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: white;
+
+    transition: transform 0.2s ease;
+}
+
+.autocharge-switch.is-active .autocharge-switch-circle {
+    transform: translateX(22px);
+}
+
+
 
 🔥 ----------------------------
 
