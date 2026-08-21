@@ -9,6 +9,29 @@
 </head>
 <body>
 
+他の関数たちが見れるようにしてある let たちはこれだけだけど。
+let starbucksCardBalance = 0; // メインカードの初期残高データ（例: 0）      
+let subCardBalance = 3500;    // サブカードの初期残高データ（例: 3500）
+
+// =====================================
+// 【第１モーダル】現在のカードの初期値
+// =====================================
+let currentSelectedCardType = 'main';
+
+// =====================================
+// 【第２モーダル】入金対象のカードの初期値
+// =====================================
+let depositTargetCardType = 'main';
+
+// =================================================
+// 【第３モーダル】現在選択中のオートチャージ設定の初期値
+// =================================================
+let autoTargetCardType = 'main'; // オートチャージ対象のカードの初期値
+
+let isAutochargeEnabled = false; // オートチャージがONかOFFか（初期はOFF）
+let autochargeCondition = 1000;  // オートチャージを実行する残高の境界線（例：1000円以下になったら）
+let autochargeAmount = 2000;	
+	
 ここのコードで let があるけど。
 let currentCardName = 'Starbucks Card';
 let currentBalance = 0;
