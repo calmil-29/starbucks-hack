@@ -27,7 +27,7 @@ A カード以外はオートチャージ初期設定の状態（第１モーダ
               第２モーダルの.autocharge-banner から.autocharge-banner-on（仮名） への表示切り替え
 	
               → オートチャージ設定                            「ON状態の
-              　 入金額：¥2,000（入金条件：残高が¥1,000未満）     スイッチボタン」
+              　 入金額：¥2,000（入金条件：残高が¥1,000未満）     スイッチボタン（CSS）」  
 
 	※ 設定保存（ON）後は、解除（OFF）したら、オートチャージ設定ができる（Aに進める）。迷ったけど、オートチャージの設定中は設定を途中変えたくても、一回解除してからがいいかなと思って。
 	
@@ -48,14 +48,14 @@ A カード以外はオートチャージ初期設定の状態（第１モーダ
     <p class="banner-title">オートチャージ</p>
     <p class="autocharge-summary">入金額：¥2,000（入金条件：残高が¥1,000未満）</p>
   </div>
-<!-- オートチャージ設定解除後、設定へ進むためのボタン -->
-  <button class="setting-trigger-off-btn" onclick="openAutochargeModal(event)">
-    <img src="switch-icon.svg" alt="設定を解除する">	
+  <!-- オートチャージ設定解除後、設定へ進むためのボタン -->
+  <button class="autocharge-switch" onclick="openAutochargeModal(event)">
+    <span>autocharge-switch-circle</span>	  
   </button> 
 </div>		
 
 オートチャージの設定保存後は #autoSummaryText と同じ処理を第２モーダルの.autocharge-banner と切り替える(この場合第２モーダルに追記すればいいの？)。
-あと「今オートチャージ設定が有効」の状態だと分かるように「ONだと分かるボタン」もオートチャージ設定表示の横に設置（FigmaでON状態のスイッチボタンを簡単に制作）、つまりボタンは「設定する」のボタンと切り替わる。
+あと「今オートチャージ設定が有効」の状態だと分かるように「ONだと分かるボタン」もオートチャージ設定表示の横に設置（CSSで実装）、つまりボタンは「設定する」のボタンと切り替わる。
 	
 #autochargeModal	
 <p class="autocharge-summary" id="autoSummaryText">¥2,000（入金条件：残高が¥1,000未満）</p>
