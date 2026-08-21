@@ -9,8 +9,8 @@
 </head>
 <body>
 
-
-    	
+	const currentHeroImg = document.getElementById('heroCardImg')?.getAttribute('src') || ''; の
+	?.getAttribute('src') || ''　てどんな意味？
 	
 
 
@@ -32,7 +32,7 @@ function openDepositModal(event) {
     const inputArea = document.querySelector('.deposit-screen-input'); // 入金設定の箱
     if (inputArea) inputArea.classList.add('is-active');
 
-    // 3. 【ヒーロー】に写っている「カードの画像（src）」をチェック  
+    // 3. 【ヒーロー】に写っている「カードの画像（src）」をチェック 🔥 
     const currentHeroImg = document.getElementById('heroCardImg')?.getAttribute('src') || '';
 
     let currentCardName = 'Starbucks Card';
@@ -91,10 +91,13 @@ function openDepositModal(event) {
 
 	
 
-🔥 第３
+🔥 第３ → 画面を開いたら、現在の状態を画面に写す処理/オートチャージの保存処理
 function openAutochargeModal(event) {
 	
     if (event) event.stopPropagation();
+
+	// 第１モーダルで現在選ばれているカードを、今回のオートチャージ対象の「初期値」として引き継ぐ　
+	currentSelectedCardType = autoTargetCardType
 
 	// 新しく開くときは、前回の確認画面を確実に非表示にしておく
 	const confirmBox = document.querySelector('.autocharge-screen-confirm');
@@ -116,7 +119,16 @@ function openAutochargeModal(event) {
         autochargeModal.classList.add('is-active');
     }
 
-    // 【第３モーダル】が開いた瞬間に、3つのDOM要素を名指しして掴む
+	// カードの状態を引き継ぐため 【ヒーロー】 に写っている「カードの画像（src）」をチェック  🔥
+	const currentHeroImg = document.getElementById('heroCardImg')?.getAttribute('src') || '';
+	
+	// A. 「現在表示されているカード」の文字を、開いた瞬間の最新状態にする 
+	const autoCurrentValueEl = document.getElementById('autoCarVal');
+	if (autoCurrentValueEl) 
+	
+	
+
+    // 【リセット機能】入金額と支払い方法は、初期値に強制リセットする
     const summaryEl = document.getElementById('autoSummaryText');    // ¥2,000（入金条件：残高が¥1,000未満）
     const amountEl = document.getElementById('autoAmountVal');       // メニュー「入金額」（初期：¥2,000）
     const conditionEl = document.getElementById('autoConditonVal');  // メニュー「入金条件」(初期：¥1,000)
