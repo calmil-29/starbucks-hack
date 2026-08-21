@@ -9,6 +9,27 @@
 </head>
 <body>
 
+
+#depositModal	
+<!-- 【オートチャージ設定】へ進むためのエリア -->
+<div class="autocharge-banner">
+  <div class="banner-text">
+    <p class="banner-title">オートチャージ設定</p>
+    <p class="banner-sub">カードの条件を設定</p>
+  </div>
+<!-- オートチャージ設定へ進むためのボタン -->
+<button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button> 
+</div>	
+
+オートチャージ設定保存後は .autocharge-title .autocharge-summary を第２モーダルの.autocharge-banner の場所に持ってくる。あと「今オートチャージ設定が有効」の状態だと分かるように「ONになってる状態なボタン」もタイトルの横に設置（Figmaで簡単に制作）、つまり「設定する」のボタンと切り替わる。
+.autocharge-title .autocharge-summary は div でひとまとめに囲ったほうがいい？それとも第２、第３の構造自体を修正する？
+	
+#autochargeModal	
+<p class="autocharge-title">オートチャージ設定</p>　　
+<p class="autocharge-summary" id="autoSummaryText">¥2,000（入金条件：残高が¥1,000未満）</p>
+        
+	
+
 他の関数たちが見れるようにしてある let たちはこれだけだけど。
 let starbucksCardBalance = 0; // メインカードの初期残高データ（例: 0）      
 let subCardBalance = 3500;    // サブカードの初期残高データ（例: 3500）
