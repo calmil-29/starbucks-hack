@@ -9,26 +9,150 @@
 </head>
 <body>
 
-HTML/CSSの整理と【キャプチャ制御】カード選択窓の中をタップしたか、窓の外をタップしたかを判定して閉じる、までしてて、
-オートチャージ入金設定画面の「次へ」ボタンから【確認画面】へ切り替えの【確認画面】の中が表示されない。
+if文の書き方でこの違いは何？ {...} で囲む必要があるのは、続けて if を使いたいときとか？
+if (confirmBox) confirmBox.classList.remove('is-active');
+if (depositModal) {
+        depositModal.classList.remove('is-active');
+    }	
+    	
+	
 
+
+🔥 第２	
+function openDepositModal(event) {
+    if(!event) return;
+	
+    event.stopPropagation ();
+
+    // 第１モーダルで現在選ばれているカードを、今回の入金対象の「初期値」として引き継ぐ　
+    depositTargetCardType = currentSelectedCardType;
+
+
+    // 新しく開くときは、前回の確認画面を確実に非表示にしておく
+    const confirmBox = document.querySelector('.deposit-screen-confirm');
+    if (confirmBox) confirmBox.classList.remove('is-active'); 
+
+    // 新しく開くときは、入力画面を確実に表示にしておく 
+    const inputArea = document.querySelector('.deposit-screen-input'); // 入金設定の箱
+    if (inputArea) inputArea.classList.add('is-active');
+
+    // 3. 【ヒーロー】に写っている「カードの画像（src）」をチェック  
+    const currentHeroImg = document.getElementById('heroCardImg')?.getAttribute('src') || '';
+
+    let currentCardName = 'Starbucks Card';
+    let currentBalance = 0;
+    
+    //  画像のファイル名に 'sub' という文字が含まれているかどうかで100%確実に判断する
+    if (currentHeroImg.includes('sub')){
+        currentCardName = 'サブカード';
+        currentBalance = subCardBalance; // サブの金庫
+    } else {
+        currentCardName = 'Starbucks Card';
+        currentBalance = starbucksCardBalance; // メインの金庫
+    }
+    
+    // A. 「現在表示されているカード」の文字を、開いた瞬間の最新状態にする 
+    // 確実に狙い撃ちできるように、クラス名ではなくID名（#autoCarVal や手動側のIDなど）で掴むのが実務上安全!
+    const depositCurrentValueEl = document.getElementById('depositCardVal');
+    if (depositCurrentValueEl) {
+        depositCurrentValueEl.textContent = `${currentCardName} ¥${currentBalance.toLocaleString()}`;
+    }
+
+    // B.【リセット機能】入金額と支払い方法は、初期値に強制リセットする
+    // :nth-child. のズレでエラーになるのを防ぐため、確実に対象のメニューを1つずつの狙い撃ちして文字をリセット！
+    const allItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
+    
+    // ２番目のメニュー（入金額）の中身をリセット
+    if (allItems[1]) {
+        const amtLabel = allItems[1].querySelector('.current-value');
+        if (amtLabel) amtLabel.textContent = '¥1,000';
+    }
+    // ３番目のメニュー（支払い方法）の中身をリセット
+    if (allItems[2]) {
+        const methodLabel = allItems[2].querySelector('.current-value');
+        if (methodLabel) methodLabel.textContent = '未登録';
+    }
+
+    // 【第２モーダル】を開いたとき【第２モーダル】のカードの金額も最新にする　　
+    // 「カードのドロップダウン」のメイン・サブの金額　⭐️
+    const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(1) span');
+    if (depositWindowMainEl) {
+        depositWindowMainEl.textContent ='¥' + starbucksCardBalance.toLocaleString();
+    }
+
+    const depositWindowSubEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
+    if (depositWindowSubEl) {
+        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
+    }
+    
+    // 4. HTMLから「第２モーダル」の土台（オーバーレイ）をガシッと詰む 
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        // 5. クラスを追加して、第２モーダルを画面に出現させる
+        depositModal.classList.add('is-active');
+    }    
+}
+
+	
+
+🔥 第３
+function openAutochargeModal(event) {
+	
+    if (event) event.stopPropagation();
+
+	// 新しく開くときは、前回の確認画面を確実に非表示にしておく
+	const confirmBox = document.querySelector('.autocharge-screen-confirm');
+	if (confirmBox) confirmBox.classList.remove('is-active');
+    
+    // 閉じたい【第２モーダル】
+    const depositModal = document.getElementById('depositModal');
+
+    // 開きたい【第３モーダル】
+    const autochargeModal = document.getElementById('autochargeModal');
+
+    // 先に【第２モーダル】を閉じる
+    if (depositModal) {
+        depositModal.classList.remove('is-active');
+    }
+
+    // 次に【第３モーダル】を開く
+    if (autochargeModal) {
+        autochargeModal.classList.add('is-active');
+    }
+
+    // 【第３モーダル】が開いた瞬間に、3つのDOM要素を名指しして掴む
+    const summaryEl = document.getElementById('autoSummaryText');    // ¥2,000（入金条件：残高が¥1,000未満）
+    const amountEl = document.getElementById('autoAmountVal');       // メニュー「入金額」（初期：¥2,000）
+    const conditionEl = document.getElementById('autoConditonVal');  // メニュー「入金条件」(初期：¥1,000)
+
+    // 掴んだDOM要素の中身を、金庫のデータ（let autochargeAmount = 2000;, let autochargeCondition = 1000;）で上書きする
+    if (amountEl) {
+        amountEl.textContent =`¥${autochargeAmount.toLocaleString()}`;
+    }
+    if (conditionEl) {
+        conditionEl.textContent = `¥${autochargeCondition.toLocaleString()}`;
+    }
+    if (summaryEl) {
+        summaryEl.textContent = `¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満) `;
+    }
+
+    //　カード（Starbucks Card）のDOM要素をガシッと掴む
+    const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
+    
+    if (autoCardValEl) {
+        // 金庫（let）を覗きにいって、（if文）で文字を切り替える
+        if ( currentSelectedCardType === 'main') {  // ※ openAutochargeModal() → 読む　第３モーダルのオートチャージ対象カードの判断
+            // メインカードが選ばれているとき
+            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
+        } else {
+            // サブカードが選ばれているとき
+            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
+        }
+    }
+}
 
 
 	
-コンソール結果
-script.js:957 確認画面のclass autocharge-screen-confirm is-active
-script.js:997 currentCard: Starbucks Card¥0
-script.js:998 currentAmount: ¥2,000
-script.js:999 currentCondition: ¥1,000
-script.js:1000 currentMethod: 未登録
-script.js:1002 confirmCard: <span class=​"receipt-value" id=​"autoConfirmCard">​Starbucks Card¥0​</span>​
-script.js:1003 confirmAmount: <span class=​"receipt-value" id=​"autoConfirmAmount">​¥2,000​</span>​
-script.js:1004 confirmCondition: <span class=​"receipt-value" id=​"autoConfirmCondition">​¥1,000​</span>​
-script.js:1005 confirmMethod: <span class=​"receipt-value" id=​"autochargeconfirmMethod">​未登録​</span>​
-
-で。設定画面の中に確認画面の内容がいっしょに表示されてる。次へボタン→確認画面の中はバツボタンが２つあるだけ。HTMLで設定画面と確認画面それぞれにおなじバツボタン（.autocharge-modal-header）書いてる。でも第２モーダルでは同じ書き方してるけど、それぞれ別画面で表示別れてる。
-	
-
 　🔥 ----------------------------------------
 
 
