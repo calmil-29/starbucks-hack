@@ -11,39 +11,9 @@
 
 🔥====================
 	
-selectDepositOption()
- if (isAutocharge) {
-        const summaryEl = document.querySelector('.autocharge-summary');
-        if (summaryEl) {
-            summaryEl.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金条件：残高が¥${autochargeCondition.toLocaleString()}未満`; 
-        }
-
-        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
-        const errorBox = document.getElementById('autoErrorMessage');
-        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件
-        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
-
-       if (Number(autochargeAmount) < Number(autochargeCondition)) {
-            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
-            if (errorBox) errorBox.style.display = 'block';
-            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
-            if (nextBtn) nextBtn.disabled = true; 
-        } else {
-            // 条件クリア：エラーを消して通常状態に戻す
-            if (errorBox) errorBox.style.display = 'none';
-            if (conditionMenu)  conditionMenu.classList.remove('has-error');
-            if (nextBtn) nextBtn.disabled = false;
-        }
-    }
-
-
-openAutochargeModal()
- const summaryEl = document.querySelector('.autocharge-summary');
- if (summaryEl) {
-        summaryEl.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金条件：残高が¥${autochargeCondition.toLocaleString()}未満 `;
-    }		   
-
-<!-- 【オートチャージ設定】へのバナー  -->
+#depositModal
+    .deposit-screen-input
+          <!-- 【オートチャージ設定】リアルタイム更新バナー  -->
           <div class="autocharge-banner-on"> 
             <div class="banner-text">
               <p class="banner-title">オートチャージ</p> <!-- OFF/ON 共通で表示 -->
@@ -66,13 +36,27 @@ openAutochargeModal()
             <button>
               <span class="autocharge-switch-circle"></span>
             </button>
-          </div>  
-       
+          </div> 
 
+#autochargeModal
+    .autocharge-screen-input
+	     <!-- autocharge-summar の id autoSummaryText は削除 -->
+          <p class="autocharge-title">オートチャージ</p>
+          <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
 
- <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p> を<div id="autochargeModal">...</div>の中に2つ入れていて、
-その状態から新たしく <div id="depositModal">...</div> の中に .autocharge-summary を入れたら。JSの処理が動かなくなった。どうして？
+    .autocharge-screen-confirm
+	      <p class="autocharge-title">オートチャージ</p>
+          <p class="autocharge-summary">¥2,000（入金条件：残高が¥1,000未満）</p>
 
+openDepositModal()    
+selectDepositOption() //【第２・第３共通】ドロップダウンで選んだ値を反映し、データを保存する処理  
+openAutochargeModal()    
+に、それぞれ第３のサマリーテキストをリアルタム更新する処理    
+     const allSummaries = document.querySelectorAll('.autocharge-summary');
+        allSummaries.forEach(el => {
+            el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金額：残高が¥${autochargeCondition.toLocaleString()}未満` ;
+        });
+    
 
 
 
