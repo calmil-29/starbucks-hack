@@ -9,12 +9,16 @@
 </head>
 <body>
 
- if (summaryEl) {
-        summaryEl.textContent = `入金額：¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満) `;
-    }
-を表示するときこんなふうに２段に分けるには？
-入金額：¥...
-入金条件：残高が¥...未満	
+const summaryEl = document.querySelector('.autocharge-summary');
+        if (summaryEl) {
+            summaryEl.textContent = `¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満)`; 
+        }
+
+<!-- autocharge-summar の id autoSummaryText は削除 -->
+<p class="autocharge-title">オートチャージ</p>
+<p class="autocharge-summary">オートチャージ：¥2,000（入金条件：残高が¥1,000未満）</p>
+        	
+のidを削除して、class名だけにしたら、JSのテキストが反映されずHTML側に書いたテキストが選択した途端書き換わるようになってしまった、どうしたらいい？
 
 🔥
 
