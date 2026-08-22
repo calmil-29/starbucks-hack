@@ -9,19 +9,75 @@
 </head>
 <body>
 
-const summaryEl = document.querySelector('.autocharge-summary');
+🔥====================
+	
+selectDepositOption()
+ if (isAutocharge) {
+        const summaryEl = document.querySelector('.autocharge-summary');
         if (summaryEl) {
-            summaryEl.textContent = `¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満)`; 
+            summaryEl.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金条件：残高が¥${autochargeCondition.toLocaleString()}未満`; 
         }
 
-<!-- autocharge-summar の id autoSummaryText は削除 -->
-<p class="autocharge-title">オートチャージ</p>
-<p class="autocharge-summary">オートチャージ：¥2,000（入金条件：残高が¥1,000未満）</p>
-        	
-のidを削除して、class名だけにしたら、JSのテキストが反映されずHTML側に書いたテキストが選択した途端書き換わるようになってしまった、どうしたらいい？
+        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
+        const errorBox = document.getElementById('autoErrorMessage');
+        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件
+        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
 
-🔥
+       if (Number(autochargeAmount) < Number(autochargeCondition)) {
+            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
+            if (errorBox) errorBox.style.display = 'block';
+            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
+            if (nextBtn) nextBtn.disabled = true; 
+        } else {
+            // 条件クリア：エラーを消して通常状態に戻す
+            if (errorBox) errorBox.style.display = 'none';
+            if (conditionMenu)  conditionMenu.classList.remove('has-error');
+            if (nextBtn) nextBtn.disabled = false;
+        }
+    }
 
+
+openAutochargeModal()
+ const summaryEl = document.querySelector('.autocharge-summary');
+ if (summaryEl) {
+        summaryEl.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金条件：残高が¥${autochargeCondition.toLocaleString()}未満 `;
+    }		   
+
+<!-- 【オートチャージ設定】へのバナー  -->
+          <div class="autocharge-banner-on"> 
+            <div class="banner-text">
+              <p class="banner-title">オートチャージ</p> <!-- OFF/ON 共通で表示 -->
+              <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
+            </div>
+
+             <!-- ON → OFF に切り替えるスイッチ -->
+            <button class="autocharge-switch" onclick="openAutochargeModal(event)">
+              <span class="autocharge-switch-circle"></span>
+            </button> 
+          </div>   
+
+          <!--  OFF 状態-->
+          <div class="autocharge-banner">  
+            <button onclick="openAutochargeModal(event)">設定する</button>
+          </div> 
+             
+          <!-- ON 状態 -->
+          <div class="autocharge-banner-on">  
+            <button>
+              <span class="autocharge-switch-circle"></span>
+            </button>
+          </div>  
+       
+
+
+ <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p> を<div id="autochargeModal">...</div>の中に2つ入れていて、
+その状態から新たしく <div id="depositModal">...</div> の中に .autocharge-summary を入れたら。JSの処理が動かなくなった。どうして？
+
+
+
+
+🔥============================================================-
+		   
 【第3モーダルを開く】
        ↓
 A カード以外はオートチャージ初期設定の状態（第１モーダルで現在選ばれているカードを、今回の入金対象の「初期値」として引き継ぐ autoTargetCardType = currentSelectedCardType ）
@@ -36,52 +92,10 @@ A カード以外はオートチャージ初期設定の状態（第１モーダ
               → オートチャージ設定                            「ON状態の
               　 入金額：¥2,000（入金条件：残高が¥1,000未満）     スイッチボタン（CSS）」  
 
-	※ 設定保存（ON）後は、解除（OFF）したら、オートチャージ設定ができる（Aに進める）。迷ったけど、オートチャージの設定中は設定を途中変えたくても、一回解除してからがいいかなと思って。
-	
-       
-#depositModal	
-<!-- 【オートチャージ設定】へ進むためのエリア -->
-<div class="autocharge-banner">
-  <div class="banner-text">
-    <p class="banner-title">オートチャージ設定</p>
-    <p class="banner-sub">カードの条件を設定</p>
-  </div>
-<!-- オートチャージ設定へ進むためのボタン -->
-<button class="setting-trigger-btn" onclick="openAutochargeModal(event)">設定する</button> 
-</div>	
-　↓↑ 🔥追加：
-<div class="autocharge-banner-on"> 
-  <div class="banner-text">
-    <p class="banner-title">オートチャージ</p>
-    <p class="autocharge-summary">
-      入金額：¥2,000（入金条件：残高が¥1,000未満）
-    </p>
-  </div>
+	※ 設定保存（ON）後は、ヒーローでオートチャージ保存されたカードが選択されたら、カード画面に選択されたことを表示させる：「オートチャージ設定中」
+	※ 設定保存と第１、ヒーローで選ばれているカード、第２で選択されたカードとは切り離す
 
-  <!-- ON → OFF に切り替えるスイッチ -->
-  <button class="autocharge-switch" onclick="openAutochargeModal(event)">
-    <span class="autocharge-switch-circle"></span>
-  </button> 
-</div>
-
-
-<!-- OFF状態 -->
-<div class="autocharge-banner">
-    ...
-    <button onclick="openAutochargeModal(event)">
-        設定する
-    </button>
-</div>
-
-
-<!-- ON状態 -->
-<div class="autocharge-banner-on">
-    ...
-    <button class="autocharge-switch">
-        <span class="autocharge-switch-circle"></span>
-    </button>
-</div>
-
+【CSS】第２のオートチャージスイッチボタン
 .autocharge-switch {
     position: relative;
     width: 50px;
