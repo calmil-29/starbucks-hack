@@ -9,6 +9,13 @@
 </head>
 <body>
 
+ if (summaryEl) {
+        summaryEl.textContent = `入金額：¥${autochargeAmount.toLocaleString()} (入金条件：残高が¥${autochargeCondition.toLocaleString()}未満) `;
+    }
+を表示するときこんなふうに２段に分けるには？
+入金額：¥...
+入金条件：残高が¥...未満	
+
 🔥
 
 【第3モーダルを開く】
