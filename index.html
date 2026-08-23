@@ -13,12 +13,23 @@
 	
 #depositModal
     .deposit-screen-input
-          <!-- 【オートチャージ設定】リアルタイム更新バナー  -->
-          <div class="autocharge-banner-on"> 
-            <div class="banner-text">
-              <p class="banner-title">オートチャージ</p> <!-- OFF/ON 共通で表示 -->
-              <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
-            </div>
+      <!-- 【オートチャージ設定】リアルタイム更新バナー（初期状態は OFF） -->
+          <div class="autocharge-banner-container"> 
+
+            <!--  OFF 状態-->
+            <div class="banner-view-off">  
+              <p class="banner-title">オートチャージ</p>
+              <p class="banner-sub-title">カードの条件を設定</p>
+              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
+            </div> 
+
+            <!-- ON 状態 -->
+            <div class="banner-view-on">
+              <div class="banner-text">
+                <p class="banner-title">オートチャージ</p> 
+                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
+              </div>
+            </div>    
 
              <!-- ON → OFF に切り替えるスイッチ -->
             <button class="autocharge-switch" onclick="openAutochargeModal(event)">
@@ -26,17 +37,6 @@
             </button> 
           </div>   
 
-          <!--  OFF 状態-->
-          <div class="autocharge-banner">  
-            <button onclick="openAutochargeModal(event)">設定する</button>
-          </div> 
-             
-          <!-- ON 状態 -->
-          <div class="autocharge-banner-on">  
-            <button>
-              <span class="autocharge-switch-circle"></span>
-            </button>
-          </div> 
 
 #autochargeModal
     .autocharge-screen-input
