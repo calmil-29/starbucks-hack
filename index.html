@@ -13,6 +13,8 @@
 	
 #depositModal
     .deposit-screen-input
+
+	Gemmine：
       <!-- 【オートチャージ設定】リアルタイム更新バナー（初期状態は OFF） -->
           <div class="autocharge-banner-container"> 
 
@@ -37,18 +39,20 @@
             </button> 
           </div>   
 
-
+無代（きみ）：
+<!--  OFF 状態-->	
 <div class="autocharge-banner">
     <div class="banner-text">
         <p class="banner-title">オートチャージ設定</p>
         <p class="banner-sub">カードの条件を設定</p>
     </div>
 
-    <button class="setting-trigger-btn">
+    <button class="setting-trigger-btn"><!-- ここに onclick="openAutochargeModal(event) 必要だよね？ -->
         設定する
     </button>
 </div>
 
+ <!-- ON 状態 -->	
 <div class="autocharge-banner-on">
     <div class="banner-text">
         <p class="banner-title">オートチャージ</p>
@@ -63,6 +67,14 @@
     </button>
 </div>
 
+
+🔥 --------------------------------------------------------------------------------------------
+
+ちなみに昨日、チャージのリアルタム更新部分を書き足し/修正した箇所：
+HTML	
+#depositModal
+	.deposit-screen-input
+		上のGemmineの：.autocharge-banner-container
 #autochargeModal
     .autocharge-screen-input
 	     <!-- autocharge-summar の id autoSummaryText は削除 -->
@@ -73,10 +85,11 @@
 	      <p class="autocharge-title">オートチャージ</p>
           <p class="autocharge-summary">¥2,000（入金条件：残高が¥1,000未満）</p>
 
+JS	
 openDepositModal()    
 selectDepositOption() //【第２・第３共通】ドロップダウンで選んだ値を反映し、データを保存する処理  
 openAutochargeModal()    
-に、それぞれ第３のサマリーテキストをリアルタム更新する処理    
+それぞれに個別に、第３のサマリーテキストをリアルタム更新する処理    
      const allSummaries = document.querySelectorAll('.autocharge-summary');
         allSummaries.forEach(el => {
             el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金額：残高が¥${autochargeCondition.toLocaleString()}未満` ;
