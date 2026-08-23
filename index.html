@@ -10,6 +10,33 @@
 <body>
 
 🔥====================
+
+テキスト正しくはこっち(HTML側、全部修正済み)。結局JSで処理されるからHTMLの方のテキスト蔑ろにしてた。
+ <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>	
+
+『スイッチのアニメーションと「ON表示→OFF表示」の切り替えは別の処理』つまりここのopenAutochargeModal() はいらない？ON → OFF に切り替えるスイッチのアニメーションだけを見せる箇所だから？ 
+<button class="autocharge-switch" onclick="openAutochargeModal(event)"> 	
+
+あと、STEP2のCSSでOFF 状態、ON 状態を作る。
+
+/* 【オートチャージ設定】リアルタイム更新バナー（初期状態は OFF */
+
+/* OFF 状態 */
+.autocharge-banner-container .banner-view-off.is-active {
+    display: block;
+}
+
+/* ON 状態 */ 
+.autocharge-banner-container .banner-view-on.is-active {
+    display: block;
+}
+
+	
+	
+
+
+
+🔥 --------------------------------------------------------------------------------------	
 	
 #depositModal
     .deposit-screen-input
@@ -28,13 +55,13 @@
             <!-- ON 状態 -->
             <div class="banner-view-on">
               <div class="banner-text">
-                <p class="banner-title">オートチャージ</p> 
+                <p class="banner-title">オートチャージ</p> 　
                 <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
               </div>
             </div>    
 
              <!-- ON → OFF に切り替えるスイッチ -->
-            <button class="autocharge-switch" onclick="openAutochargeModal(event)">
+            <button class="autocharge-switch" onclick="openAutochargeModal(event)"> 
               <span class="autocharge-switch-circle"></span>
             </button> 
           </div>   
@@ -94,7 +121,7 @@ openAutochargeModal()
         allSummaries.forEach(el => {
             el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金額：残高が¥${autochargeCondition.toLocaleString()}未満` ;
         });
-    
+
 
 
 
