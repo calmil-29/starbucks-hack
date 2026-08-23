@@ -32,6 +32,16 @@
 }
 
 これだと	.banner-view-off を画面表示させるとき .banner-view-on　を非表示。.banner-view-on. を表示させるときは .banner-view-off を非表示、みたいに切り替えたりできないってこと？
+保存された
+↓
+ON状態
+↓
+OFF表示を消す
+↓
+ON表示を出す
+
+bannerViewOff.classList.remove('is-active');
+bannerViewOn.classList.add('is-active');
 	
 /* OFF 状態 */
 .autocharge-banner-container .banner-view-off.is-active {
