@@ -12,6 +12,28 @@
 🔥====================
 
 私勘違いしてたと思うんだけど .is-active display: block; だけだと、add remove で表示非表示ってできないの？display: none; も必要なの？
+例えばこれだけだと
+/* OFF 状態 */
+.autocharge-banner-container .banner-view-off.is-active {
+    display: block;
+}
+
+/* ON 状態 */ 
+.autocharge-banner-container .banner-view-on.is-active {
+    display: block;
+}	
+
+保存された
+↓
+ON状態
+↓
+OFF表示を消す
+↓
+ON表示を出す
+
+にはできないってこと？
+	
+こう書かないとだめってこと？	
 /* 初期状態：OFFを表示 */
 .autocharge-banner-container .banner-view-off {
     display: block;
@@ -29,29 +51,7 @@
 
 .autocharge-banner-container .banner-view-on.is-active {
     display: block;
-}
-
-これだと	.banner-view-off を画面表示させるとき .banner-view-on　を非表示。.banner-view-on. を表示させるときは .banner-view-off を非表示、みたいに切り替えたりできないってこと？
-保存された
-↓
-ON状態
-↓
-OFF表示を消す
-↓
-ON表示を出す
-
-bannerViewOff.classList.remove('is-active');
-bannerViewOn.classList.add('is-active');
-	
-/* OFF 状態 */
-.autocharge-banner-container .banner-view-off.is-active {
-    display: block;
-}
-
-/* ON 状態 */ 
-.autocharge-banner-container .banner-view-on.is-active {
-    display: block;
-}
+}	
 
 		
 
