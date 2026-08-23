@@ -31,6 +31,20 @@
     display: block;
 }
 
+これだと	.banner-view-off を画面表示させるとき .banner-view-on　を非表示。.banner-view-on. を表示させるときは .banner-view-off を非表示、みたいに切り替えたりできないってこと？
+	
+/* OFF 状態 */
+.autocharge-banner-container .banner-view-off.is-active {
+    display: block;
+}
+
+/* ON 状態 */ 
+.autocharge-banner-container .banner-view-on.is-active {
+    display: block;
+}
+
+		
+
 
 
 テキスト正しくはこっち(HTML側、全部修正済み)。結局JSで処理されるからHTMLの方のテキスト蔑ろにしてた。
