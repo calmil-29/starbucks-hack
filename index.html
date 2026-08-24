@@ -11,36 +11,12 @@
 
 🔥====================
 
-あーそっか。完全にHTMLのデフォルト状態のこと忘れてた。 is-active はただのラベルだから意味そのものはないんだった。あと、今[STEP 3]を無視してJSでON/OFFの切り替え[STEP 6]を考えてた。あぁ...if文条件にはチャージ設定の保存有無が必要だから、先に第３モーダルの保存ボタンを押したときの処理[STEP 4]を先に書く必要があるのかぁ...やばい理解力なさすぎ。で、その前に[STEP 3]のONスイッチの見た目をCSSで作るのが先なのね？
-	
-てか。たびたび思ってたんだけど、今回の場合もそうだけどHTMLでの「オートチャージ：¥2,000 入金条件：残高が¥1,000未満」は、結局JSで処理されるから空欄でもいいの？
+
+でね。たびたび思ってたんだけど、今回の場合もそうだけどHTMLでの「オートチャージ：¥2,000 入金条件：残高が¥1,000未満」は、結局JSで処理されるから空欄でもいいの？
 
 
-あってる？	
- <div class="autocharge-banner-container"> 
-
-            <!--  OFF 状態-->
-            <div class="banner-view-off">  つ
-              <p class="banner-title">オートチャージ</p>
-              <p class="banner-sub-title">カードの条件を設定</p>
-              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
-            </div> 
-
-            <!-- ON 状態 -->
-            <div class="banner-view-on">
-              <div class="banner-text">
-                <p class="banner-title">オートチャージ</p> 
-                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
-              </div>
-            </div>    
-
-             <!-- ON → OFF に切り替えるスイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
-            <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
-              <span class="autocharge-switch-circle"></span>
-            </button> 
-          </div>   	
-
-/* 初期設定：OFF を表示 */ 	
+先にスイッチボタンの見た目をCSSで書かないといけない。OFF状態のときスイッチボタンは非表示、ON状態の時スイッチボタンは表示される。で、スイッチボタンを非表示にするときボタンのアニメーションも右に動く瞬間を見せるけど、
+* 初期設定：OFF を表示 */ 	
 .autocharge-banner-container .banner-view-off {
 	display: block;
 }    
@@ -56,18 +32,39 @@
 	display: block;
 }
 
-	
-const bannerViewOff = document.querySelector('.banner-view-off');
-const bannerViewOn = document.querySelector('.banner-view-on');
+/* ONスイッチボタン → OFF状態への切り替え  */
+.autocharge-switch {
+    display: none;
+}
 
-    if (bannerViewOff) {
-        bannerViewOff.classList.remove('is-active'); // OFF を表示
-    } else {
-        if (bannerViewOn) {
-        bannerViewOn.classList.add('is-acitive');    //ON を非表示   
-        }
-    }    
-    
+.autocharge-switch.is-active {
+    display: block;
+}
+
+.autocharge-switch {
+    position: relative;
+    width: 50px;
+    height: 28px;
+    border-radius: 999px;
+    background-color: #999;
+}
+
+.autocharge-switch-circle {
+    position: absolute;
+    top: 1px;
+    left: 3px;
+
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: white;
+
+    transition: transform 0.2s ease;
+}
+
+.autocharge-switch.is-active .autocharge-switch-circle  {
+    transform: translateX(22px);
+}
 	
 
 
