@@ -18,32 +18,28 @@
             <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
               <span class="autocharge-switch-circle"></span>
             </button> 
+ <div class="autocharge-banner-container"> 
 
-.autocharge-switch は .banner-view-on とセットで同じタイミングで表示/非表示させる。
-動き（表示方法）としてはこう
-	
-スイッチを押す
- ↓
-一瞬OFF方向へ動く
- ↓
-OFF状態に切り替える		
-	
-/* 初期設定：OFF を表示 */ 	
-.autocharge-banner-container .banner-view-off {
-	display: block;
-}  
-/* 初期設定：ON を非表示 */ 		
-.autocharge-banner-container .banner-view-on {
-	display: none;
-}
+            <!--  OFF 状態-->
+            <div class="banner-view-off">  
+              <p class="banner-title">オートチャージ</p>
+              <p class="banner-sub-title">カードの条件を設定</p>
+              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
+            </div> 
 
-/* ON 状態 */
-.autocharge-banner-container .banner-view-off.is-active {
-	display: none;
-}    
-.autocharge-banner-container .banner-view-on.is-active {
-	display: block;
-}
+            <!-- ON 状態 -->
+            <div class="banner-view-on">
+              <div class="banner-text">
+                <p class="banner-title">オートチャージ</p> 
+                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
+              </div>
+            </div>    
+
+            <!-- ON → OFF に切り替えるスイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
+            <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
+              <span class="autocharge-switch-circle"></span>
+            </button> 
+          </div>   
 	
 button {
     background: none;
