@@ -19,6 +19,41 @@
               <span class="autocharge-switch-circle"></span>
             </button> 
 
+.autocharge-switch は .banner-view-on とセットで同じタイミングで表示/非表示させる。
+動き（表示方法）としてはこう
+	
+スイッチを押す
+ ↓
+一瞬OFF方向へ動く
+ ↓
+OFF状態に切り替える		
+	
+/* 初期設定：OFF を表示 */ 	
+.autocharge-banner-container .banner-view-off {
+	display: block;
+}  
+/* 初期設定：ON を非表示 */ 		
+.autocharge-banner-container .banner-view-on {
+	display: none;
+}
+
+/* ON 状態 */
+.autocharge-banner-container .banner-view-off.is-active {
+	display: none;
+}    
+.autocharge-banner-container .banner-view-on.is-active {
+	display: block;
+}
+	
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    box-sizing: border-box;
+    appearance: none;     /* スマホ（iPhone等）独自のボタン装飾や余白を完全にリセットする */
+    cursor: pointer;
+}
+
 じゃあ、これだと？
 
 こっちは表示された時の見た目
