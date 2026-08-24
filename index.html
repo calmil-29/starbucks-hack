@@ -14,32 +14,62 @@
 
 でね。たびたび思ってたんだけど、今回の場合もそうだけどHTMLでの「オートチャージ：¥2,000 入金条件：残高が¥1,000未満」は、結局JSで処理されるから空欄でもいいの？
 
-<!-- ON → OFF に切り替えるスイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
-            <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
-              <span class="autocharge-switch-circle"></span>
-            </button> 
- <div class="autocharge-banner-container"> 
+/* 初期設定：OFF を表示 */ 	
+.autocharge-banner-container .banner-view-off {
+	display: block;
+}    
+.autocharge-banner-container .banner-view-on {
+	display: none;
+}
 
-            <!--  OFF 状態-->
-            <div class="banner-view-off">  
-              <p class="banner-title">オートチャージ</p>
-              <p class="banner-sub-title">カードの条件を設定</p>
-              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
-            </div> 
+/* ON 状態 */
+.autocharge-banner-container .banner-view-off.is-active {
+	display: none;
+}    
+.autocharge-banner-container .banner-view-on.is-active {
+	display: block;
+}
 
-            <!-- ON 状態 -->
-            <div class="banner-view-on">
-              <div class="banner-text">
-                <p class="banner-title">オートチャージ</p> 
-                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
-              </div>
-            </div>    
+/* ONスイッチボタン → OFF状態への切り替え（初期状態は非表示） */
+.autocharge-switch {
+    position: relative;
+    width: 50px;
+    height: 28px;
+    border-radius: 14px;
+    background-color: rgb(39, 179, 37);
 
-            <!-- ON → OFF に切り替えるスイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
-            <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
-              <span class="autocharge-switch-circle"></span>
-            </button> 
-          </div>   
+    /* 消えるときもスムーズにする */
+    transition: opacity 0.2s ease, visibility 0.2s;
+    opacity: 1;
+    visibility: visible;
+
+    /* display: none; あとで対追記 */
+}
+
+.autocharge-switch.is-active {
+    display: block;
+}
+
+/* ON 状態の見た目 */
+.autocharge-switch-circle {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: white;
+
+    transition: transform 0.2s ease;
+}
+
+/* ボタンが非表示（OFF）に向かうとき */ 
+.autocharge-switch-circle  {
+    transform: translateX(-22px);     /* ON → OFFボタンの動き */
+}
+
+
 	
 button {
     background: none;
@@ -49,6 +79,10 @@ button {
     appearance: none;     /* スマホ（iPhone等）独自のボタン装飾や余白を完全にリセットする */
     cursor: pointer;
 }
+
+
+🔥-----------------------------------
+	
 
 じゃあ、これだと？
 
