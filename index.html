@@ -29,6 +29,78 @@
 
 	今この状態だったんだけど、そっか、 .banner-view-on の中に .autocharge-switch を入れてもいいのか。ボタンのONからOFFの動きは「ON 状態」をどう「OFF 状態」に切り替えるのかの範囲だしね？
 
+/* =========================
+   第2モーダル
+   オートチャージ OFF / ON
+   ========================= */
+
+/* 初期状態：OFF表示 */
+.autocharge-banner-container .banner-view-off {
+    display: block;
+}
+
+.autocharge-banner-container .banner-view-on {
+    display: none;
+}
+
+
+/* ON状態 */
+.autocharge-banner-container .banner-view-off.is-active {
+    display: none;
+}
+
+.autocharge-banner-container .banner-view-on.is-active {
+    display: block;
+}
+
+
+/* =========================
+   ON状態のスイッチ
+   ========================= */
+
+.autocharge-switch {
+    position: relative;
+
+    width: 50px;
+    height: 28px;
+
+    border-radius: 14px;
+    background-color: rgb(39, 179, 37);
+
+    /* スイッチの丸が動く時間 */
+    transition: opacity 0.2s ease,
+                visibility 0.2s ease;
+}
+
+
+/* スイッチの丸 */
+.autocharge-switch-circle {
+    position: absolute;
+
+    top: 3px;
+    left: 3px;
+
+    width: 22px;
+    height: 22px;
+
+    border-radius: 50%;
+    background-color: white;
+
+    /* ON位置 */
+    transform: translateX(22px);
+
+    /* ON → OFF方向へ動くとき */
+    transition: transform 0.2s ease;
+}
+
+
+/* ON → OFFの途中 */
+.autocharge-switch.is-off .autocharge-switch-circle {
+    transform: translateX(0);
+}
+
+
+
 🔥-----------------------------------
 	
 
