@@ -27,8 +27,8 @@
               <span class="autocharge-switch-circle"></span>
             </button> 
 
-	今この状態だったんだけど、そっか、 .banner-view-on の中に .autocharge-switch を入れてもいいのか。ボタンのONからOFFの動きは「ON 状態」をどう「OFF 状態」に切り替えるのかの範囲だしね？
-position: absolute; left: 3px; の位置から、 transform: translateX(22px); に仮止めされたのを is-off のとき translateX(0) で元の位置 left: 3px; に戻してるってこと？ transform と translate はセット?
+	今この状態だったんだけど、そっか、 .banner-view-on の中に .autocharge-switch を入れてもいいのか。ボタンのONからOFFの動きは「ON 状態」をどう「OFF 状態」に切り替えるのかの範囲だし？
+　　ON → OFFからのスイッチボタンの動きも position: absolute; left: 3px; の位置から、 transform: translateX(22px); に仮止めされたのを is-off のとき translateX(0) で元の位置 left: 3px; に戻すんだね？
 
 🔥 --------------------------------------------------------------------------------------	
 
