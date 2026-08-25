@@ -32,40 +32,10 @@
 
 🔥 --------------------------------------------------------------------------------------	
 
-.autocharge-switch.is-off .autocharge-switch-circle {
-    transform: translateX(0);
-}
-の解説お願い。 translateX(0) だと丸が消えるの？それとも.autocharge-switch の作った枠内で動くの？
-	
-/* =========================
-   第2モーダル
-   オートチャージ OFF / ON
-   ========================= */
+/* スイッチの状態 */
 
-/* 初期状態：OFF表示 */
-.autocharge-banner-container .banner-view-off {
-    display: block;
-}
-
-.autocharge-banner-container .banner-view-on {
-    display: none;
-}
-
-
-/* ON状態 */
-.autocharge-banner-container .banner-view-off.is-active {
-    display: none;
-}
-
-.autocharge-banner-container .banner-view-on.is-active {
-    display: block;
-}
-
-
-/* =========================
-   ON状態のスイッチ
-   ========================= */
-
+/* OFF 側 */
+/* スイッチの枠（デフォルト＝OFF 状態） */
 .autocharge-switch {
     position: relative;
 
@@ -73,16 +43,15 @@
     height: 28px;
 
     border-radius: 14px;
-    background-color: rgb(39, 179, 37);
+    background-color: #ccc; /* OFF 状態のスイッチ枠の色 */
 
     /* スイッチの丸が動く時間 */
-    transition: opacity 0.2s ease,
-                visibility 0.2s ease;
+    transition: opacity 0.2s ease, 
+                visibility 0.2s;
 }
 
-
-/* スイッチの丸 */
-.autocharge-switch-circle {
+/* スイッチの丸（デフォルト＝OFF 状態） */
+.autocharge-switch-circle  {
     position: absolute;
 
     top: 3px;
@@ -94,19 +63,21 @@
     border-radius: 50%;
     background-color: white;
 
-    /* ON位置 */
+    /* ON 位置 */ 
+    transform: translateX(0px);   
+
+    /* ON → OFF 方向へ動くとき */
+    transition: transform 0.2s ease; 
+}
+
+/* ON 側 */
+.autocharge-switch.is-on .autocharge-switch-circle {
     transform: translateX(22px);
-
-    /* ON → OFF方向へ動くとき */
-    transition: transform 0.2s ease;
 }
 
-
-/* ON → OFFの途中 */
-.autocharge-switch.is-off .autocharge-switch-circle {
-    transform: translateX(0);
+.autocharge-switch.is-on {
+    background-color: rgb(39, 179, 37); /* ON 状態のスイッチ枠の色 */
 }
-
 
 
 🔥 --------------------------------------------------------------------------------------------
