@@ -14,60 +14,20 @@
 
 あと。たびたび思ってたんだけど、今回の場合もそうだけどHTMLでの「オートチャージ：¥2,000 入金条件：残高が¥1,000未満」は、結局JSで処理されるから空欄でもいいの？
 
-/* 初期設定：OFF を表示 */ 	
-.autocharge-banner-container .banner-view-off {
-	display: block;
-}    
-.autocharge-banner-container .banner-view-on {
-	display: none;
-}
+           <!-- ON 状態 -->
+            <div class="banner-view-on">
+              <div class="banner-text">
+                <p class="banner-title">オートチャージ</p> 
+                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
+              </div>
+            </div>    
 
-.autocharge-switch {
-    position: relative;
-    width: 50px;
-    height: 28px;
-    border-radius: 14px;
-    background-color: rgb(39, 179, 37);
+           <!-- ON 状態スイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
+            <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
+              <span class="autocharge-switch-circle"></span>
+            </button> 
 
-    /* 消えるときもスムーズにする */
-    transition: opacity 0.2s ease, visibility 0.2s;
-    opacity: 1;
-    visibility: visible;
-
-    /* display: none; あとで対追記 */
-}
-
-/* ON の状態 */
-.autocharge-banner-container .banner-view-off.is-active {
-	display: none;
-}    
-.autocharge-banner-container .banner-view-on.is-active {
-	display: block;
-}
-
-.autocharge-switch.is-active {
-    display: block;
-}
-
-/* 【中間地点】ON → OFF・ボタンが非表示（OFF）に向かう瞬間の動き */
-.autocharge-switch-circle  {
-    transform: translateX(22px);   
-}
-
-/* ON 状態のボタン → OFF状態への切り替え（初期状態は非表示） */
-.autocharge-switch-circle {
-    position: absolute;
-    top: 3px;
-    left: 3px;
-
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background-color: white;
-
-    transition: transform 0.2s ease;
-}
-
+	今この状態だったんだけど、そっか、 .banner-view-on の中に .autocharge-switch を入れてもいいのか。ボタンのONからOFFの動きは「ON 状態」をどう「OFF 状態」に切り替えるのかの範囲だしね？
 
 🔥-----------------------------------
 	
