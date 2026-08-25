@@ -29,6 +29,13 @@
 
 	今この状態だったんだけど、そっか、 .banner-view-on の中に .autocharge-switch を入れてもいいのか。ボタンのONからOFFの動きは「ON 状態」をどう「OFF 状態」に切り替えるのかの範囲だしね？
 
+🔥 --------------------------------------------------------------------------------------	
+
+.autocharge-switch.is-off .autocharge-switch-circle {
+    transform: translateX(0);
+}
+の解説お願い。 translateX(0) だと丸が消えるの？それとも.autocharge-switch の作った枠内で動くの？
+	
 /* =========================
    第2モーダル
    オートチャージ OFF / ON
@@ -99,152 +106,6 @@
     transform: translateX(0);
 }
 
-
-
-🔥-----------------------------------
-	
-
-じゃあ、これだと？
-
-こっちは表示された時の見た目
-.autocharge-switch-circle {
-    position: absolute;
-    top: 3px;
-    right: 3px;
-
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background-color: white;
-
-    transition: transform 0.2s ease;
-}
-
-こっちは非表示になるときに、一瞬見せる（一瞬のとこはJS）ってCSS側の書き方で合ってる？
-.autocharge-switch.is-active .autocharge-switch-circle  {
-    transform: translateX(-22px);    
-}	
-	
-
-	
-	
-スイッチを押す
- ↓
-一瞬OFF方向へ動く
- ↓
-OFF状態に切り替える	
-のためにはこう？： 
-
-/* 初期設定：OFF を表示 */ 	
-.autocharge-banner-container .banner-view-off {
-	display: block;
-}    
-.autocharge-banner-container .banner-view-on {
-	display: none;
-}
-
-/* ON 状態 */
-.autocharge-banner-container .banner-view-off.is-active {
-	display: none;
-}    
-.autocharge-banner-container .banner-view-on.is-active {
-	display: block;
-}
-
-/* ONスイッチボタン → OFF状態への切り替え  */
-.autocharge-switch {
-    display: none;
-}
-
-.autocharge-switch.is-active {
-    display: block;
-}
-
-.autocharge-switch {
-    position: relative;
-    width: 50px;
-    height: 28px;
-    border-radius: 999px;
-    background-color: #999;
-}
-
-.autocharge-switch-circle {
-    position: absolute;
-    top: 3px;
-    left: 3px;
-
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
-    background-color: white;
-
-    transition: transform 0.2s ease;
-}
-
-.autocharge-switch.is-active .autocharge-switch-circle  {
-    transform: translateX(22px);
-}
-
-
-
-
-🔥 --------------------------------------------------------------------------------------	
-	
-#depositModal
-    .deposit-screen-input
-
-	Gemmine：
-      <!-- 【オートチャージ設定】リアルタイム更新バナー（初期状態は OFF） -->
-          <div class="autocharge-banner-container"> 
-
-            <!--  OFF 状態-->
-            <div class="banner-view-off">  
-              <p class="banner-title">オートチャージ</p>
-              <p class="banner-sub-title">カードの条件を設定</p>
-              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
-            </div> 
-
-            <!-- ON 状態 -->
-            <div class="banner-view-on">
-              <div class="banner-text">
-                <p class="banner-title">オートチャージ</p> 　
-                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
-              </div>
-            </div>    
-
-             <!-- ON → OFF に切り替えるスイッチ -->
-            <button class="autocharge-switch" onclick="openAutochargeModal(event)"> 
-              <span class="autocharge-switch-circle"></span>
-            </button> 
-          </div>   
-
-無代（きみ）：
-<!--  OFF 状態-->	
-<div class="autocharge-banner">
-    <div class="banner-text">
-        <p class="banner-title">オートチャージ設定</p>
-        <p class="banner-sub">カードの条件を設定</p>
-    </div>
-
-    <button class="setting-trigger-btn"><!-- ここに onclick="openAutochargeModal(event) 必要だよね？ -->
-        設定する
-    </button>
-</div>
-
- <!-- ON 状態 -->	
-<div class="autocharge-banner-on">
-    <div class="banner-text">
-        <p class="banner-title">オートチャージ</p>
-
-        <p class="autocharge-summary">
-            入金額：¥2,000（入金条件：残高が¥1,000未満）
-        </p>
-    </div>
-
-    <button class="autocharge-switch">
-        <span class="autocharge-switch-circle"></span>
-    </button>
-</div>
 
 
 🔥 --------------------------------------------------------------------------------------------
