@@ -33,6 +33,58 @@ HTML のこのサマリーだとどう書き足せばいい？
                 <span class="autocharge-switch-circle"></span>
               </button> 
             </div>     
+            
+            <div class="banner-view-on">
+  <div class="banner-text">
+    <p class="banner-title">オートチャージ</p> 
+    
+    <!-- ⬇️ バナーの中のここだけ構造を書き足します -->
+    <div class="autocharge-summary">
+      <!-- 画像と名前を差し込むための専用の空っぽの看板を用意 -->
+      <div id="bannerCardArea" class="summary-card-info">
+        <img id="bannerCardImg" src="images/main-card.png" alt="Starbucks Card" class="summary-card-pin">
+        <span id="bannerCardName" class="summary-card-name">Starbucks Card の設定</span>
+      </div>
+      
+      <!-- テキスト部分は他の2つと共通で書き換えられるようにしておく -->
+      <span class="summary-text-node">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</span>
+    </div>
+    <!-- ⬆️ ここまで -->
+
+  </div>
+</div>
+
+    // 【第３モーダル専用】最上部のサマリーテキストをリアルタイム更新する
+    if (isAutocharge) {
+        
+        // 1. 【共通処理】すべてのサマリー（3つ全て）のテキストをループで一括更新
+        const allSummaries = document.querySelectorAll('.autocharge-summary');
+        allSummaries.forEach(el => {
+            // 各サマリーの中にあるテキスト用の要素、または el 自体のテキストを書き換える
+            // ※バナーの中に .summary-text-node を入れたので、それがある場合はそこ、無い場合はel自体を書き換える
+            const textNode = el.querySelector('.summary-text-node') || el;
+            textNode.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()} 入金条件：残高が¥${autochargeCondition.toLocaleString()}未満`;
+        });
+
+        // 2. 【個別処理】バナーの中だけ「画像」と「カード名」をピンポイントで狙い撃ち更新
+        const bannerImg = document.getElementById('bannerCardImg');
+        const bannerName = document.getElementById('bannerCardName');
+
+        if (bannerImg && bannerName) {
+            // 選択されているカードに応じた画像と名前を特定
+            const cardImgSrc = autoTargetCardType === 'main' ? 'images/main-card.png' : 'images/sub-card.png';
+            const cardName = autoTargetCardType === 'main' ? 'Starbucks Card' : 'サブカード';
+
+            // バナーの中だけピンポイントで上書き（安全・高速）
+            bannerImg.src = cardImgSrc;
+            bannerImg.alt = cardName;
+            bannerName.textContent = `${cardName} の設定`;
+        }
+
+        // 3. 【バリデーション】（※ここは既存のコードのままでOKです）
+        const errorBox = document.getElementById('autoErrorMessage');
+        ...
+
 
 
 	
