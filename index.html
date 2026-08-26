@@ -9,9 +9,128 @@
 </head>
 <body>
 
-あと。たびたび思ってたんだけど、今回の場合もそうだけどHTMLでの「オートチャージ：¥2,000 入金条件：残高が¥1,000未満」は、結局JSで処理されるから空欄でもいいの？
+？ 今回の場合もそうだけどHTMLでの「オートチャージ：¥2,000 入金条件：残高が¥1,000未満」は、結局JSで処理されるから空欄でもいいの？
+
 	
-🔥====================
+🔥==============================================
+
+この処理の解説をしてほしい	
+【第２・第３共通】選択中の設定値を更新する処理　　
+	
+function selectDepositOption(type, value, event) {
+    if (event) event.stopPropagation(); // 衝撃波を止める
+
+    // 今クリックされたのが、【第３モーダル】か【第２モーダル】かを自動判定する
+    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
+
+    // 【UI更新対象の特定】選択されたtypeに応じて、ターゲットとなるDOM要素のインデックスを算出
+    let menuIndex = 1;
+
+    if (type === 'amount') menuIndex = 2;     // 入金額
+    if (type === 'condition') menuIndex = 3;  // 入金条件（オートチャージのみ）
+
+    // 「支払い方法」：【第３モーダル】なら４番目、【第２モーダル】なら３番目
+    if (type === 'method') {
+        menuIndex = isAutocharge ? 4 : 3;
+    }    
+
+    //【表示ラベルのDOM要素を掴む】
+    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
+
+    // HTML側の「各項目」で表示されている「現在の設定値」をターゲットにする
+    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+
+    //【防波堤（ガードクローズ）】もしHTML（DOM要素）がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
+    if (!currentLabel) {
+        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
+        return;
+    }
+
+    //【データ更新とDOM要素への文字反映】 
+    if (type === 'card') {
+
+        if (isAutocharge) {
+            autoTargetCardType = value;
+        } else {
+            depositTargetCardType = value; // 'main' か 'sub' を金庫に報告　 ※ currentSelectedCardType から変更済み
+        }    
+
+        // DOM要素（テキスト）を最新の残高と合体させて上書き（変数：starbucksCardBalance、subCardBalance）
+        if (value === 'main') {
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+
+        } else if (value === 'sub') {
+            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
+
+        } else if (type === 'amount' || type === 'condition') {
+
+        // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
+        const numValue = Number(value);
+
+        if (!isNaN(numValue)) {
+
+            // 金庫の最新データを上書き更新
+            if (isAutocharge) {
+                if (type === 'amount')  autochargeAmount = numValue;
+                if (type === 'condition') autochargeCondition = numValue;
+            }  
+
+            // DOM要素を「¥2,000」などの綺麗な表記にして書き換える
+            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
+
+        } else {
+            currentLabel.textContent = value;
+        }
+    
+        } else {
+        // 支払い方法（method）などの時は、選ばれた文字をそのまま看板に書き換える
+        currentLabel.textContent = value;
+    }    
+   
+    // 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する ※ ※ ここにsummary用のカード画像/テキスト表示入れるか？
+    if (isAutocharge) {
+        const allSummaries = document.querySelectorAll('.autocharge-summary');
+
+        allSummaries.forEach(el => {
+            el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金額：残高が¥${autochargeCondition.toLocaleString()}未満` ;
+        });
+
+        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
+        const errorBox = document.getElementById('autoErrorMessage');
+        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件
+        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
+
+       if (Number(autochargeAmount) < Number(autochargeCondition)) {
+
+            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
+            if (errorBox) errorBox.style.display = 'block';
+            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
+            if (nextBtn) nextBtn.disabled = true; 
+
+        } else {
+            // 条件クリア：エラーを消して通常状態に戻す
+            if (errorBox) errorBox.style.display = 'none';
+            if (conditionMenu)  conditionMenu.classList.remove('has-error');
+            if (nextBtn) nextBtn.disabled = false;
+        }
+    }
+
+    // 【自動クローズ】 文字をコピーし終わったら、用済みになった「ドロップダウン」を閉じる 
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
+
+    // 【ドロップダウンを特定】今開いていたドロップダウンのIDを自動で組み立てる
+    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
+    const targetWindow = document.getElementById(windowId);
+
+    if (targetWindow) {
+        targetWindow.classList.remove('is-active');
+    }  
+}	
+
+
+	
+🔥==============================================
 
 【第３モーダル】オートチャージ設定の初期値
 
@@ -21,24 +140,14 @@ let autochargeAmount = 2000;     // １回あたりに自動で入金する初�
 let isAutochargeEnabled = false; // オートチャージがONかOFFか（初期はOFF）	
 
 
-HTML のこのサマリーだとどう書き足せばいい？
-     <div class="banner-view-on">
-              <div class="banner-text">
-                <p class="banner-title">オートチャージ</p> 
-                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
-              </div>
 
-              <!-- ON 状態スイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
-              <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
-                <span class="autocharge-switch-circle"></span>
-              </button> 
-            </div>     
-            
-            <div class="banner-view-on">
+	
+🔥 ※ 第３モーダルの保存が終わってから → Gemmine 案：第２モーダルのサマリー部分にカード/カード名をつけた場合 HTML/CSS/JS =================================🔥 
   <div class="banner-text">
     <p class="banner-title">オートチャージ</p> 
     
     <!-- ⬇️ バナーの中のここだけ構造を書き足します -->
+	  
     <div class="autocharge-summary">
       <!-- 画像と名前を差し込むための専用の空っぽの看板を用意 -->
       <div id="bannerCardArea" class="summary-card-info">
@@ -118,12 +227,10 @@ HTML のこのサマリーだとどう書き足せばいい？
     color: #666;
     margin: 0; /* 余計な上下余白をリセット */
 }
-
-
 	
 🔥 --------------------------------------------------------------------------------------------
 
-ちなみに昨日、チャージのリアルタム更新部分を書き足し/修正した箇所：
+チャージのリアルタム更新部分を書き足し/修正した箇所：
 HTML	
 #depositModal
 	.deposit-screen-input
