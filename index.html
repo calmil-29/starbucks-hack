@@ -85,6 +85,39 @@ HTML のこのサマリーだとどう書き足せばいい？
         const errorBox = document.getElementById('autoErrorMessage');
         ...
 
+/* サマリー全体のレイアウト（縦並びにして少し隙間を空ける） */
+.autocharge-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px; /* タイトルとの間隔 */
+}
+
+/* カード画像と名前の横並び */
+.summary-card-info {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 画像と文字のすき間 */
+    font-weight: bold;
+    font-size: 0.95rem;
+    color: #212121;
+}
+
+/* ミニカード画像のサイズ調整 */
+.summary-card-pin {
+    width: 32px; /* バナー内なので、少し小さめのジャストサイズ */
+    height: auto;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2); /* 軽い影 */
+    object-fit: contain;
+}
+
+/* 元々のテキストの見た目を引き継ぐためのスタイル */
+.summary-detail {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0; /* 余計な上下余白をリセット */
+}
 
 
 	
