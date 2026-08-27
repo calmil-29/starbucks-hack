@@ -30,17 +30,6 @@ selectDepositOption()
 結果、selectDepositOption() の中身は、【第２・第３共通】選択中の設定値を更新する処理ではなくて、選択された値を画面【設定画面】のテキストに反映（カードと第３の金庫・条件は変数も更新）。第２でデータが裏側で保存される処理は「カード」しか書かれていなかった。第２で保存の処理が動いていたのは、　fillDepositConfirm() で　selectDepositOption() で画面の文字が書き変わったものを読んでいたから！
 
 
-	
-💡 
-何度もごめん、確認。JSで type value event 今回の例えばここの部分。type は 'card' 'amount'、value は 'main' 2000、event は　event になるけど。JS で type value event は意味のある言葉だったけ？ HTML の 'card', 'main', event はあくまで作ったラベルで、JS で当てはめるから意味を持つ的な？て理解？
-onclick="toggleAutochargeWindow('card', event)"
-onclick="selectDepositOption('card', 'main', event)"
-
-onclick="toggleAutochargeWindow('amount', event)"	
-onclick="selectDepositOption('amount', 2000, event)"
-
-
-
 🔥🔥🔥
      
 
