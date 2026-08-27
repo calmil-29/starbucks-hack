@@ -29,30 +29,47 @@ selectDepositOption()
 
 	
 💡 Q
-     B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）で currentLabel.textContent が2つ並んであるのは 入金と入金条件 の2つ用ってこと？
-	 } else if (type === 'amount' || type === 'condition') {
+    確認。この「menuIndex」の考え
+	
+	 const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
 
-        // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
-        const numValue = Number(value);
+    // 【UI更新対象の特定】
+    let menuIndex = 1;
 
-        if (!isNaN(numValue)) {
+    if (type === 'amount') menuIndex = 2;     // 入金額
+    if (type === 'condition') menuIndex = 3;  // 入金条件（オートチャージのみ）
 
-            // 第３（オートチャージ）のときだけ、後段のシステムのために金庫にも入れておく
-            if (isAutocharge) {
-                if (type === 'amount')  autochargeAmount = numValue;
-                if (type === 'condition') autochargeCondition = numValue;
-            }  
+    // 「支払い方法」：【第３モーダル】なら４番目、【第２モーダル】なら３番目
+    if (type === 'method') {
+        menuIndex = isAutocharge ? 4 : 3;
+    }    
 
-            // 第２・第３共通、画面のDOM要素（テキスト）を書き換える　例：「¥2,000」
-            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
+    //【表示ラベルのDOM要素を掴む】
+    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
+    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+		
+【第2モーダル入金設定画面エリア】に当てはめて考えると？
+depositModal（背景 / overlay）onclick="closeDepositModal(event)
+└── deposit-modal-content（白いカード）
+    └── deposit-screen-input（入力画面全体）
+        ├── deposit-modal-header（×ボタンエリア）onclick="closeDepositModalForce()
+        └── deposit-modal-body（body①）
+            ├── autocharge-banner（オートチャージ設定エリア）
+            │   └── setting-trigger-btn（設定するボタン）onclick=openAutochargeModal(event)
+            ├── deposit-menu-list（各種設定メニュー一覧）　①まず  isAutocharge('.autocharge-menu-list') を基準にどちらかを判断して、今回は const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; だから	.deposit-menu-list　でここで見分けてる？
+            │   ├── deposit-menu-item（1. カード選択）　②その中の１番目に let menuIndex = 1 というカード場所の印（変数）をつける
+            │   │   ├── menu-clickable-area（表示・クリックエリア）onclick="toggleDepositWindow('card', event)" 
+            │   │   └── deposit-selector-window（カード用別窓）onclick=selectDepositOption('card', 'main', event)...'sub'が続く
+            │   ├── deposit-menu-item（2. 入金額)  ③続けて順番通りに menuIndex = 2  入金額の場所
+            │   │   ├── menu-clickable-area（表示・クリックエリア）onclick=toggleDepositWindow('amount', event)"
+            │   │   └── deposit-selector-window（入金額用別窓）onclick=selectDepositOption('amount', 1000, event) ...3000,5000,10000が続く
+            │   └── deposit-menu-item（3. 支払い方法）③ 上から数えて３番目第２だから menuIndex = 3
+            │       ├── menu-clickable-area（表示・クリックエリア）onclick="toggleDepositWindow('method', event)
+            │       └── deposit-selector-window（支払い方法用別窓）onclick="selectDepositOption('method', 'Apple Pay', event)...'PayPay'が続く
+            └── deposit-next-step-btn（「次へ」ボタン）onclick=goToDepositConfirm(event)
 
-        } else {
-            currentLabel.textContent = value;
-        }
-
-	あと、「else」の使い方が混乱しがちなんだけど、if else はどちらか一方しか通さない境界線みたいなものなんだよね？でも、今回みたいに A. if(type === 'card') B. else if(type === 'amount' || type === 'condition') C. else if(type === 'method') だと書き方だとどう読めばいい？そもそも else と　if else の使い方をごちゃ混ぜにして覚えてるような気がするけど！
-   
-
+それと、【データ更新とDOM要素への文字反映】 で if (type === 'card') {　から始まるけど、ここの　type === 'card'　は HTML のカード〜支払い方法についてるタップされた時のトリガーとなる 例：カードなら　onclick="toggleDepositWindow('card', event)"　の 「''」の中を見てるのんだよね？
+let menuIndex = 1;　との繋がりは、最初に  menuIndex で場所を特定して、if (type === 'card') { からはタップされた選択肢がどこなのかを判定？　なんか自分でもなんていえばいいのかわかない。method　から if (type === 'card') { まではどう考えて組み立ててるの？
 	
 
 🔥🔥🔥
