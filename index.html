@@ -9,9 +9,7 @@
 </head>
 <body>
 
-？　selectDepositOption() のタイトルを //【第２・第３共通】選択中の設定値を更新する処理 にしてるけどこれも誤りってことになる？なんて説明タイトルつければいい？　	
 
-	
 selectDepositOption()
 │
 ├─ type === 'card'
@@ -28,227 +26,134 @@ selectDepositOption()
 │
 └─ type === 'method'
      ├─ 第2では何を更新？　抜けてる
-     └─ 第3では何を更新？　抜けてる
-
-
-// =======================
-// グローバル変数（フラグ） 
-// =======================
-
-let starbucksCardBalance = 0; // メインカードの初期残高データ（例: 0）      
-let subCardBalance = 3500;    // サブカードの初期残高データ（例: 3500）
-
-// =====================================
-// 【第１モーダル】現在のカードの初期値
-// =====================================
-let currentSelectedCardType = 'main';
-
-// =====================================
-// 【第２モーダル】入金対象のカードの初期値
-// =====================================
-let depositTargetCardType = 'main';
-
-// ======================================
-// 【第３モーダル】オートチャージ設定の初期値
-// ======================================
-let autoTargetCardType = 'main'; // オートチャージ対象のカードの初期値
-let autochargeAmount = 2000;     // １回あたりに自動で入金する初期のチャージ金額（例：2000円チャージする）
-let autochargeCondition = 1000;  // オートチャージを実行する残高の初期の境界線（例：1000円以下になったら）
-let isAutochargeEnabled = false; // オートチャージがONかOFFか（初期はOFF）	
-
+     └─ 第3では何を更新？　autochargeMethod
 	
-	
-【第2モーダル入金設定画面エリア】	
-depositModal（背景 / overlay）onclick="closeDepositModal(event)
-└── deposit-modal-content（白いカード）
-    └── deposit-screen-input（入力画面全体）
-        ├── deposit-modal-header（×ボタンエリア）onclick="closeDepositModalForce()
-        └── deposit-modal-body（body①）
-            ├── autocharge-banner（オートチャージ設定エリア）
-            │   └── setting-trigger-btn（設定するボタン）onclick=openAutochargeModal(event)
-            ├── deposit-menu-list（各種設定メニュー一覧）
-            │   ├── deposit-menu-item（1. カード選択）
-            │   │   ├── menu-clickable-area（表示・クリックエリア）onclick="toggleDepositWindow('card', event)" 
-            │   │   └── deposit-selector-window（カード用別窓）onclick=selectDepositOption('card', 'main', event)...'sub'が続く
-            │   ├── deposit-menu-item（2. 入金額）
-            │   │   ├── menu-clickable-area（表示・クリックエリア）onclick=toggleDepositWindow('amount', event)"
-            │   │   └── deposit-selector-window（入金額用別窓）onclick=selectDepositOption('amount', 1000, event) ...3000,5000,10000が続く
-            │   └── deposit-menu-item（3. 支払い方法）
-            │       ├── menu-clickable-area（表示・クリックエリア）onclick="toggleDepositWindow('method', event)
-            │       └── deposit-selector-window（支払い方法用別窓）onclick="selectDepositOption('method', 'Apple Pay', event)...'PayPay'が続く
-            └── deposit-next-step-btn（「次へ」ボタン）onclick=goToDepositConfirm(event)
+function selectDepositOption(type, value, event) {
+    if (event) event.stopPropagation(); // 衝撃波を止める
 
-この下にさらに【確認画面エリア（deposit-screen-confirm）】が続く
+    // 【第３モーダル】か【第２モーダル】かを自動判定
+    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
 
-【第2モーダル】の【確認画面】の「入金する」ボタンの処理（残高更新）	
-document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+    // 【UI更新対象の特定】
+    let menuIndex = 1;
 
-    if (event) event.stopPropagation();
+    if (type === 'amount') menuIndex = 2;     // 入金額
+    if (type === 'condition') menuIndex = 3;  // 入金条件（オートチャージのみ）
 
-    // ============================================
-    // A. 【第2モーダル】から「今回の入金額」を取得
-    // ============================================
-    
-    const selectedAmountText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
+    // 「支払い方法」：【第３モーダル】なら４番目、【第２モーダル】なら３番目
+    if (type === 'method') {
+        menuIndex = isAutocharge ? 4 : 3;
+    }    
 
-    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
+    //【表示ラベルのDOM要素を掴む】
+    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
+    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
 
-    if (isNaN(depositAmount) || depositAmount === 0) {
-        alert("入金額が正しく取得できませんでした。");
+    //【防波堤（ガードクローズ）】もしHTML（DOM要素）がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
+    if (!currentLabel) {
+        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
         return;
     }
 
-    // =====================================================
-    // B. 【第2モーダル】で選ばれた「入金対象カード」に入金する
-    // =====================================================
+    // ======================================
+    // 【データ更新とDOM要素への文字反映】 
+    // ======================================
 
-    let updatedBalance = 0;
+    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール）
+    if (type === 'card') {
 
-    if (depositTargetCardType === 'main') { 
+        if (isAutocharge) {
+            autoTargetCardType = value;    // 第３の金庫
 
-        // メインカードにお金を足す
-        starbucksCardBalance = starbucksCardBalance + depositAmount;
+        } else {
+            depositTargetCardType = value; // 第２の金庫 　 ※ currentSelectedCardType から変更済み
+        }    
 
-        // 今回入金したカードの「入金残高」を保存
-        updatedBalance = starbucksCardBalance;
-       
-    } else {
+        if (value === 'main') {
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
 
-        // サブカードにお金を足す
-        subCardBalance = subCardBalance + depositAmount;
+        } else if (value === 'sub') {
+            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
 
-        // 今回入金したカードの「入金残高」を保存
-        updatedBalance = subCardBalance;
-      
-    }
+    // B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）
+    } else if (type === 'amount' || type === 'condition') {
 
-    // ==================================================
-    // C. 【第１・ヒーロー】には「現在のカード」の結果だけ反映
-    // ==================================================
+        // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
+        const numValue = Number(value);
 
-    // 「現在のカード」と「今回入金したカード」が同じ場合だけ、第１・ヒーローの残高を更新する
-    if (currentSelectedCardType === depositTargetCardType) {
+        if (!isNaN(numValue)) {
 
-        // 現在のカードがメインなら、メインの最新残高を表示
-        if (currentSelectedCardType === 'main') {
-            
-            const heroBalanceEl = document.getElementById('heroCardBalance');
+            // 第３（オートチャージ）のときだけ、後段のシステムのために金庫にも入れておく
+            if (isAutocharge) {
+                if (type === 'amount')  autochargeAmount = numValue;
+                if (type === 'condition') autochargeCondition = numValue;
+            }  
 
-            if (heroBalanceEl) {
-                heroBalanceEl.textContent = 
-                    starbucksCardBalance.toLocaleString();                    
-            }
+            // 画面のDOM要素（テキスト）をきれいに書き換える　例：「¥2,000」
+            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
 
-            const modalBalanceEl = 
-                document.querySelector(
-                    '.qr-modal-card-zone .qr-card-balance'
-                );
+        } else {
+            currentLabel.textContent = value;
+        }
+    
+    } else if (type === 'method') {
+        if (isAutocharge) {
 
-            if (modalBalanceEl) {
-                modalBalanceEl.textContent = 
-                    starbucksCardBalance.toLocaleString(); 
-            }
-        
-        // 現在のカードがサブなら、サブの最新情報を表示    
+            // 第３（オートチャージ）は裏で自動実行されるため金庫に保存
+            autochargeMethod = value;
+
         } else {
 
-            const heroBalanceEl = document.getElementById('heroCardBalance');
-            if (heroBalanceEl) {
-                heroBalanceEl.textContent = 
-                    subCardBalance.toLocaleString();
-            }
+            // 第２は変数を作っていないためここではなにもしない (画面リレーに任せる)　
+        }
 
-            const modalBalanceEl  =  document.querySelector(
-                    '.qr-modal-card-zone .qr-card-balance')
-            if (modalBalanceEl) {
-                modalBalanceEl.textContent = 
-                       subCardBalance.toLocaleString();
-            }
+        // 画面のDOM要素（テキスト）を書き換える
+        currentLabel.textContent = value;
+    }    
+   
+    // 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する 
+    if (isAutocharge) {
+        const allSummaries = document.querySelectorAll('.autocharge-summary');
+
+        allSummaries.forEach(el => {
+            el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金額：残高が¥${autochargeCondition.toLocaleString()}未満` ;
+        });
+
+        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
+        const errorBox = document.getElementById('autoErrorMessage');
+        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件
+        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
+
+       if (Number(autochargeAmount) < Number(autochargeCondition)) {
+
+            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
+            if (errorBox) errorBox.style.display = 'block';
+            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
+            if (nextBtn) nextBtn.disabled = true; 
+
+        } else {
+            // 条件クリア：エラーを消して通常状態に戻す
+            if (errorBox) errorBox.style.display = 'none';
+            if (conditionMenu)  conditionMenu.classList.remove('has-error');
+            if (nextBtn) nextBtn.disabled = false;
         }
     }
 
-    // ===========================================
-    // 【第1モーダル】のカード選択のドロップダウン　
-    // メイン・サブ両方の残高は、常に最新状態にする
-    // ===========================================
+    // 【自動クローズ】 文字をコピーし終わったら、用済みになった「ドロップダウン」を閉じる 
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
 
-    const modalWindowMainEl = 
-        document.querySelector(
-            '.qr-card-selector-window .qr-selector-item:nth-child(2) span'
-        );
+    // 【ドロップダウンを特定】今開いていたドロップダウンのIDを自動で組み立てる
+    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
+    const targetWindow = document.getElementById(windowId);
 
-    if (modalWindowMainEl) {
-        modalWindowMainEl.textContent =
-            '¥' + starbucksCardBalance.toLocaleString(); 
-    }   
+    if (targetWindow) {
+        targetWindow.classList.remove('is-active');
+    }  
+} 
 
-    const modalWindowsubEl = 
-        document.querySelector(
-            '.qr-card-selector-window .qr-selector-item:nth-child(3) span'
-        );
- 
-    if (modalWindowsubEl) {
-        modalWindowsubEl.textContent =
-            '¥' + subCardBalance.toLocaleString(); 
-    }   
-
-    // =================================================
-    // D. 【第２モーダル】内の残高表示を最新状態にする
-    // =================================================
-
-    const depositCurrentValueEl = 
-        document.querySelector(
-            '.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value'
-        );
-
-    if (depositCurrentValueEl) {
-
-        // 第２モーダルで「今回選んだカード」を
-        // そのまま表示しておく
-        if (depositTargetCardType === 'main') {
-            depositCurrentValueEl.textContent =
-                `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;     
-
-        } else {
-            depositCurrentValueEl.textContent =
-                `サブカード ¥${subCardBalance.toLocaleString()}`; 
-        }
-    }    
-
-    // ======================================
-    // 【第２モーダル】のカード選択ドロップダウン
-    // ======================================
-
-    const depositWindowMainEl = 
-        document.querySelector(
-            '#depositCardWindow .deposit-selector-item:nth-child(1) span'
-        );
-
-    if (depositWindowMainEl) {
-        depositWindowMainEl.textContent =
-            '¥' + starbucksCardBalance.toLocaleString(); 
-    }   
-    
-    const depositWindowSubEl =
-        document.querySelector(
-            '#depositCardWindow .deposit-selector-item:nth-child(2) span'
-        );
-    if (depositWindowSubEl) {
-        depositWindowSubEl.textContent =
-        '¥' + subCardBalance.toLocaleString();
-    }    
-    
-    // ===========================
-    // 【第２モーダル】全体を閉じる
-    // ===========================
-
-    const depositModal = document.getElementById('depositModal');
-    if (depositModal) {
-        depositModal.classList.remove('is-active');
-    }
-
-});
-	
+🔥🔥🔥
+     
 
 -------------------------------------------------------	
 
@@ -261,23 +166,7 @@ document.getElementById('finalDepositBtn')?.addEventListener('click', function(e
 入金条件     □ 第2 □ 第3
 支払い方法   □ 第2 □ 第3
 
-selectDepositOption()
-│
-├─ type === 'card'
-│    ├─ 第2では何を更新？ depositTargetCardType
-│    └─ 第3では何を更新？ autoTargetCardType
-│
-├─ type === 'amount'
-│    ├─ 第2では何を更新？ 抜けてる
-│    └─ 第3では何を更新？ autochargeAmount
-│
-├─ type === 'condition'
-│    ├─ 第2では何を更新？　第２では対象外
-│    └─ 第3では何を更新？　autochargeCondition
-│
-└─ type === 'method'
-     ├─ 第2では何を更新？　抜けてる
-     └─ 第3では何を更新？　抜けてる
+
 
 ① 誰が決めた？
 → ユーザーがカード選択をタップ
