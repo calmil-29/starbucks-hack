@@ -31,51 +31,174 @@ depositModal（背景 / overlay）onclick="closeDepositModal(event)
 
 この下にさらに【確認画面エリア（deposit-screen-confirm）】が続く
 
-selectDepositOption() が第２、第３の【設定画面】で選択した設定値を更新したものだとして（てか、もしかして違うの!?）、まず保存処理に行く前のこのコードが怪しいかなと思ったんだけど。
-	
-第２【設定画面】→【確認画面】へ切り替える  	
-function goToDepositConfirm(event) {
+document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
+
     if (event) event.stopPropagation();
+
+    // ============================================
+    // A. 【第2モーダル】から「今回の入金額」を取得
+    // ============================================
     
-    const inputArea = document.querySelector('.deposit-screen-input');    // 【入金設定画面】の箱
-    const confirmBox = document.querySelector('.deposit-screen-confirm'); // 【最終確認画面】の箱
+    const selectedAmountText = document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
 
-    // 確認画面に進む瞬間に、入力画面を完全に非表示にする
-    if (inputArea) inputArea.classList.remove('is-active'); 
+    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
 
-    // 確認画面を表示
-    if (confirmBox) {
-        confirmBox.classList.add('is-active');
-    } 
+    if (isNaN(depositAmount) || depositAmount === 0) {
+        alert("入金額が正しく取得できませんでした。");
+        return;
+    }
 
-    fillDepositConfirm();
-}  	
+    // =====================================================
+    // B. 【第2モーダル】で選ばれた「入金対象カード」に入金する
+    // =====================================================
+
+    let updatedBalance = 0;
+
+    if (depositTargetCardType === 'main') { 
+
+        // メインカードにお金を足す
+        starbucksCardBalance = starbucksCardBalance + depositAmount;
+
+        // 今回入金したカードの「入金残高」を保存
+        updatedBalance = starbucksCardBalance;
+       
+    } else {
+
+        // サブカードにお金を足す
+        subCardBalance = subCardBalance + depositAmount;
+
+        // 今回入金したカードの「入金残高」を保存
+        updatedBalance = subCardBalance;
+      
+    }
+
+    // ==================================================
+    // C. 【第１・ヒーロー】には「現在のカード」の結果だけ反映
+    // ==================================================
+
+    // 「現在のカード」と「今回入金したカード」が同じ場合だけ、第１・ヒーローの残高を更新する
+    if (currentSelectedCardType === depositTargetCardType) {
+
+        // 現在のカードがメインなら、メインの最新残高を表示
+        if (currentSelectedCardType === 'main') {
+            
+            const heroBalanceEl = document.getElementById('heroCardBalance');
+
+            if (heroBalanceEl) {
+                heroBalanceEl.textContent = 
+                    starbucksCardBalance.toLocaleString();                    
+            }
+
+            const modalBalanceEl = 
+                document.querySelector(
+                    '.qr-modal-card-zone .qr-card-balance'
+                );
+
+            if (modalBalanceEl) {
+                modalBalanceEl.textContent = 
+                    starbucksCardBalance.toLocaleString(); 
+            }
+        
+        // 現在のカードがサブなら、サブの最新情報を表示    
+        } else {
+
+            const heroBalanceEl = document.getElementById('heroCardBalance');
+            if (heroBalanceEl) {
+                heroBalanceEl.textContent = 
+                    subCardBalance.toLocaleString();
+            }
+
+            const modalBalanceEl  =  document.querySelector(
+                    '.qr-modal-card-zone .qr-card-balance')
+            if (modalBalanceEl) {
+                modalBalanceEl.textContent = 
+                       subCardBalance.toLocaleString();
+            }
+        }
+    }
+
+    // ===========================================
+    // 【第1モーダル】のカード選択のドロップダウン　
+    // メイン・サブ両方の残高は、常に最新状態にする
+    // ===========================================
+
+    const modalWindowMainEl = 
+        document.querySelector(
+            '.qr-card-selector-window .qr-selector-item:nth-child(2) span'
+        );
+
+    if (modalWindowMainEl) {
+        modalWindowMainEl.textContent =
+            '¥' + starbucksCardBalance.toLocaleString(); 
+    }   
+
+    const modalWindowsubEl = 
+        document.querySelector(
+            '.qr-card-selector-window .qr-selector-item:nth-child(3) span'
+        );
+ 
+    if (modalWindowsubEl) {
+        modalWindowsubEl.textContent =
+            '¥' + subCardBalance.toLocaleString(); 
+    }   
+
+    // =================================================
+    // D. 【第２モーダル】内の残高表示を最新状態にする
+    // =================================================
+
+    const depositCurrentValueEl = 
+        document.querySelector(
+            '.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value'
+        );
+
+    if (depositCurrentValueEl) {
+
+        // 第２モーダルで「今回選んだカード」を
+        // そのまま表示しておく
+        if (depositTargetCardType === 'main') {
+            depositCurrentValueEl.textContent =
+                `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;     
+
+        } else {
+            depositCurrentValueEl.textContent =
+                `サブカード ¥${subCardBalance.toLocaleString()}`; 
+        }
+    }    
+
+    // ======================================
+    // 【第２モーダル】のカード選択ドロップダウン
+    // ======================================
+
+    const depositWindowMainEl = 
+        document.querySelector(
+            '#depositCardWindow .deposit-selector-item:nth-child(1) span'
+        );
+
+    if (depositWindowMainEl) {
+        depositWindowMainEl.textContent =
+            '¥' + starbucksCardBalance.toLocaleString(); 
+    }   
+    
+    const depositWindowSubEl =
+        document.querySelector(
+            '#depositCardWindow .deposit-selector-item:nth-child(2) span'
+        );
+    if (depositWindowSubEl) {
+        depositWindowSubEl.textContent =
+        '¥' + subCardBalance.toLocaleString();
+    }    
+    
+    // ===========================
+    // 【第２モーダル】全体を閉じる
+    // ===========================
+
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) {
+        depositModal.classList.remove('is-active');
+    }
+
+});
 	
-【第２モーダル】【確認画面】へ現在の設定内容を書き込む
-function fillDepositConfirm() {
-
-    // 現在の設定値を取得
-    const currentCard = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || 'Starbucks Card';
-    const currentAmount = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '1,000';
-    const currentMethod = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(3) .current-value')?.textContent || '未登録';
-
-    // HTML側にある、確認画面の各IDの入れ物をガシッと掴む
-    const confirmCard = document.getElementById('confirmCard');
-    const confirmMethod = document.getElementById('confirmMethod');
-    const finalBtn = document.getElementById('finalDepositBtn');
-    
-    // 【確認画面】へ反映
-    if (confirmCard) {
-        confirmCard.textContent = currentCard;
-    }
-    if (confirmMethod) {
-        confirmMethod.textContent = currentMethod;
-    }
-    if (finalBtn) {
-        finalBtn.textContent = `${currentAmount} 入金する`;
-    }
-
-}   	
 
 -------------------------------------------------------	
 
