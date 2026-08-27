@@ -10,6 +10,53 @@
 <body>
 
 ？　selectDepositOption() のタイトルを //【第２・第３共通】選択中の設定値を更新する処理 にしてるけどこれも誤りってことになる？なんて説明タイトルつければいい？　	
+
+	
+selectDepositOption()
+│
+├─ type === 'card'
+│    ├─ 第2では何を更新？ depositTargetCardType
+│    └─ 第3では何を更新？ autoTargetCardType
+│
+├─ type === 'amount'
+│    ├─ 第2では何を更新？ 抜けてる
+│    └─ 第3では何を更新？ autochargeAmount
+│
+├─ type === 'condition'
+│    ├─ 第2では何を更新？　第２では対象外
+│    └─ 第3では何を更新？　autochargeCondition
+│
+└─ type === 'method'
+     ├─ 第2では何を更新？　抜けてる
+     └─ 第3では何を更新？　抜けてる
+
+
+// =======================
+// グローバル変数（フラグ） 
+// =======================
+
+let starbucksCardBalance = 0; // メインカードの初期残高データ（例: 0）      
+let subCardBalance = 3500;    // サブカードの初期残高データ（例: 3500）
+
+// =====================================
+// 【第１モーダル】現在のカードの初期値
+// =====================================
+let currentSelectedCardType = 'main';
+
+// =====================================
+// 【第２モーダル】入金対象のカードの初期値
+// =====================================
+let depositTargetCardType = 'main';
+
+// ======================================
+// 【第３モーダル】オートチャージ設定の初期値
+// ======================================
+let autoTargetCardType = 'main'; // オートチャージ対象のカードの初期値
+let autochargeAmount = 2000;     // １回あたりに自動で入金する初期のチャージ金額（例：2000円チャージする）
+let autochargeCondition = 1000;  // オートチャージを実行する残高の初期の境界線（例：1000円以下になったら）
+let isAutochargeEnabled = false; // オートチャージがONかOFFか（初期はOFF）	
+
+	
 	
 【第2モーダル入金設定画面エリア】	
 depositModal（背景 / overlay）onclick="closeDepositModal(event)
@@ -221,16 +268,16 @@ selectDepositOption()
 │    └─ 第3では何を更新？ autoTargetCardType
 │
 ├─ type === 'amount'
-│    ├─ 第2では何を更新？  
+│    ├─ 第2では何を更新？ 抜けてる
 │    └─ 第3では何を更新？ autochargeAmount
 │
 ├─ type === 'condition'
-│    ├─ 第2では何を更新？
-│    └─ 第3では何を更新？
+│    ├─ 第2では何を更新？　第２では対象外
+│    └─ 第3では何を更新？　autochargeCondition
 │
 └─ type === 'method'
-     ├─ 第2では何を更新？
-     └─ 第3では何を更新？
+     ├─ 第2では何を更新？　抜けてる
+     └─ 第3では何を更新？　抜けてる
 
 ① 誰が決めた？
 → ユーザーがカード選択をタップ
