@@ -27,56 +27,23 @@ selectDepositOption()
 └─ type === 'method'
      ├─ 第2では何を更新？　抜けてる
      └─ 第3では何を更新？　autochargeMethod
+
+ちなみにここの C. 支払い方法　で	この書き方なのはなぜ？どうして入金方穂のときだけ、else の空白状態（？）を作る必要があるの？
+} else {
+
+            // 第２は変数を作っていないためここではなにもしない (画面リレーに任せる)　
+}
 	
-function selectDepositOption(type, value, event) {
-    if (event) event.stopPropagation(); // 衝撃波を止める
+B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）みたいに	
+else {
+            currentLabel.textContent = value;
+        }	
+だけじゃダメなの？	
+	
+あと autoTargetCardType = value　とかの「value」はなにを指す？それぞれ違うものぽいけど。
 
-    // 【第３モーダル】か【第２モーダル】かを自動判定
-    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
-
-    // 【UI更新対象の特定】
-    let menuIndex = 1;
-
-    if (type === 'amount') menuIndex = 2;     // 入金額
-    if (type === 'condition') menuIndex = 3;  // 入金条件（オートチャージのみ）
-
-    // 「支払い方法」：【第３モーダル】なら４番目、【第２モーダル】なら３番目
-    if (type === 'method') {
-        menuIndex = isAutocharge ? 4 : 3;
-    }    
-
-    //【表示ラベルのDOM要素を掴む】
-    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
-
-    //【防波堤（ガードクローズ）】もしHTML（DOM要素）がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
-    if (!currentLabel) {
-        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
-        return;
-    }
-
-    // ======================================
-    // 【データ更新とDOM要素への文字反映】 
-    // ======================================
-
-    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール）
-    if (type === 'card') {
-
-        if (isAutocharge) {
-            autoTargetCardType = value;    // 第３の金庫
-
-        } else {
-            depositTargetCardType = value; // 第２の金庫 　 ※ currentSelectedCardType から変更済み
-        }    
-
-        if (value === 'main') {
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-
-        } else if (value === 'sub') {
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
-
-    // B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）
+	
+// B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）
     } else if (type === 'amount' || type === 'condition') {
 
         // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
@@ -96,7 +63,7 @@ function selectDepositOption(type, value, event) {
         } else {
             currentLabel.textContent = value;
         }
-    
+ // C. 支払い方法
     } else if (type === 'method') {
         if (isAutocharge) {
 
@@ -105,52 +72,16 @@ function selectDepositOption(type, value, event) {
 
         } else {
 
-            // 第２は変数を作っていないためここではなにもしない (画面リレーに任せる)　
+            // 第２は変数を作っていないためここではなにもしない (画面リレーに任せる)　// ここ！
         }
 
         // 画面のDOM要素（テキスト）を書き換える
         currentLabel.textContent = value;
     }    
-   
-    // 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する 
-    if (isAutocharge) {
-        const allSummaries = document.querySelectorAll('.autocharge-summary');
+   	
 
-        allSummaries.forEach(el => {
-            el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金額：残高が¥${autochargeCondition.toLocaleString()}未満` ;
-        });
 
-        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
-        const errorBox = document.getElementById('autoErrorMessage');
-        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件
-        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
-
-       if (Number(autochargeAmount) < Number(autochargeCondition)) {
-
-            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
-            if (errorBox) errorBox.style.display = 'block';
-            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
-            if (nextBtn) nextBtn.disabled = true; 
-
-        } else {
-            // 条件クリア：エラーを消して通常状態に戻す
-            if (errorBox) errorBox.style.display = 'none';
-            if (conditionMenu)  conditionMenu.classList.remove('has-error');
-            if (nextBtn) nextBtn.disabled = false;
-        }
-    }
-
-    // 【自動クローズ】 文字をコピーし終わったら、用済みになった「ドロップダウン」を閉じる 
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-
-    // 【ドロップダウンを特定】今開いていたドロップダウンのIDを自動で組み立てる
-    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
-    const targetWindow = document.getElementById(windowId);
-
-    if (targetWindow) {
-        targetWindow.classList.remove('is-active');
-    }  
-} 
+	
 
 🔥🔥🔥
      
