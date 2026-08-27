@@ -29,43 +29,12 @@ selectDepositOption()
 
 	
 💡 
-でも、なんていうかさ、書く順番で言うと、こういう順番で書いちゃいそう。menuIndex　の定義をする前に大枠の場所を指定したいと思っちゃうというか？
-あと、//【表示ラベルのDOM要素を掴む】　// 【UI更新対象の特定】 のタイトル説明がいまいちわかりづらくて、でも、実務では「看板」じゃなくて「DOM要素」の言葉を使うらしいから、今のうちに慣れておこうかと思ってるんだけど、なんか頭に入ってこない、表示ラベルのDOM要素を掴むってどこの表示ラベルのどのDOM！？てなる
+何度もごめん、確認。JSで type value event 今回の例えばここの部分。type は 'card' 'amount'、value は 'main' 2000、event は　event になるけど。JS で type value event は意味のある言葉だったけ？ HTML の 'card', 'main', event はあくまで作ったラベルで、JS で当てはめるから意味を持つ的な？て理解？
+onclick="toggleAutochargeWindow('card', event)"
+onclick="selectDepositOption('card', 'main', event)"
 
-	function selectDepositOption(type, value, event) {
-    if (event) event.stopPropagation(); // 衝撃波を止める
-	
-	// 【第３モーダル】か【第２モーダル】かを自動判定
-    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
-	
-	//【表示ラベルのDOM要素を掴む】
-    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
-
-	// 【UI更新対象の特定】
-    let menuIndex = 1;
-
-    if (type === 'amount') menuIndex = 2;     // 入金額
-    if (type === 'condition') menuIndex = 3;  // 入金条件（オートチャージのみ）
-
-    // 「支払い方法」：【第３モーダル】なら４番目、【第２モーダル】なら３番目
-    if (type === 'method') {
-        menuIndex = isAutocharge ? 4 : 3;
-    }    
-
-	 //【防波堤（ガードクローズ）】もしHTML（DOM要素）がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
-    if (!currentLabel) {
-        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
-        return;
-    }
-
-    // ======================================
-    // 【データ更新とDOM要素への文字反映】 
-    // ======================================
-
-    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール）
-    if (type === 'card') {
-
+onclick="toggleAutochargeWindow('amount', event)"	
+onclick="selectDepositOption('amount', 2000, event)"
 
 
 
