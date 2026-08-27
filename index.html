@@ -26,25 +26,11 @@ selectDepositOption()
 │
 └─ type === 'method'
      ├─ 第2では何を更新？　抜けてる
-     └─ 第3では何を更新？　autochargeMethod
-
-ちなみにここの C. 支払い方法　で	この書き方なのはなぜ？どうして入金方穂のときだけ、else の空白状態（？）を作る必要があるの？
-} else {
-
-            // 第２は変数を作っていないためここではなにもしない (画面リレーに任せる)　
-}
-	
-B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）みたいに	
-else {
-            currentLabel.textContent = value;
-        }	
-だけじゃダメなの？	
-	
-あと autoTargetCardType = value　とかの「value」はなにを指す？それぞれ違うものぽいけど。
 
 	
-// B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）
-    } else if (type === 'amount' || type === 'condition') {
+💡 Q
+     B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）で currentLabel.textContent が2つ並んであるのは 入金と入金条件 の2つ用ってこと？
+	 } else if (type === 'amount' || type === 'condition') {
 
         // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
         const numValue = Number(value);
@@ -57,29 +43,15 @@ else {
                 if (type === 'condition') autochargeCondition = numValue;
             }  
 
-            // 画面のDOM要素（テキスト）をきれいに書き換える　例：「¥2,000」
+            // 第２・第３共通、画面のDOM要素（テキスト）を書き換える　例：「¥2,000」
             currentLabel.textContent = `¥${numValue.toLocaleString()}`;
 
         } else {
             currentLabel.textContent = value;
         }
- // C. 支払い方法
-    } else if (type === 'method') {
-        if (isAutocharge) {
 
-            // 第３（オートチャージ）は裏で自動実行されるため金庫に保存
-            autochargeMethod = value;
-
-        } else {
-
-            // 第２は変数を作っていないためここではなにもしない (画面リレーに任せる)　// ここ！
-        }
-
-        // 画面のDOM要素（テキスト）を書き換える
-        currentLabel.textContent = value;
-    }    
-   	
-
+	あと、「else」の使い方が混乱しがちなんだけど、if else はどちらか一方しか通さない境界線みたいなものなんだよね？でも、今回みたいに A. if(type === 'card') B. else if(type === 'amount' || type === 'condition') C. else if(type === 'method') だと書き方だとどう読めばいい？そもそも else と　if else の使い方をごちゃ混ぜにして覚えてるような気がするけど！
+   
 
 	
 
