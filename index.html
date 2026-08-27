@@ -8,6 +8,76 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+	
+【第2モーダル入金設定画面エリア】	
+depositModal（背景 / overlay）onclick="closeDepositModal(event)
+└── deposit-modal-content（白いカード）
+    └── deposit-screen-input（入力画面全体）
+        ├── deposit-modal-header（×ボタンエリア）onclick="closeDepositModalForce()
+        └── deposit-modal-body（body①）
+            ├── autocharge-banner（オートチャージ設定エリア）
+            │   └── setting-trigger-btn（設定するボタン）onclick=openAutochargeModal(event)
+            ├── deposit-menu-list（各種設定メニュー一覧）
+            │   ├── deposit-menu-item（1. カード選択）
+            │   │   ├── menu-clickable-area（表示・クリックエリア）onclick="toggleDepositWindow('card', event)" 
+            │   │   └── deposit-selector-window（カード用別窓）onclick=selectDepositOption('card', 'main', event)...'sub'が続く
+            │   ├── deposit-menu-item（2. 入金額）
+            │   │   ├── menu-clickable-area（表示・クリックエリア）onclick=toggleDepositWindow('amount', event)"
+            │   │   └── deposit-selector-window（入金額用別窓）onclick=selectDepositOption('amount', 1000, event) ...3000,5000,10000が続く
+            │   └── deposit-menu-item（3. 支払い方法）
+            │       ├── menu-clickable-area（表示・クリックエリア）onclick="toggleDepositWindow('method', event)
+            │       └── deposit-selector-window（支払い方法用別窓）onclick="selectDepositOption('method', 'Apple Pay', event)...'PayPay'が続く
+            └── deposit-next-step-btn（「次へ」ボタン）onclick=goToDepositConfirm(event)
+
+この下にさらに【確認画面エリア（deposit-screen-confirm）】が続く
+
+selectDepositOption() が第２、第３の【設定画面】で選択した設定値を更新したものだとして（てか、もしかして違うの!?）、まず保存処理に行く前のこのコードが怪しいかなと思ったんだけど。
+	
+第２【設定画面】→【確認画面】へ切り替える  	
+function goToDepositConfirm(event) {
+    if (event) event.stopPropagation();
+    
+    const inputArea = document.querySelector('.deposit-screen-input');    // 【入金設定画面】の箱
+    const confirmBox = document.querySelector('.deposit-screen-confirm'); // 【最終確認画面】の箱
+
+    // 確認画面に進む瞬間に、入力画面を完全に非表示にする
+    if (inputArea) inputArea.classList.remove('is-active'); 
+
+    // 確認画面を表示
+    if (confirmBox) {
+        confirmBox.classList.add('is-active');
+    } 
+
+    fillDepositConfirm();
+}  	
+	
+【第２モーダル】【確認画面】へ現在の設定内容を書き込む
+function fillDepositConfirm() {
+
+    // 現在の設定値を取得
+    const currentCard = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || 'Starbucks Card';
+    const currentAmount = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '1,000';
+    const currentMethod = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(3) .current-value')?.textContent || '未登録';
+
+    // HTML側にある、確認画面の各IDの入れ物をガシッと掴む
+    const confirmCard = document.getElementById('confirmCard');
+    const confirmMethod = document.getElementById('confirmMethod');
+    const finalBtn = document.getElementById('finalDepositBtn');
+    
+    // 【確認画面】へ反映
+    if (confirmCard) {
+        confirmCard.textContent = currentCard;
+    }
+    if (confirmMethod) {
+        confirmMethod.textContent = currentMethod;
+    }
+    if (finalBtn) {
+        finalBtn.textContent = `${currentAmount} 入金する`;
+    }
+
+}   	
+
+-------------------------------------------------------	
 
 ？ 今回の場合もそうだけどHTMLでの「オートチャージ：¥2,000 入金条件：残高が¥1,000未満」は、結局JSで処理されるから空欄でもいいの？
 
