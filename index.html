@@ -14,23 +14,24 @@
 selectDepositOption()
 │
 ├─ type === 'card'
-│    ├─ 第2では何を更新？ depositTargetCardType
-│    └─ 第3では何を更新？ autoTargetCardType
+│    ├─ 第2では何を更新？ 修正前： depositTargetCardType　修正後： depositTargetCardType
+│    └─ 第3では何を更新？ 修正前： 抜けてる 修正後： autoTargetCardType
 │
 ├─ type === 'amount'
-│    ├─ 第2では何を更新？ 抜けてる
-│    └─ 第3では何を更新？ autochargeAmount
+│    ├─ 第2では何を更新？ 修正前： .deposit-menu-item .current-value　修正後：.deposit-menu-item .current-value
+│    └─ 第3では何を更新？ 修正前： autochargeAmount　修正後： autochargeAmount
 │
 ├─ type === 'condition'
 │    ├─ 第2では何を更新？　第２では対象外
-│    └─ 第3では何を更新？　autochargeCondition
+│    └─ 第3では何を更新？　修正前： autochargeCondition　修正後： autochargeCondition
 │
 └─ type === 'method'
-     ├─ 第2では何を更新？　抜けてる
+     ├─ 第2では何を更新？　修正前： 抜けてる　修正後： .deposit-menu-item .current-value
+	 └─ 第3では何を更新？　修正前： 抜けてる　修正後： autochargeMethod
+
 
 結果、selectDepositOption() の中身は、【第２・第３共通】選択中の設定値を更新する処理ではなくて、選択された値を画面【設定画面】のテキストに反映（カードと第３の金庫・条件は変数も更新）。第２でデータが裏側で保存される処理は「カード」しか書かれていなかった。第２で保存の処理が動いていたのは、　fillDepositConfirm() で　selectDepositOption() で画面の文字が書き変わったものを読んでいたから！
-で、第2（入金）の場合はその場で完結でも問題ないけど、第3モーダルはオートチャージだから、保存後は条件も更新（保存？）し続けないといけないから、更新し続けるために金庫に入れる必要がある？グローバル変数で第3モーダルの支払い方法が書いていなかったから let autochargeMethod = '未登録' を追加、selectDepositOption()でも修正。
-
+で、第2（入金）の場合はその場で完結でも問題ないけど、第3モーダルはオートチャージだから、保存後は条件も更新（保存？）し続けないといけないから、更新し続けるために金庫に入れる必要があるので selectDepositOption() の【データ更新とDOM要素への文字反映】部分に追加/修正。グローバル変数で第3モーダルの支払い方法部分が抜けていたから let autochargeMethod = '未登録' も追加。
 🔥🔥🔥
      
 
