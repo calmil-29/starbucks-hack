@@ -9,6 +9,46 @@
 </head>
 <body>
 
+	
+①何を変更する？
+第３モーダル
+autoTargetCardType：オートチャージ対象のカード
+autochargeAmount：チャージ金額（例：2000円チャージする）
+autochargeCondition：オートチャージを実行する残高の境界線
+isAutochargeEnabled：オートチャージがONかOFFか（初期はOFF）	
+autochargeMethod：支払い方法
+
+第２モーダル
+.autocharge-banner-container：リアルタイム更新バナー	
+
+第１モーダル
+チャージ設定中のカード（選択中、ドロップダウン共に）に「オートチャージ設定中」をつける
+
+ヒーロー（現在選択中のカードがオートチャージ保存状態なら）	
+カードタイトルの上に「オートチャージ設定中」のテキスト
+金額に下線（第２の .autocharge-switch-circle と同じ明るい緑）		
+	
+②誰に知らせる？
+本来ならオートチャージ機能が保存された瞬間、第３自身の autoTargetCardType autochargeAmount autochargeCondition autochargeMethod　かなと思ったけど、でも今回は「自動チャージそのもの」の実装はしないから、チャージ条件に当てはまったときに誰かに知らせる状況は起こらないから必要ないかなと思ったんだけど、そもそもそう言う質問じゃなかった？
+	
+③何を画面に反映する？
+第２モーダル
+.autocharge-banner-container.banner-view-on
+	
+第１モーダル
+チャージ設定中のカード（選択中、ドロップダウン共に）に「オートチャージ設定中」をつける
+
+ヒーロー（現在選択中のカードがオートチャージ保存状態なら）	
+カードタイトルの上に「オートチャージ設定中」のテキスト
+金額に下線（第２の .autocharge-switch-circle と同じ明るい緑）		
+	
+④最後に何を閉じる？	
+第３モーダル　#autochargeModal	
+
+
+🔥🔥🔥
+
+	
 💡　無代に渡す用
 	
 selectDepositOption()
