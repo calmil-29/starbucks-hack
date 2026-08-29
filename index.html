@@ -9,45 +9,41 @@
 </head>
 <body>
     
-    
-// 【第３モーダル】【確認画面】へ現在の設定内容を書き込む
-function fillAutochargeConfirm() {
+エラーになる、なぜ！？    
+function fillAutochargeConfirm(event) {
 
-    // 1. 金庫（変数）から、現在のカードに応じた「表示用テキスト」を作る
-    let cardText = 'Starbucks Card';
+    // 金庫から現在のカードに応じた「表示用テキスト」を作る
+    let cardText ='StarBucks Card';
+
     if (autoTargetCardType === 'main') {
-        cardText = `Starbucks Card (残高 ¥${starbucksCardBalance.toLocaleString()})`;
+        cardText = `StarBuks Card (¥${starbucksCardBalance.toLocaleString()})`;
+
     } else if (autoTargetCardType === 'sub') {
-        cardText = `サブカード (残高 ¥${subCardBalance.toLocaleString()})`;
+        cardText = `サブカード (¥${subCardBalance.toLocaleString()})`;
     }
 
-    // 2. HTML側にある、第3の確認画面の各パーツ（ID）をガシッと掴む
-    // ※ID名は仮のものです。実際のHTMLのID名に合わせて調整してください
-    const autoConfirmCard = document.getElementById('autoConfirmCard');         // カード表示位置
-    const autoConfirmCondition = document.getElementById('autoConfirmCondition'); // 条件（〇〇円未満）表示位置
-    const autoConfirmMethod = document.getElementById('autoConfirmMethod');       // 支払い方法表示位置
-    const finalAutoBtn = document.getElementById('finalAutochargeBtn');           // 最終決定ボタン
-    
-    // 3. 各金庫のデータを【確認画面のDOM要素】へ反映
+    // 第３の確認画面の各id
+    const autoConfirmCard = document.getElementById('autoConfirmCard');                // オートチャージ先カード
+    const autoConfirmAmount = document.getElementById('autoConfirmAmount');            // 入金額
+	const autoConfirmCondition = document.getElementById('autoConfirmCondition');      // 入金条件
+    const autoConfirmMethod = document.getElementById('autochargeconfirmMethod')       // 支払い方法
+
+    // 各金庫のデータを【確認画面のDOM要素】へ反映
     if (autoConfirmCard) {
         autoConfirmCard.textContent = cardText;
     }
-    if (autoConfirmCondition) {
-        autoConfirmCondition.textContent = `残高が ¥${autochargeCondition.toLocaleString()} 未満になったとき`;
+    if (autoConfirmAmount) {
+        autoConfirmAmount.textContent = `¥${autochargeAmount.toLocaleString()};
     }
+    if (autoConfirmCondition) {
+       autoConfirmCondition.textContent = `¥${autochargeCondition.toLocaleString()}; // ここ無効な文字って出る
+    }   
     if (autoConfirmMethod) {
         autoConfirmMethod.textContent = autochargeMethod;
-    }
-    if (finalAutoBtn) {
-        // ボタンの文字を「¥2,000 チャージする」のように書き換える
-        finalAutoBtn.textContent = `¥${autochargeAmount.toLocaleString()} でオートチャージを設定する`;
-    }
-}
+    }     
 
+}   
 
-グローバル変数でカード金額の金庫はあるけど、 let cardText = 'Starbucks Card';　って作ってるから、グローバル変数にもうカードの名前ようの金庫（変数）作った方がよかった？
-let starbucksCardBalance = 0; // メインカードの初期残高データ（例: 0）      
-let subCardBalance = 3500;    // サブカードの初期残高データ（例: 3500）
 
 
 🔥  =====================================	
