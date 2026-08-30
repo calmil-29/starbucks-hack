@@ -8,6 +8,40 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
+    
+保存
+ ↓
+autoTargetCardType
+autochargeAmount
+autochargeCondition
+autochargeMethod
+isAutochargeEnabled
+ ↓
+各画面が必要に応じて読む
+
+つまり、executeAutochargeSave() は
+
+保存された状態を、各UIに反映させる司令塔
+
+みたいな役割になる。
+
+selectDepositOption()
+        ↓
+「選択した値」が第3の設定値に入る
+        ↓
+fillAutochargeConfirm()
+        ↓
+確認画面に表示される
+        ↓
+【保存】
+        ↓
+executeAutochargeSave()
+        ↓
+① 正式に保存状態へ
+② isAutochargeEnabled = true
+③ 第2・第1・ヒーローへ表示を反映
+④ 第3モーダルを閉じる
 
 ================================================
 	
