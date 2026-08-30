@@ -10,6 +10,37 @@
 <body>
     
     
+
+
+
+
+
+================================================
+
+💡　8/29 無代に渡す用
+
+①何を変更する？
+	
+第３モーダル
+・autoTargetCardType：オートチャージ対象のカード
+・autochargeAmount：チャージ金額（例：2000円チャージする）
+・autochargeCondition：オートチャージを実行する残高の境界線
+・isAutochargeEnabled：オートチャージがONかOFFか（初期はOFF）	
+・autochargeMethod：支払い方法
+
+第２モーダル
+・.autocharge-banner-container の表示状態（リアルタイム更新バナー）	
+
+第１・ヒーロー
+・「このカードはオートチャージ設定中」という表示状態　　　...つまり②と同じ意味だよね？
+	
+		
+②誰に知らせる？
+	
+本来ならオートチャージ機能が保存された瞬間、第３自身の autoTargetCardType autochargeAmount autochargeCondition autochargeMethod　かなと思ったけど、でも今回は「自動チャージそのもの」の実装はしないから、チャージ条件に当てはまったときに誰かに知らせる状況は起こらないから必要ないかなと思ったんだけど、そもそもそう言う質問じゃなかった？
+
+無代判定 ⚪︎ :　保存された設定値を、後から各画面が参照できる状態にする。で十分。「条件に達したら自動チャージすを実行する」という処理は今回は作らない。	
+
 保存
  ↓
 autoTargetCardType
@@ -19,13 +50,28 @@ autochargeMethod
 isAutochargeEnabled
  ↓
 各画面が必要に応じて読む
+まで。	
+	
+③何を画面に反映する？
+	
+第２モーダル
+.autocharge-banner-container.banner-view-on
+	
+第１モーダル
+・オートチャージ設定対象カード（選択中、ドロップダウン共に）に「オートチャージ設定中」をつける
 
-つまり、executeAutochargeSave() は
+ヒーロー（現在選択中のカードがオートチャージ設定対象カードなら）	
+・カードタイトルの上に「オートチャージ設定中」のテキスト
+・金額に下線（第２の .autocharge-switch-circle と同じ明るい緑）		
 
-保存された状態を、各UIに反映させる司令塔
+無代判定 ⚪︎： つまり、executeAutochargeSave() は保存された状態を、各UIに反映させる司令塔みたいな役割になる。
+	
+④最後に何を閉じる？	
+	
+・第３モーダル　#autochargeModal	
 
-みたいな役割になる。
-
+無代判定 ⚪︎：　だから、今から作る順番はこれでいい
+	
 selectDepositOption()
         ↓
 「選択した値」が第3の設定値に入る
@@ -41,181 +87,7 @@ executeAutochargeSave()
 ① 正式に保存状態へ
 ② isAutochargeEnabled = true
 ③ 第2・第1・ヒーローへ表示を反映
-④ 第3モーダルを閉じる
-
-================================================
-	
-function selectDepositOption(type, value, event) {
-    if (event) event.stopPropagation(); // 衝撃波を止める
-
-    // 【第３モーダル】か【第２モーダル】かを自動判定
-    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
-
-    // 【UI更新対象の特定】
-    let menuIndex = 1;
-
-    if (type === 'amount') menuIndex = 2;     // 入金額
-    if (type === 'condition') menuIndex = 3;  // 入金条件（オートチャージのみ）
-
-    // 「支払い方法」：【第３モーダル】なら４番目、【第２モーダル】なら３番目
-    if (type === 'method') {
-        menuIndex = isAutocharge ? 4 : 3;
-    }    
-
-    // 文字を書き換える対象となる【DOM要素】をピンポイントで取得
-    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
-
-    //【防波堤（ガードクローズ）】もし DOM要素がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
-    if (!currentLabel) {
-        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
-        return;
-    }
-
-    // ======================================
-    // 【データ更新とDOM要素への文字反映】 
-    // ======================================
-
-    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール）
-
-    if (type === 'card') {
-
-        if (isAutocharge) {
-            autoTargetCardType = value;    // 第３の金庫
-
-        } else {
-            depositTargetCardType = value; // 第２の金庫 　 ※ currentSelectedCardType から変更済み
-        }    
-
-        if (value === 'main') {
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-
-        } else if (value === 'sub') {
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
-
-    // B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）
-
-    } else if (type === 'amount' || type === 'condition') {
-
-        // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
-        const numValue = Number(value);
-
-        if (!isNaN(numValue)) {
-
-            // 第３（オートチャージ）のときだけ、後段のシステムのために金庫にも入れておく
-            if (isAutocharge) {
-                if (type === 'amount')  autochargeAmount = numValue;
-                if (type === 'condition') autochargeCondition = numValue;
-            }  
-
-            // 第２・第３共通、画面のDOM要素（テキスト）を書き換える　例：「¥2,000」
-            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
-
-        } else {
-            currentLabel.textContent = value;
-        }
-        
-    // C. 支払い方法
-
-    } else if (type === 'method') {
-        if (isAutocharge) {
-
-            // 第３（オートチャージ）は裏で自動実行されるため金庫に保存
-            autochargeMethod = value;
-        } 
-
-        // 第２・第３共通、画面のDOM要素（テキスト）を書き換える
-        currentLabel.textContent = value;
-    }    
-   
-    // 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する 
-
-    if (isAutocharge) {
-        const allSummaries = document.querySelectorAll('.autocharge-summary');
-
-        allSummaries.forEach(el => {
-            el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金額：残高が¥${autochargeCondition.toLocaleString()}未満` ;
-        });
-
-        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
-        const errorBox = document.getElementById('autoErrorMessage');
-        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件
-        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
-
-       if (Number(autochargeAmount) < Number(autochargeCondition)) {
-
-            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
-            if (errorBox) errorBox.style.display = 'block';
-            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
-            if (nextBtn) nextBtn.disabled = true; 
-
-        } else {
-            // 条件クリア：エラーを消して通常状態に戻す
-            if (errorBox) errorBox.style.display = 'none';
-            if (conditionMenu)  conditionMenu.classList.remove('has-error');
-            if (nextBtn) nextBtn.disabled = false;
-        }
-    }
-
-    // 【自動クローズ】 文字をコピーし終わったら、用済みになった「ドロップダウン」を閉じる 
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-
-    // 【ドロップダウンを特定】今開いていたドロップダウンのIDを自動で組み立てる
-    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
-    const targetWindow = document.getElementById(windowId);
-
-    if (targetWindow) {
-        targetWindow.classList.remove('is-active');
-    }  
-} 
-
-※ あと、第２の .banner-view-on に小さくオートチャージ保存先のカード画像/テキスト表示も入れるか検討。でも .autocharge-switch でスイッチボタンもあるし、渋滞しそう？具体的に配置をどうするかは決めてない。第２のカード選択にも（選択中、ドロップダウン共に）「オートチャージ設定中」を第１と同様に表示する予定だけど。第3保存処理完成後じゃなくて、ここも先に決めた方がいい？
-		   
-		   
-
-
-
-🔥  =====================================	
-
-💡　8/29 無代に渡す用
-	
-【第２・第３共通】selectDepositOption() のタイトルを、 選択中の設定値を更新する処理　から　選択された値を画面【設定画面】のテキストに反映（カードと第３の金庫・条件は変数も更新）に変更しようと思ってたけど、正しくだとどう書けばいい？selectDepositOption()　まだ修正後見てもらってなかったよね？一応確認してもらってたほうがいいかな？長いけど。
-で、	
-①何を変更する？
-第３モーダル
-autoTargetCardType：オートチャージ対象のカード
-autochargeAmount：チャージ金額（例：2000円チャージする）
-autochargeCondition：オートチャージを実行する残高の境界線
-isAutochargeEnabled：オートチャージがONかOFFか（初期はOFF）	
-autochargeMethod：支払い方法
-
-第２モーダル
-.autocharge-banner-container：リアルタイム更新バナー	
-
-第１モーダル
-チャージ設定中のカード（選択中、ドロップダウン共に）に「オートチャージ設定中」をつける
-
-ヒーロー（現在選択中のカードがオートチャージ保存状態なら）	
-カードタイトルの上に「オートチャージ設定中」のテキスト
-金額に下線（第２の .autocharge-switch-circle と同じ明るい緑）		
-	
-②誰に知らせる？
-本来ならオートチャージ機能が保存された瞬間、第３自身の autoTargetCardType autochargeAmount autochargeCondition autochargeMethod　かなと思ったけど、でも今回は「自動チャージそのもの」の実装はしないから、チャージ条件に当てはまったときに誰かに知らせる状況は起こらないから必要ないかなと思ったんだけど、そもそもそう言う質問じゃなかった？
-	
-③何を画面に反映する？
-第２モーダル
-.autocharge-banner-container.banner-view-on
-	
-第１モーダル
-チャージ設定中のカード（選択中、ドロップダウン共に）に「オートチャージ設定中」をつける
-
-ヒーロー（現在選択中のカードがオートチャージ保存状態なら）	
-カードタイトルの上に「オートチャージ設定中」のテキスト
-金額に下線（第２の .autocharge-switch-circle と同じ明るい緑）		
-	
-④最後に何を閉じる？	
-第３モーダル　#autochargeModal	
+④ 第3モーダルを閉じる	
 
 
 🔥🔥🔥
