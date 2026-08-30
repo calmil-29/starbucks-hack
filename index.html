@@ -15,18 +15,23 @@
 
 ①何を変更する？
 	
-第３モーダル
+第３モーダルの保存処理が「新しく値を作る」のではなく、選択中の設定値を”保存済み・有効な状態”として確定させる。
+	
 ・autoTargetCardType：オートチャージ対象のカード
 ・autochargeAmount：チャージ金額（例：2000円チャージする）
 ・autochargeCondition：オートチャージを実行する残高の境界線
-・isAutochargeEnabled：オートチャージがONかOFFか（初期はOFF）	
 ・autochargeMethod：支払い方法
+・isAutochargeEnabled：オートチャージがONかOFFか（初期はOFF）		
+
+※この5つがオートチャージという機能の現在の状態を表す情報。
+autoTargetCardTyp などが「設定の中身」、isAutochargeEnabled が「その設定が有効か」という関係
 
 第２モーダル
 ・.autocharge-banner-container の表示状態（リアルタイム更新バナー）	
 
 第１・ヒーロー
-・「このカードはオートチャージ設定中」という表示状態　　　...ここ確認！つまり②と同じ内容（意味）って理解であってる？
+・「このカードはオートチャージ設定中」という表示状態　　　※...①と③は同じ意味ではなく、・ ① → 内部の状態を変える ・ ③→ その状態を画面に見える形で反映する
+※ add/remove/toggle で操作するのも、まさにこの「内部状態をUIに反映する」部分。classList は class の追加・削除・切り替え・存在状態を扱える API なので、今回の構造と相性がいい。	
 	
 		
 ②誰に知らせる？
