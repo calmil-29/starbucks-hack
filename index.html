@@ -13,151 +13,83 @@
 
 💡　無代に渡す用
 	
-// 【第３モーダル オートチャージ】
-// 保存済み
-let autoTargetCardType = 'main'; // オートチャージ対象のカードの初期値
-let autochargeAmount = 2000;     // オートチャージ金額（例：2000円チャージする）
-let autochargeCondition = 1000;  // オートチャージを実行する入金条件 （例：1000円以下になったら）
-let isAutochargeEnabled = false; // オートチャージがONかOFFか（初期はOFF）	
-let autochargeMethod = '未登録'   // 支払い方法
+function openAutochargeModal(event) {
+    
+    if (event) event.stopPropagation();
 
-// 編集用設定
-let editingAutoTargetCardType = 'main'; 
-let editingAutochargeAmount = 2000;    
-let editingAutochargeCondition = 1000;  
-let editingAutochargeMethod = '未登録'	
+	// 第１モーダルで現在選ばれているカードを、今回のオートチャージ対象の「初期値」として引き継ぐ　
+	autoTargetCardType = currentSelectedCardType 
 
-function selectDepositOption(type, value, event) {
-    if (event) event.stopPropagation(); // 衝撃波を止める
+	// 新しく開くときは、前回の確認画面を確実に非表示にしておく
+	const confirmBox = document.querySelector('.autocharge-screen-confirm');
+	if (confirmBox) confirmBox.classList.remove('is-active');
+    
+    // 閉じたい【第２モーダル】をIDでガシッと掴む
+    const depositModal = document.getElementById('depositModal');
 
-    // 【第３モーダル】か【第２モーダル】かを自動判定
-    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
+    // 開きたい【第３モーダル】をIDでガシッと掴む
+    const autochargeModal = document.getElementById('autochargeModal');
 
-    // 【UI更新対象の特定】
-    let menuIndex = 1;
-
-    if (type === 'amount') menuIndex = 2;     // 入金額
-    if (type === 'condition') menuIndex = 3;  // 入金条件（オートチャージのみ）
-
-    // 「支払い方法」：【第３モーダル】なら４番目、【第２モーダル】なら３番目
-    if (type === 'method') {
-        menuIndex = isAutocharge ? 4 : 3;
-    }    
-
-    // 文字を書き換える対象となる【DOM要素】をピンポイントで取得
-    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
-
-    //【防波堤（ガードクローズ）】もし DOM要素がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
-    if (!currentLabel) {
-        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
-        return;
+    // 先に【第２モーダル】を閉じる
+    if (depositModal) {
+        depositModal.classList.remove('is-active');
     }
 
-    // ======================================
-    // 【データ更新とDOM要素への文字反映】 
-    // ======================================
-
-    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール）
-
-    if (type === 'card') {
-
-        if (isAutocharge) {
-            editingAutoTargetCardType = value;    // 第３の金庫 // 編集用
-
-        } else {
-            depositTargetCardType = value; // 第２の金庫 　
-        }    
-
-        if (value === 'main') {
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-
-        } else if (value === 'sub') {
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
-
-    // B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）
-
-    } else if (type === 'amount' || type === 'condition') {
-
-        // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
-        const numValue = Number(value);
-
-        if (!isNaN(numValue)) {
-
-            // 第３（オートチャージ）のときだけ、後段のシステムのために金庫にも入れておく
-            if (isAutocharge) {
-                if (type === 'amount')  editingAutochargeAmount = numValue; // 編集用
-                if (type === 'condition') editingAutochargeCondition = numValue; // 編集用
-            }  
-
-            // 第２・第３共通、画面のDOM要素（テキスト）を書き換える　例：「¥2,000」
-            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
-
-        } else {
-            currentLabel.textContent = value;
-        }
-        
-    // C. 支払い方法
-
-    } else if (type === 'method') {
-        if (isAutocharge) {
-
-            // 第３（オートチャージ）は裏で自動実行されるため金庫に保存　// Gemmini のこの説明は保存処理 executeAutochargeSave() に当てはめての説明ってことだよね？
-            editingAutochargeMethod = value; // 編集用
-        } 
-
-        // 第２・第３共通、画面のDOM要素（テキスト）を書き換える
-        currentLabel.textContent = value;
-    }    
-   
-    // 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する 
-
-    if (isAutocharge) {
-        const allSummaries = document.querySelectorAll('.autocharge-summary');
-
-        allSummaries.forEach(el => {
-            el.textContent = `オートチャージ：¥${editingAutochargeAmount.toLocaleString()}\n入金条件：残高が¥${editingAutochargeCondition.toLocaleString()}未満` ; // 編集用
-        });
-
-        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
-        const errorBox = document.getElementById('autoErrorMessage');
-        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件
-        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
-
-       if (Number(editingAutochargeAmount) < Number(editingAutochargeCondition)) { // 編集用
-
-            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
-            if (errorBox) errorBox.style.display = 'block';
-            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
-            if (nextBtn) nextBtn.disabled = true; 
-
-        } else {
-            // 条件クリア：エラーを消して通常状態に戻す
-            if (errorBox) errorBox.style.display = 'none';
-            if (conditionMenu)  conditionMenu.classList.remove('has-error');
-            if (nextBtn) nextBtn.disabled = false;
-        }
+    // 次に【第３モーダル】を開く
+    if (autochargeModal) {
+        autochargeModal.classList.add('is-active');
     }
 
-    // 【自動クローズ】 文字をコピーし終わったら、用済みになった「ドロップダウン」を閉じる 
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
+    // 【第３モーダル】が開いた瞬間に、4つのDOM要素を名指しして掴む
+    const allSummaries = document.querySelectorAll('.autocharge-summary');    // 入金条件
+    const amountEl = document.getElementById('autoAmountVal');                // 入金額
+    const conditionEl = document.getElementById('autoConditonVal');           // 入金条件
+    const methodEl = document.getElementById('autoMethodval');                // 支払い方法
 
-    // 【ドロップダウンを特定】今開いていたドロップダウンのIDを自動で組み立てる
-    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
-    const targetWindow = document.getElementById(windowId);
+    // 掴んだDOM要素の中身を、金庫のデータ（let autochargeAmount = 2000;, let autochargeCondition = 1000;）で上書きする
+    if (amountEl) {
+        amountEl.textContent =`¥${autochargeAmount.toLocaleString()}`;
+    }
+    if (conditionEl) {
+        conditionEl.textContent = `¥${autochargeCondition.toLocaleString()}`;
+    }
+    if (methodEl) {
+        methodEl.textContent = autochargeMethod;
+    }
 
-    if (targetWindow) {
-        targetWindow.classList.remove('is-active');
-    }  
-} 
+    allSummaries.forEach(el => {
+        el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金条件：残高が¥${autochargeCondition.toLocaleString()}未満` ;
+    });
 
-fillAutochargeConfirm() も同様に編集用の金庫に変更
+    //　カード（Starbucks Card）のDOM要素をガシッと掴む
+    const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
+    
+    if (autoCardValEl) {
+        // 金庫（let）を覗きにいって、（if文）で文字を切り替える
+        if ( currentSelectedCardType === 'main') {  
+            // メインカードが選ばれているとき
+            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
+        } else {
+            // サブカードが選ばれているとき
+            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
+        }
+    }
+}
 
-====================================================
 		   
-キャンセルボタンの処理は描いていないけど、idで指定してるからここは、class名指定で書いた方がいいの？そしたら同時に初期/保存されたデータを扱えるけど。
-		   
+キャンセル・バツボタンで閉じたあと、openAutochargeModal() で入金額、入金条件、支払い方法を 設定画面（.autocharge-screen-input）の id で指定してるからキャンセル・バツボタン後、再度開いた時、設定画面しか【保存済み】のデータが置けない。だから、確認画面も同時に初期/保存されたデータを扱えられるように、共通のclass名で指定した方がいい？
+例えば入金額だと、設定画面では .current-value 確認画面では .receipt-value このクラス名を統一するとか？
+<div class="menu-value-box">
+                  <span class="current-value" id="autoAmountVal">¥2,000</span>
+                  <span class="arrow-balance"></span> 
+                </div>
+	
+ <div class="receipt-row">
+              <span class="receipt-label">入金額</span>
+              <span class="receipt-value" id="autoConfirmAmount">--</span>
+            </div>
+
+それとも同時に2つのidを指定てできるの？
 
 	
 🔥🔥🔥　第３モーダル、executeAutochargeSave() 保存処理の設計書　🔥🔥🔥 ==================================
