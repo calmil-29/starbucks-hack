@@ -12,95 +12,84 @@
 ================================================
 
 💡　無代に渡す用
+
+ <div class="card-info-side">
+            <img src="images/starbucks-logo.png" alt="ロゴ" class="mini-logo">
+            <div class="balance-display">
+
+              <!-- オートチャージ設定後テキスト/金額に下線 --> 
+              <span class="summary-card-text">オートチャージ設定中</span> 
+
+              <p class="card-label">Starbucks Card</p>
+              <p class="card-price"><span class="unit">¥</span><span id="heroCardBalance">0</span></p>
+            </div>
+            
+            <button class="btn-etiket-trigger" onclick="flipCard(event)">
+              <div class="count-box">3</div>
+              <span class="eticket-label">eTicket</span>
+              <span class="eticket-badge"></span>
+            </button>
+          </div><!-- .card-info-side --> 
+  
+/* オートチャージ設定中 */
+.summary-card-text.is-active {
+    display: block;
+}    
+.summary-card-text {
+    font-size: 10px;
+    letter-spacing: 0.05em; 
+} 
+
+.card-price {
+    display: inline-block;
+    border-bottom: 0.5px solid #00AF66 ;
+    width: 150px;
+}
+
+  
+
+
 	
-<!-- 【オートチャージ設定】リアルタイム更新バナー（初期状態は OFF） -->
-          <div class="autocharge-banner-container"> 
+#qrModal
+<!-- カード選択 --> 
+      <div class="qr-modal-card-zone">
+        <div class="qr-card-meta">
 
-            <!--  OFF 状態-->
-            <div class="banner-view-off">  
-              <p class="banner-title">オートチャージ</p>
-              <p class="banner-sub-title">カードの条件を設定</p>
-              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
-            </div> 
+          <!-- オートチャージ保存後テキスト/金額の下線のカラー変更 -->
+          <span class="summary-card-text">オートチャージ設定中</span>
 
-            <!-- ON 状態 --> 
-            <div class="banner-view-on">
-              <div class="banner-text">
-                <p class="banner-title">オートチャージ</p> 
-                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
+          <span class="qr-card-name">Starbucks Card</span>
+          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
+            <span class="qr-card-balance">¥0</span>
+            <span class="qr-arrow-balance"></span>
+          </div>
+        </div>
 
-                <!-- ここにオートチャージ指定されたカード画像/名前追加 -->
-                <!-- オートチャージに指定されたカード画像/名前 --> 
-                <img src="images/my-card-main.svg" id="bannerCardImg" class="summary-card-pin" alt="Starbucks Card">
-                <span id="bannerCardName" class="summary-card-name">Starbucks Card</span>
-              </div>
+        <!-- 【第２モーダル】入金設定へ進むためのボタン -->
+        <button class="qr-deposit-btn" onclick="openDepositModal(event)">入金</button>
 
-              <!-- ON 状態スイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
-              <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
-                <span class="autocharge-switch-circle"></span>
-              </button> 
-            </div>  
-          </div>  
+        <!-- 「カード選択のドロップダウン」 -->
+        <div class="qr-card-selector-window">
+          <p class="qr-selector-title">カードを選択</p>
+          
+          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
+            <img src="images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-card-balance">¥0</span>
+            </div>
+          </div> 
 
-/* 初期設定：OFF 表示 */ 	
-.autocharge-banner-container .banner-view-off {
-	display: block;
-}    
-.autocharge-banner-container .banner-view-on {
-	display: block;/* ※ display: none;　に後で変更 */
-}
+          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <img src="images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-card-balance">¥3,500</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
+        </div><!-- .qr-card-selector-window -->   
 
-/* ON 状態 */
-.autocharge-banner-container .banner-view-off.is-active {
-	display: none;
-}    
-.autocharge-banner-container .banner-view-on.is-active {
-	display: block;
-}
-
-/* === スイッチの状態 === */
-
-/* OFF 状態 */
-/* スイッチの枠（デフォルト＝OFF 状態） */
-.autocharge-switch {
-    position: relative;
-
-    width: 50px;
-    height: 28px;
-
-    border-radius: 14px;
-    background-color: #ccc; /* OFF 状態のスイッチ枠の色 */
-}
-
-/* スイッチの丸（デフォルト＝OFF 状態） */
-.autocharge-switch-circle  {
-    position: absolute;
-
-    top: 3px;
-    left: 3px;
-
-    width: 22px;
-    height: 22px;
-
-    border-radius: 50%;
-    background-color: white;
-
-    /* OFF 位置 */ 
-    transform: translateX(0px);   
-
-    /* スイッチの丸が動く時間 */
-    transition: transform 0.2s ease; 
-}
-
-/* ON 状態 */
-.autocharge-switch.is-on {
-    background-color: rgb(39, 179, 37); /* ON 状態のスイッチ枠の色 */
-}
-
-.autocharge-switch.is-on .autocharge-switch-circle {
-    transform: translateX(22px);
-}
-
+      </div><!-- .qr-modal-card-zone -->	
 
     
 ==============================================================
