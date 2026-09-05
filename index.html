@@ -37,93 +37,30 @@ STEP 4-3
 * 赤●＝eTicketあり
 * ●という「状態バッジ」の形式は共通化
 
-	
-#qrModal
-<!-- カード選択 --> 
-      <div class="qr-modal-card-zone">
-        <div class="qr-card-meta">
-
-          <!-- 💡【第１モーダル】オートチャージ保存時にテキスト/金額の下線のカラー変更 --> 
-          <span class="summary-card-text">オートチャージ設定中</span> <!-- ？第１とヒーローと同じクラス名でもいいの？大きさと色同じ、JSで処理する出てくる条件（選択カードがオートチャージ保存なら表示）も同じだけど -->
-
-          <span class="qr-card-name">Starbucks Card</span>
-          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
-            <p class="qr-card-price-line"><span class="qr-card-balance">¥0</span></p>
-            <span class="qr-arrow-balance"></span>
-          </div>
-          <time>2026/00/00 00:00</time> <!-- 時刻はここ？で書き方はこう？ -->
-        </div>
-        
-       <!-- 「カード選択のドロップダウン」 -->
-        <div class="qr-card-selector-window">
-          <p class="qr-selector-title">カードを選択</p>
-          
-          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
-            <!-- 💡オートチャージが保存されたときの緑色の丸バッジ --><!-- このバッジのクラス名も第２とは同じでもいいの？ -->
-            <span class="charge-badge"></span>
-
-            <img src="images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-card-balance">¥0</span>
-
-            </div>
-          </div> 
-
-          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
-            <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-            <span class="charge-badge"></span>
-
-            <img src="images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-card-balance">¥3,500</span>
-            </div>
-          </div> 
-          
-        </div><!-- .qr-card-selector-window -->   
-
-      </div><!-- .qr-modal-card-zone -->
-/* テキスト：オートチャージ設定中 */
-/* ヒーローと第１共通 */	
-.summary-card-text.is-active {
-    display: block;
-}    
-.summary-card-text {
-    display: none;
-    
-    font-size: 10px;
-    letter-spacing: 0.05em; 
-} 
-/* 第１モーダル */
-.qr-card-price-line {
-    display: inline-block;
-    border-bottom: 0.5px solid #989797 ; 
-    width: 150px;
-}    
-.qr-card-price-line.is-active {
-    display: inline-block;
-    border-bottom: 0.5px solid #00AF66 ;
-    width: 150px;
-}
-
-/* カード画像のオートチャージ目印バッジ */
-/* 第１・２共通 */
-.charge-badge {
-    position: absolute;
-    top: -5px;
-    right: -5px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 1px solid #ffffff;
-    background-color: #00AF66;
-
-    display: none;
-}
-.charge-badge.is-active {
-    display: block;
+.qr-selector-item {
+    position: relative;
 }	
+.qr-balance-wrapper    /* カード選択：金額・トグル「V / ^」箱 */
+.qr-selector-item      /* カード選択のドロップダウン内：メイン・サブ各箱  */ 
+.qr-deposit-btn {      /* 入金ボタン */
+    -webkit-tap-highlight-color: transparent; /* タップ時の青い影 (iPhone用には今でもこれが必要) */
+    -webkit-user-select: none; /* iOS Safari,古いAndroid用 */ 
+    user-select: none;  /* これを書くとVSCodeの機嫌が治る */
+}
+.qr-selector-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+}
+.qr-selector-item:last-child {
+    border-bottom: none;
+}
 
-
+.qr-selector-item:hover {
+    background-color: #eee;
+}	
     
 ==============================================================
 
