@@ -12,12 +12,15 @@
 ================================================
 
 💡　無代に渡す用
+
+  
+	
 STEP 4-3
 * ヒーロー
-    * 「オートチャージ設定中」→ #00AF66
-    * 金額下線 → #00AF66
+    * 「オートチャージ設定中」→ #00AF66　：HTML/CSS確認済み
+    * 金額下線 → #00AF66　：HTML/CSS確認済み
 * 第1モーダル
-    * 「オートチャージ設定中」→ #00AF66端に黄緑●
+    * 「オートチャージ設定中」→ #00AF66端に黄緑● 
     * 対象カードの金額下線 → #00AF66
     * 現在時刻表示を追加
 * 第2モーダル
@@ -34,89 +37,51 @@ STEP 4-3
 * 赤●＝eTicketあり
 * ●という「状態バッジ」の形式は共通化
 
- <div class="card-info-side">
-            <img src="images/starbucks-logo.png" alt="ロゴ" class="mini-logo">
-            <div class="balance-display">
-
-              <!-- オートチャージ設定後テキスト/金額に下線 --> 
-              <span class="summary-card-text">オートチャージ設定中</span> 
-
-              <p class="card-label">Starbucks Card</p>
-              <p class="card-price"><span class="unit">¥</span><span id="heroCardBalance">0</span></p>
-            </div>
-            
-            <button class="btn-etiket-trigger" onclick="flipCard(event)">
-              <div class="count-box">3</div>
-              <span class="eticket-label">eTicket</span>
-              <span class="eticket-badge"></span>
-            </button>
-          </div><!-- .card-info-side --> 
-/* ================= */
-/* オートチャージ設定中 */
-/* ================= */
-
-/* テキスト：オートチャージ設定中 */
-.summary-card-text.is-active {
-    display: block;
-}    
-.summary-card-text {
-    display: none;
-    
-    font-size: 10px;
-    letter-spacing: 0.05em; 
-} 
-
-/* 金額の下線 */
-.card-price {
-    display: inline-block;
-}
-.card-price.is-active {
-    display: inline-block;
-    border-bottom: 0.5px solid #00AF66 ;
-    width: 150px;
-}
-
 	
 #qrModal
 <!-- カード選択 --> 
       <div class="qr-modal-card-zone">
         <div class="qr-card-meta">
 
-          <!-- オートチャージ保存後テキスト/金額の下線のカラー変更 -->
-          <span class="summary-card-text">オートチャージ設定中</span>
+          <!-- 💡【第１モーダル】オートチャージ保存時にテキスト/金額の下線のカラー変更 --> 
+          <span class="summary-card-text">オートチャージ設定中</span> <!-- ？第１とヒーローと同じクラス名でもいいの？大きさと色同じ、JSで処理する出てくる条件（選択カードがオートチャージ保存なら表示）も同じだけど -->
 
           <span class="qr-card-name">Starbucks Card</span>
           <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
-            <span class="qr-card-balance">¥0</span>
+            <p class="qr-card-price-line"><span class="qr-card-balance">¥0</span></p>
             <span class="qr-arrow-balance"></span>
           </div>
+          <time>2026/00/00 00:00</time> <!-- 時刻はここ？で書き方はこう？ -->
         </div>
-
-        <!-- 【第２モーダル】入金設定へ進むためのボタン -->
-        <button class="qr-deposit-btn" onclick="openDepositModal(event)">入金</button>
-
-        <!-- 「カード選択のドロップダウン」 -->
+        
+       <!-- 「カード選択のドロップダウン」 -->
         <div class="qr-card-selector-window">
           <p class="qr-selector-title">カードを選択</p>
           
           <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
+            <!-- 💡オートチャージが保存されたときの緑色の丸バッジ --><!-- このバッジのクラス名も第２とは同じでもいいの？ -->
+            <span class="charge-badge"></span>
+
             <img src="images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
             <div class="qr-selector-card-info">
               <span class="qr-selector-card-balance">¥0</span>
+
             </div>
           </div> 
 
           <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
+            <span class="charge-badge"></span>
+
             <img src="images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
             <div class="qr-selector-card-info">
               <span class="qr-selector-card-balance">¥3,500</span>
             </div>
           </div> 
           
-          <!-- 必要に応じて追加 -->
         </div><!-- .qr-card-selector-window -->   
 
-      </div><!-- .qr-modal-card-zone -->	
+      </div><!-- .qr-modal-card-zone -->
 
     
 ==============================================================
