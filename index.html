@@ -82,6 +82,47 @@ STEP 4-3
         </div><!-- .qr-card-selector-window -->   
 
       </div><!-- .qr-modal-card-zone -->
+/* テキスト：オートチャージ設定中 */
+/* ヒーローと第１共通 */	
+.summary-card-text.is-active {
+    display: block;
+}    
+.summary-card-text {
+    display: none;
+    
+    font-size: 10px;
+    letter-spacing: 0.05em; 
+} 
+/* 第１モーダル */
+.qr-card-price-line {
+    display: inline-block;
+    border-bottom: 0.5px solid #989797 ; 
+    width: 150px;
+}    
+.qr-card-price-line.is-active {
+    display: inline-block;
+    border-bottom: 0.5px solid #00AF66 ;
+    width: 150px;
+}
+
+/* カード画像のオートチャージ目印バッジ */
+/* 第１・２共通 */
+.charge-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid #ffffff;
+    background-color: #00AF66;
+
+    display: none;
+}
+.charge-badge.is-active {
+    display: block;
+}	
+
 
     
 ==============================================================
