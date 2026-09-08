@@ -13,6 +13,36 @@
 
 💡　無代に渡す用
 
+	第２モーダルのこれも第３で保存されたときに変えたいんだけど、これはどう書けば良い？
+         <!-- 【オートチャージ設定】リアルタイム更新バナー（初期状態は OFF） -->
+          <div class="autocharge-banner-container"> 
+
+            <!--  OFF 状態-->
+            <div class="banner-view-off">  
+              <p class="banner-title">オートチャージ</p>
+              <p class="banner-sub-title">カードの条件を設定</p>
+              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
+            </div> 
+
+            <!-- ON 状態 ※ここの状態は executeAutochargeSave() から引き継ぐ？　--> 
+            <div class="banner-view-on">
+              <div class="banner-text">
+                <p class="banner-title">オートチャージ</p> 
+                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
+
+                <!-- 💡ここにオートチャージ指定されたカード画像/名前追加 -->
+                <!-- オートチャージ保存されたカード画像/名前 --> 
+                <img src="images/my-card-main.svg" class="summary-card-pin" alt="Starbucks Card">
+                <span class="summary-card-name">Starbucks Card</span>
+              </div>
+
+              <!-- ON 状態スイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
+              <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
+                <span class="autocharge-switch-circle"></span>
+              </button> 
+            </div>  
+          </div>   	
+
 
 // #depositModal（第２） での 【入金確定ボタン】は
 // <button class="final-deposit-submit-btn" id="finalDepositBtn">¥1,000 入金する</button>　で
@@ -33,7 +63,7 @@ function executeAutochargeSave(event) {
     autochargeMethod = editingAutochargeMethod          // オートチャージ支払い方法
 
 	// 2. オートチャージをONにする
-    isAutochargeEnabled = ture; 
+    isAutochargeEnabled = true; 
 
     // 3. 第２・第１・ヒーローへ表示を反映
 
