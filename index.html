@@ -13,75 +13,36 @@
 
 💡　無代に渡す用
 
-  
+
+// #depositModal（第２） での 【入金確定ボタン】は
+// <button class="final-deposit-submit-btn" id="finalDepositBtn">¥1,000 入金する</button>　で
+// document.getElementById('autochargeSaveBtn')?.addEventListener('click', function(event) {
+// の書き方にしてるけど。今回の #autochargeModal（第３）の<button class="final-deposit-submit-btn" id="autochargeSaveBtn" onclick="executeAutochargeSave(event)">保存</button> には　
+// onclick="executeAutochargeSave(event)"　が書かれているから 
+// function executeAutochargeSave(event) { の書き方で良いって認識で合ってる？
+
+
+function executeAutochargeSave(event) {
+    if (event) event.stopPropagation();
+
+    // 1. 第３モーダルの選択中の設定値を”保存済み・有効な状態”として確定させる
+
+    autoTargetCardType = editingAutoTargetCardType;     // オートチャージ対象のカード
+    autochargeAmount = editingAutochargeAmount;         // オートチャージ金額
+    autochargeCondition =  editingAutochargeCondition;  // オートチャージを実行する入金条件 
+    autochargeMethod = editingAutochargeMethod          // オートチャージ支払い方法
+
+	// 2. オートチャージをONにする
+    isAutochargeEnabled = ture; 
+
+    // 3. 第２・第１・ヒーローへ表示を反映
+
+
+
+    // 4. 第３モーダルを閉じる
+   
 	
-STEP 4-3
-* ヒーロー
-    * 「オートチャージ設定中」→ #00AF66　：HTML/CSS確認済み
-    * 金額下線 → #00AF66　：HTML/CSS確認済み
-* 第1モーダル
-    * 「オートチャージ設定中」→ #00AF66端に黄緑● 
-    * 対象カードの金額下線 → #00AF66
-    * 現在時刻表示を追加
-* 第2モーダル
-    * ヘッダーにON状態＋対象カード名があるので「オートチャージ設定中」の追加テキストなし
-    * カード選択部分に縮小カード画像を追加
-    * 対象カード → 黄緑●
-    * 対象カード → 既存ラインを黄緑に
-* 第1・第2のカード選択ドロップダウン
-    * 対象カード → 黄緑●
-    * 緑枠なし
-    * 「ON」文字なし
-    * ONスイッチ画像なし
-* 黄緑●＝オートチャージ設定中
-* 赤●＝eTicketあり
-* ●という「状態バッジ」の形式は共通化
 
-
-|カード |⚫︎バッジ¥0 ←ここ	
-|画像   | ¥0 
-
-#depositCardWindow 指定してるのはこれだけだったけど。
-	
-openDepositModal()
-	
-	const depositWindowMainEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(1) span');
-
-    if (depositWindowMainEl) {
-        depositWindowMainEl.textContent ='¥' + starbucksCardBalance.toLocaleString();
-    }
-
-    const depositWindowSubEl = document.querySelector('#depositCardWindow .deposit-selector-item:nth-child(2) span');
-
-    if (depositWindowSubEl) {
-        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
-    }
-
-	
-finalDepositBtn()
-	
-    const depositWindowMainEl = 
-        document.querySelector(
-            '#depositCardWindow .deposit-selector-item:nth-child(1) span'
-        );
-
-    if (depositWindowMainEl) {
-        depositWindowMainEl.textContent =
-            '¥' + starbucksCardBalance.toLocaleString(); 
-    }   
-    
-    const depositWindowSubEl =
-        document.querySelector(
-            '#depositCardWindow .deposit-selector-item:nth-child(2) span'
-        );
-    if (depositWindowSubEl) {
-        depositWindowSubEl.textContent =
-        '¥' + subCardBalance.toLocaleString();
-    }    
-    
-    	
-	
-	
 	
 
 ==============================================================
@@ -170,14 +131,39 @@ executeAutochargeSave()
 条件判定
         ↓
 チャージ実行
-は今回やらない。	
+は今回やらない。
+
+	
+🔥 --------------------------------------
+	
+STEP 4-3　オートチャージ保存後のヒーロー・第１・第２の状態
+* ヒーロー
+    * 「オートチャージ設定中」→ #00AF66　：HTML/CSS確認済み
+    * 金額下線 → #00AF66　：HTML/CSS確認済み
+* 第1モーダル
+    * 「オートチャージ設定中」→ #00AF66端に黄緑● 
+    * 対象カードの金額下線 → #00AF66
+    * 現在時刻表示を追加
+* 第2モーダル
+    * ヘッダーにON状態＋対象カード名があるので「オートチャージ設定中」の追加テキストなし
+    * カード選択部分に縮小カード画像を追加
+    * 対象カード → 黄緑●
+    * 対象カード → 既存ラインを黄緑に
+* 第1・第2のカード選択ドロップダウン
+    * 対象カード → 黄緑●
+    * 緑枠なし
+    * 「ON」文字なし
+    * ONスイッチ画像なし
+* 黄緑●＝オートチャージ設定中
+* 赤●＝eTicketあり
+* ●という「状態バッジ」の形式は共通化
+
+	
 
 
 ==============================================================	
-🔥🔥🔥
+💡	
 
-	
-💡　無代に渡す用
 	
 selectDepositOption()
 │
@@ -200,7 +186,7 @@ selectDepositOption()
 
 結果、selectDepositOption() の中身は、【第２・第３共通】選択中の設定値を更新する処理ではなくて、選択された値を画面【設定画面】のテキストに反映（カードと第３の金庫・条件は変数も更新）。第２でデータが裏側で保存される処理は「カード」しか書かれていなかった。第２で保存の処理が動いていたのは、　fillDepositConfirm() で　selectDepositOption() で画面の文字が書き変わったものを読んでいたから！
 で、第2（入金）の場合はその場で完結でも問題ないけど、第3モーダルはオートチャージだから、保存後は条件も更新（保存？）し続けないといけないから、更新し続けるために金庫に入れる必要があるので selectDepositOption() の【データ更新とDOM要素への文字反映】部分に追加/修正。グローバル変数で第3モーダルの支払い方法部分が抜けていたから let autochargeMethod = '未登録' も追加。
-🔥🔥🔥
+💡💡💡
      
 
 -------------------------------------------------------	
