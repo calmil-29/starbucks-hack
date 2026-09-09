@@ -13,36 +13,73 @@
 
 💡　無代に渡す用
 
-ごめん先に
-第２.3 の menu-clickable-are に img を追加したからカード画像の切り替えも必要になるけど、この処理は executeAutochargeSave() でするよね？
-executeAutochargeSave() ではバッジをつけるかつけないかの判定処理だけすればいいから、カード画像切り替えは selectDepositOption()？
 
-#autochargeModal
-             <div class="menu-clickable-area" onclick="toggleAutochargeWindow('card', event)">
-                <!-- カード画像 -->
-                <img src="images/my-card-main.svg" class="selector-card-img"  id="currentCardImg" alt="メイン">
-                <div class="menu-value-box">
-                  <span class="current-value" id="autoCarVal">Starbucks Card ¥00,000</span>
-                  <span class="arrow-balance"></span> 
-                </div>
-              </div>	
-#depositModal
-              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-
-                <div class="card-wrapper">
-                  <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                  <span class="charge-badge" id="currentCardBadge" data-card-type="main"></span> 
-                  <!-- カード画像 -->
-                  <img src="images/my-card-main.svg" class="selector-card-img" id="currentCardImg"  alt="メイン">
-                </div>
-
-                <div class="menu-value-box">
-                  <span class="current-value" id="depositCardVal">Starbucks Card ¥00,000</span>
-                  <span class="arrow-balance"></span> 
-                </div>
-              </div>
 	
-   
+selectDepositOption() に画像の選択も入れる場合どう書き足すの？ここ？
+	
+	const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
+    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+
+    //【防波堤（ガードクローズ）】もし DOM要素がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
+    if (!currentLabel) {
+        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
+        return;
+    }
+
+    // ======================================
+    // 【データ更新とDOM要素への文字反映】 
+    // ======================================
+
+    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール）
+
+    if (type === 'card') {
+
+        if (isAutocharge) {
+            editingAutoTargetCardType = value;    // 第３の編集用の金庫 /
+
+        } else {
+            depositTargetCardType = value; // 第２の金庫 　
+        }    
+
+        if (value === 'main') {
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+
+        } else if (value === 'sub') {
+            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
+
+
+で、この A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール）にいれるのかなと思ったんだけど
+
+	const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');
+	const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');
+
+
+    if (type === 'card') {
+
+        if (isAutocharge) {
+            editingAutoTargetCardType = value;    // 第３の編集用の金庫 /
+
+        } else {
+            depositTargetCardType = value; // 第２の金庫 　
+        }    
+
+        if (value === 'main') {
+	        depositCurrentCardImg.src = 'images/my-card-main.svg';
+	        autochargeCurrentCardImg.src = 'images/my-card-main.svg';
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+
+        } else if (value === 'sub') {
+            depositCurrentCardImg.src = 'images/my-card-sub.png';
+	        autochargeCurrentCardImg.src = 'images/my-card-sub.png';
+            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
+	
+   　　　
+  
+	
+     
+        
 
 	
 
