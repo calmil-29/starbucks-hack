@@ -75,35 +75,13 @@ selectDepositOption() に画像の選択も入れる場合どう書き足すの�
           if (isAutocharge) {
 	      autochargeCurrentCardImg.src = 'images/my-card-sub.png'; 
 	       } else {
-	        depositCurrentCardImg.src = 'images/my-card-sub.png;
+	        depositCurrentCardImg.src = 'images/my-card-sub.png';
 	       }
             currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
         }
 
 
-	ちなみに最初のこの処理で
-	if (type === 'card') {
 
-        if (isAutocharge) {
-            editingAutoTargetCardType = value;    // 第３の編集用の金庫 /
-
-        } else {
-            depositTargetCardType = value; // 第２の金庫 　
-        }    
-
-	　　ここのコードに if (isAutocharge)　がいらないのはなぜ？
-        if (value === 'main') {
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-
-        } else if (value === 'sub') {
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
-	
-   　　　
-  
-	
-     
-        
 
 	
 
