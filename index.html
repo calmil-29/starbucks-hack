@@ -13,41 +13,7 @@
 
 💡　無代に渡す用
 
-バッジの付け外しをするだけなら .menu-clickable-area の .charge-badge のid は決して全部まとめて処理すればいいんじゃないの？あーでもまた同じとこで詰まった、でもそっか、.menu-clickable-area にはメインの画像しか置いてない、けど、そもそもselectDepositOption() で画像の切り替えができてるからそこは考えなくてもいいのか？？つまり、この executeAutochargeSave() でオートチャージ保存したカード画像は固定されているから、その対象のカードに対してバッジをつけている状態になればいい？？？
-
-	
-	          <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-                <div class="card-wrapper">
-                  <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                  <span class="charge-badge" data-card-type="main"></span> 
-                  <!-- カード画像 -->
-                  <img src="images/my-card-main.svg" class="selector-card-img" id="depositCurrentCardImg"  alt="メイン">
-                </div>
-			  </div>	  
-
-	           <div class="deposit-selector-window" id="depositCardWindow">
-                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
-
-                  <div class="card-wrapper">
-                    <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                    <span class="charge-badge" data-card-type="main"></span>
-                    <!-- カード画像 -->
-                    <img src="images/my-card-main.svg" class="selector-card-img" alt="メイン">
-                  </div>
-                  <span class="deposit-main-card-balance">¥0</span>
-                </div>
-
-                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
-                  <div class="card-wrapper">
-                    <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                    <span class="charge-badge" data-card-type="sub"></span>
-                    <!-- カード画像 -->
-                    <img src="images/my-card-sub.png" class="selector-card-img" alt="サブ">
-                  </div>
-                  <span class="deposit-sub-card-balance">¥3,500</span>
-                </div>
-                
-              </div>
+	.menu-clickable-area にはバッジも　<span class="charge-badge" data-card-type="main"></span> しか置いてないけど、もしメインじゃなくて、サブをオートカード保存対象にした場合は？サブカードにも今の処理の状態でもバッジはつくの？
 
 	executeAutochargeSave()
 	
@@ -60,41 +26,7 @@
     })
 
 
-	selectDepositOption() 
 	
-	const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');
-    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');
-
-	 if (type === 'card') {
-
-        if (isAutocharge) {
-            editingAutoTargetCardType = value;    // 第３の編集用の金庫 /
-
-        } else {
-            depositTargetCardType = value; // 第２の金庫 　
-        }    
-	 if (value === 'main') {
-
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
-	        } else {
-	        depositCurrentCardImg.src = 'images/my-card-main.svg';
-	        }
-
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-
-        } else if (value === 'sub') {
-
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-sub.png'; 
-	        } else {
-	        depositCurrentCardImg.src = 'images/my-card-sub.png';
-	        }
-
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
-
-
 
 	
 
