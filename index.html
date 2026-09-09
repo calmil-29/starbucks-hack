@@ -13,26 +13,59 @@
 
 💡　無代に渡す用
 
+バッジの付け外しをするだけなら .menu-clickable-area の .charge-badge のid は決して全部まとめて処理すればいいんじゃないの？あーでもまた同じとこで詰まった、でもそっか、.menu-clickable-area にはメインの画像しか置いてない、けど、そもそもselectDepositOption() で画像の切り替えができてるからそこは考えなくてもいいのか？？つまり、この executeAutochargeSave() でオートチャージ保存したカード画像は固定されているから、その対象のカードに対してバッジをつけている状態になればいい？？？
 
 	
-selectDepositOption() に画像の選択も入れる場合どう書き足すの？ここ？
+	          <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
+                <div class="card-wrapper">
+                  <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
+                  <span class="charge-badge" data-card-type="main"></span> 
+                  <!-- カード画像 -->
+                  <img src="images/my-card-main.svg" class="selector-card-img" id="depositCurrentCardImg"  alt="メイン">
+                </div>
+			  </div>	  
+
+	           <div class="deposit-selector-window" id="depositCardWindow">
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+
+                  <div class="card-wrapper">
+                    <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
+                    <span class="charge-badge" data-card-type="main"></span>
+                    <!-- カード画像 -->
+                    <img src="images/my-card-main.svg" class="selector-card-img" alt="メイン">
+                  </div>
+                  <span class="deposit-main-card-balance">¥0</span>
+                </div>
+
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                  <div class="card-wrapper">
+                    <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
+                    <span class="charge-badge" data-card-type="sub"></span>
+                    <!-- カード画像 -->
+                    <img src="images/my-card-sub.png" class="selector-card-img" alt="サブ">
+                  </div>
+                  <span class="deposit-sub-card-balance">¥3,500</span>
+                </div>
+                
+              </div>
+
+	executeAutochargeSave()
 	
-	const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+	const allChangeBadge = document.querySelectorAll('.charge-badge');
 
-    //【防波堤（ガードクローズ）】もし DOM要素がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
-    if (!currentLabel) {
-        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
-        return;
-    }
+    allChangeBadge.forEach(badge => {
+        const cardType = badge.getAttribute('data-card-type');
 
-    // ======================================
-    // 【データ更新とDOM要素への文字反映】 
-    // ======================================
+        badge.classList.toggle ('is-active', cardType === autoTargetCardType);
+    })
 
-    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール）
 
-    if (type === 'card') {
+	selectDepositOption() 
+	
+	const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');
+    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');
+
+	 if (type === 'card') {
 
         if (isAutocharge) {
             editingAutoTargetCardType = value;    // 第３の編集用の金庫 /
@@ -40,80 +73,28 @@ selectDepositOption() に画像の選択も入れる場合どう書き足すの�
         } else {
             depositTargetCardType = value; // 第２の金庫 　
         }    
+	 if (value === 'main') {
 
-        if (value === 'main') {
+            if (isAutocharge) {
+	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
+	        } else {
+	        depositCurrentCardImg.src = 'images/my-card-main.svg';
+	        }
+
             currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
 
         } else if (value === 'sub') {
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
 
-
-で、この A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール）にいれるのかなと思ったんだけど
-	
-   const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');
-   const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');
-	
-    if (type === 'card') {
-
-        if (isAutocharge) {
-            editingAutoTargetCardType = value;    // 第３の編集用の金庫 /
-
-        } else {
-            depositTargetCardType = value; // 第２の金庫 　
-        }    
-
-        if (value === 'main') {
-	       if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
-	       } else {
-	        depositCurrentCardImg.src = 'images/my-card-main.svg';
-	       }
-           currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-
-        } else if (value === 'sub') {
-          if (isAutocharge) {
-	      autochargeCurrentCardImg.src = 'images/my-card-sub.png'; 
-	       } else {
+            if (isAutocharge) {
+	        autochargeCurrentCardImg.src = 'images/my-card-sub.png'; 
+	        } else {
 	        depositCurrentCardImg.src = 'images/my-card-sub.png';
-	       }
+	        }
+
             currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
         }
 
 
-
-
-	
-
-
-// #depositModal（第２） での 【入金確定ボタン】は
-// <button class="final-deposit-submit-btn" id="finalDepositBtn">¥1,000 入金する</button>　で
-// document.getElementById('autochargeSaveBtn')?.addEventListener('click', function(event) {
-// の書き方にしてるけど。今回の #autochargeModal（第３）の<button class="final-deposit-submit-btn" id="autochargeSaveBtn" onclick="executeAutochargeSave(event)">保存</button> には　
-// onclick="executeAutochargeSave(event)"　が書かれているから 
-// function executeAutochargeSave(event) { の書き方で良いって認識で合ってる？
-
-
-function executeAutochargeSave(event) {
-    if (event) event.stopPropagation();
-
-    // 1. 第３モーダルの選択中の設定値を”保存済み・有効な状態”として確定させる
-
-    autoTargetCardType = editingAutoTargetCardType;     // オートチャージ対象のカード
-    autochargeAmount = editingAutochargeAmount;         // オートチャージ金額
-    autochargeCondition =  editingAutochargeCondition;  // オートチャージを実行する入金条件 
-    autochargeMethod = editingAutochargeMethod          // オートチャージ支払い方法
-
-	// 2. オートチャージをONにする
-    isAutochargeEnabled = true; 
-
-    // 3. 第２・第１・ヒーローへ表示を反映
-
-
-
-    // 4. 第３モーダルを閉じる
-   
-	
 
 	
 
