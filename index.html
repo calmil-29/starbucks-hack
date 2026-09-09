@@ -15,17 +15,43 @@
 
 	.menu-clickable-area にはバッジも　<span class="charge-badge" data-card-type="main"></span> しか置いてないけど、もしメインじゃなくて、サブをオートカード保存対象にした場合は？サブカードにも今の処理の状態でもバッジはつくの？
 
-	executeAutochargeSave()
+つまり、executeAutochargeSave() で autoTargetCardType = editingAutoTargetCardType; オートチャージ対象のカードを保存するでしょ？そのカードに対してバッジを付けたいってこと。.menu-clickable-area に表示されるカードは、.deposit-selector-window で選択されたカードを表示する場所、だからそこは連動してるように見せる。
+
+メインがオートカード保存だった場合	
+.menu-clickable-area　：メイン⚫︎
+.deposit-selector-window　：メイン⚫︎ 
+	　　　　　　　　　　　　　：サブ
 	
-	const allChangeBadge = document.querySelectorAll('.charge-badge');
+↓ サブを選択
+	
+.menu-clickable-area　：サブ
+.deposit-selector-window　：メイン⚫︎ 
+	　　　　　　　　　　　　　：サブ	
 
-    allChangeBadge.forEach(badge => {
-        const cardType = badge.getAttribute('data-card-type');
+サブがオートカード保存だった場合	
+.menu-clickable-area　：メイン
+.deposit-selector-window　：メイン
+	　　　　　　　　　　　　　：サブ⚫︎
+	
+↓メインを選択
+	
+.menu-clickable-area　：サブ⚫︎
+.deposit-selector-window　：メイン
+	　　　　　　　　　　　　　：サブ⚫︎	
+		
+	
+	
+　　function executeAutochargeSave(event) {
+    if (event) event.stopPropagation();
 
-        badge.classList.toggle ('is-active', cardType === autoTargetCardType);
-    })
+    // 【第３モーダル】の選択中の設定値を”保存済み・有効な状態”として確定させる
 
+    autoTargetCardType = editingAutoTargetCardType;     // オートチャージ対象のカード　'main' か 'sub'
+    autochargeAmount = editingAutochargeAmount;         // オートチャージ金額
+    autochargeCondition =  editingAutochargeCondition;  // オートチャージを実行する入金条件 
+    autochargeMethod = editingAutochargeMethod          // オートチャージ支払い方法
 
+    isAutochargeEnabled = true; // オートチャージをONにする
 	
 
 	
