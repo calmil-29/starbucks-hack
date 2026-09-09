@@ -13,50 +13,35 @@
 
 💡　無代に渡す用
 
-	ちょっと待って。.menu-clickable-are はバッジ部分じゃなくて、画像にも id を作った方がいいのか？
-            <!-- 1. 「カード選択」 -->
-            <div class="deposit-menu-item">
+ごめん先に
+第２.3 の menu-clickable-are に img を追加したからカード画像の切り替えも必要になるけど、この処理は executeAutochargeSave() でするよね？
+executeAutochargeSave() ではバッジをつけるかつけないかの判定処理だけすればいいから、カード画像切り替えは selectDepositOption()？
+
+#autochargeModal
+             <div class="menu-clickable-area" onclick="toggleAutochargeWindow('card', event)">
+                <!-- カード画像 -->
+                <img src="images/my-card-main.svg" class="selector-card-img"  id="currentCardImg" alt="メイン">
+                <div class="menu-value-box">
+                  <span class="current-value" id="autoCarVal">Starbucks Card ¥00,000</span>
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div>	
+#depositModal
               <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
 
                 <div class="card-wrapper">
                   <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                  <span class="charge-badge" id="currentCardBadge" date-card-type="main"></span> 
-                  <!-- カードデザイン画像 -->
-                  <img src="images/my-card-main.svg" class="selector-card-img"  alt="メイン">
+                  <span class="charge-badge" id="currentCardBadge" data-card-type="main"></span> 
+                  <!-- カード画像 -->
+                  <img src="images/my-card-main.svg" class="selector-card-img" id="currentCardImg"  alt="メイン">
                 </div>
 
                 <div class="menu-value-box">
                   <span class="current-value" id="depositCardVal">Starbucks Card ¥00,000</span>
-                  <span class="arrow-balance"></span> <!-- ？アローの形大きさ同じだから　.qr-arrow-numberでCSSでまとめられそう？ -->
+                  <span class="arrow-balance"></span> 
                 </div>
               </div>
-
-              <!-- カード選択のドロップダウン -->
-              <div class="deposit-selector-window" id="depositCardWindow">
-                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
-
-                  <div class="card-wrapper">
-                    <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                    <span class="charge-badge" date-card-type="main"></span>
-                    <!-- カード画像 -->
-                    <img src="images/my-card-main.svg" class="selector-card-img" alt="メイン">
-                  </div>
-                  <span class="deposit-main-card-balance">¥0</span>
-                </div>
-
-                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
-                  <div class="card-wrapper">
-                    <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                    <span class="charge-badge" date-card-type="sub"></span>
-                    <!-- カード画像 -->
-                    <img src="images/my-card-sub.png" class="selector-card-img" alt="サブ">
-                  </div>
-                  <span class="deposit-sub-card-balance">¥3,500</span>
-                </div>
-                
-              </div>
-            </div> 
-
+	
    
 
 	
