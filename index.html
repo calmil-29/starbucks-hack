@@ -24,6 +24,10 @@ const allChangeBadge = document.querySelectorAll('.charge-badge');
 でまとめてバッジを足す考えだったけど、でもそれじゃ、 .menu-clickable-area が仲間はずれになるでしょ？ data-card-type="main" しかないから、バッジが足されるのはメインカードだけになる、よね？
 selectDepositOption() で裏でバッジの状態も設定しておいて（表示はさせない）、そのままexecuteAutochargeSave() で表示状態にする。って方向で書いてたんだけど、でも途中で selectDepositOption() で裏で属性（data-card-type）を書き換えて準備って必要？？？ってなって。executeAutochargeSave() では selectDepositOption() で選択したカードを保存してその対象にバッジを足すだけ、なんだけど、でも、じゃあどうすればいいのかわからなくなって戻ってきた！
 
+
+
+
+	
 function executeAutochargeSave(event) {
     if (event) event.stopPropagation();
 
@@ -40,7 +44,7 @@ function executeAutochargeSave(event) {
 
 
     // ======================================
-    // ② 第2の「現在表示カード」の情報を更新
+    // ② 第2の「現在表示カード」の情報を更新 　？どうして第２「現在表示カード」の情報までここで更新する必要があるの？第２の更新（バッジ以外）は openDepositModal() で処理されるけど
     // ======================================
 
     const currentCardBadge =
