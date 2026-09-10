@@ -13,12 +13,19 @@
 　
 💡　無代に渡す用
 
-	
-バッジの考え方：selectDepositOption()　で裏でバッジの状態も設定しておく（表示はさせない、つまり保存前の第２のサマリーと同じ原理）、そのままexecuteAutochargeSave() で表示状態にする。
+Gemini と進めてたんだけど。私、 .menu-clickable-area の .charge-badge に data-card-type を書いていることでここでめちゃくちゃこんがらがってる。
+const allChangeBadge = document.querySelectorAll('.charge-badge');
+
+  allChangeBadge.forEach(badge => {
+  const cardType = badge.getAttribute('data-card-type');
+
+  badge.classList.toggle ('is-active', cardType === autoTargetCardType);
+})	
+でまとめてバッジを足す考えだったけど、でもそれじゃ、 .menu-clickable-area が仲間はずれになるでしょ？ data-card-type="main" しかないから、バッジが足されるのはメインカードだけになる、よね？
+selectDepositOption() で裏でバッジの状態も設定しておいて（表示はさせない）、そのままexecuteAutochargeSave() で表示状態にする。って方向で書いてたんだけど、でも途中で selectDepositOption() で裏で属性（data-card-type）を書き換えて準備って必要？？？ってなって。executeAutochargeSave() では selectDepositOption() で選択したカードを保存してその対象にバッジを足すだけ、なんだけど、でも、じゃあどうすればいいのかわからなくなって戻ってきた！
 
 
-
-	
+現状こんだけ、	
 //第３モーダル】オートチャージ設定を保存 
 
 // #depositModal（第２） での 【入金確定ボタン】は
