@@ -15,6 +15,48 @@
 
 バッジの考え方：selectDepositOption()　で裏でバッジの状態も設定しておく（表示はさせない、つまり保存前の第２のサマリーと同じ原理）、そのままexecuteAutochargeSave() で表示状態にする。
 
+const autochargeCurrentCardImg =
+    document.getElementById('autochargeCurrentCardImg');
+
+const depositCurrentCardImg =
+    document.getElementById('depositCurrentCardImg');
+
+if (type === 'card') {
+
+    if (isAutocharge) {
+        editingAutoTargetCardType = value;
+    } else {
+        depositTargetCardType = value;
+    }
+
+    if (value === 'main') {
+
+        if (isAutocharge) {
+            autochargeCurrentCardImg.src =
+                'images/my-card-main.svg';
+        } else {
+            depositCurrentCardImg.src =
+                'images/my-card-main.svg';
+        }
+
+        currentLabel.textContent =
+            `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+
+    } else if (value === 'sub') {
+
+        if (isAutocharge) {
+            autochargeCurrentCardImg.src =
+                'images/my-card-sub.png';
+        } else {
+            depositCurrentCardImg.src =
+                'images/my-card-sub.png';
+        }
+
+        currentLabel.textContent =
+            `サブカード ¥${subCardBalance.toLocaleString()}`;
+    }
+}
+
 ==============================================================
 
 	
