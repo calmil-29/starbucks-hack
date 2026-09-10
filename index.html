@@ -24,87 +24,122 @@ const allChangeBadge = document.querySelectorAll('.charge-badge');
 でまとめてバッジを足す考えだったけど、でもそれじゃ、 .menu-clickable-area が仲間はずれになるでしょ？ data-card-type="main" しかないから、バッジが足されるのはメインカードだけになる、よね？
 selectDepositOption() で裏でバッジの状態も設定しておいて（表示はさせない）、そのままexecuteAutochargeSave() で表示状態にする。って方向で書いてたんだけど、でも途中で selectDepositOption() で裏で属性（data-card-type）を書き換えて準備って必要？？？ってなって。executeAutochargeSave() では selectDepositOption() で選択したカードを保存してその対象にバッジを足すだけ、なんだけど、でも、じゃあどうすればいいのかわからなくなって戻ってきた！
 
-
-現状こんだけ、	
-//第３モーダル】オートチャージ設定を保存 
-
-// #depositModal（第２） での 【入金確定ボタン】は
-// <button class="final-deposit-submit-btn" id="finalDepositBtn">¥1,000 入金する</button>　で
-// document.getElementById('autochargeSaveBtn')?.addEventListener('click', function(event) {
-// の書き方にしてるけど。今回の #autochargeModal（第３）の<button class="final-deposit-submit-btn" id="autochargeSaveBtn" onclick="executeAutochargeSave(event)">保存</button> には　
-// onclick="executeAutochargeSave(event)"　が書かれているから 
-// function executeAutochargeSave(event) { の書き方で良いって認識で合ってる？
-
-// 先に見せたからわかってると思うけど、第１・２のドロップダウン： .deposit-selector-window の .charge-badge に data-card-type 追加
-// 第２ .menu-clickable-area の .charge-badge に data-card-type、id depositCurrentBadge と img に id depositCurrentCardImg 追加
-
-
 function executeAutochargeSave(event) {
     if (event) event.stopPropagation();
 
-    // 【第３モーダル】の選択中の設定値を”保存済み・有効な状態”として確定させる
+    // ======================================
+    // ① 第3モーダルの編集内容を正式保存
+    // ======================================
 
-    autoTargetCardType = editingAutoTargetCardType;     // オートチャージ対象のカード　'main' か 'sub'
-    autochargeAmount = editingAutochargeAmount;         // オートチャージ金額
-    autochargeCondition =  editingAutochargeCondition;  // オートチャージを実行する入金条件 
-    autochargeMethod = editingAutochargeMethod          // オートチャージ支払い方法
+    autoTargetCardType = editingAutoTargetCardType;
+    autochargeAmount = editingAutochargeAmount;
+    autochargeCondition = editingAutochargeCondition;
+    autochargeMethod = editingAutochargeMethod;
 
-    isAutochargeEnabled = true; // オートチャージをONにする
+    isAutochargeEnabled = true;
 
-    // 【第２・第１・ヒーロー】へ表示を反映
-    
-    // 【第２モーダル】オートチャージ状態のリアルタイム更新バナー（初期状態は OFF） 
-    const bannerViewOff = document.querySelector('.banner-view-off');
-    const bannerViewOn = document.querySelector('.banner-view-on');
-    const allSummaries = document.querySelectorAll('.autocharge-summary');
 
-    if (bannerViewOff) bannerViewOff.classList.remove('is-active');
-    if (bannerViewOn) bannerViewOn.classList.add('is-active');
+    // ======================================
+    // ② 第2の「現在表示カード」の情報を更新
+    // ======================================
 
-    allSummaries.forEach(el => {
-        el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金条件：残高が¥${autochargeCondition.toLocaleString()}未満` ;       
-    });
+    const currentCardBadge =
+        document.getElementById('depositCurrentBadge');
 
-    // リアルタイム更新バナー部分のカード画像
-    const summaryCardImg = document.querySelector('.summary-card-img');
-    const summaryCardName = document.querySelector('.summary-card-name');
+    const depositCurrentCardImg =
+        document.getElementById('depositCurrentCardImg');
 
-    if (summaryCardImg) {
-        if (autoTargetCardType === 'main') {
-            summaryCardImg.src = 'images/my-card-main.svg';
+    const depositCardVal =
+        document.getElementById('depositCardVal');
 
-            if (currentCardBadge) currentCardBadge.setAttribute('date-card-type', 'main');
 
-        } else if (autoTargetCardType === 'sub') {
-            summaryCardImg.src = 'images/my-card-sub.png';
+    if (autoTargetCardType === 'main') {
+
+        if (currentCardBadge) {
+            currentCardBadge.dataset.cardType = 'main';
+        }
+
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src =
+                'images/my-card-main.svg';
+        }
+
+        if (depositCardVal) {
+            depositCardVal.textContent =
+                `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+        }
+
+    } else if (autoTargetCardType === 'sub') {
+
+        if (currentCardBadge) {
+            currentCardBadge.dataset.cardType = 'sub';
+        }
+
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src =
+                'images/my-card-sub.png';
+        }
+
+        if (depositCardVal) {
+            depositCardVal.textContent =
+                `サブカード ¥${subCardBalance.toLocaleString()}`;
         }
     }
 
-    if (summaryCardName) {
-        if (autoTargetCardType === 'main') {
-            summaryCardName.textContent = 'Starbucks Card';
 
-        } else if (autoTargetCardType === 'sub') {
-            summaryCardName.textContent = 'サブカード';
-        }
-    }
-    
-    // 【第２】設定画面・【第２・１】ドロップダウンのカードバッジ
-    const allChangeBadge = document.querySelectorAll('.charge-badge');
+    // ======================================
+    // ③ すべてのオートチャージバッジを更新
+    // ======================================
+
+    const allChangeBadge =
+        document.querySelectorAll('.charge-badge');
 
     allChangeBadge.forEach(badge => {
-        const cardType = badge.getAttribute('data-card-type');
 
-        badge.classList.toggle ('is-active', cardType === autoTargetCardType);
-    })
+        const cardType =
+            badge.dataset.cardType;
 
-	// ヒーロー：未実行
-	
-    // 第３モーダルを閉じる：未実行   
+        badge.classList.toggle(
+            'is-active',
+            cardType === autoTargetCardType
+        );
+    });
 
+
+    // ======================================
+    // ④ 第2モーダルのON表示
+    // ======================================
+
+    const bannerViewOff =
+        document.querySelector('.banner-view-off');
+
+    const bannerViewOn =
+        document.querySelector('.banner-view-on');
+
+    const allSummaries =
+        document.querySelectorAll('.autocharge-summary');
+
+    if (bannerViewOff) {
+        bannerViewOff.classList.remove('is-active');
+    }
+
+    if (bannerViewOn) {
+        bannerViewOn.classList.add('is-active');
+    }
+
+    allSummaries.forEach(el => {
+        el.textContent =
+            `オートチャージ：¥${autochargeAmount.toLocaleString()}\n` +
+            `入金条件：残高が¥${autochargeCondition.toLocaleString()}未満`;
+    });
+
+
+    // ======================================
+    // ⑤ 第3モーダルを閉じる
+    // ======================================
+
+    // 後で実装
 }
-	
-
 
 ==============================================================
 
