@@ -14,7 +14,10 @@
 💡　無代に渡す用
 
 finalDepositBtn() 以外だと	
-
+	
+depositCardVal
+autoCardVal ：
+	
 openDepositModal()	
  const depositCurrentValueEl = document.getElementById('depositCardVal'); 
 
@@ -23,7 +26,7 @@ openDepositModal()
     }
 
 	
- openAutochargeModal()
+ openAutochargeModal()　※id じゃなくクラス名指定	
  const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
     
     if (autoCardValEl) {
@@ -38,8 +41,11 @@ openDepositModal()
         }
     }	
 
+autochargeCurrentCardImg
+depositCurrentCardImg ：
+	
 selectDepositOption()
-	   const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');  // 第３メニュー画面のカード画像
+	const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');  // 第３メニュー画面のカード画像
     const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');        // 第２メニュー画面のカード画像
   
     if (type === 'card') {
