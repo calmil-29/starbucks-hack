@@ -14,7 +14,19 @@
 💡　無代に渡す用
 
 
+const currentHeroImg =
+    document.getElementById('heroCardImg')?.getAttribute('src') || '';
+↓
 
+if (currentHeroImg.includes('sub')) {
+
+if (currentSelectedCardType === 'sub') {
+    currentCardName = 'サブカード';
+    currentBalance = subCardBalance;
+} else {
+    currentCardName = 'Starbucks Card';
+    currentBalance = starbucksCardBalance;
+}
 
 
 
