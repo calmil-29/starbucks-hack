@@ -13,57 +13,95 @@
 　
 💡　無代に渡す用
 
-Gemini と進めてたんだけど。私、 .menu-clickable-area の .charge-badge に data-card-type を書いていることでここでめちゃくちゃこんがらがってる。
-const allChangeBadge = document.querySelectorAll('.charge-badge');
+バッジについては、
+#depositModal
+メインがオートチャージ保存対カード	
+.menu-clickable-area
+現在選択カード：メイン⚫︎バッジ	
+↓
+#depositCardWindow：メイン⚫︎
+	　　　　　　　　　 サブ
 
-  allChangeBadge.forEach(badge => {
-  const cardType = badge.getAttribute('data-card-type');
+現在選択カード：サブ
+↓
+#depositCardWindow：メイン⚫︎
+	　　　　　　　　　 サブ	
 
-  badge.classList.toggle ('is-active', cardType === autoTargetCardType);
-})	
-でまとめてバッジを足す考えだったけど、でもそれじゃ、 .menu-clickable-area が仲間はずれになるでしょ？ data-card-type="main" しかないから、バッジが足されるのはメインカードだけになる、よね？
-selectDepositOption() で裏でバッジの状態も設定しておいて（表示はさせない）、そのままexecuteAutochargeSave() で表示状態にする。って方向で書いてたんだけど、でも途中で selectDepositOption() で裏で属性（data-card-type）を書き換えて準備って必要？？？ってなって。executeAutochargeSave() では selectDepositOption() で選択したカードを保存してその対象にバッジを足すだけ、なんだけど、でも、じゃあどうすればいいのかわからなくなって戻ってきた！
+サブがオートチャージ保存対カード		
+現在選択カード：メイン	
+↓
+#depositCardWindow：メイン
+	　　　　　　　　　 サブ⚫︎
 
+現在選択カード：サブ⚫︎
+↓
+#depositCardWindow：メイン
+	　　　　　　　　　 サブ⚫︎	
 
-そもメニューデータの編集用の変数は第３モーダルのものしか作ってない、問題なく動いていたけど、実は気になっていた箇所ではある。
-// 【第２モーダル】入金対象のカード
-let depositTargetCardType = 'main';
-
-// 【第３モーダル オートチャージ】
-// 保存用
-let autoTargetCardType = 'main'; // オートチャージ対象のカードの初期値
-let autochargeAmount = 2000;     // オートチャージ金額（例：2000円チャージする）
-let autochargeCondition = 1000;  // オートチャージを実行する入金条件 （例：1000円以下になったら）
-let isAutochargeEnabled = false; // オートチャージがONかOFFか（初期はOFF）	
-let autochargeMethod = '未登録';   // 支払い方法
-
-// 編集用
-let editingAutoTargetCardType = 'main'; 
-let editingAutochargeAmount = 2000;    
-let editingAutochargeCondition = 1000;  
-let editingAutochargeMethod = '未登録';	
+で、新たなバグ発生。おそらく第１・２・３のメニュー画面にカード画像、バッジを追加したのが原因
+ヒーロー・第３は問題なし
+第１
+カード：メイン
 	
-selectDepositOption() でも
- if (type === 'card') {
-
-  if (isAutocharge) {
-    editingAutoTargetCardType = value;    // 第３の編集用の金庫 
-
-   } else {
-       depositTargetCardType = value;      // 第２の金庫 ※ここ、第２では編集用ではないんだよね。　
-} 
-でも特に問題ないならこの話はスルーして
+↓
 	
+第２
+カード画像：メイン
+カード名：メイン
 	
-それと、この立ち位置が、表面上の情報で引っ張られる。HTML上ではメインの情報しかないけど、でも実際JSで第２ドロップのカード選択で表示の切り替えはできてる、ドロップダウンで選択したカードを表示する場所なわけで、あくまでこれは飾り？なんなら表示の指定場所がわかればいいから、中身が空っぽでも問題ないの？
-<div class="card-wrapper">
-　　<!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-　　<span class="charge-badge" id="depositCurrentBadge" data-card-type="main"></span> 
-　　<!-- カード画像 -->
-　　<img src="images/my-card-main.svg"  id="depositCurrentCardImg" class="selector-card-img" alt="メイン">
-</div>
+↓ 第２メインに¥1,000入金
+	
+第１ドロップダウン内	
+メイン ¥0
+サブ	  ⚫︎バッジの隣に¥1,000 
+      ¥3,500
 
 
+第１
+カード：サブ
+	
+↓
+	
+第２
+カード画像：メイン　※本来第１に初期は合わせるべき
+カード名：サブ	
+
+
+	
+
+
+
+           <!-- 1. 「カード選択」 -->
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
+
+                <div class="card-wrapper">
+                  <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
+                  <span class="charge-badge" id="depositCurrentBadge" data-card-type="main"></span> 
+                  <!-- カード画像 -->
+                  <img src="images/my-card-main.svg"  id="depositCurrentCardImg" class="selector-card-img" alt="メイン">
+                </div>
+
+				 
+                <div class="menu-value-box">
+                  <span class="current-value" id="depositCardVal">Starbucks Card ¥0</span>
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div> 
+
+
+            <!-- 1. オートチャージ「カード選択」-->
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleAutochargeWindow('card', event)">
+                <!-- カード画像 -->
+                <img src="images/my-card-main.svg" class="selector-card-img"  id="autochargeCurrentCardImg" alt="メイン">
+                <div class="menu-value-box">
+                  <span class="current-value" id="autoCarVal">Starbucks Card ¥0</span>
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div>	  
+
+	
 	
 
 	
