@@ -13,71 +13,180 @@
 　
 💡　無代に渡す用
 	
-//【第１モーダル】ドロップダウンのカード選択をタップした時に、見た目と金額を切り替える関数 	
-function switchCard(event) {
-    // 1. 安全装置(土台のファイルがあるか確認)
-    if (!event) return;
+function openDepositModal(event) {
+    if(!event) return;
 
-    // モダール自体や別枠が閉じてしまうのを防ぐための防波堤
-    event.stopPropagation();
+    // タップの衝撃波で、第１モーダルが閉じてしまうのを防ぐ
+    event.stopPropagation ();
 
-    // 2. タップを監視している「大元の枠組み（要素）」をガシッと掴む
-    // ※ 中にある文字や画像を触っても、必ずこの枠全体（currentTarget）が掴める
-    const clickedItem = event.currentTarget;
+    // 第１モーダルで現在選ばれているカードを、今回の入金対象の「初期値」として引き継ぐ　
+    depositTargetCardType = currentSelectedCardType;
 
-    // 3. タップされたカードの種類を読み取る
-    // HTML の data-change-type から main-card / sub-card を取得
-    const changeType = clickedItem.getAttribute('data-change-type');
+    //  新しく開くとき、前回の確認画面を確実に非表示にしておく
+    const confirmBox = document.querySelector('.deposit-screen-confirm');
 
-    // 4. 掴む要素(第１モダールの中身 + 表のヒーロー画像の中身)
-    const modalCardImg = document.getElementById('qrModalCardImg')
-    const modalBalance = document.querySelector('.qr-card-balance')
-    const heroCardImg = document.getElementById('heroCardImg') 
-    const heroCardBalance = document.getElementById('heroCardBalance') 
+    if (confirmBox) confirmBox.classList.remove('is-active'); 
 
-    // 5.条件分岐：目印に合わせて、画面と金額を書き換える　
-    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
-    const mainCardLabel = document.querySelector('.balance-display .card-label'); 
+    // 新しく開くとき、入力画面を確実に表示にしておく 
+    const inputArea = document.querySelector('.deposit-screen-input'); // 入金設定の箱
 
-    if (changeType === 'main-card') { 
+    if (inputArea) inputArea.classList.add('is-active');
 
-        // メインカードへの切り替え    
-        currentSelectedCardType = 'main';  //※switchCard(event)　→ 書く　第１モーダル・ヒーローのカード変更
-        const mainSrc = 'images/my-card-main.svg';
-        const mainTxt = starbucksCardBalance.toLocaleString(); 
-        
-        if (modalCardImg) modalCardImg.setAttribute('src', mainSrc);
-        if (modalBalance) modalBalance.textContent = '¥' + mainTxt;
-        if (heroCardImg) heroCardImg.setAttribute('src', mainSrc); 
-        if (heroCardBalance) heroCardBalance.textContent = mainTxt;
 
-        if (qrCardNameEl) qrCardNameEl.textContent = 'Starbucks Card'
-        if (mainCardLabel) mainCardLabel.textContent = 'Starbucks Card'
+    // ヒーロー】に写っている「カードの画像（src）」をチェック  
+    const currentHeroImg = document.getElementById('heroCardImg')?.getAttribute('src') || '';
 
-    } else if (changeType === 'sub-card') { 
+    let currentCardName = 'Starbucks Card';
+    let currentBalance = 0;
+    
+    if (currentHeroImg.includes('sub')){
+        currentCardName = 'サブカード';
+        currentBalance = subCardBalance; // サブの金庫
 
-       // サブカードへの切り替え
-       currentSelectedCardType = 'sub'; //※switchCard(event)　→　書く　第１モーダル・ヒーローのカード変更
-       const subSrc = 'images/my-card-sub.png';
-       const subTxt = subCardBalance.toLocaleString(); 
+    } else {
+        currentCardName = 'Starbucks Card';
+        currentBalance = starbucksCardBalance; // メインの金庫
+    }
+    
+    // A. 「現在表示されているカード」の文字を、開いた瞬間の最新状態にする 
+   
+    const depositCurrentValueEl = document.getElementById('depositCardVal'); 
 
-       if (modalCardImg) modalCardImg.setAttribute('src', subSrc); 
-       if (modalBalance) modalBalance.textContent = '¥' + subTxt; 
-       if (heroCardImg) heroCardImg.setAttribute('src', subSrc);
-       if (heroCardBalance) heroCardBalance.textContent = subTxt;
-
-       if (qrCardNameEl) qrCardNameEl.textContent = 'サブカード';
-       if (mainCardLabel) mainCardLabel.textContent = 'サブカード';
-
+    if (depositCurrentValueEl) {
+        depositCurrentValueEl.textContent = `${currentCardName} ¥${currentBalance.toLocaleString()}`;
     }
 
-    // ７. 切り替えが終わったら、カード選択の別枠を自動でシュッと閉じる
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-    selectorWindow?.classList.remove('is-active')
+    // B.【リセット機能】入金額と支払い方法は、初期値に強制リセットする
+    const allItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
+    
+    // ２番目のメニュー「入金額」の中身をリセット
+    if (allItems[1]) {
+        const amtLabel = allItems[1].querySelector('.current-value');
+        if (amtLabel) amtLabel.textContent = '¥1,000';
+    }
+
+    // ３番目のメニュー「支払い方法」の中身をリセット
+    if (allItems[2]) {
+        const methodLabel = allItems[2].querySelector('.current-value');
+        if (methodLabel) methodLabel.textContent = '未登録';
+    }
+
+    // 【第２モーダル】を開いたとき【第２モーダル】のカードの金額も最新にする　　
+    // カードの「ドロップダウン」のメイン・サブの金額　
+    const depositWindowMainEl = document.querySelector('.deposit-main-card-balance');
+
+    if (depositWindowMainEl) {
+        depositWindowMainEl.textContent ='¥' + starbucksCardBalance.toLocaleString();
+    }
+
+    const depositWindowSubEl = document.querySelector('.deposit-sub-card-balance');
+
+    if (depositWindowSubEl) {
+        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
+    }
+    
+    // 4. HTMLから「第２モーダル」の土台（オーバーレイ）をガシッと詰む 
+    const depositModal = document.getElementById('depositModal');
+
+    if (depositModal) {
+        // 5. クラスを追加して、第２モーダルを画面に出現させる
+        depositModal.classList.add('is-active');
+    }    
 }
 
 
+function openAutochargeModal(event) {
+    
+    if (event) event.stopPropagation();
+
+    // ==================================
+    // 「編集中設定」を開始する
+    // ==================================
+
+	// 第１モーダルで現在選ばれているカードを、今回のオートチャージ対象の「初期値」にする
+	editingAutoTargetCardType = currentSelectedCardType; 
+
+    // 金額・条件・支払い方法：
+    // すでに保存されている設定を引き継ぐ
+    editingAutochargeAmount = autochargeAmount;
+    editingAutochargeCondition = autochargeCondition;
+    editingAutochargeMethod = autochargeMethod;
+
+    // ==================================
+	// 前回の確認画面を閉じる
+    // ==================================
+
+	const confirmBox = document.querySelector('.autocharge-screen-confirm');
+
+	if (confirmBox) confirmBox.classList.remove('is-active');
+    
+    // ==================================
+    // 第２モーダルを閉じて第３モーダルを開く
+    // ==================================
+
+    const depositModal = document.getElementById('depositModal');
+    const autochargeModal = document.getElementById('autochargeModal');
+
+    if (depositModal) {
+        depositModal.classList.remove('is-active');
+    }
+
+    if (autochargeModal) {
+        autochargeModal.classList.add('is-active');
+    }
+
+    // ==================================
+    // 「編集中設定」を第３の設定画面に表示する
+    // ==================================
+
+    const allSummaries = document.querySelectorAll('.autocharge-summary');    // 入金条件
+    const amountEl = document.querySelector('.autocharge-value-amount');       // 入金額
+    const conditionEl = document.querySelector('.autocharge-value-condition'); // 入金条件
+    const methodEl = document.querySelector('.autocharge-value-method');       // 支払い方法
+
+    if (amountEl) {
+        amountEl.textContent =`¥${editingAutochargeAmount.toLocaleString()}`;
+    }
+    if (conditionEl) {
+        conditionEl.textContent = `¥${editingAutochargeCondition.toLocaleString()}`;
+    }
+    if (methodEl) {
+        methodEl.textContent = editingAutochargeMethod;
+    }
+
+    // ==================================
+    // サマリーにも「編集中設定」を表示
+    // ==================================　
+
+    allSummaries.forEach(el => {
+        el.textContent = `オートチャージ：¥${editingAutochargeAmount.toLocaleString()}\n` +
+                         `入金条件：残高が¥${editingAutochargeCondition.toLocaleString()}未満` ;
+    });
+
+    // ==================================
+    //　カードも「編集中設定」を表示
+    // ==================================
+
+    const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
+    
+    if (autoCardValEl) {
+       
+        if ( editingAutoTargetCardType === 'main') {  
+            
+            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
+
+        } else {
+            
+            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
+        }
+    }
+}
 	
+
+
+
+
+
 
 	
 
