@@ -12,72 +12,69 @@
 ================================================
 　
 💡　無代に渡す用
-
-finalDepositBtn() 以外だと	
 	
-depositCardVal
-autoCardVal ：
-	
-openDepositModal()	
- const depositCurrentValueEl = document.getElementById('depositCardVal'); 
+//【第１モーダル】ドロップダウンのカード選択をタップした時に、見た目と金額を切り替える関数 	
+function switchCard(event) {
+    // 1. 安全装置(土台のファイルがあるか確認)
+    if (!event) return;
 
-    if (depositCurrentValueEl) {
-        depositCurrentValueEl.textContent = `${currentCardName} ¥${currentBalance.toLocaleString()}`;
+    // モダール自体や別枠が閉じてしまうのを防ぐための防波堤
+    event.stopPropagation();
+
+    // 2. タップを監視している「大元の枠組み（要素）」をガシッと掴む
+    // ※ 中にある文字や画像を触っても、必ずこの枠全体（currentTarget）が掴める
+    const clickedItem = event.currentTarget;
+
+    // 3. タップされたカードの種類を読み取る
+    // HTML の data-change-type から main-card / sub-card を取得
+    const changeType = clickedItem.getAttribute('data-change-type');
+
+    // 4. 掴む要素(第１モダールの中身 + 表のヒーロー画像の中身)
+    const modalCardImg = document.getElementById('qrModalCardImg')
+    const modalBalance = document.querySelector('.qr-card-balance')
+    const heroCardImg = document.getElementById('heroCardImg') 
+    const heroCardBalance = document.getElementById('heroCardBalance') 
+
+    // 5.条件分岐：目印に合わせて、画面と金額を書き換える　
+    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
+    const mainCardLabel = document.querySelector('.balance-display .card-label'); 
+
+    if (changeType === 'main-card') { 
+
+        // メインカードへの切り替え    
+        currentSelectedCardType = 'main';  //※switchCard(event)　→ 書く　第１モーダル・ヒーローのカード変更
+        const mainSrc = 'images/my-card-main.svg';
+        const mainTxt = starbucksCardBalance.toLocaleString(); 
+        
+        if (modalCardImg) modalCardImg.setAttribute('src', mainSrc);
+        if (modalBalance) modalBalance.textContent = '¥' + mainTxt;
+        if (heroCardImg) heroCardImg.setAttribute('src', mainSrc); 
+        if (heroCardBalance) heroCardBalance.textContent = mainTxt;
+
+        if (qrCardNameEl) qrCardNameEl.textContent = 'Starbucks Card'
+        if (mainCardLabel) mainCardLabel.textContent = 'Starbucks Card'
+
+    } else if (changeType === 'sub-card') { 
+
+       // サブカードへの切り替え
+       currentSelectedCardType = 'sub'; //※switchCard(event)　→　書く　第１モーダル・ヒーローのカード変更
+       const subSrc = 'images/my-card-sub.png';
+       const subTxt = subCardBalance.toLocaleString(); 
+
+       if (modalCardImg) modalCardImg.setAttribute('src', subSrc); 
+       if (modalBalance) modalBalance.textContent = '¥' + subTxt; 
+       if (heroCardImg) heroCardImg.setAttribute('src', subSrc);
+       if (heroCardBalance) heroCardBalance.textContent = subTxt;
+
+       if (qrCardNameEl) qrCardNameEl.textContent = 'サブカード';
+       if (mainCardLabel) mainCardLabel.textContent = 'サブカード';
+
     }
 
-	
- openAutochargeModal()　※id じゃなくクラス名指定	
- const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
-    
-    if (autoCardValEl) {
-       
-        if ( editingAutoTargetCardType === 'main') {  
-            
-            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
-
-        } else {
-            
-            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
-        }
-    }	
-
-autochargeCurrentCardImg
-depositCurrentCardImg ：
-	
-selectDepositOption()
-	const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');  // 第３メニュー画面のカード画像
-    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');        // 第２メニュー画面のカード画像
-  
-    if (type === 'card') {
-
-        if (isAutocharge) {
-            editingAutoTargetCardType = value;    // 第３の編集用の金庫 
-
-        } else {
-            depositTargetCardType = value;        // 第２の金庫 　
-        }    
-
-        // カード画像を切り替える
-        if (value === 'main') {
-
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
-	        } else {
-	        depositCurrentCardImg.src = 'images/my-card-main.svg';
-	        }
-
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-
-        } else if (value === 'sub') {
-
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-sub.png'; 
-	        } else {
-	        depositCurrentCardImg.src = 'images/my-card-sub.png';
-	        }
-
-            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
+    // ７. 切り替えが終わったら、カード選択の別枠を自動でシュッと閉じる
+    const selectorWindow = document.querySelector('.qr-card-selector-window');
+    selectorWindow?.classList.remove('is-active')
+}
 
 
 	
