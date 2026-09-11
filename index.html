@@ -13,6 +13,85 @@
 　
 💡　無代に渡す用
 
+finalDepositBtn() で第１ドロップダウン処理をクラス名を変えてから修正：⚪︎
+'.qr-card-selector-window .qr-selector-item:nth-child(2) span' → '.qr-selector-main-card-balance'	
+'.qr-card-selector-window .qr-selector-item:nth-child(3) span' → '.qr-selector-sub-card-balance'	
+新たに  E. 【第3モーダル】内の残高表示を最新状態にする を追加：表テキスト金額・ドロップダウン金額修正：⚪︎
+	const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');
+    const autoCardVal = document.getElementById('autoCardVal');
+
+    if (currentSelectedCardType === 'main') {
+        
+        if (autochargeCurrentCardImg) {
+            autochargeCurrentCardImg.src = 'images/my-card-main.svg';
+        }
+
+        if (autoCardVal) {
+            autoCardVal.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+        }
+
+    } else {
+
+        if (autochargeCurrentCardImg) {
+            autochargeCurrentCardImg.src = 'images/my-card-sub.png';
+        }
+
+        if (autoCardVal) {
+            autoCardVal.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
+    }
+
+   //【第3モーダル】のカード選択ドロップダウン
+	
+    const autochargeWindowMainEl = 
+        document.querySelector(
+            '.autocharge-main-card-balance');
+
+    if (autochargeWindowMainEl) {
+        autochargeWindowMainEl.textContent =
+            '¥' + starbucksCardBalance.toLocaleString(); 
+    }   
+    
+    const autochargetWindowSubEl =
+        document.querySelector(
+            '.autocharge-sub-card-balance');
+
+    if (autochargetWindowSubEl) {
+        autochargetWindowSubEl.textContent =
+        '¥' + subCardBalance.toLocaleString();
+    }  
+
+	第２も画像追加したので　D. 【第２モーダル】内の残高表示を最新状態にする　を修正
+	const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');
+    const depositCardVal = document.getElementById('depositCardVal');
+
+    if (currentSelectedCardType === 'main') {
+        
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-main.svg';
+        }
+
+        if (depositCardVal) {
+            depositCardVal.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+        }
+
+    } else {
+
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-sub.png';
+        }
+
+        if (depositCardVal) {
+            depositCardVal.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
+    }
+
+でも、第１で選択したカードを第２・３では再描画できてない。で、D E の if (currentSelectedCardType === 'main') {　の処理を丸ごと消してみたら、消したら depositCardVal の変更もされなくなるはずだと思ったけど、変わらず動いていたから、何か違うとこで先に処理されてるのかな？だから第１で選択したカードを第２・３では再描画もできないでいるのかな？？？
+    
+    
+
+	
+
 document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
 
     if (event) event.stopPropagation();
@@ -109,7 +188,7 @@ document.getElementById('finalDepositBtn')?.addEventListener('click', function(e
 
     const modalWindowMainEl = 
         document.querySelector(
-            '.qr-card-selector-window .qr-selector-item:nth-child(2) span'
+            '.qr-card-selector-window .qr-selector-item:nth-child(2) span' → '.qr-selector-main-card-balance'
         );
 
     if (modalWindowMainEl) {
@@ -119,7 +198,7 @@ document.getElementById('finalDepositBtn')?.addEventListener('click', function(e
 
     const modalWindowsubEl = 
         document.querySelector(
-            '.qr-card-selector-window .qr-selector-item:nth-child(3) span'
+            '.qr-card-selector-window .qr-selector-item:nth-child(3) span' → '.qr-selector-sub-card-balance'
         );
  
     if (modalWindowsubEl) {
