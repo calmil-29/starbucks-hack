@@ -13,6 +13,8 @@
 　
 💡　無代に渡す用
 
+finalDepositBtn() 以外だと	
+
 openDepositModal()	
  const depositCurrentValueEl = document.getElementById('depositCardVal'); 
 
@@ -35,6 +37,44 @@ openDepositModal()
             autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
         }
     }	
+
+selectDepositOption()
+	   const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');  // 第３メニュー画面のカード画像
+    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');        // 第２メニュー画面のカード画像
+  
+    if (type === 'card') {
+
+        if (isAutocharge) {
+            editingAutoTargetCardType = value;    // 第３の編集用の金庫 
+
+        } else {
+            depositTargetCardType = value;        // 第２の金庫 　
+        }    
+
+        // カード画像を切り替える
+        if (value === 'main') {
+
+            if (isAutocharge) {
+	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
+	        } else {
+	        depositCurrentCardImg.src = 'images/my-card-main.svg';
+	        }
+
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+
+        } else if (value === 'sub') {
+
+            if (isAutocharge) {
+	        autochargeCurrentCardImg.src = 'images/my-card-sub.png'; 
+	        } else {
+	        depositCurrentCardImg.src = 'images/my-card-sub.png';
+	        }
+
+            currentLabel.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
+        }
+
+
+	
 
 	
 
