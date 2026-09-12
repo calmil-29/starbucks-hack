@@ -76,6 +76,18 @@ finalDepositBtn()
 ⚪︎
 
 実際の入金＋残高表示更新
+
+openDepositModal() の説明も厳密には
+
+「同期処理を追加しない」
+
+ではなく、
+
+「switchCard() と同じ同期処理をベタ書きせず、renderCurrentCardToDeposit() を呼ぶ」
+
+が正確。
+
+第2を開く瞬間にも描画する必要があるから。
 		  
   		  
 
