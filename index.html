@@ -13,8 +13,6 @@
 　
 💡　無代に渡す用
 
-ヒーロー・第１・２・３の最新の現在選択中カードを表示の動き確認したけどうまくいったみたい。でも openAutochargeModal() はそのままの状態なんだけど。renderCurrentCardToAutocharge(); を書き加えるんだよね？？
-	
 【役割】	
 switchCard()  → 修正完了⚪︎
   = 「現在カードが変わった」ことを各画面に反映 
@@ -35,16 +33,12 @@ finalDepositBtn()　→ 修正完了⚪︎
   = 実際の入金処理＋残高表示更新
 	
 
-まず、switchCard() の currentSelectedCardType = 'main'; currentSelectedCardType = 'sub'; に   	
-renderCurrentCardToDeposit();
-renderCurrentCardToAutocharge();
-をそれぞれに書く必要あるのはなぜ？
+でも。autoCardValEl はドロップダウン担当じゃなくて表のほうだとおもうんだけど、つまり役割としては renderCurrentCardToAutocharge();　の画像が入ってないver. 現に autoCardValEl 部分を全部消してみても問題なく 第３モーダルの「現在表示カード」を最新にする、ドロップダウンの書き換えも問題なく動いているようだけど。ドロップダウンは　finalDepositBtn() で管理しているし、「現在表示カード」は renderCurrentCardToAutocharge(); が担当だから。
 
-で質問。ここ不安。
+
 function openAutochargeModal(event) {
     
     if (event) event.stopPropagation();
-
 
     // 「編集中の設定」を開始する
 
@@ -57,12 +51,15 @@ function openAutochargeModal(event) {
     editingAutochargeCondition = autochargeCondition;
     editingAutochargeMethod = autochargeMethod;
 
+    // 第３モーダルの「現在表示カード」を最新にする
+    renderCurrentCardToAutocharge();
+
 	// 前回の確認画面を閉じる
-    const confirmBox = document.querySelector('.autocharge-screen-confirm');
+
+	const confirmBox = document.querySelector('.autocharge-screen-confirm');
 
 	if (confirmBox) confirmBox.classList.remove('is-active');
     
-  
     // 第２モーダルを閉じて第３モーダルを開く
 
     const depositModal = document.getElementById('depositModal');
@@ -77,6 +74,7 @@ function openAutochargeModal(event) {
     }
 
     // 「編集中設定」を第３の設定画面に表示する
+
     const allSummaries = document.querySelectorAll('.autocharge-summary');     // 入金条件
     const amountEl = document.querySelector('.autocharge-value-amount');       // 入金額
     const conditionEl = document.querySelector('.autocharge-value-condition'); // 入金条件
@@ -91,7 +89,7 @@ function openAutochargeModal(event) {
     if (methodEl) {
         methodEl.textContent = editingAutochargeMethod;
     }
-
+	
     // サマリーにも「編集中設定」を表示
 
     allSummaries.forEach(el => {
@@ -99,7 +97,7 @@ function openAutochargeModal(event) {
                          `入金条件：残高が¥${editingAutochargeCondition.toLocaleString()}未満` ;
     });
 
-    //　カードも「編集中設定」を表示 ※ドロップ側の現在地ではなくて現在カードの表示場所になるけど？どうゆうことになる？？
+    //　カードも「編集中設定」を表示
 
     const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
     
@@ -115,31 +113,59 @@ function openAutochargeModal(event) {
         }
     }
 }
-	
 
-         <div class="deposit-menu-list">
+　　　　　　で、ごめんさっきの第２の方のHTMLだった	
+　　　　　　<div class="autocharge-menu-list">
           
-            <!-- 1. 「入金カード選択」 -->
+            <!-- 1. オートチャージ「カード選択」 -->
             <div class="deposit-menu-item">
-              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-
-                <div class="card-wrapper">
-                  <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                  <span class="charge-badge" id="depositCurrentBadge" data-card-type="main"></span> 
-                  <!-- カード画像 -->
-                  <img src="images/my-card-main.svg"  id="depositCurrentCardImg" class="selector-card-img" alt="メイン">
-                </div>
+              <div class="menu-clickable-area" onclick="toggleAutochargeWindow('card', event)">
+                <!-- カード画像 -->
+                <img src="images/my-card-main.svg" id="autochargeCurrentCardImg" class="selector-card-img"  alt="メイン">
 
                 <div class="menu-value-box">
-                  <span class="current-value" id="depositCardVal">Starbucks Card ¥0</span>
+                  <span class="current-value" id="autoCardVal">Starbucks Card ¥0</span>
                   <span class="arrow-balance"></span> 
                 </div>
               </div>
 
-              <!-- カード選択のドロップダウン -->
-              <div class="deposit-selector-window" id="depositCardWindow">
+              <!-- オートチャージ「カード選択のドロップダウン」 -->
+              <div class="deposit-selector-window" id="autochargeCardWindow">
+                <p class="deposit-selector-title">カードを選択</p>
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+                  <img src="images/my-card-main.svg" alt="メイン" class="selector-card-img">
+                  <span class="autocharge-main-card-balance">¥0</span>
+                </div>
 
-				  
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                  <img src="images/my-card-sub.png" alt="サブ" class="selector-card-img">
+                  <span class="autocharge-sub-card-balance">¥3,500</span>
+                </div>
+              </div>
+            </div> 
+
+というかこの流れだと　第２の openDepositModal() にはドロップダウン担当がいるんだけど、これもいらない？ここも消してみても問題なく動いていたんだけど。　finalDepositBtn() が担当してるから？？
+openDepositModal()		  
+   // 【第２モーダル】のドロップダウンのカードの金額も最新にする　　		  
+   // メイン
+    const depositWindowMainEl = document.querySelector('.deposit-main-card-balance');
+
+    if (depositWindowMainEl) {
+        depositWindowMainEl.textContent ='¥' + starbucksCardBalance.toLocaleString();
+    }
+
+    // サブ
+    const depositWindowSubEl = document.querySelector('.deposit-sub-card-balance');
+
+    if (depositWindowSubEl) {
+        depositWindowSubEl.textContent = '¥' + subCardBalance.toLocaleString();
+    }
+
+	  
+
+		  
+  		  
+
          
 	
 // 【ヒーロー】に写っている「カードの画像（src）」をチェック  
