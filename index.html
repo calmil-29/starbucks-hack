@@ -35,7 +35,47 @@ finalDepositBtn()　→ 修正完了⚪︎
 ドロップダウンのからのカードの選択変更は selectDepositOption() が担当、金額の処理、更新は finalDepositBtn() が担当 	
 だから、	openDepositModal()　openAutochargeModal()　では「編集中の設定」を開始するポジでもあるけど、ドロップダウンの処理は担当する必要はないから？
 	  
+function
 
+状態
+
+役割
+
+switchCard()
+
+⚪︎
+
+第1で現在カード変更 → 第1・第2・第3へ反映
+
+openDepositModal()
+
+⚪︎
+
+第2を開く時の初期化・リセット＋現在カード描画
+
+openAutochargeModal()
+
+← 今ここ
+
+第3を開く時の編集状態開始＋現在カード描画
+
+selectDepositOption()
+
+⚪︎
+
+第2/第3のドロップダウン内の選択変更
+
+executeAutochargeSave()
+
+未実行
+
+第3の編集中設定を保存
+
+finalDepositBtn()
+
+⚪︎
+
+実際の入金＋残高表示更新
 		  
   		  
 
