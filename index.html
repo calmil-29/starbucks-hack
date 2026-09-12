@@ -36,7 +36,132 @@ finalDepositBtn()
 switchCard() の currentSelectedCardType = 'main'; currentSelectedCardType = 'sub'; に   	
 renderCurrentCardToDeposit();
 renderCurrentCardToAutocharge();
-をそれぞれに書く必要あるのはなぜ？	
+をそれぞれに書く必要あるのはなぜ？
+
+
+function openAutochargeModal(event) {
+    
+    if (event) event.stopPropagation();
+
+
+    // 「編集中の設定」を開始する
+
+	// 第１モーダルで現在選ばれているカードを、今回のオートチャージ対象の「初期値」にする
+	editingAutoTargetCardType = currentSelectedCardType; 
+
+    // 金額・条件・支払い方法：
+    // すでに保存されている設定を引き継ぐ
+    editingAutochargeAmount = autochargeAmount;
+    editingAutochargeCondition = autochargeCondition;
+    editingAutochargeMethod = autochargeMethod;
+
+	// 前回の確認画面を閉じる
+
+	const confirmBox = document.querySelector('.autocharge-screen-confirm');
+
+	if (confirmBox) confirmBox.classList.remove('is-active');
+    
+  
+    // 第２モーダルを閉じて第３モーダルを開く
+
+    const depositModal = document.getElementById('depositModal');
+    const autochargeModal = document.getElementById('autochargeModal');
+
+    if (depositModal) {
+        depositModal.classList.remove('is-active');
+    }
+
+    if (autochargeModal) {
+        autochargeModal.classList.add('is-active');
+    }
+
+    // 「編集中設定」を第３の設定画面に表示する
+    const allSummaries = document.querySelectorAll('.autocharge-summary');     // 入金条件
+    const amountEl = document.querySelector('.autocharge-value-amount');       // 入金額
+    const conditionEl = document.querySelector('.autocharge-value-condition'); // 入金条件
+    const methodEl = document.querySelector('.autocharge-value-method');       // 支払い方法
+
+    if (amountEl) {
+        amountEl.textContent =`¥${editingAutochargeAmount.toLocaleString()}`;
+    }
+    if (conditionEl) {
+        conditionEl.textContent = `¥${editingAutochargeCondition.toLocaleString()}`;
+    }
+    if (methodEl) {
+        methodEl.textContent = editingAutochargeMethod;
+    }
+
+    // サマリーにも「編集中設定」を表示
+
+    allSummaries.forEach(el => {
+        el.textContent = `オートチャージ：¥${editingAutochargeAmount.toLocaleString()}\n` +
+                         `入金条件：残高が¥${editingAutochargeCondition.toLocaleString()}未満` ;
+    });
+
+    //　カードも「編集中設定」を表示 ※ドロップ側の現在地ではなくて現在カードの表示場所になるけど？
+
+    const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
+    
+    if (autoCardValEl) {
+       
+        if ( editingAutoTargetCardType === 'main') {  
+            
+            autoCardValEl.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
+
+        } else {
+            
+            autoCardValEl.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
+        }
+    }
+}
+
+         <div class="deposit-menu-list">
+          
+            <!-- 1. 「入金カード選択」 -->
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
+
+                <div class="card-wrapper">
+                  <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
+                  <span class="charge-badge" id="depositCurrentBadge" data-card-type="main"></span> 
+                  <!-- カード画像 -->
+                  <img src="images/my-card-main.svg"  id="depositCurrentCardImg" class="selector-card-img" alt="メイン">
+                </div>
+
+                <div class="menu-value-box">
+                  <span class="current-value" id="depositCardVal">Starbucks Card ¥0</span>
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div>
+
+              <!-- カード選択のドロップダウン -->
+              <div class="deposit-selector-window" id="depositCardWindow">
+
+				  
+         
+	
+// 【ヒーロー】に写っている「カードの画像（src）」をチェック  
+    const currentHeroImg = document.getElementById('heroCardImg')?.getAttribute('src') || '';
+
+    let currentCardName = 'Starbucks Card';
+    let currentBalance = 0;
+    
+    if (currentHeroImg.includes('sub')){
+        currentCardName = 'サブカード';
+        currentBalance = subCardBalance; // サブの金庫
+
+    } else {
+        currentCardName = 'Starbucks Card';
+        currentBalance = starbucksCardBalance; // メインの金庫
+    }
+    
+    // A. 「現在表示されているカード」の文字を、開いた瞬間の最新状態にする 
+    // ※ 手動側のidとは？の謎を初動設定のとき解き明かす
+    const depositCurrentValueEl = document.getElementById('depositCardVal'); 
+
+    if (depositCurrentValueEl) {
+        depositCurrentValueEl.textContent = `${currentCardName} ¥${currentBalance.toLocaleString()}`;
+    }	
 
 
 
