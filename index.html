@@ -38,7 +38,7 @@ renderCurrentCardToDeposit();
 renderCurrentCardToAutocharge();
 をそれぞれに書く必要あるのはなぜ？
 
-
+あとここ不安。
 function openAutochargeModal(event) {
     
     if (event) event.stopPropagation();
@@ -56,8 +56,7 @@ function openAutochargeModal(event) {
     editingAutochargeMethod = autochargeMethod;
 
 	// 前回の確認画面を閉じる
-
-	const confirmBox = document.querySelector('.autocharge-screen-confirm');
+    const confirmBox = document.querySelector('.autocharge-screen-confirm');
 
 	if (confirmBox) confirmBox.classList.remove('is-active');
     
@@ -114,6 +113,7 @@ function openAutochargeModal(event) {
         }
     }
 }
+	
 
          <div class="deposit-menu-list">
           
