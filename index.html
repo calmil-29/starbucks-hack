@@ -32,42 +32,11 @@ executeAutochargeSave()
 finalDepositBtn()
   = 実際の入金処理＋残高表示更新
 	
-なら、
-openDepositModal()
-openAutochargeModal()
-に今書いてある
-#depositCardVal
-#autoCardVal
-の「現在表示されているカード」の文字を、開いた瞬間の最新状態にする処理はどうなる？	
-初期は第１に合わせて再描画される処理は全部まとめて、これから書く第２：renderCurrentCardToDeposit(); 第３：renderCurrentCardToAutocharge();にまとめるってこと？	
-	
-finalDepositBtn() のこの部分の処理は？
-C. 
-【第１・ヒーロー】には「現在のカード」の結果だけ反映：表に表示ぶん	
-【第１モーダル】の「カード選択ドロップダウン」　
-D. 
-【第２モーダル】内の残高表示を最新状態にする
-【第２モーダル】のカード選択ドロップダウン
-E.
-【第3モーダル】内の残高表示を最新状態にする	
-【第3モーダル】のカード選択ドロップダウン	
 
-
-それと、今すぐ直す必要ないって言ってたけど、今回の同期処理で一緒に直したい。今見てても読むのに迷ったし、そも、なぜ sub に合わせているのかも疑問だったし、普通メインに合わせそうなのに？
-	
-const currentHeroImg =
-    document.getElementById('heroCardImg')?.getAttribute('src') || '';
-↓
-
-if (currentHeroImg.includes('sub')) {
-
-if (currentSelectedCardType === 'sub') {
-    currentCardName = 'サブカード';
-    currentBalance = subCardBalance;
-} else {
-    currentCardName = 'Starbucks Card';
-    currentBalance = starbucksCardBalance;
-}
+switchCard() の currentSelectedCardType = 'main'; currentSelectedCardType = 'sub'; に   	
+renderCurrentCardToDeposit();
+renderCurrentCardToAutocharge();
+をそれぞれに書く必要あるのはなぜ？	
 
 
 
