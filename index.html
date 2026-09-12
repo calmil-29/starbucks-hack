@@ -59,40 +59,95 @@ subCardBalance
 
 この2種類は混ぜない。
 
+💡===================================================================
+
+	このdepositModal と #depositModal の charge-badge を全部探す → そのバッジが main 用か sub 用か確認 → 保存済み：autoTargetCardType と同じななら is-active をつける、違うなら is-active を外す、というコードはどう書く？
+       depositModal	
+         <div class="qr-card-selector-window">
+          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
+
+            <div class="card-wrapper">
+              <!-- 💡オートチャージが保存されたときの緑色の丸バッジ（第２と共通クラス） -->
+              <span class="charge-badge" data-card-type="main"></span>
+              <!-- カード画像 --> 
+              <img src="images/my-card-main.svg" alt="メインカード" class="qr-selector-card-img">
+            </div>
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-main-card-balance">¥0</span>
+            </div>
+          </div> 
+
+          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <div class="card-wrapper">
+              <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
+              <span class="charge-badge" data-card-type="sub"></span>
+
+              <img src="images/my-card-sub.png" alt="サブカード" class="qr-selector-card-img">
+            </div>  
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-sub-card-balance">¥3,500</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
+        </div><!-- .qr-card-selector-window -->   
+
+
+　　　　　#depositModal	　
+         <div class="deposit-menu-list">
+          
+            <!-- 1. 「入金カード選択」 🔥-->
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
+
+                <div class="card-wrapper">
+                  <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
+                  <span class="charge-badge" id="depositCurrentBadge" data-card-type="main"></span> 
+                  <!-- カード画像 -->
+                  <img src="images/my-card-main.svg"  id="depositCurrentCardImg" class="selector-card-img" alt="メイン">
+                </div>
+
+                <div class="menu-value-box">
+                  <span class="current-value" id="depositCardVal">Starbucks Card ¥0</span>
+                  <span class="arrow-balance"></span> <!-- ※ CSS：.qr-arrow-number クラス名統一指定 -->
+                </div>
+              </div>
+
+              <!-- カード選択のドロップダウン -->
+              <div class="deposit-selector-window" id="depositCardWindow">
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+
+                  <div class="card-wrapper">
+                    <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
+                    <span class="charge-badge" data-card-type="main"></span>
+                    <!-- カード画像 -->
+                    <img src="images/my-card-main.svg" class="selector-card-img" alt="メイン">
+                  </div>
+                  <span class="deposit-main-card-balance">¥0</span>
+                </div>
+
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                  <div class="card-wrapper">
+                    <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
+                    <span class="charge-badge" data-card-type="sub"></span>
+                    <!-- カード画像 -->
+                    <img src="images/my-card-sub.png" class="selector-card-img" alt="サブ">
+                  </div>
+                  <span class="deposit-sub-card-balance">¥3,500</span>
+                </div>
+                
+              </div>
+            </div> 	
+
+
+
 
 
 
 	
+
+	
     
-// 【ヒーロー】に写っている「カードの画像（src）」をチェック  
-    const currentHeroImg = document.getElementById('heroCardImg')?.getAttribute('src') || '';
-
-    let currentCardName = 'Starbucks Card';
-    let currentBalance = 0;
-    
-    if (currentHeroImg.includes('sub')){
-        currentCardName = 'サブカード';
-        currentBalance = subCardBalance; // サブの金庫
-
-    } else {
-        currentCardName = 'Starbucks Card';
-        currentBalance = starbucksCardBalance; // メインの金庫
-    }
-    
-    // A. 「現在表示されているカード」の文字を、開いた瞬間の最新状態にする 
-    // ※ 手動側のidとは？の謎を初動設定のとき解き明かす
-    const depositCurrentValueEl = document.getElementById('depositCardVal'); 
-
-    if (depositCurrentValueEl) {
-        depositCurrentValueEl.textContent = `${currentCardName} ¥${currentBalance.toLocaleString()}`;
-    }	
-
-
-
-
-
-
-
 
 	
 🔥 第３保存の無題提供コード 疑問 ====================================	
