@@ -13,32 +13,34 @@
 　
 💡　無代に渡す用
 
+ヒーロー・第１・２・３の最新の現在選択中カードを表示の動き確認したけどうまくいったみたい。でも openAutochargeModal() はそのままの状態なんだけど。renderCurrentCardToAutocharge(); を書き加えるんだよね？？
+	
 【役割】	
-switchCard()
-  = 「現在カードが変わった」ことを各画面に反映
+switchCard()  → 修正完了⚪︎
+  = 「現在カードが変わった」ことを各画面に反映 
 
-openDepositModal()
-  = 第2を開いたときの初期化・リセット  ：同期処理を追加しない
+openDepositModal() → 修正完了⚪︎
+  = 第2を開いたときの初期化・リセット  ：同期処理を追加しない　
 
-openAutochargeModal()
-  = 第3を開いたときの編集状態の開始    ：同期処理を追加しない
+openAutochargeModal() → 未実行 ※下記で質問
+  = 第3を開いたときの編集状態の開始    ：同期処理を追加しない 
 
-selectDepositOption()
-  = 第2/第3のドロップダウン内で選択した値を変更
+selectDepositOption() → 現状維持⚪︎
+  = 第2/第3のドロップダウン内で選択した値を変更 
 
-executeAutochargeSave()
+executeAutochargeSave() → 未実行（）
   = 第3の編集中設定を保存
 
-finalDepositBtn()
+finalDepositBtn()　→ 修正完了⚪︎
   = 実際の入金処理＋残高表示更新
 	
 
-switchCard() の currentSelectedCardType = 'main'; currentSelectedCardType = 'sub'; に   	
+まず、switchCard() の currentSelectedCardType = 'main'; currentSelectedCardType = 'sub'; に   	
 renderCurrentCardToDeposit();
 renderCurrentCardToAutocharge();
 をそれぞれに書く必要あるのはなぜ？
 
-あとここ不安。
+で質問。ここ不安。
 function openAutochargeModal(event) {
     
     if (event) event.stopPropagation();
@@ -97,7 +99,7 @@ function openAutochargeModal(event) {
                          `入金条件：残高が¥${editingAutochargeCondition.toLocaleString()}未満` ;
     });
 
-    //　カードも「編集中設定」を表示 ※ドロップ側の現在地ではなくて現在カードの表示場所になるけど？
+    //　カードも「編集中設定」を表示 ※ドロップ側の現在地ではなくて現在カードの表示場所になるけど？どうゆうことになる？？
 
     const autoCardValEl = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(1) .current-value');
     
