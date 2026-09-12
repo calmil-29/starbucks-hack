@@ -14,6 +14,8 @@
 💡　無代に渡す用
 
 
+今すぐ直す必要ないって言ってたけど、今回の同期処理で一緒に直したい。そも、なぜ sub に合わせているのかも疑問だったし？普通メインに合わせそうなのに。
+	
 const currentHeroImg =
     document.getElementById('heroCardImg')?.getAttribute('src') || '';
 ↓
@@ -28,6 +30,16 @@ if (currentSelectedCardType === 'sub') {
     currentBalance = starbucksCardBalance;
 }
 
+finalDepositBtn() のこの部分の処理いらないってこと？
+C. 
+【第１・ヒーロー】には「現在のカード」の結果だけ反映：表に表示ぶん	
+【第１モーダル】の「カード選択ドロップダウン」　
+D. 
+【第２モーダル】内の残高表示を最新状態にする
+【第２モーダル】のカード選択ドロップダウン
+E.
+【第3モーダル】内の残高表示を最新状態にする	
+【第3モーダル】のカード選択ドロップダウン
 
 
 
