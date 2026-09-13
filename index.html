@@ -86,43 +86,27 @@ subCardBalance
 ※ 第２ .autocharge-banner-container turnOffAutocharge() で  .banner-view-on → .banner-view-off を切り替えるまで表示不可  
 
 
-ここ2つをカードが editingAutoTargetCardType から autoTargetCardType に保存処理されたとき、対象のカードに対して（'main' 'sub'）のみ 'オートチャージ設定中' のテキストを表示させるには？
-#cardFlip 
-　　　　　　<div class="card-info-side">
-            <img src="images/starbucks-logo.png" alt="ロゴ" class="mini-logo">
-            <div class="balance-display">
-
-              <!-- 💡【ヒーロー】オートチャージ設定後テキスト・金額下の既存ラインカラーを追加 -->
-              <span class="summary-card-text">オートチャージ設定中</span> 
-
-              <p class="card-label">Starbucks Card</p>
-              <p class="card-price-line"><span class="unit">¥</span><span id="heroCardBalance">0</span></p>
-            </div>
-            
-            <button class="btn-etiket-trigger" onclick="flipCard(event)">
-              <div class="count-box">3</div>
-              <span class="eticket-label">eTicket</span>
-              <span class="eticket-badge"></span>
-            </button>
-          </div><!-- .card-info-side -->
-#qrModal
-       <div class="qr-card-meta">
-
-          <!-- 💡【第１モーダル】オートチャージ保存時にテキスト（ヒーロー共通クラス）+ 金額の下線（qr-card-price-line）のカラー変更 --> 
-          <span class="summary-card-text">オートチャージ設定中</span> 
-          
-          <span class="qr-card-name">Starbucks Card</span>
-
-          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
-            <p class="qr-card-price-line"><span class="qr-card-balance">¥0</span></p>
-            <span class="qr-arrow-balance"></span>
-          </div>
-          <time id="qrCardTimestamp"></time>
-        </div>
+💡
+	
+・ヒーロー
+表示：「オートチャージ設定中 （#00AF66）」　
+editingAutoTargetCardType から autoTargetCardType に保存処理されたとき	
+.summary-card-text	is-active
 
 	
+表示：金額下にライン追加　（#00AF66） 
+	
+・第1モーダル
+表示：「オートチャージ設定中（#00AF66）」   editingAutoTargetCardType から autoTargetCardType に保存処理されたとき
+.summary-card-text	is-active	
+	
+表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）	
 
 
+・第2モーダル
+表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）
+	
+対象のカードに対して（'main' 'sub'）のみ 'オートチャージ設定中' のテキストを表示させるには？
 	
 
 	
