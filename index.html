@@ -62,11 +62,41 @@ subCardBalance
 
 🔥🔥🔥  =========================================================
 
-第３モーダルにはオートチャージバッジはいらない、なぜなら、executeAutochargeSave() で保存処理後に、オートチャージの保存した内容を変えたい/キャンセルしたい場合は第２モーダルの .autocharge-banner-container で .banner-view-on の turnOffAutocharge() から .banner-view-off に切り替える必要があるから。つまり保存後は第３モーダルは開かなくなる = オートチャージ画面はそもそも見れなくなる仕様。
-なのでバッジは第１・２の３箇所。
-この場合こうなる？
-	
 function renderAutochargeBadges() {
+
+    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');
+    const depositCardVal = document.getElementById('depositCardVal');
+    const depositCurrentBadge =document.getElementById('depositCurrentBadge');
+
+    if (currentSelectedCardType === 'main') {
+
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-main.svg';
+        }
+
+        if (depositCardVal) {
+            depositCardVal.textContent = `Starbucks Card¥${starbucksCardBalance.toLocaleString()}`;
+        }
+
+        if (depositCurrentBadge) {
+            depositCurrentBadge.setAttribute('data-card-type', 'main');
+        }
+        
+    } else {
+
+         if (depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-sub.png';
+        }
+
+        if (depositCardVal) {
+            depositCardVal.textContent = `サブカード¥${subCardBalance.toLocaleString()}`;
+        }
+
+        if (depositCurrentBadge) {
+            depositCurrentBadge.setAttribute('data-card-type', 'sub');
+        }
+        
+    }
 
     const badges = document.querySelectorAll('#qrModal .charge-badge, #depositModal .charge-badge');
 
@@ -80,83 +110,7 @@ function renderAutochargeBadges() {
         );
     });
 }
-		
-       #qrModal	
-         <div class="qr-card-selector-window">
-          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
 
-            <div class="card-wrapper">
-              <!-- 💡オートチャージが保存されたときの緑色の丸バッジ（第２と共通クラス） -->
-              <span class="charge-badge" data-card-type="main"></span>
-              <!-- カード画像 --> 
-              <img src="images/my-card-main.svg" class="qr-selector-card-img" alt="メインカード">
-            </div>
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-main-card-balance">¥0</span>
-            </div>
-          </div> 
-
-          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
-            <div class="card-wrapper">
-              <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-              <span class="charge-badge" data-card-type="sub"></span>
-
-              <img src="images/my-card-sub.png" class="qr-selector-card-img" alt="サブカード">
-            </div>  
-            <div class="qr-selector-card-info">
-              <span class="qr-selector-sub-card-balance">¥3,500</span>
-            </div>
-          </div> 
-          
-          <!-- 必要に応じて追加 -->
-        </div><!-- .qr-card-selector-window -->   
-
-
-　　　　　#depositModal	　
-         <div class="deposit-menu-list">
-          
-            <!-- 1. 「入金カード選択」 -->
-            <div class="deposit-menu-item">
-              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
-
-                <div class="card-wrapper">
-                  <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                  <span class="charge-badge" id="depositCurrentBadge" data-card-type="main"></span> 
-                  <!-- カード画像 -->
-                  <img src="images/my-card-main.svg"  id="depositCurrentCardImg" class="selector-card-img" alt="メイン">
-                </div>
-
-                <div class="menu-value-box">
-                  <span class="current-value" id="depositCardVal">Starbucks Card ¥0</span>
-                  <span class="arrow-balance"></span> 
-                </div>
-              </div>
-
-              <!-- カード選択のドロップダウン -->
-              <div class="deposit-selector-window" id="depositCardWindow">
-                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
-
-                  <div class="card-wrapper">
-                    <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                    <span class="charge-badge" data-card-type="main"></span>
-                    <!-- カード画像 -->
-                    <img src="images/my-card-main.svg" class="selector-card-img" alt="メイン">
-                  </div>
-                  <span class="deposit-main-card-balance">¥0</span>
-                </div>
-
-                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
-                  <div class="card-wrapper">
-                    <!-- 💡オートチャージが保存されたときの緑色の丸バッジ -->
-                    <span class="charge-badge" data-card-type="sub"></span>
-                    <!-- カード画像 -->
-                    <img src="images/my-card-sub.png" class="selector-card-img" alt="サブ">
-                  </div>
-                  <span class="deposit-sub-card-balance">¥3,500</span>
-                </div>
-                
-              </div>
-            </div> 	
 
 
 
