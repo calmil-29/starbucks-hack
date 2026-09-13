@@ -88,23 +88,25 @@ subCardBalance
 
 💡
 	
-・ヒーロー
-表示：「オートチャージ設定中 （#00AF66）」　
-editingAutoTargetCardType から autoTargetCardType に保存処理されたとき	
-.summary-card-text	is-active
+テキスト表示
+ヒーロー・第1モーダル  表示：「オートチャージ設定中 （#00AF66）」　
+条件 editingAutoTargetCardType → autoTargetCardType 
+.summary-card-text	is-active　で表示
+だから2つとも条件も、表示内容も同じだからまとめてできそう？	
+const summaryCardText = document.querySelectorAll('#cardFlip .summary-card-text, #qrModal .summary-card-text');
+    	
 
 	
-表示：金額下にライン追加　（#00AF66） 
-	
-・第1モーダル
-表示：「オートチャージ設定中（#00AF66）」   editingAutoTargetCardType から autoTargetCardType に保存処理されたとき
-.summary-card-text	is-active	
-	
-表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）	
+金額下のライン
+ヒーロー　表示：金額下にライン追加　（#00AF66） 
+第1モーダル・第2モーダル 表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）	
+追加と変更だけど、これも条件も内容も同じだと思うけど違う？	
+const summaryCardLine = document.querySelectorAll('#qrModal .summary-card-text, #depositModal .summary-card-text');
+    	
 
 
-・第2モーダル
-表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）
+
+
 	
 対象のカードに対して（'main' 'sub'）のみ 'オートチャージ設定中' のテキストを表示させるには？
 	
