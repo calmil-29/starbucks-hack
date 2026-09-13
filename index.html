@@ -85,72 +85,22 @@ subCardBalance
 ・第３モーダル	
 ※ 第２ .autocharge-banner-container turnOffAutocharge() で  .banner-view-on → .banner-view-off を切り替えるまで表示不可  
 
-現状	
 
-function executeAutochargeSave(event) {
-    if (event) event.stopPropagation();
+ここ2つをカードが editingAutoTargetCardType から autoTargetCardType に保存されたとき対象のカードに対して（'main' 'sub'）のみ'オートチャージ設定中'のテキストを表示させるには？
+#cardFlip 
+<span class="summary-card-text">オートチャージ設定中</span> 
+	
+#qrModal
+<span class="summary-card-text">オートチャージ設定中</span> 
+	
+const summaryCardText = document.querySelectorAll('#cardFlip .summary-card-text, #qrModal .summary-card-text');
+    
+    summaryCardText.forEach(text => {
 
-    // ================================================================
-    // 【第３モーダル】の選択中の設定値を”保存済み・有効な状態”として確定させる
-    // ================================================================
-
-    autoTargetCardType = editingAutoTargetCardType;     // オートチャージ対象のカード　
-    autochargeAmount = editingAutochargeAmount;         // オートチャージする金額
-    autochargeCondition = editingAutochargeCondition;   // オートチャージを実行する入金条件 
-    autochargeMethod = editingAutochargeMethod          // オートチャージ支払い方法
-
-    isAutochargeEnabled = true;                         // オートチャージ機能をONにする
-
-    // ==========================================
-    // 【第２・第１・ヒーロー】へ表示を反映
-    // ==========================================
-
-    // 【第２モーダル】オートチャージ状態のリアルタイム更新バナー（初期状態は OFF） 
-    const bannerViewOff = document.querySelector('.banner-view-off');
-    const bannerViewOn = document.querySelector('.banner-view-on');
-    const allSummaries = document.querySelectorAll('.autocharge-summary');
-
-    if (bannerViewOff) bannerViewOff.classList.remove('is-active');
-    if (bannerViewOn) bannerViewOn.classList.add('is-active');
-
-    allSummaries.forEach(el => {
-        el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金条件：残高が¥${autochargeCondition.toLocaleString()}未満` ;       
+        text.classList.add('is-active');
     });
 
-    // リアルタイム更新バナー部分のカード画像
-    const summaryCardImg = document.querySelector('.summary-card-img');
-    const summaryCardName = document.querySelector('.summary-card-name');
-
-    if (summaryCardImg) {
-        if (autoTargetCardType === 'main') {
-            summaryCardImg.src = 'images/my-card-main.svg';
-
-            if (currentCardBadge) currentCardBadge.setAttribute('date-card-type', 'main');
-
-        } else if (autoTargetCardType === 'sub') {
-            summaryCardImg.src = 'images/my-card-sub.png';
-        }
-    }
-
-    if (summaryCardName) {
-        if (autoTargetCardType === 'main') {
-            summaryCardName.textContent = 'Starbucks Card';
-
-        } else if (autoTargetCardType === 'sub') {
-            summaryCardName.textContent = 'サブカード';
-        }
-    }
-
-	renderAutochargeBadges()　// オートチャージ対象⚫︎バッジ担当
-
-	// 未実行
-    //【第１・ヒーロー】「オートチャージ設定中」表示（第１・ヒーロー共通クラス）・対象カード → 金額下の既存ラインカラーを変更
-    // 第３モーダルを閉じる
-   
-}
-
-
-
+	
 
 
 	
