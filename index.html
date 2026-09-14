@@ -104,62 +104,51 @@ const summaryCardText = document.querySelectorAll('#cardFlip .summary-card-text,
 const summaryCardLine = document.querySelectorAll('#cardFlip .hero-card-price-line, #qrModal .qr-card-price-line #depositModal .deposit-card-price-line');
     	
 ------------------------------
-
+💡
+renderCurrentCardToDeposit() は第２モーダル】現在選択中カードを表示する関数	
+selectDepositOption() は第2/第3のドロップダウン内の選択現在カード変更	
+だと認識してるけど.....んー executeAutochargeSave() を描き終えてからでいいか、ちょっとまだ認識が怪しいから。
+じゃ、続き。 executeAutochargeSave() 「ヒーローと第１・第２の表示状態をどういう関数にするか」
 	
-.current-value は .deposit-menu-list 全体の値を統一していたクラス名だから、
-<span class="deposit-card-value" id="depositCardVal">¥0</span>
-改、	
-<span class="current-value" id="depositCardVal">¥0</span>
+テキスト表示
+ヒーロー・第1モーダル  表示：「オートチャージ設定中 （#00AF66）」　
+条件 editingAutoTargetCardType → autoTargetCardType 
+.summary-card-text	is-active　で表示
+だから2つとも条件も、表示内容も同じだからまとめてできそう？	
+function renderAutochargeText() {
+
+    const isMatching = autoTargetCardType;
+    const summaryCardText = document.querySelectorAll('#cardFlip .summary-card-text, #qrModal .summary-card-text');
+    
+    summaryCardText.forEach(text => {
+
+        text.classList.toggle(
+            'is-active'
+            , isMatching
+        );
+    });
+
+}	
 	
-で、selectDepositOption() のタグ変更したからここも修正しないと、なんだけど、どう書けばいい？
-	
-const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+金額下のライン
+ヒーロー　表示：金額下にライン追加　（#00AF66） 
+第1モーダル・第2モーダル 表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）	
+追加と変更になるけど、これも条件も内容も同じだと思うけど、違った？	
+function renderAutochargeLine() {
 
-    //【防波堤（ガードクローズ）】もし DOM要素がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
-    if (!currentLabel) {
-        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
-        return;
-    }
+    const isMatching = autoTargetCardType;
+    const summaryCardLine = document.querySelectorAll('#cardFlip .hero-card-balance-line, #qrModal .qr-card-balance-line #depositModal .deposit-card-balance-line');
 
-    // ======================================
-    // 【データ更新とDOM要素への文字反映】 
-    // ======================================
+    summaryCardLine.forEach(line => {
 
-    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール
-    const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');  // 第３メニュー画面のカード画像
-    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');        // 第２メニュー画面のカード画像
-  
-    if (type === 'card') {
+        line.classList.toggle(
+            'is-active
+            , isMatching    
+        );
+    });
+}	
 
-        if (isAutocharge) {
-            editingAutoTargetCardType = value;    // 第３の編集用の金庫 
 
-        } else {
-            depositTargetCardType = value;        // 第２の金庫 　
-        }    
-
-        // カード画像を切り替える
-        if (value === 'main') {
-
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
-	        } else {
-	        depositCurrentCardImg.src = 'images/my-card-main.svg';
-	        }
-
-	        // ここ？
-            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-	　　　　　↓
-	　　　　　currentLabel.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
-
-	で改めてカード名前部分だけ const depositCurrentCardImg の下に
-	const depositCardName = document.getElementById('depositCardName'); 
-	追加
-	currentLabel.textContent の下(上?)に追加
-	 if (depositCardName) {
-            depositCardName.textContent = `Starbucks Card`;
-        }	
 	
 
 	
@@ -185,25 +174,6 @@ const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list';
 				  </div>	
                   <span class="arrow-balance"></span> 
                 </div>
-	
-              
-JS で第２現在表示カード名・金額まとめて JS で処理してたのも、このタグの書き方に修正して JS も修正しちゃうのが結果スマート？	
-const depositCardVal = document.getElementById('depositCardVal'); 
-       if (depositCardVal) {
-            depositCardVal.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-        }	
-		↓	
-const depositCardName = document.getElementById('depositCardName'); 	
-const depositCardVal = document.getElementById('depositCardVal'); 
-
-       if (depositCardName) {
-            depositCardName.textContent = `Starbucks Card`;
-        }	
-       if (depositCardVal) {
-             depositCardVal.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
-        }	
-	
-
 	
     
 
