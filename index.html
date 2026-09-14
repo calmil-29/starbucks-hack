@@ -103,9 +103,71 @@ const summaryCardText = document.querySelectorAll('#cardFlip .summary-card-text,
 追加と変更だけど、これも条件も内容も同じだと思うけど違う？	
 const summaryCardLine = document.querySelectorAll('#cardFlip .hero-card-price-line, #qrModal .qr-card-price-line #depositModal .deposit-card-price-line');
     	
+------------------------------
 
+	
+.current-value は .deposit-menu-list 全体の値を統一していたクラス名だから、
+<span class="deposit-card-value" id="depositCardVal">¥0</span>
+改、	
+<span class="current-value" id="depositCardVal">¥0</span>
+	
+で、selectDepositOption() のタグ変更したからここも修正しないと、なんだけど、どう書けばいい？
+	
+const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
+    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
 
+    //【防波堤（ガードクローズ）】もし DOM要素がまだ画面に存在しない場合は、ここで処理を中断する（実務で超重要!）
+    if (!currentLabel) {
+        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
+        return;
+    }
 
+    // ======================================
+    // 【データ更新とDOM要素への文字反映】 
+    // ======================================
+
+    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール
+    const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');  // 第３メニュー画面のカード画像
+    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');        // 第２メニュー画面のカード画像
+  
+    if (type === 'card') {
+
+        if (isAutocharge) {
+            editingAutoTargetCardType = value;    // 第３の編集用の金庫 
+
+        } else {
+            depositTargetCardType = value;        // 第２の金庫 　
+        }    
+
+        // カード画像を切り替える
+        if (value === 'main') {
+
+            if (isAutocharge) {
+	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
+	        } else {
+	        depositCurrentCardImg.src = 'images/my-card-main.svg';
+	        }
+
+	        // ここ？
+            currentLabel.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
+	　　　　　↓
+	　　　　　currentLabel.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
+
+	で改めてカード名前部分だけ const depositCurrentCardImg の下に
+	const depositCardName = document.getElementById('depositCardName'); 
+	追加
+	currentLabel.textContent の下(上?)に追加
+	 if (depositCardName) {
+            depositCardName.textContent = `Starbucks Card`;
+        }	
+	
+
+	
+
+      
+	
+
+	
 
 先に、表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）で今気づいた、第２のライン部分だけ書いてなかった。
 だから、これを
@@ -118,9 +180,9 @@ const summaryCardLine = document.querySelectorAll('#cardFlip .hero-card-price-li
 こう変更しようと思っているんだけど
                 <div class="menu-value-box">
                   <span class="current-name" id="depositCardName">Starbucks Card</span>
-				  <p class="deposit-card-balance-line">
+				  <div class="deposit-card-balance-line">
 				    <span class="deposit-card-value" id="depositCardVal">¥0</span>
-				  </p>	
+				  </div>	
                   <span class="arrow-balance"></span> 
                 </div>
 	
@@ -137,7 +199,7 @@ const depositCardVal = document.getElementById('depositCardVal');
        if (depositCardName) {
             depositCardName.textContent = `Starbucks Card`;
         }	
-       if ( epositCardVal) {
+       if (depositCardVal) {
              depositCardVal.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
         }	
 	
