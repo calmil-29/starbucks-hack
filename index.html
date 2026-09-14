@@ -101,14 +101,35 @@ const summaryCardText = document.querySelectorAll('#cardFlip .summary-card-text,
 ヒーロー　表示：金額下にライン追加　（#00AF66） 
 第1モーダル・第2モーダル 表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）	
 追加と変更だけど、これも条件も内容も同じだと思うけど違う？	
-const summaryCardLine = document.querySelectorAll('#qrModal .summary-card-text, #depositModal .summary-card-text');
+const summaryCardLine = document.querySelectorAll('#cardFlip .hero-card-price-line, #qrModal .qr-card-price-line #depositModal .deposit-card-price-line');
     	
 
 
 
 
+
+	         これを
+			
+             　<div class="menu-value-box">
+                  <span class="current-value" id="depositCardVal">Starbucks Card ¥0</span>
+                  <span class="arrow-balance"></span> 
+                </div>
+
+	　　　　　こう変更したいんだけど、
+                <div class="menu-value-box">
+                  <span class="current-value" id="depositCardVal">Starbucks Card</span>
+				  <p class="deposit-card-balance-line"><span class="deposit-card-balance">¥0</span></p>	
+                  <span class="arrow-balance"></span> 
+                </div>
+	　　　　　クラス名どうするのがいい？ current-value の value は意味が異なるし、deposit-card-balance の 方を value にした方がいいのかな？
 	
-対象のカードに対して（'main' 'sub'）のみ 'オートチャージ設定中' のテキストを表示させるには？
+              
+で表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）で今気づいた、第２のライン部分書いてなかった。
+第２現在表示カード名・金額まとめて JS で処理してたんだけど、どうするのがいい？このタグの書き方に修正して JS も修正しちゃうのが結果スマート？	
+const depositCardVal = document.getElementById('depositCardVal'); 
+		↓	
+const depositCardName = document.getElementById('depositCardName'); 	
+const depositCardBal = document.querySelector('deposit-card-balance'); 
 	
 
 	
