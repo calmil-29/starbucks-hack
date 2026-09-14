@@ -107,7 +107,7 @@ const summaryCardLine = document.querySelectorAll('#cardFlip .hero-card-price-li
 
 
 
-で表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）で今気づいた、第２のライン部分書いてなかった。
+先に、表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）で今気づいた、第２のライン部分だけ書いてなかった。
 だから、これを
 			
              　<div class="menu-value-box">
@@ -125,7 +125,7 @@ const summaryCardLine = document.querySelectorAll('#cardFlip .hero-card-price-li
                 </div>
 	
               
-JS で第２現在表示カード名・金額まとめて JS で処理してたけど、どうするのがいい？このタグの書き方に修正して JS も修正しちゃうのが結果スマート？	
+JS で第２現在表示カード名・金額まとめて JS で処理してたのも、このタグの書き方に修正して JS も修正しちゃうのが結果スマート？	
 const depositCardVal = document.getElementById('depositCardVal'); 
        if (depositCardVal) {
             depositCardVal.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
