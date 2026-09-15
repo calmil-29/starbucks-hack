@@ -148,92 +148,18 @@ function renderAutochargeLine() {
     });
 }
 
-
-あと、「保存」を押しても第３は閉じない（保存押したあと、バツボタン/キャンセルボタンで閉じたら、上記の状態になってる）。
-const autochargeModal = document.getElementById('autochargeModal');
-
-    if (autochargeModal) {
-        autochargeModal.classList.remove(is-active);
-    }	
 	
 
 まず、どれから直す？
 
 ===============================
-	
-data-card-type が書かれる処理はこれだけ。【第２モーダル】現在選択中カードを表示する関数：renderCurrentCardToDeposit() があれば保存されたあと depositCurrentBadge は常にカードの種類に合わせて data-card-type も書き変わっている状態だと思っていたんだけど。
-「選択」は selectDepositOption()
-「実残高の変更」は finalDepositBtn()
-「現在表示カードの描画」は renderCurrentCardTo〜()
-「モーダルを開く・編集状態を開始する」は open〜Modal()	
-	
-だから 現在選択中カードの　.menu-clickable-area には <span class="charge-badge" id="depositCurrentBadge" data-card-type="main"></span> で　'main' のみが置かれている状態でもJSが処理するから、ドロップダウンの depositCardWindow の　<span class="charge-badge" data-card-type="main"></span> <span class="charge-badge" data-card-type="sub"></span> と一緒に、 renderAutochargeBadges() でまとめて処理できると考えてた。
-	
-function renderCurrentCardToDeposit() {
 
-    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');  // 第２現在表示カード
-    const depositCardName = document.getElementById('depositCardName'); 	         // 第２現在表示カード名
-    const depositCardVal = document.getElementById('depositCardVal');                // 第２現在表示カード金額
-    const depositCurrentBadge =document.getElementById('depositCurrentBadge');       // 第２現在表示場所用の⚫︎バッジ
+script.js:1299 badge: (no id) data-card-type: main main
+script.js:1299 badge: (no id) data-card-type: sub main
+script.js:1299 badge: depositCurrentBadge data-card-type: main main
+script.js:1299 badge: (no id) data-card-type: main main
+script.js:1299 badge: (no id) data-card-type: sub main
 
-    if (currentSelectedCardType === 'main') {
-
-        // 現在カード：メイン
-        if(depositCurrentCardImg) {
-            depositCurrentCardImg.src = 'images/my-card-main.svg';
-        }
-        
-        if (depositCardName) {
-            depositCardName.textContent = `Starbucks Card`;
-        }	
-
-        if (depositCardVal) {
-             depositCardVal.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
-        }	
-
-        if (depositCurrentBadge) {
-            depositCurrentBadge.setAttribute('data-card-type', 'main');
-        }
-
-    } else {
-
-        // 現在カード：サブ
-        if(depositCurrentCardImg) {
-            depositCurrentCardImg.src = 'images/my-card-sub.png';
-        }
-
-        if (depositCardName) {
-            depositCardName.textContent = `サブカード`;
-        }
-        
-        if (depositCardVal) {
-             depositCardVal.textContent = `¥${subCardBalance.toLocaleString()}`;
-        }	
-
-        if (depositCurrentBadge) {
-            depositCurrentBadge.setAttribute('data-card-type', 'sub');
-        }
-    }
-}
-	
-function renderAutochargeBadges() {
-
-    const badges = document.querySelectorAll('#qrModal .charge-badge, #depositModal .charge-badge');
-
-    badges.forEach(badge => {
-
-        const cardType = badge.getAttribute('data-card-type');
-
-        badge.classList.toggle(
-            'is-active',
-            cardType === autoTargetCardType
-        );
-    });
-}	
-	
-
-
-	
 	
 	
 	
