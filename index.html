@@ -131,6 +131,22 @@ function renderAutochargeBadges() {
         );
     });
 }
+
+if (depositCurrentBadge) {
+    depositCurrentBadge.setAttribute('data-card-type', 'sub');
+
+    console.log(
+        'renderCurrentCardToDeposit:',
+        'currentSelectedCardType =',
+        currentSelectedCardType,
+        'data-card-type =',
+        depositCurrentBadge.getAttribute('data-card-type'),
+        'class =',
+        depositCurrentBadge.className
+    );
+}
+
+
 	
 【ヒーロー・第１】オートチャージ設定中  
 オートチャージ対象カードに関係なく、常に オートチャージ設定中 が表示されてる状態
