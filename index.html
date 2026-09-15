@@ -87,6 +87,30 @@ subCardBalance
 
 
 ------------------------------
+openDepositModal() 
+	
+    // 第２を開いた瞬間にも最新の現在選択中カードを表示
+    renderCurrentCardToDeposit();
+
+    // 【リセット機能】入金額と支払い方法は、初期値に強制リセットする
+    const allItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
+    
+    // ２番目のメニュー「入金額」の中身をリセット
+    if (allItems[1]) {
+        const amtLabel = allItems[1].querySelector('.current-value');
+        if (amtLabel) amtLabel.textContent = '¥1,000';
+    }
+
+    // ３番目のメニュー「支払い方法」の中身をリセット
+    if (allItems[2]) {
+        const methodLabel = allItems[2].querySelector('.current-value');
+        if (methodLabel) methodLabel.textContent = '未登録';
+    }
+
+
+
+
+	
 💡
 今の executeAutochargeSave() 処理の状態は、保存を押したら
 	
