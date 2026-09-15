@@ -89,14 +89,80 @@ subCardBalance
 ------------------------------
 💡
 今の executeAutochargeSave() 処理の状態は、保存を押したら
-【第１・２】対象カードの 緑⚫︎  renderAutochargeBadges(); 
-【ヒーロー・第１】オートチャージ設定中  renderAutochargeText();	
-【ヒーロー・第１・２】金額下ライン  renderAutochargeLine();
-が常にオートチャージが保存されたカード関係なく、表示されているだけの状態になる
+	
+【第１・２】対象カードの 緑⚫︎  renderAutochargeBadges(); 　
+正しく表示されているのはドロップダウンの中のカードのみ、第２の現在選択カードにはオートチャージ対象カードに関係なく、常にバッジが表示されてる状態
 
-あと、「保存」を押しても第３は閉じない（保存押したあと、バツボタン/キャンセルボタンで閉じたら、上記の状態はなってる）。
+function renderAutochargeBadges() {
+
+    const badges = document.querySelectorAll('#qrModal .charge-badge, #depositModal .charge-badge');
+
+    badges.forEach(badge => {
+
+        const cardType = badge.getAttribute('data-card-type');
+
+        badge.classList.toggle(
+            'is-active',
+            cardType === autoTargetCardType
+        );
+    });
+}
+	
+【ヒーロー・第１】オートチャージ設定中  
+オートチャージ対象カードに関係なく、常に オートチャージ設定中 が表示されてる状態
+	
+function renderAutochargeText() {
+
+    const summaryCardText = document.querySelectorAll(
+        '#cardFlip .summary-card-text, #qrModal .summary-card-text');
+    
+    summaryCardText.forEach(text => {
+
+        text.classList.toggle(
+            'is-active',
+            isAutochargeEnabled
+        );
+    });
+
+}	
+	
+【ヒーロー・第１・２】金額下ライン  
+オートチャージ有効後 【ヒーロー】金額下にライン追加：追加されない　【第１・２】金額下の既存ラインカラーを変更：変更されない
+	
+function renderAutochargeLine() {
+
+    const isMatching = 
+        currentSelectedCardType === autoTargetCardType;
+
+    const summaryCardLine = document.querySelectorAll(
+        '#cardFlip .hero-card-price-line, ' +
+        '#qrModal .qr-card-price-line, ' +
+        '#depositModal .deposit-card-price-line');
+
+    summaryCardLine.forEach(line => {
+
+        line.classList.toggle(
+            'is-active',
+            isMatching    
+        );
+    });
+}
+
+
+あと、「保存」を押しても第３は閉じない（保存押したあと、バツボタン/キャンセルボタンで閉じたら、上記の状態になってる）。
+const autochargeModal = document.getElementById('autochargeModal');
+
+    if (autochargeModal) {
+        autochargeModal.classList.remove(is-active);
+    }	
+	
 
 まず、どれから直す？
+
+
+
+
+	
 先に第３のバツボタンとキャンセルボタンとは別に、オートチャージ保存後の第３の閉じる用の処理を個別に書く必要がある？オートチャージ保存後の変更点では、第３モーダルの画面は、第２ .autocharge-banner-container turnOffAutocharge() で  .banner-view-on → .banner-view-off を切り替えるまで非表示にする必要があるんだけど。
 
 	
