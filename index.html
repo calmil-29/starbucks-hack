@@ -153,14 +153,32 @@ function renderAutochargeLine() {
 まず、どれから直す？
 
 ===============================
+💡
+サブでも一緒、現在選択カードでは常に ⚫︎バッジ が表示されてる
 
-script.js:1299 badge: (no id) data-card-type: main main
-script.js:1299 badge: (no id) data-card-type: sub main
-script.js:1299 badge: depositCurrentBadge data-card-type: main main
-script.js:1299 badge: (no id) data-card-type: main main
-script.js:1299 badge: (no id) data-card-type: sub main
-
+script.js:1299 badge: (no id) data-card-type: main sub
+script.js:1299 badge: (no id) data-card-type: sub sub
+script.js:1299 badge: depositCurrentBadge data-card-type: sub sub
+script.js:1299 badge: (no id) data-card-type: main sub
+script.js:1299 badge: (no id) data-card-type: sub sub
 	
+	
+/* 第１・２共通 */
+.charge-badge {
+    position: absolute; 
+    top: -5px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid #ffffff;
+    background-color: #00AF66;
+
+    display: none; 
+}
+.charge-badge.is-active {
+    display: block;
+}
 	
 	
 
