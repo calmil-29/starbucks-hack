@@ -159,69 +159,69 @@ const autochargeModal = document.getElementById('autochargeModal');
 
 まず、どれから直す？
 
-
-
-
+data-card-type が書かれる処理はこれだけ。【第２モーダル】現在選択中カードを表示する関数：renderCurrentCardToDeposit() があれば保存されたあと depositCurrentBadge は常にカードの種類に合わせて data-card-type も書き変わっている状態だと思っていたんだけど。だから 現在選択中カードの　.menu-clickable-area には <span class="charge-badge" id="depositCurrentBadge" data-card-type="main"></span> で　'main' のみが置かれている状態でもJSが処理するから、ドロップダウンの depositCardWindow の　<span class="charge-badge" data-card-type="main"></span> <span class="charge-badge" data-card-type="sub"></span> と一緒に、 renderAutochargeBadges() でまとめて処理できると考えてた。
 	
-先に第３のバツボタンとキャンセルボタンとは別に、オートチャージ保存後の第３の閉じる用の処理を個別に書く必要がある？オートチャージ保存後の変更点では、第３モーダルの画面は、第２ .autocharge-banner-container turnOffAutocharge() で  .banner-view-on → .banner-view-off を切り替えるまで非表示にする必要があるんだけど。
+function renderCurrentCardToDeposit() {
 
-	
-<div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
-    <div class="autocharge-modal-content">
-	...省略
-          <!-- オートチャージ【入金設定確定ボタン】 -->
-            <button class="final-deposit-submit-btn" id="autochargeSaveBtn" onclick="executeAutochargeSave(event)">保存</button>
+    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');  // 第２現在表示カード
+    const depositCardName = document.getElementById('depositCardName'); 	         // 第２現在表示カード名
+    const depositCardVal = document.getElementById('depositCardVal');                // 第２現在表示カード金額
+    const depositCurrentBadge =document.getElementById('depositCurrentBadge');       // 第２現在表示場所用の⚫︎バッジ
 
-            <!-- オートチャージ【キャンセルボタン】 -->
-            <button class="confirm-back-btn" onclick="closeAutochargeModalForce()">キャンセル</button>
+    if (currentSelectedCardType === 'main') {
+
+        // 現在カード：メイン
+        if(depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-main.svg';
+        }
         
-        </div><!-- .autocharge-modal-body ② -->  
-      </div><!-- .autocharge-screen-confirm -->
+        if (depositCardName) {
+            depositCardName.textContent = `Starbucks Card`;
+        }	
 
-    </div><!-- .autocharge-modal-content --> 
-  </div><!-- #autochargeModal .autocharge-modal-overlay-->
+        if (depositCardVal) {
+             depositCardVal.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
+        }	
 
-.autocharge-modal-overlay { 
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* 画面全体を薄暗くする */
-    z-index: 10001; /* 第２モーダル（10000）より手間に */
-	
-    display: none;
-}
+        if (depositCurrentBadge) {
+            depositCurrentBadge.setAttribute('data-card-type', 'main');
+        }
 
-.autocharge-modal-overlay.is-active {
-    display: flex;
-    align-items: flex-end; /* 中身の白い箱をぴったり下にくっつける */
-}
-	
+    } else {
 
-// 第３のバツボタンとキャンセルボタン	
-function closeAutochargeModal(event) {
+        // 現在カード：サブ
+        if(depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-sub.png';
+        }
 
-    if (event && event.target !== event.currentTarget) return; 
-    closeAutochargeModalForce();
-}
+        if (depositCardName) {
+            depositCardName.textContent = `サブカード`;
+        }
+        
+        if (depositCardVal) {
+             depositCardVal.textContent = `¥${subCardBalance.toLocaleString()}`;
+        }	
 
-function closeAutochargeModalForce() {
-	
-    const autochargeModal = document.getElementById('autochargeModal');
-    if (autochargeModal) {
-        autochargeModal.classList.remove('is-active'); 
+        if (depositCurrentBadge) {
+            depositCurrentBadge.setAttribute('data-card-type', 'sub');
+        }
     }
+}
+	
+function renderAutochargeBadges() {
+
+    const badges = document.querySelectorAll('#qrModal .charge-badge, #depositModal .charge-badge');
+
+    badges.forEach(badge => {
+
+        const cardType = badge.getAttribute('data-card-type');
+
+        badge.classList.toggle(
+            'is-active',
+            cardType === autoTargetCardType
+        );
+    });
 }	
-
-	
-executeAutochargeSave()
-	
-const autochargeModal = document.getElementById('autochargeModal');
-
-    if (autochargeModal) {
-        autochargeModal.classList.remove(is-active);
-    }	
 	
 
 
