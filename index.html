@@ -154,32 +154,20 @@ function renderAutochargeLine() {
 
 ===============================
 💡
-サブでも一緒、現在選択カードでは常に ⚫︎バッジ が表示されてる
+第２現在表示カード＝メイン
+オートチャージ対象＝メイン
+depositCurrentBadge class: charge-badge is-active
+第２現在表示カードには常に⚫︎バッジ表示の状態
+	
+第２現在表示カード＝メイン
+オートチャージ対象＝サブ	
+depositCurrentBadge class: charge-badge
+第２現在表示カードには常に⚫︎バッジ非表示の状態		
 
-script.js:1299 badge: (no id) data-card-type: main sub
-script.js:1299 badge: (no id) data-card-type: sub sub
-script.js:1299 badge: depositCurrentBadge data-card-type: sub sub
-script.js:1299 badge: (no id) data-card-type: main sub
-script.js:1299 badge: (no id) data-card-type: sub sub
-	
-	
-/* 第１・２共通 */
-.charge-badge {
-    position: absolute; 
-    top: -5px;
-    right: -5px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 1px solid #ffffff;
-    background-color: #00AF66;
-
-    display: none; 
-}
-.charge-badge.is-active {
-    display: block;
-}
-	
+第２現在表示カード＝サブ
+オートチャージ対象＝サブ	
+depositCurrentBadge class: charge-badge	
+第２現在表示カードには常に⚫︎バッジ非表示の状態	
 	
 
 	
