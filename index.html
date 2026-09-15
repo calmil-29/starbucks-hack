@@ -86,96 +86,83 @@ subCardBalance
 ※ 第２ .autocharge-banner-container turnOffAutocharge() で  .banner-view-on → .banner-view-off を切り替えるまで表示不可  
 
 
-💡
-	
-テキスト表示
-ヒーロー・第1モーダル  表示：「オートチャージ設定中 （#00AF66）」　
-条件 editingAutoTargetCardType → autoTargetCardType 
-.summary-card-text	is-active　で表示
-だから2つとも条件も、表示内容も同じだからまとめてできそう？	
-const summaryCardText = document.querySelectorAll('#cardFlip .summary-card-text, #qrModal .summary-card-text');
-    	
-
-	
-金額下のライン
-ヒーロー　表示：金額下にライン追加　（#00AF66） 
-第1モーダル・第2モーダル 表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）	
-追加と変更だけど、これも条件も内容も同じだと思うけど違う？	
-const summaryCardLine = document.querySelectorAll('#cardFlip .hero-card-price-line, #qrModal .qr-card-price-line #depositModal .deposit-card-price-line');
-    	
 ------------------------------
 💡
-renderCurrentCardToDeposit() は第２モーダル】現在選択中カードを表示する関数	
-selectDepositOption() は第2/第3のドロップダウン内の選択現在カード変更	
-だと認識してるけど.....んー executeAutochargeSave() を描き終えてからでいいか、ちょっとまだ認識が怪しいから。
-じゃ、続き。 executeAutochargeSave() 「ヒーローと第１・第２の表示状態をどういう関数にするか」
+今の executeAutochargeSave() 処理の状態は、保存を押したら
+【第１・２】対象カードの 緑⚫︎  renderAutochargeBadges(); 
+【ヒーロー・第１】オートチャージ設定中  renderAutochargeText();	
+【ヒーロー・第１・２】金額下ライン  renderAutochargeLine();
+が常にオートチャージが保存されたカード関係なく、表示されているだけの状態になる
+
+あと、「保存」を押しても第３は閉じない（保存押したあと、バツボタン/キャンセルボタンで閉じたら、上記の状態はなってる）。
+
+まず、どれから直す？
+先に第３のバツボタンとキャンセルボタンとは別に、オートチャージ保存後の第３の閉じる用の処理を個別に書く必要がある？オートチャージ保存後の変更点では、第３モーダルの画面は、第２ .autocharge-banner-container turnOffAutocharge() で  .banner-view-on → .banner-view-off を切り替えるまで非表示にする必要があるんだけど。
+
 	
-テキスト表示
-ヒーロー・第1モーダル  表示：「オートチャージ設定中 （#00AF66）」　
-条件 editingAutoTargetCardType → autoTargetCardType 
-.summary-card-text	is-active　で表示
-だから2つとも条件も、表示内容も同じだからまとめてできそう？	
-function renderAutochargeText() {
+<div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
+    <div class="autocharge-modal-content">
+	...省略
+          <!-- オートチャージ【入金設定確定ボタン】 -->
+            <button class="final-deposit-submit-btn" id="autochargeSaveBtn" onclick="executeAutochargeSave(event)">保存</button>
 
-    const isMatching = autoTargetCardType;
-    const summaryCardText = document.querySelectorAll('#cardFlip .summary-card-text, #qrModal .summary-card-text');
-    
-    summaryCardText.forEach(text => {
+            <!-- オートチャージ【キャンセルボタン】 -->
+            <button class="confirm-back-btn" onclick="closeAutochargeModalForce()">キャンセル</button>
+        
+        </div><!-- .autocharge-modal-body ② -->  
+      </div><!-- .autocharge-screen-confirm -->
 
-        text.classList.toggle(
-            'is-active'
-            , isMatching
-        );
-    });
+    </div><!-- .autocharge-modal-content --> 
+  </div><!-- #autochargeModal .autocharge-modal-overlay-->
 
+.autocharge-modal-overlay { 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 画面全体を薄暗くする */
+    z-index: 10001; /* 第２モーダル（10000）より手間に */
+	
+    display: none;
+}
+
+.autocharge-modal-overlay.is-active {
+    display: flex;
+    align-items: flex-end; /* 中身の白い箱をぴったり下にくっつける */
+}
+	
+
+// 第３のバツボタンとキャンセルボタン	
+function closeAutochargeModal(event) {
+
+    if (event && event.target !== event.currentTarget) return; 
+    closeAutochargeModalForce();
+}
+
+function closeAutochargeModalForce() {
+	
+    const autochargeModal = document.getElementById('autochargeModal');
+    if (autochargeModal) {
+        autochargeModal.classList.remove('is-active'); 
+    }
 }	
+
 	
-金額下のライン
-ヒーロー　表示：金額下にライン追加　（#00AF66） 
-第1モーダル・第2モーダル 表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）	
-追加と変更になるけど、これも条件も内容も同じだと思うけど、違った？	
-function renderAutochargeLine() {
+executeAutochargeSave()
+	
+const autochargeModal = document.getElementById('autochargeModal');
 
-    const isMatching = autoTargetCardType;
-    const summaryCardLine = document.querySelectorAll('#cardFlip .hero-card-balance-line, #qrModal .qr-card-balance-line #depositModal .deposit-card-balance-line');
-
-    summaryCardLine.forEach(line => {
-
-        line.classList.toggle(
-            'is-active
-            , isMatching    
-        );
-    });
-}	
+    if (autochargeModal) {
+        autochargeModal.classList.remove(is-active);
+    }	
+	
 
 
 	
-
 	
-
-      
 	
-
 	
-
-先に、表示変更：対象カード → 金額下の既存ラインカラーを変更 （#989797 → #00AF66）で今気づいた、第２のライン部分だけ書いてなかった。
-だから、これを
-			
-             　<div class="menu-value-box">
-                  <span class="current-value" id="depositCardVal">Starbucks Card ¥0</span>
-                  <span class="arrow-balance"></span> 
-                </div>
-
-こう変更しようと思っているんだけど
-                <div class="menu-value-box">
-                  <span class="current-name" id="depositCardName">Starbucks Card</span>
-				  <div class="deposit-card-balance-line">
-				    <span class="deposit-card-value" id="depositCardVal">¥0</span>
-				  </div>	
-                  <span class="arrow-balance"></span> 
-                </div>
-	
-    
 
 	
 🔥 第３保存の無題提供コード 疑問 ====================================	
