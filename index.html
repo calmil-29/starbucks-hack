@@ -29,40 +29,11 @@ executeAutochargeSave()   未実行      第3の編集中設定を保存
 
 finalDepositBtn()          ⚪︎        実際の入金＋残高表示更新
 
-※ openDepositModal() の説明も厳密には「同期処理を追加しない」ではなく、「switchCard() と同じ同期処理をベタ書きせず、renderCurrentCardToDeposit() を呼ぶ」が正確。
-　 第2を開く瞬間にも描画する必要があるから。
-		  
- ⚫︎ 今の設計を一言で言うと：		  
-「選択」は selectDepositOption()
-「実残高の変更」は finalDepositBtn()
-「現在表示カードの描画」は renderCurrentCardTo〜()
-「モーダルを開く・編集状態を開始する」は open〜Modal()
 
-カード選択担当のドロップダウンの設計：	
-カード選択ドロップダウンは、「モーダルを開くたびに初期化するUI」ではなく、
-「現在の実残高と選択状態を表示して、ユーザーが選択したらその状態を変更するUI」
-だから、カード担当のドロップダウンは初期化もリセットも編集状態にもする必要がない
-    
-第2なら、depositTargetCardType
-は「今回どのカードに入金するか」。
-    
-第3なら、editingAutoTargetCardType
-は「今回編集中のオートチャージ対象」。
+	
+=========================================================
 
-この2つは selectDepositOption() が変更する。
-
-一方	
-starbucksCardBalance
-subCardBalance
-
-は実残高なので、実際に入金処理が発生した finalDepositBtn() が変更する。
-
-この2種類は混ぜない。
-
-
-🔥🔥🔥  =========================================================
-
-
+ここは？
 openDepositModal() 
 	
     // 第２を開いた瞬間にも最新の現在選択中カードを表示
@@ -87,8 +58,8 @@ openDepositModal()
 
 
 	
-💡
-今の executeAutochargeSave() 処理の状態は、保存を押したら
+💡　修正箇所　
+今の executeAutochargeSave() 処理の状態
 	
 【第１・２】対象カードの 緑⚫︎  renderAutochargeBadges(); 　
 正しく表示されているのはドロップダウンの中のカードのみ、第２の現在選択カードにはオートチャージ対象カードに関係なく、常にバッジが表示されてる状態
@@ -107,8 +78,6 @@ function renderAutochargeBadges() {
         );
     });
 }
-
-
 
 	
 【ヒーロー・第１】オートチャージ設定中  
@@ -151,37 +120,22 @@ function renderAutochargeLine() {
     });
 }
 
-	
-
-まず、どれから直す？
 
 ===============================
-if (depositCurrentBadge) {
-    depositCurrentBadge.setAttribute('data-card-type', 'sub');
+	
 
-    console.log(
-        'renderCurrentCardToDeposit:',
-        'currentSelectedCardType =',
-        currentSelectedCardType,
-        'data-card-type =',
-        depositCurrentBadge.getAttribute('data-card-type')
-    );
-}
-
-
-if (depositCurrentBadge) {
-    depositCurrentBadge.setAttribute('data-card-type', 'sub');
-
-    console.log(
-        'renderCurrentCardToDeposit:',
-        'currentSelectedCardType =',
-        currentSelectedCardType,
-        'data-card-type =',
-        depositCurrentBadge.getAttribute('data-card-type'),
-        'class =',
-        depositCurrentBadge.className
-    );
-}
+script.js:1176 確認画面のclass autocharge-screen-confirm is-active
+script.js:1306 badge: (no id) data-card-type: main sub
+script.js:1319 after toggle: (no id) charge-badge
+script.js:1306 badge: (no id) data-card-type: sub sub
+script.js:1319 after toggle: (no id) charge-badge is-active
+script.js:1306 badge: depositCurrentBadge data-card-type: main sub
+script.js:1319 after toggle: depositCurrentBadge charge-badge
+script.js:1306 badge: (no id) data-card-type: main sub
+script.js:1319 after toggle: (no id) charge-badge
+script.js:1306 badge: (no id) data-card-type: sub sub
+script.js:1319 after toggle: (no id) charge-badge is-active
+script.js:1327 depositCurrentBadge class: charge-badge
 
 
 
