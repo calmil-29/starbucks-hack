@@ -177,6 +177,17 @@ function renderAutochargeLine() {
 まず、どれから直す？
 
 ===============================
+if (depositCurrentBadge) {
+    depositCurrentBadge.setAttribute('data-card-type', 'sub');
+
+    console.log(
+        'renderCurrentCardToDeposit:',
+        'currentSelectedCardType =',
+        currentSelectedCardType,
+        'data-card-type =',
+        depositCurrentBadge.getAttribute('data-card-type')
+    );
+}
 💡
 第２現在表示カード＝メイン
 オートチャージ対象＝メイン
