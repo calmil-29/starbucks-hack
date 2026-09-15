@@ -132,19 +132,6 @@ function renderAutochargeBadges() {
     });
 }
 
-if (depositCurrentBadge) {
-    depositCurrentBadge.setAttribute('data-card-type', 'sub');
-
-    console.log(
-        'renderCurrentCardToDeposit:',
-        'currentSelectedCardType =',
-        currentSelectedCardType,
-        'data-card-type =',
-        depositCurrentBadge.getAttribute('data-card-type'),
-        'class =',
-        depositCurrentBadge.className
-    );
-}
 
 
 	
@@ -204,6 +191,26 @@ if (depositCurrentBadge) {
         depositCurrentBadge.getAttribute('data-card-type')
     );
 }
+
+
+if (depositCurrentBadge) {
+    depositCurrentBadge.setAttribute('data-card-type', 'sub');
+
+    console.log(
+        'renderCurrentCardToDeposit:',
+        'currentSelectedCardType =',
+        currentSelectedCardType,
+        'data-card-type =',
+        depositCurrentBadge.getAttribute('data-card-type'),
+        'class =',
+        depositCurrentBadge.className
+    );
+}
+
+
+
+
+
 💡
 第２現在表示カード＝メイン
 オートチャージ対象＝メイン
