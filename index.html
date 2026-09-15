@@ -159,7 +159,15 @@ const autochargeModal = document.getElementById('autochargeModal');
 
 まず、どれから直す？
 
-data-card-type が書かれる処理はこれだけ。【第２モーダル】現在選択中カードを表示する関数：renderCurrentCardToDeposit() があれば保存されたあと depositCurrentBadge は常にカードの種類に合わせて data-card-type も書き変わっている状態だと思っていたんだけど。だから 現在選択中カードの　.menu-clickable-area には <span class="charge-badge" id="depositCurrentBadge" data-card-type="main"></span> で　'main' のみが置かれている状態でもJSが処理するから、ドロップダウンの depositCardWindow の　<span class="charge-badge" data-card-type="main"></span> <span class="charge-badge" data-card-type="sub"></span> と一緒に、 renderAutochargeBadges() でまとめて処理できると考えてた。
+===============================
+	
+data-card-type が書かれる処理はこれだけ。【第２モーダル】現在選択中カードを表示する関数：renderCurrentCardToDeposit() があれば保存されたあと depositCurrentBadge は常にカードの種類に合わせて data-card-type も書き変わっている状態だと思っていたんだけど。
+「選択」は selectDepositOption()
+「実残高の変更」は finalDepositBtn()
+「現在表示カードの描画」は renderCurrentCardTo〜()
+「モーダルを開く・編集状態を開始する」は open〜Modal()	
+	
+だから 現在選択中カードの　.menu-clickable-area には <span class="charge-badge" id="depositCurrentBadge" data-card-type="main"></span> で　'main' のみが置かれている状態でもJSが処理するから、ドロップダウンの depositCardWindow の　<span class="charge-badge" data-card-type="main"></span> <span class="charge-badge" data-card-type="sub"></span> と一緒に、 renderAutochargeBadges() でまとめて処理できると考えてた。
 	
 function renderCurrentCardToDeposit() {
 
