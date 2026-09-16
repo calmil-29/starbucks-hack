@@ -12,179 +12,31 @@
 ================================================
 　
 💡　無代に渡す用
+	
+selectDepositOption()
+const depositCurrentBadge = document.getElementById('depositCurrentBadge');
 
-function selectDepositOption(type, value, event) {
-    if (event) event.stopPropagation(); 
+if (depositCurrentBadge) {
+depositCurrentBadge.setAttribute('date-chard-type', 'main');
+}
+※サブも'sub'で同様に入れてる	
 
-    // 【第３モーダル】か【第２モーダル】かを自動判定
+これを入れても		
+オートチャージ対象＝メイン
+↓
+第２現在選択中の表示カードにはメイン、サブに関係なく常に⚫︎バッジ表示の状態
+	
 
-    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
-
-    // 【UI更新対象の特定】
-
-    let menuIndex = 1;
-
-    if (type === 'amount') menuIndex = 2;     // 入金額
-    if (type === 'condition') menuIndex = 3;  // 入金条件（オートチャージのみ）
-
-    // 「支払い方法」：【第３モーダル】なら４番目、【第２モーダル】なら３番目
-
-    if (type === 'method') {
-        menuIndex = isAutocharge ? 4 : 3;
-    }    
-
-    // 文字を書き換える対象となる【DOM要素】をピンポイントで取得
-
-    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
-
-    //【防波堤（ガードクローズ）】もし DOM要素がまだ画面に存在しない場合は、ここで処理を中断する
-
-    if (!currentLabel) {
-        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
-        return;
-    }
-
-    // ======================================
-    // 【データ更新とDOM要素への文字反映】 
-    // ======================================
-
-    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新ルール
-
-    const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');  // 第３メニュー画面のカード画像
-    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');        // 第２メニュー画面のカード画像
-  
-    if (type === 'card') {
-
-        if (isAutocharge) {
-            editingAutoTargetCardType = value;    // 第３の編集用の金庫 
-
-        } else {
-            depositTargetCardType = value;        // 第２の金庫 　
-        }    
-
-        // カード画像を切り替える
-        if (value === 'main') {
-
-            // 第３
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
-
-            //　第２
-	        } else {
-	            depositCurrentCardImg.src = 'images/my-card-main.svg';
-
-                const depositCardName = document.getElementById('depositCardName'); 
-
-                if (depositCardName) {
-                    depositCardName.textContent = `Starbucks Card`;
-                }	
-	        }
-
-            currentLabel.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
-
-            } else if (value === 'sub') {
-
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-sub.png'; 
-
-	        } else {
-	        depositCurrentCardImg.src = 'images/my-card-sub.png';
-
-            const depositCardName = document.getElementById('depositCardName'); 
-
-                if (depositCardName) {
-                    depositCardName.textContent = `サブカード`;
-                }	
-	        }
-
-            currentLabel.textContent = `¥${subCardBalance.toLocaleString()}`;
-        }
-
-    // B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）
-
-    } else if (type === 'amount' || type === 'condition') {
-
-        // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
-        const numValue = Number(value);
-
-        if (!isNaN(numValue)) {
-
-            // 第３：編集用の入金額・入金条件
-            if (isAutocharge) {
-                if (type === 'amount')  editingAutochargeAmount = numValue; 
-                if (type === 'condition') editingAutochargeCondition = numValue; 
-            }  
-
-            // 第２・第３共通、画面のDOM要素（テキスト）を書き換える　例：「¥2,000」
-            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
-
-        } else {
-            currentLabel.textContent = value;
-        }
-        
-    // C. 支払い方法
-
-    } else if (type === 'method') {
-        if (isAutocharge) {
-
-            // 第３：編集用の支払い方法を更新
-            editingAutochargeMethod = value; 
-        } 
-
-        // 第２・第３共通、画面のDOM要素（テキスト）を書き換える
-        currentLabel.textContent = value;
-    }    
-   
-    // 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する 
-    if (isAutocharge) {
-        const allSummaries = document.querySelectorAll('.autocharge-summary');
-
-        allSummaries.forEach(el => {
-            el.textContent = `オートチャージ：¥${editingAutochargeAmount.toLocaleString()}\n入金条件：残高が¥${editingAutochargeCondition.toLocaleString()}未満` ; // 編集用
-        });
-
-        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
-
-        const errorBox = document.getElementById('autoErrorMessage');
-        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件
-        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
-
-       if (Number(editingAutochargeAmount) < Number(editingAutochargeCondition)) { 
-
-            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
-
-            if (errorBox) errorBox.style.display = 'block';
-            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
-            if (nextBtn) nextBtn.disabled = true; 
-
-        } else {
-
-            // 条件クリア：エラーを消して通常状態に戻す
-
-            if (errorBox) errorBox.style.display = 'none';
-            if (conditionMenu)  conditionMenu.classList.remove('has-error');
-            if (nextBtn) nextBtn.disabled = false;
-        }
-    }
-
-    // 【自動クローズ】 文字をコピーし終わったら、用済みになった「ドロップダウン」を閉じる 
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-
-    // 【ドロップダウンを特定】今開いていたドロップダウンのIDを自動で組み立てる
-
-    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
-    const targetWindow = document.getElementById(windowId);
-
-    if (targetWindow) {
-        targetWindow.classList.remove('is-active');
-    }  
-}	
+オートチャージ対象＝サブ	
+↓
+第２現在選択中の表示カードにはメイン、サブに関係なく常に⚫︎バッジ非表示の状態		
 
 
+	
 		   
 第２現在表示場所用の⚫︎バッジ の処理 
 depositCurrentBadge.setAttribute('data-card-type', 'main'); もしくは'sub'
+	
 	
 renderCurrentCardToDeposit() にしかいれてない、
 でも	renderCurrentCardToDeposit()：【第２モーダル】現在選択中カードを表示する関数（描画）を渡していけばいいわけだからそこは気にしなくてもいい？でも、switchCard()：第1で現在カード変更 → 第1・第2・第3へ反映　では、renderCurrentCardToDeposit();　renderCurrentCardToAutocharge();　をいれてるから犯人ではない。openDepositModal()：　第2を開く時の初期化・リセット＋現在カード描画 では、depositTargetCardType = currentSelectedCardType;　のあと renderCurrentCardToDeposit(); を入れている。もしくは、selectDepositOption()： 選択中の値を設定画面に反映し、【第３モーダルの設定値】を更新する 　あやしいとしたらここ？
@@ -322,21 +174,19 @@ function renderAutochargeLine() {
 =============================================================================================================================
 	
 メモ　
+
+
 	
-第２現在表示カード＝メイン
 オートチャージ対象＝メイン
-depositCurrentBadge class: charge-badge is-active
-第２現在表示カードには常に⚫︎バッジ表示の状態
+↓
+第２現在選択中の表示カードにはメイン、サブに関係なく常に⚫︎バッジ表示の状態
 	
-第２現在表示カード＝メイン
-オートチャージ対象＝サブ	
-depositCurrentBadge class: charge-badge
-第２現在表示カードには常に⚫︎バッジ非表示の状態		
 
-第２現在表示カード＝サブ
 オートチャージ対象＝サブ	
+↓
+第２現在選択中の表示カードにはメイン、サブに関係なく常に⚫︎バッジ非表示の状態		
 
-第２現在表示カードには常に⚫︎バッジ非表示の状態	
+
 
 	
 	
