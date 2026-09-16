@@ -17,16 +17,100 @@ selectDepositOption()
 const depositCurrentBadge = document.getElementById('depositCurrentBadge');
 
 if (depositCurrentBadge) {
-depositCurrentBadge.setAttribute('date-chard-type', 'main');
+depositCurrentBadge.setAttribute('data-card-type', 'main');
 }
 ※サブも'sub'で同様に入れてる	
 
-これを入れても		
+
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
+
+                <div class="card-wrapper">
+
+                  <!-- 💡現在選択中カード オートチャージが保存されたときの 緑⚫︎バッジ -->
+                  <span class="charge-badge" id="depositCurrentBadge"></span> 
+
+                  <!-- 第２ カード画像 -->
+                  <img src="images/my-card-main.svg"  id="depositCurrentCardImg" class="selector-card-img" alt="メイン">
+                </div>
+
+                <div class="menu-value-box">
+                  <span class="current-name" id="depositCardName">Starbucks Card</span>
+
+				          <div class="deposit-card-balance-line">
+				            <span class="current-value" id="depositCardVal">¥0</span>
+				          </div>	
+
+                  <span class="arrow-balance"></span> 
+                </div>  
+              </div>
+
+              <!-- 第２ カード選択のドロップダウン -->
+              <div class="deposit-selector-window" id="depositCardWindow">
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+
+                  <div class="card-wrapper">
+
+                    <!-- 💡オートチャージが保存されたときの 緑⚫︎バッジ -->
+                    <span class="charge-badge" data-card-type="main"></span>
+
+                    <!-- カード画像 -->
+                    <img src="images/my-card-main.svg" class="selector-card-img" alt="メイン">
+                  </div>
+                  <span class="deposit-main-card-balance">¥0</span>
+                </div>
+
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                  <div class="card-wrapper">
+
+                    <!-- 💡オートチャージが保存されたときの 緑⚫︎バッジ -->
+                    <span class="charge-badge" data-card-type="sub"></span>
+
+                    <!-- カード画像 -->
+                    <img src="images/my-card-sub.png" class="selector-card-img" alt="サブ">
+                  </div>
+                  <span class="deposit-sub-card-balance">¥3,500</span>
+                </div>
+                
+              </div>
+            </div> 
+
+	
+function renderAutochargeBadges() {
+
+    const badges = document.querySelectorAll('#qrModal .charge-badge, #depositModal .charge-badge');
+
+    badges.forEach(badge => {
+
+        // 第２現在選択中カード 緑⚫︎バッジ
+        if (badge.id === 'depositCurrentBadge') {
+
+            badge.classList.toggle(
+                'is-active',
+                depositTargetCardType === autoTargetCardType
+            );
+
+            return;
+        }
+
+        // 第１・第２カードドロップダウンは data-card-type で判定
+        const cardType = badge.getAttribute('data-card-type');
+
+        badge.classList.toggle(
+            'is-active',
+            cardType === autoTargetCardType
+        );
+
+
+    });
+
+}	
+	
+これに変更しても、できない	
 オートチャージ対象＝メイン
 ↓
 第２現在選択中の表示カードにはメイン、サブに関係なく常に⚫︎バッジ表示の状態
 	
-
 オートチャージ対象＝サブ	
 ↓
 第２現在選択中の表示カードにはメイン、サブに関係なく常に⚫︎バッジ非表示の状態		
