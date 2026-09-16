@@ -11,7 +11,7 @@
 
 ================================================
 　
-💡　無代に渡す用
+💡　無代に渡す用 9/17
 
 depositTargetCardType === autoTargetCardType は	
 状況でいうと第２の現在選択中表示カードに対してそのカードがオートチャージ保存対象カードなら、バッジをつけたい。でも、「第２の現在選択中表示カード」は固定されている値でもない、だから、autoTargetCardType（オートチャージ対象のカードの初期値）、 つまりオートチャージに選ばれたカードに対して、currentSelectedCardType（現在のカード）、だと【ヒーロー・第１】で現在表示のカードになるから、depositTargetCardType（【第２モーダル】入金対象のカード） を指定する必要がある。で、グローバル変数として、置かれてはいるけど、そこだけみたら、、、で、ここなんだよな、やっぱ引っかかるの、だって、selectDepositOption() の処理で depositTargetCardType は選択された表示に変わるわけで、だから選択された depositTargetCardType を renderAutochargeBadges() が読み取れるのかと思っていたんだけど、
