@@ -17,7 +17,7 @@
 depositCurrentBadge.setAttribute('data-card-type', 'main'); もしくは'sub'
 	
 renderCurrentCardToDeposit() にしかいれてない、
-でも	renderCurrentCardToDeposit()：【第２モーダル】現在選択中カードを表示する関数（描画）を渡していけばいいわけだからそこは気にしなくてもいい？でも、switchCard()：第1で現在カード変更 → 第1・第2・第3へ反映　では、renderCurrentCardToDeposit();　renderCurrentCardToAutocharge();　をいれてるから犯人ではない。openDepositModal()：　第2を開く時の初期化・リセット＋現在カード描画 では、depositTargetCardType = currentSelectedCardType;　のあと renderCurrentCardToDeposit(); を入れている。あやしいとしたらここ？
+でも	renderCurrentCardToDeposit()：【第２モーダル】現在選択中カードを表示する関数（描画）を渡していけばいいわけだからそこは気にしなくてもいい？でも、switchCard()：第1で現在カード変更 → 第1・第2・第3へ反映　では、renderCurrentCardToDeposit();　renderCurrentCardToAutocharge();　をいれてるから犯人ではない。openDepositModal()：　第2を開く時の初期化・リセット＋現在カード描画 では、depositTargetCardType = currentSelectedCardType;　のあと renderCurrentCardToDeposit(); を入れている。もしくは、selectDepositOption()： 選択中の値を設定画面に反映し、【第３モーダルの設定値】を更新する 　あやしいとしたらここ？
 	
 
 renderCurrentCardToDeposit();　　　【第２モーダル】現在選択中カードを表示する関数　・描画
@@ -43,7 +43,7 @@ fillDepositConfirm()                【第２モーダル】【確認画面】�
 
 openAutochargeModal()   ← 今ここ      第3を開く時の編集状態開始＋現在カード描画
 
-selectDepositOption()      ⚪︎        第2/第3のドロップダウン内の選択変更
+selectDepositOption()      ⚪︎        第2/第3のドロップダウン内の選択変更　・選択中の値を設定画面に反映し、【第３モーダルの設定値】を更新する 
 
 executeAutochargeSave()   未実行      第3の編集中設定を保存
 
