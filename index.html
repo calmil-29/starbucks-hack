@@ -22,8 +22,12 @@ depositTargetCardType
 	↑
 renderAutochargeBadges()：selectDepositOption() で処理された depositTargetCardType に合わせてバッジの付け外しの判断
 
-function renderAutochargeUI() {
 
+
+🔥 無代提供コード ========================================================
+	
+function renderAutochargeUI() {
+	
     // オートチャージが有効か
     const isEnabled = isAutochargeEnabled;
 
@@ -124,95 +128,9 @@ function renderAutochargeUI() {
         );
     });
 }
-	function renderAutochargeBadges() {
 
-    const badges = document.querySelectorAll('#qrModal .charge-badge, #depositModal .charge-badge');
-
-    badges.forEach(badge => {
-
-        // 第２現在選択中カード 緑⚫︎バッジ
-        if (badge.id === 'depositCurrentBadge') {
-
-            badge.classList.toggle(
-                'is-active',
-                depositTargetCardType === autoTargetCardType
-            );
-
-            return;
-        }
-
-        // 第１・第２カードドロップダウンは data-card-type で判定
-        const cardType = badge.getAttribute('data-card-type');
-
-        badge.classList.toggle(
-            'is-active',
-            cardType === autoTargetCardType
-        );
-
-
-    });
-
-}	
-
- if (!isAutocharge && isAutochargeEnabled) {
-            renderAutochargeBadges();
-        }
-
+=========================================================================================================================
 	
-if (type === 'card') {
-
-        if (isAutocharge) {
-            editingAutoTargetCardType = value;    // 【第３モーダル オートチャージ】編集用
-
-        } else {
-            depositTargetCardType = value;        // 【第２モーダル】入金対象のカード	
-        }    
-
-        // カード画像を切り替える
-
-        if (value === 'main') {
-
-            // 第３
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
-
-            //　第２
-	        } else {
-	            depositCurrentCardImg.src = 'images/my-card-main.svg';
-
-                const depositCardName = document.getElementById('depositCardName'); 
-
-                if (depositCardName) {
-                    depositCardName.textContent = `Starbucks Card`;
-                }	
-
-	        }
-
-            currentLabel.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
-
-            } else if (value === 'sub') {
-
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-sub.png'; 
-
-	        } else {
-	        depositCurrentCardImg.src = 'images/my-card-sub.png';
-
-            const depositCardName = document.getElementById('depositCardName'); 
-
-                if (depositCardName) {
-                    depositCardName.textContent = `サブカード`;
-                }	
-	        }
-
-            currentLabel.textContent = `¥${subCardBalance.toLocaleString()}`;
-        }
-
-
-
-
-
-
 	
 		   
 第２現在表示場所用の⚫︎バッジ の処理 
