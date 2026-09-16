@@ -22,7 +22,108 @@ depositTargetCardType
 	↑
 renderAutochargeBadges()：selectDepositOption() で処理された depositTargetCardType に合わせてバッジの付け外しの判断
 
+function renderAutochargeUI() {
 
+    // オートチャージが有効か
+    const isEnabled = isAutochargeEnabled;
+
+    // 第1・ヒーローの現在カードが対象カードか
+    const isQrTarget =
+        isEnabled &&
+        currentSelectedCardType === autoTargetCardType;
+
+    // 第2の現在カードが対象カードか
+    const isDepositTarget =
+        isEnabled &&
+        depositTargetCardType === autoTargetCardType;
+
+
+    // =========================
+    // ① オートチャージ設定中テキスト
+    // =========================
+
+    const summaryCardText = document.querySelectorAll(
+        '#cardFlip .summary-card-text, #qrModal .summary-card-text'
+    );
+
+    summaryCardText.forEach(text => {
+        text.classList.toggle(
+            'is-active',
+            isEnabled
+        );
+    });
+
+
+    // =========================
+    // ② 第1・第2・ヒーローのライン
+    // =========================
+
+    const heroLine = document.querySelector(
+        '#cardFlip .hero-card-price-line'
+    );
+
+    const qrLine = document.querySelector(
+        '#qrModal .qr-card-price-line'
+    );
+
+    const depositLine = document.querySelector(
+        '#depositModal .deposit-card-price-line'
+    );
+
+    if (heroLine) {
+        heroLine.classList.toggle(
+            'is-active',
+            isQrTarget
+        );
+    }
+
+    if (qrLine) {
+        qrLine.classList.toggle(
+            'is-active',
+            isQrTarget
+        );
+    }
+
+    if (depositLine) {
+        depositLine.classList.toggle(
+            'is-active',
+            isDepositTarget
+        );
+    }
+
+
+    // =========================
+    // ③ バッジ
+    // =========================
+
+    const badges = document.querySelectorAll(
+        '#qrModal .charge-badge, #depositModal .charge-badge'
+    );
+
+    badges.forEach(badge => {
+
+        // 第2現在表示カード
+        if (badge.id === 'depositCurrentBadge') {
+
+            badge.classList.toggle(
+                'is-active',
+                isDepositTarget
+            );
+
+            return;
+        }
+
+        // ドロップダウン
+        const cardType =
+            badge.getAttribute('data-card-type');
+
+        badge.classList.toggle(
+            'is-active',
+            isEnabled &&
+            cardType === autoTargetCardType
+        );
+    });
+}
 	function renderAutochargeBadges() {
 
     const badges = document.querySelectorAll('#qrModal .charge-badge, #depositModal .charge-badge');
