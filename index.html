@@ -13,6 +13,46 @@
 　
 💡　無代に渡す用
 
+depositTargetCardType === autoTargetCardType は	
+状況でいうと第２の現在選択中表示カードに対してそのカードがオートチャージ保存対象カードなら、バッジをつけたい。でも、「第２の現在選択中表示カード」は固定されている値でもない、だから、autoTargetCardType（オートチャージ対象のカードの初期値）、 つまりオートチャージに選ばれたカードに対して、currentSelectedCardType（現在のカード）、だと【ヒーロー・第１】で現在表示のカードになるから、depositTargetCardType（【第２モーダル】入金対象のカード） を指定する必要がある。で、グローバル変数として、置かれてはいるけど、そこだけみたら、、、で、ここなんだよな、やっぱ引っかかるの、だって、selectDepositOption() の処理で depositTargetCardType は選択された表示に変わるわけで、だから選択された depositTargetCardType を renderAutochargeBadges() が読み取れるのかと思っていたんだけど、
+
+selectDepositOption()：depositTargetCardType を選択されるたびに変更処理
+	↓
+depositTargetCardType	
+	↑
+renderAutochargeBadges()：selectDepositOption() で処理された depositTargetCardType に合わせてバッジの付け外しの判断
+
+
+	function renderAutochargeBadges() {
+
+    const badges = document.querySelectorAll('#qrModal .charge-badge, #depositModal .charge-badge');
+
+    badges.forEach(badge => {
+
+        // 第２現在選択中カード 緑⚫︎バッジ
+        if (badge.id === 'depositCurrentBadge') {
+
+            badge.classList.toggle(
+                'is-active',
+                depositTargetCardType === autoTargetCardType
+            );
+
+            return;
+        }
+
+        // 第１・第２カードドロップダウンは data-card-type で判定
+        const cardType = badge.getAttribute('data-card-type');
+
+        badge.classList.toggle(
+            'is-active',
+            cardType === autoTargetCardType
+        );
+
+
+    });
+
+}	
+
  if (!isAutocharge && isAutochargeEnabled) {
             renderAutochargeBadges();
         }
@@ -67,7 +107,9 @@ if (type === 'card') {
             currentLabel.textContent = `¥${subCardBalance.toLocaleString()}`;
         }
 
-	
+
+
+
 
 
 	
