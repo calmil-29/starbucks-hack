@@ -20,6 +20,31 @@ script.js:1327 currentSelectedCardType = main
 script.js:1332 depositTargetCardType = main
 script.js:1337 autoTargetCardType = main
 
+
+console.log(
+    'summaryCardText:',
+    document.querySelectorAll(
+        '#cardFlip .summary-card-text, #qrModal .summary-card-text'
+    ).length
+);
+
+console.log(
+    'heroLine:',
+    document.querySelector('#cardFlip .hero-card-balance-line')
+);
+
+console.log(
+    'qrLine:',
+    document.querySelector('#qrModal .qr-card-balance-line')
+);
+
+console.log(
+    'depositLine:',
+    document.querySelector('#depositModal .deposit-card-balance-line')
+);
+
+
+
 君が先に出してくれていたコード、renderAutochargeUI() 入れてみたけど、オートチャージ保存後の処理　「オートチャージ設定中」テキスト：常に表示、ラインの表示、カラー変更が作動しない、あと、第3保存ボタンでまた閉じなくなった。
 
 
