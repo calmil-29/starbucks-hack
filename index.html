@@ -14,7 +14,9 @@
 💡　無代に渡す用 
 
 君が先に出してくれていたコード、renderAutochargeUI() 入れてみたけど、オートチャージ保存後の処理　「オートチャージ設定中」テキスト：常に表示、ラインの表示、カラー変更が作動しない、あと、第3保存ボタンでまた閉じなくなった。
-	
+
+
+
 selectDepositOption() には
 
 if (!isAutocharge && isAutochargeEnabled) {
@@ -22,8 +24,16 @@ if (!isAutocharge && isAutochargeEnabled) {
 }	
 
 executeAutochargeSave()　には
-	
+
+下から２番目に
 renderAutochargeUI();
+
+一番下に閉じるボタンも：	
+const autochargeModal = document.getElementById('autochargeModal');
+
+    if (autochargeModal) {
+        autochargeModal.classList.remove('is-active');
+    }	
 
 をいれている
 	
@@ -44,7 +54,6 @@ function renderAutochargeUI() {
         isEnabled &&
         depositTargetCardType === autoTargetCardType;
 
-
     // =========================
     // ① オートチャージ設定中テキスト
     // =========================
@@ -60,21 +69,20 @@ function renderAutochargeUI() {
         );
     });
 
-
     // =========================
     // ② 第1・第2・ヒーローのライン
     // =========================
 
     const heroLine = document.querySelector(
-        '#cardFlip .hero-card-price-line'
+        '#cardFlip .hero-card-balance-line'
     );
 
     const qrLine = document.querySelector(
-        '#qrModal .qr-card-price-line'
+        '#qrModal .qr-card-balance-line'
     );
 
     const depositLine = document.querySelector(
-        '#depositModal .deposit-card-price-line'
+        '#depositModal .deposit-card-balance-line'
     );
 
     if (heroLine) {
@@ -263,6 +271,28 @@ function renderAutochargeLine() {
 
 
 
+    
+    // ================================================================
+    // 【第１・２】対象カードの 緑⚫︎
+    // ================================================================
+
+    renderAutochargeBadges(); 
+
+    // ================================================================
+    // 【ヒーロー・第１】オートチャージ設定中
+    // ================================================================
+
+    renderAutochargeText();
+
+    // ================================================================
+    // 【ヒーロー・第１・２】金額下ライン
+    // ================================================================
+
+    renderAutochargeLine();
+
+    // ================================================================
+    // 【第３モーダル】閉じる
+    // ================================================================
 
 
 	
