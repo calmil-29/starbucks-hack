@@ -11,19 +11,22 @@
 
 ================================================
 　
-💡　無代に渡す用 9/17
+💡　無代に渡す用 
 
-depositTargetCardType === autoTargetCardType は	
-状況でいうと第２の現在選択中表示カードに対して、そのカードがオートチャージ保存対象カードなら、バッジをつけたい、で、「第２の現在選択中表示カード」は固定されている値でもない、だから、autoTargetCardType（オートチャージ対象のカードの初期値）、 つまりオートチャージに選ばれたカードに対して、currentSelectedCardType（現在のカード）、だと【ヒーロー・第１】で現在表示のカードになるから、depositTargetCardType（【第２モーダル】入金対象のカード） を指定する必要がある。で、グローバル変数として置かれてはいるけど、そこだけみたら、、、で、ここが、やっぱ引っかかる。selectDepositOption() の処理で depositTargetCardType は選択された表示に変わるわけで、だから選択された depositTargetCardType を renderAutochargeBadges() が読み取れるのかと思っていたんだけど、
+君が先に出してくれていたコード、renderAutochargeUI() 入れてみたけど、オートチャージ保存後の処理　「オートチャージ設定中」テキスト：常に表示、ラインの表示、カラー変更が作動しない、あと、第3保存ボタンでまた閉じなくなった。
+	
+selectDepositOption() には
 
-selectDepositOption()：depositTargetCardType を選択されるたびに変更処理
-	↓
-depositTargetCardType	
-	↑
-renderAutochargeBadges()：selectDepositOption() で処理された depositTargetCardType に合わせてバッジの付け外しの判断
+if (!isAutocharge && isAutochargeEnabled) {
+   renderAutochargeUI();
+}	
 
+executeAutochargeSave()　には
+	
+renderAutochargeUI();
 
-
+をいれている
+	
 🔥 無代提供コード ========================================================
 	
 function renderAutochargeUI() {
@@ -129,9 +132,142 @@ function renderAutochargeUI() {
     });
 }
 
+/* *** オートチャージ有効後 *** 【ヒーロー・第１】 テキスト表示：「オートチャージ設定中」 */
+
+/* ヒーロー・第１共通 */   
+.summary-card-text {
+    display: none;
+    font-size: 10px;
+    color: #00AF66 ;
+    letter-spacing: 0.05em; 
+} 
+.summary-card-text.is-active {
+    display: block;
+} 
+
+/* *** オートチャージ有効後 *** 【ヒーロー】金額下にライン追加　【第１・２】金額下の既存ラインカラーを変更 */
+
+/* ヒーロー */
+.hero-card-balance-line {
+    display: inline-block;
+    /* 通常は下線なし */
+}
+.hero-card-balance-line.is-active {
+    display: inline-block;
+    border-bottom: 0.5px solid #00AF66 ;
+    width: 150px;
+}
+
+/* 第１モーダル */
+.qr-card-balance-line {
+    display: inline-block;
+    border-bottom: 0.5px solid #989797 ; 
+    width: 150px;
+}    
+.qr-card-balance-line.is-active {
+    display: inline-block;
+    border-bottom: 0.5px solid #00AF66 ;
+    width: 150px;
+}
+
+/* 第２モーダル */
+.deposit-card-balance-line {
+    display: inline-block;
+    border-bottom: 0.5px solid #989797 ; 
+    width: 150px;
+}    
+.deposit-card-balance-line.is-active {
+    display: inline-block;
+    border-bottom: 0.5px solid #00AF66 ;
+    width: 150px;
+}
+
 =========================================================================================================================
+💡元のコード	
+
+// ==================================================================
+// オートチャージ有効後・オートチャージ対象 ⚫︎バッジ を更新する関数 
+// ==================================================================
+
+function renderAutochargeBadges() {
+
+    const badges = document.querySelectorAll('#qrModal .charge-badge, #depositModal .charge-badge');
+
+    badges.forEach(badge => {
+
+        // 第２現在選択中カード 緑⚫︎バッジ
+        if (badge.id === 'depositCurrentBadge') {
+
+            badge.classList.toggle(
+                'is-active',
+                depositTargetCardType === autoTargetCardType
+            );
+
+            return;
+        }
+
+        // 第１・第２カードドロップダウンは data-card-type で判定
+        const cardType = badge.getAttribute('data-card-type');
+
+        badge.classList.toggle(
+            'is-active',
+            cardType === autoTargetCardType
+        );
+
+
+    });
+
+}
+
+// ==================================================================
+// オートチャージ有効後・【ヒーロー・第１】 「オートチャージ設定中」 テキスト表示
+// ==================================================================
+
+function renderAutochargeText() {
+
+    const summaryCardText = document.querySelectorAll(
+        '#cardFlip .summary-card-text, #qrModal .summary-card-text');
+    
+    summaryCardText.forEach(text => {
+
+        text.classList.toggle(
+            'is-active',
+            isAutochargeEnabled
+        );
+    });
+
+}
+
+// =====================================================================================
+// オートチャージ有効後・【ヒーロー】金額下にライン追加　【第１・２】金額下の既存ラインカラーを変更 
+// =====================================================================================
+
+function renderAutochargeLine() {
+
+    const isMatching = 
+        currentSelectedCardType === autoTargetCardType;
+
+    const summaryCardLine = document.querySelectorAll(
+        '#cardFlip .hero-card-price-line, ' +
+        '#qrModal .qr-card-price-line, ' +
+        '#depositModal .deposit-card-price-line');
+
+    summaryCardLine.forEach(line => {
+
+        line.classList.toggle(
+            'is-active',
+            isMatching    
+        );
+    });
+}
+
+
+
+
+
 	
-	
+💡元のコード　ここまで	
+==================================================================================================================
 		   
 第２現在表示場所用の⚫︎バッジ の処理 
 depositCurrentBadge.setAttribute('data-card-type', 'main'); もしくは'sub'
@@ -172,30 +308,6 @@ finalDepositBtn()          ⚪︎        実際の入金＋残高表示更新
 
 
 	
-=========================================================
-
-ここは？
-openDepositModal() 
-	
-    // 第２を開いた瞬間にも最新の現在選択中カードを表示
-    renderCurrentCardToDeposit();
-
-    // 【リセット機能】入金額と支払い方法は、初期値に強制リセットする
-    const allItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
-    
-    // ２番目のメニュー「入金額」の中身をリセット
-    if (allItems[1]) {
-        const amtLabel = allItems[1].querySelector('.current-value');
-        if (amtLabel) amtLabel.textContent = '¥1,000';
-    }
-
-    // ３番目のメニュー「支払い方法」の中身をリセット
-    if (allItems[2]) {
-        const methodLabel = allItems[2].querySelector('.current-value');
-        if (methodLabel) methodLabel.textContent = '未登録';
-    }
-
-
 
 
 	
