@@ -15,39 +15,19 @@
 
 
 
+switchCard()
 
-
-switchCard()	
-
-currentSelectedCardType = 'sub'; 
+    if (isAutochargeEnabled) {
+        renderAutochargeUI();
+    }
 	
-console.log(
-    '【第1】カード切替後',
-    'currentSelectedCardType =',
-    currentSelectedCardType,
-    'autoTargetCardType =',
-    autoTargetCardType
-);
-
-script.js:1340 summaryCardText: 2
-script.js:1347 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
-script.js:1352 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
-script.js:1357 depositLine: <div class=​"deposit-card-balance-line is-active">​…​</div>​
-script.js:299 【第1】カード切替後 currentSelectedCardType = sub autoTargetCardType = main
+【第３モーダル】オートチャージ保存後仕様 【ヒーロー・第１】ライン表示 / カラー　変更確認！	ラインはできた。
 
 selectDepositOption()
 	
 depositTargetCardType = value;   
 	
-console.log(
-    '【第2】カード切替後',
-    'depositTargetCardType =',
-    depositTargetCardType,
-    'autoTargetCardType =',
-    autoTargetCardType
-);
 
-💡
 console.log(
     '【第2】カード切替後',
     'currentSelectedCardType =',
@@ -58,78 +38,15 @@ console.log(
     autoTargetCardType
 );
 
-
-script.js:685 【第2】カード切替後 depositTargetCardType = sub autoTargetCardType = main
-script.js:1340 summaryCardText: 2
-script.js:1347 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
-script.js:1352 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
-script.js:1357 depositLine: <div class=​"deposit-card-balance-line">​…​</div>​
+script.js:693 【第2】カード切替後 currentSelectedCardType = main depositTargetCardType = sub autoTargetCardType = main
+script.js:1350 summaryCardText: 2
+script.js:1357 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
+script.js:1362 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
+script.js:1367 depositLine: <div class=​"deposit-card-balance-line">​…​</div>​
 	
 	
 	
 
-
-
-
-function renderAutochargeUI() {
-
-    console.log('🔥 renderAutochargeUI 動いた');
-
-    console.log(
-        'isAutochargeEnabled =',
-        isAutochargeEnabled
-    );
-
-    console.log(
-        'currentSelectedCardType =',
-        currentSelectedCardType
-    );
-
-    console.log(
-        'depositTargetCardType =',
-        depositTargetCardType
-    );
-
-    console.log(
-        'autoTargetCardType =',
-        autoTargetCardType
-    );
-
-script.js:1320 🔥 renderAutochargeUI 動いた
-script.js:1322 isAutochargeEnabled = true
-script.js:1327 currentSelectedCardType = main
-script.js:1332 depositTargetCardType = main
-script.js:1337 autoTargetCardType = main
-
-
-console.log(
-    'summaryCardText:',
-    document.querySelectorAll(
-        '#cardFlip .summary-card-text, #qrModal .summary-card-text'
-    ).length
-);
-
-console.log(
-    'heroLine:',
-    document.querySelector('#cardFlip .hero-card-balance-line')
-);
-
-console.log(
-    'qrLine:',
-    document.querySelector('#qrModal .qr-card-balance-line')
-);
-
-console.log(
-    'depositLine:',
-    document.querySelector('#depositModal .deposit-card-balance-line')
-);
-
-
-script.js:1320 summaryCardText: 2
-script.js:1327 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
-script.js:1332 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
-script.js:1337 depositLine: <div class=​"deposit-card-balance-line is-active">​…​</div>​
-	
 
 
 
