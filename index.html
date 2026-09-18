@@ -13,6 +13,64 @@
 　
 💡　無代に渡す用 
 
+function openDepositModal(event) {
+    if(!event) return;
+
+    // タップの衝撃波で、第１モーダルが閉じてしまうのを防ぐ
+    event.stopPropagation ();
+
+    // 【第１モーダル】現在のカードを、【第２モーダル】入金対象のカードの「初期値」として引き継ぐ　
+    depositTargetCardType = currentSelectedCardType;
+
+    //  新しく開くとき、前回の確認画面を非表示にしておく
+    const confirmBox = document.querySelector('.deposit-screen-confirm');
+
+    if (confirmBox) confirmBox.classList.remove('is-active'); 
+
+    // 新しく開くとき、入力画面を表示にしておく 
+    const inputArea = document.querySelector('.deposit-screen-input'); // 入金設定の箱
+
+    if (inputArea) inputArea.classList.add('is-active');
+
+
+    // 第２を開いた瞬間にも最新の現在選択中カードを表示
+    renderCurrentCardToDeposit();
+
+
+    // 【リセット機能】入金額と支払い方法は、初期値に強制リセットする
+
+    const allItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
+    
+    // ２番目のメニュー「入金額」の中身をリセット
+    if (allItems[1]) {
+
+        const amtLabel = allItems[1].querySelector('.current-value');
+
+        if (amtLabel) amtLabel.textContent = '¥1,000';
+    }
+
+    // ３番目のメニュー「支払い方法」の中身をリセット
+    if (allItems[2]) {
+
+        const methodLabel = allItems[2].querySelector('.current-value');
+
+        if (methodLabel) methodLabel.textContent = '未登録';
+    }
+
+    
+    // 第２モーダルの土台（オーバーレイ）
+    const depositModal = document.getElementById('depositModal');
+
+    if (depositModal) {
+        depositModal.classList.add('is-active');
+    }    
+}
+
+
+【第１モーダル】現在のカードを、【第２モーダル】入金対象のカードの「初期値」として引き継ぐ、をオートチャージ保存後用にも作る？
+	
+	
+
 ヒーロー・第１の保存時の動きできた。
 けど、ここでまた新たな謎現象。第１で選んだカードと第２（第３）の初期カードは統一する仕様にしている、のは覚えてる？で、
 保存後、保存対象メイン、第１で選んだカードが第２を開くたび保存対象カード仕様になる。逆に保存対象サブにして第１でサブだと第２サブ：通常仕様状態、て第１でメインだと第２メイン：保存仕様状態。
