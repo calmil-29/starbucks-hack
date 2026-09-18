@@ -9,63 +9,20 @@
 </head>
 <body>
 
-================================================
+
 　
 💡　無代に渡す用 
 
-function renderCurrentCardToDeposit() {
 
-    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');  // 第２現在表示カード
-    const depositCardName = document.getElementById('depositCardName'); 	         // 第２現在表示カード名
-    const depositCardVal = document.getElementById('depositCardVal');                // 第２現在表示カード金額
-    const depositCurrentBadge =document.getElementById('depositCurrentBadge');       // 第２現在表示場所用の⚫︎バッジ
-
-    // 現在カード：メイン
-
-    if (depositTargetCardType === 'main') {
-
-        if (depositCurrentCardImg) {
-            depositCurrentCardImg.src = 'images/my-card-main.svg';
-        }
-        
-        if (depositCardName) {
-            depositCardName.textContent = `Starbucks Card`;
-        }	
-
-        if (depositCardVal) {
-             depositCardVal.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
-        }	
-
-        if (depositCurrentBadge) {
-            depositCurrentBadge.setAttribute('data-card-type', 'main');
-        }
-
-
-    } else {
-
-        // 現在カード：サブ
-
-        if (depositCurrentCardImg) {
-            depositCurrentCardImg.src = 'images/my-card-sub.png';
-        }
-
-        if (depositCardName) {
-            depositCardName.textContent = `サブカード`;
-        }
-        
-        if (depositCardVal) {
-             depositCardVal.textContent = `¥${subCardBalance.toLocaleString()}`;
-        }	
-
-        if (depositCurrentBadge) {
-            depositCurrentBadge.setAttribute('data-card-type', 'sub');
-        }
-    }
-}
+script.js:305 【第1】カード切替後 currentSelectedCardType = sub autoTargetCardType = main
+script.js:490 【第２を開く直前】 currentSelectedCardType = sub depositTargetCardtype = sub autoTargetCardType = main
+script.js:512 【第２を開いた後】 currentSelectedCardType = sub depositTargetCardType = sub autoTargetCardType = main
 	
 
-ヒーロー・第１の保存時の動きできた。
-けど、ここでまた新たな謎現象。第１で選んだカードと第２（第３）の初期カードは統一する仕様にしている、のは覚えてる？で、
+	
+
+
+新たな謎現象。第１で選んだカードと第２（第３）の初期カードは統一する仕様にしている、のは覚えてる？で、
 保存後、保存対象メイン、第１で選んだカードが第２を開くたび保存対象カード仕様になる。逆に保存対象サブにして第１でサブだと第２サブ：通常仕様状態、て第１でメインだと第２メイン：保存仕様状態。
 	
 ※保存対象：メイン	
