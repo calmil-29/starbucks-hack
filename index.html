@@ -112,8 +112,8 @@ function renderCurrentCardToDeposit() {
     const depositCardVal = document.getElementById('depositCardVal');                // 第２現在表示カード金額
 
     // 現在カード：メイン
-
-    if (depositTargetCardType === 'main') {
+    // currentSelectedCardType → depositTargetCardType に変更
+    if (depositTargetCardType === 'main') {  
 
         if (depositCurrentCardImg) {
             depositCurrentCardImg.src = 'images/my-card-main.svg';
@@ -145,10 +145,28 @@ function renderCurrentCardToDeposit() {
 
     }
 }
-	renderCurrentCardToDeposit() は、currentSelectedCardType → depositTargetCardType に変えたことで、むしろ正しい形になってる。
 
 
+function toggleDepositWindow(type, event) {   
+    if (event) event.stopPropagation(); 
 
+    // 他の別窓を全部閉じる
+    closeAllSelectorWindows();
+    
+    // 開きたい別枠を探す
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1); 
+    const targetId = `deposit${upperType}Window`;
+
+    // 開く
+    const targetWindow = document.getElementById(targetId); 
+    if (targetWindow) {
+        targetWindow.classList.add('is-active');
+    }
+}
+
+
+renderCurrentCardToDeposit() は、currentSelectedCardType → depositTargetCardType に変えたことで、むしろ正しい形になってる。
+	
 
 
 
