@@ -13,62 +13,55 @@
 　
 💡　無代に渡す用 
 
-function openDepositModal(event) {
-    if(!event) return;
+function renderCurrentCardToDeposit() {
 
-    // タップの衝撃波で、第１モーダルが閉じてしまうのを防ぐ
-    event.stopPropagation ();
+    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');  // 第２現在表示カード
+    const depositCardName = document.getElementById('depositCardName'); 	         // 第２現在表示カード名
+    const depositCardVal = document.getElementById('depositCardVal');                // 第２現在表示カード金額
+    const depositCurrentBadge =document.getElementById('depositCurrentBadge');       // 第２現在表示場所用の⚫︎バッジ
 
-    // 【第１モーダル】現在のカードを、【第２モーダル】入金対象のカードの「初期値」として引き継ぐ　
-    depositTargetCardType = currentSelectedCardType;
+    // 現在カード：メイン
 
-    //  新しく開くとき、前回の確認画面を非表示にしておく
-    const confirmBox = document.querySelector('.deposit-screen-confirm');
+    if (depositTargetCardType === 'main') {
 
-    if (confirmBox) confirmBox.classList.remove('is-active'); 
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-main.svg';
+        }
+        
+        if (depositCardName) {
+            depositCardName.textContent = `Starbucks Card`;
+        }	
 
-    // 新しく開くとき、入力画面を表示にしておく 
-    const inputArea = document.querySelector('.deposit-screen-input'); // 入金設定の箱
+        if (depositCardVal) {
+             depositCardVal.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
+        }	
 
-    if (inputArea) inputArea.classList.add('is-active');
+        if (depositCurrentBadge) {
+            depositCurrentBadge.setAttribute('data-card-type', 'main');
+        }
 
 
-    // 第２を開いた瞬間にも最新の現在選択中カードを表示
-    renderCurrentCardToDeposit();
+    } else {
 
+        // 現在カード：サブ
 
-    // 【リセット機能】入金額と支払い方法は、初期値に強制リセットする
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-sub.png';
+        }
 
-    const allItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
-    
-    // ２番目のメニュー「入金額」の中身をリセット
-    if (allItems[1]) {
+        if (depositCardName) {
+            depositCardName.textContent = `サブカード`;
+        }
+        
+        if (depositCardVal) {
+             depositCardVal.textContent = `¥${subCardBalance.toLocaleString()}`;
+        }	
 
-        const amtLabel = allItems[1].querySelector('.current-value');
-
-        if (amtLabel) amtLabel.textContent = '¥1,000';
+        if (depositCurrentBadge) {
+            depositCurrentBadge.setAttribute('data-card-type', 'sub');
+        }
     }
-
-    // ３番目のメニュー「支払い方法」の中身をリセット
-    if (allItems[2]) {
-
-        const methodLabel = allItems[2].querySelector('.current-value');
-
-        if (methodLabel) methodLabel.textContent = '未登録';
-    }
-
-    
-    // 第２モーダルの土台（オーバーレイ）
-    const depositModal = document.getElementById('depositModal');
-
-    if (depositModal) {
-        depositModal.classList.add('is-active');
-    }    
 }
-
-
-【第１モーダル】現在のカードを、【第２モーダル】入金対象のカードの「初期値」として引き継ぐ、をオートチャージ保存後用にも作る？
-	
 	
 
 ヒーロー・第１の保存時の動きできた。
