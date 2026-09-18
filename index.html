@@ -14,6 +14,18 @@
 💡　無代に渡す用 
 
 
+全部整理したよ。
+で、
+renderAutochargeUI() を基準にして「この関数は残す／この関数は消す」を、今の script.js の該当部分を貼ってもらえれば、行単位で仕分けできる。
+どこが該当部分なのかがわからないんだけど。
+だから、ここの犯人炙り出すのが先じゃない？
+
+
+どうして同じサブのカードを表示してるのに、第1から第2で引き継いだ場合は、オートチャージの保存使用が無効になるのか、ドロップダウンで選択した後有効になるのか
+
+
+
+
 script.js:305 【第1】カード切替後 currentSelectedCardType = sub autoTargetCardType = main
 script.js:490 【第２を開く直前】 currentSelectedCardType = sub depositTargetCardtype = sub autoTargetCardType = main
 script.js:512 【第２を開いた後】 currentSelectedCardType = sub depositTargetCardType = sub autoTargetCardType = main
