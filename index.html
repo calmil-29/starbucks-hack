@@ -13,37 +13,65 @@
 　
 💡　無代に渡す用 
 
+ヒーロー・第１の保存時の動きできた。
+けど、ここでまた新たな謎現象。第１で選んだカードと第２（第３）の初期カードは統一する仕様にしている、のは覚えてる？で、
+保存後、保存対象メイン、第１で選んだカードが第２を開くたび保存対象カード仕様になる。逆に保存対象サブにして第１でサブだと第２サブ：通常仕様状態、て第１でメインだと第２メイン：保存仕様状態。
+	
+※保存対象：メイン	
+第１ メイン：保存状態仕様
+	ドロップ　メイン　⚫︎バッジ
+　　　　　　　　サブ	
+	
+	↓　（第１ドロップダウンでサブ選択）
 
-switchCard()
+第１ サブ：通常仕様
+	ドロップ　メイン 　⚫︎バッジ
+　　　　　　　　サブ	
+	↓
+	
+第２ サブ：保存状態仕様
+	ドロップ　メイン ⚫︎バッジ
+　　　　　　　　サブ	
+	
+	↓　（第２ドロップダウンでサブ選択）
+	
+第２ サブ：通常仕様
+	ドロップ　メイン ⚫︎バッジ
+　　　　　　　　サブ	
 
-    if (isAutochargeEnabled) {
-        renderAutochargeUI();
-    }
-	
-【第３モーダル】オートチャージ保存後仕様 【ヒーロー・第１】ライン表示 / カラー　変更確認！	ラインは完了。
+	↓　（第２ドロップダウンでメイン選択）
 
-selectDepositOption()
-	
-depositTargetCardType = value;   
-	
-console.log(
-    '【第2】カード切替後',
-    'currentSelectedCardType =',
-    currentSelectedCardType,
-    'depositTargetCardType =',
-    depositTargetCardType,
-    'autoTargetCardType =',
-    autoTargetCardType
-);
+第２ メイン：保存状態仕様
+	ドロップ　メイン ⚫︎バッジ
+　　　　　　　　サブ		
 
-script.js:693 【第2】カード切替後 currentSelectedCardType = main depositTargetCardType = sub autoTargetCardType = main
-script.js:1350 summaryCardText: 2
-script.js:1357 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
-script.js:1362 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
-script.js:1367 depositLine: <div class=​"deposit-card-balance-line">​…​</div>​
+※保存対象：サブ
+第１ メイン：通常仕様
+	ドロップ　メイン　
+　　　　　　　　サブ ⚫︎バッジ
 	
+	↓　（第１ドロップダウンでサブ選択）
+
+第１ サブ：保存状態仕様
+	ドロップ　メイン 　
+　　　　　　　　サブ ⚫︎バッジ
+	↓
 	
+第２ サブ：通常仕様
+	ドロップ　メイン 
+　　　　　　　　サブ ⚫︎バッジ
 	
+	↓　（第２ドロップダウンでサブ選択）
+	
+第２ サブ：保存状態仕様
+	ドロップ　メイン 
+　　　　　　　　サブ ⚫︎バッジ	
+
+	↓　（第２ドロップダウンでメイン選択）
+
+第２ メイン：通常仕様
+	ドロップ　メイン 
+　　　　　　　　サブ ⚫︎バッジ			
 
 
 
