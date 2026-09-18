@@ -14,42 +14,49 @@
 💡　無代に渡す用 
 
 
-if (depositLine) {
-    depositLine.classList.toggle(
-        'is-active',
-        isDepositTarget
-    );
-
-    console.log(
-        '【第2ライン更新直後】',
-        'isDepositTarget =',
-        isDepositTarget,
-        'class =',
-        depositLine.className
-    );
-}
-
-
-
-
 script.js:305 【第1】カード切替後 currentSelectedCardType = sub autoTargetCardType = main
 script.js:490 【第２を開く直前】 currentSelectedCardType = sub depositTargetCardtype = sub autoTargetCardType = main
 script.js:512 【第２を開いた後】 currentSelectedCardType = sub depositTargetCardType = sub autoTargetCardType = main
 script.js:1260 確認画面のclass autocharge-screen-confirm is-active
 script.js:1365 summaryCardText: 2
-script.js:1372 heroLine: <div class=​"hero-card-balance-line">​…​</div>​
-script.js:1377 qrLine: <div class=​"qr-card-balance-line">​…​</div>​
+script.js:1372 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
+script.js:1377 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
 script.js:1382 depositLine: <div class=​"deposit-card-balance-line is-active">​…​</div>​
-script.js:1400 【第2 保存状態判定】 isEnabled = true depositTargetCardType = sub autoTargetCardType = main isDepositTarget = false
-script.js:490 【第２を開く直前】 currentSelectedCardType = sub depositTargetCardtype = sub autoTargetCardType = main
-script.js:512 【第２を開いた後】 currentSelectedCardType = sub depositTargetCardType = sub autoTargetCardType = main
-script.js:708 【第2】カード切替後 currentSelectedCardType = sub depositTargetCardType = main autoTargetCardType = main
+script.js:1400 【第2 保存状態判定】 isEnabled = true depositTargetCardType = sub autoTargetCardType = sub isDepositTarget = true
+script.js:1459 【第2ライン更新直後】 isDepositTarget = true class = deposit-card-balance-line is-active
+script.js:490 【第２を開く直前】 currentSelectedCardType = sub depositTargetCardtype = sub autoTargetCardType = sub
+script.js:512 【第２を開いた後】 currentSelectedCardType = sub depositTargetCardType = sub autoTargetCardType = sub
+script.js:708 【第2】カード切替後 currentSelectedCardType = sub depositTargetCardType = main autoTargetCardType = sub
 script.js:1365 summaryCardText: 2
-script.js:1372 heroLine: <div class=​"hero-card-balance-line">​…​</div>​
-script.js:1377 qrLine: <div class=​"qr-card-balance-line">​…​</div>​
+script.js:1372 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
+script.js:1377 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
+script.js:1382 depositLine: <div class=​"deposit-card-balance-line">​…​</div>​
+script.js:1400 【第2 保存状態判定】 isEnabled = true depositTargetCardType = main autoTargetCardType = sub isDepositTarget = false
+script.js:1459 【第2ライン更新直後】 isDepositTarget = false class = deposit-card-balance-line
+script.js:1365 summaryCardText: 2
+script.js:1372 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
+script.js:1377 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
+script.js:1382 depositLine: <div class=​"deposit-card-balance-line">​…​</div>​
+script.js:1400 【第2 保存状態判定】 isEnabled = true depositTargetCardType = main autoTargetCardType = sub isDepositTarget = false
+script.js:1459 【第2ライン更新直後】 isDepositTarget = false class = deposit-card-balance-line
+script.js:490 【第２を開く直前】 currentSelectedCardType = main depositTargetCardtype = main autoTargetCardType = sub
+script.js:512 【第２を開いた後】 currentSelectedCardType = main depositTargetCardType = main autoTargetCardType = sub
+script.js:305 【第1】カード切替後 currentSelectedCardType = sub autoTargetCardType = sub
+script.js:1365 summaryCardText: 2
+script.js:1372 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
+script.js:1377 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
+script.js:1382 depositLine: <div class=​"deposit-card-balance-line">​…​</div>​
+script.js:1400 【第2 保存状態判定】 isEnabled = true depositTargetCardType = main autoTargetCardType = sub isDepositTarget = false
+script.js:1459 【第2ライン更新直後】 isDepositTarget = false class = deposit-card-balance-line
+script.js:490 【第２を開く直前】 currentSelectedCardType = sub depositTargetCardtype = sub autoTargetCardType = sub
+script.js:512 【第２を開いた後】 currentSelectedCardType = sub depositTargetCardType = sub autoTargetCardType = sub
+script.js:708 【第2】カード切替後 currentSelectedCardType = sub depositTargetCardType = sub autoTargetCardType = sub
+script.js:1365 summaryCardText: 2
+script.js:1372 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
+script.js:1377 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
 script.js:1382 depositLine: <div class=​"deposit-card-balance-line is-active">​…​</div>​
-script.js:1400 【第2 保存状態判定】 isEnabled = true depositTargetCardType = main autoTargetCardType = main isDepositTarget = true
-
+script.js:1400 【第2 保存状態判定】 isEnabled = true depositTargetCardType = sub autoTargetCardType = sub isDepositTarget = true
+script.js:1459 【第2ライン更新直後】 isDepositTarget = true class = deposit-card-balance-line is-active
 
 	
 	
