@@ -13,127 +13,16 @@
 　
 💡　無代に渡す用 
 
-じゃ、次。オートチャージ保存後の第２でON状態でカード画像と名前だけが出ない状態。正直何がおかしいのかわからない。ちなみにこう言う時 consol.log って使うの？
+script.js:1320 【第２ オートチャージ保存カード表示】 autoTargetCardType = sub summaryCardImg =  <img src=​"images/​my-card-sub.png" class=​"summary-card-img" alt=​"Starbucks Card">​ summaryCardName <span class=​"summary-card-name">​サブカード​</span>​
+script.js:1335 【画像設定後】 src = http://192.168.3.4:5500/images/my-card-sub.png class = summary-card-img
+script.js:1353 【名前設定後】 text = サブカード class = summary-card-name
+script.js:1379 summaryCardText: 2
+script.js:1386 heroLine: <div class=​"hero-card-balance-line">​…​</div>​
+script.js:1391 qrLine: <div class=​"qr-card-balance-line">​…​</div>​
+script.js:1396 depositLine: <div class=​"deposit-card-balance-line">​…​</div>​
+script.js:1414 【第2 保存状態判定】 isEnabled = true depositTargetCardType = main autoTargetCardType = sub isDepositTarget = false
+script.js:1473 【第2ライン更新直後】 isDepositTarget = false class = deposit-card-balance-line
 
-          <!-- 【オートチャージ設定】リアルタイム更新バナー（初期状態は OFF） -->
-          <div class="autocharge-banner-container"> 
-
-            <!--  OFF 状態-->
-            <div class="banner-view-off">  
-              <p class="banner-title">オートチャージ</p>
-              <p class="banner-sub-title">カードの条件を設定</p>
-              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
-            </div> 
-
-            <!-- ON 状態  --> 
-            <div class="banner-view-on">
-              <div class="banner-text">
-                <p class="banner-title">オートチャージ</p> 
-                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
-
-                <!-- 💡オートチャージ保存されたカード画像/名前 --> 
-                <img src="images/my-card-main.svg" class="summary-card-img" alt="Starbucks Card">
-                <span class="summary-card-name">Starbucks Card</span>
-              </div>
-
-              <!-- ON 状態スイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
-              <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
-                <span class="autocharge-switch-circle"></span>
-              </button> 
-            </div>  
-          </div>   
-
-/* カード画像 */
-.summary-card-img {
-    width: 50px;
-    display: none;
-}
-.summary-card-img.is-active {
-    display: block;
-}
-
-/* カード名 */
-.summary-card-name {
-    display: none;
-}
-.summary-card-name.is-active {
-    display: block;
-}
-
-function executeAutochargeSave(event) {
-
-    if (event) event.stopPropagation();
-
-    // ================================================================
-    // 【第３モーダル】の編集中の設定値を”保存済み・有効な状態”として確定させる
-    // ================================================================
-
-    autoTargetCardType = editingAutoTargetCardType;     // オートチャージ対象のカード　
-    autochargeAmount = editingAutochargeAmount;         // オートチャージする金額
-    autochargeCondition = editingAutochargeCondition;   // オートチャージを実行する入金条件 
-    autochargeMethod = editingAutochargeMethod          // オートチャージ支払い方法
-
-    isAutochargeEnabled = true;                         // オートチャージ機能をONにする
-
-
-    // ================================================================
-    // 【第２モーダル】オートチャージ ON 表示 
-    // ================================================================
-
-    const bannerViewOff = document.querySelector('.banner-view-off');
-    const bannerViewOn = document.querySelector('.banner-view-on');
-
-    if (bannerViewOff) bannerViewOff.classList.remove('is-active');
-    if (bannerViewOn) bannerViewOn.classList.add('is-active');
-
-    // ================================================================
-    // 【第２モーダル】オートチャージ 設定内容
-    // ================================================================
-
-    const allSummaries = document.querySelectorAll('.autocharge-summary');
-
-    allSummaries.forEach(el => {
-        el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n入金条件：残高が¥${autochargeCondition.toLocaleString()}未満` ;       
-    });
-
-    // ================================================================
-    // 【第２モーダル】対象カード表示
-    // ================================================================
-
-    const summaryCardImg = document.querySelector('.summary-card-img');
-    const summaryCardName = document.querySelector('.summary-card-name');
-
-    if (summaryCardImg) {
-        if (autoTargetCardType === 'main') {
-            summaryCardImg.src = 'images/my-card-main.svg';
-
-        } else if (autoTargetCardType === 'sub') {
-            summaryCardImg.src = 'images/my-card-sub.png';
-        }
-    }
-
-    if (summaryCardName) {
-        if (autoTargetCardType === 'main') {
-            summaryCardName.textContent = 'Starbucks Card';
-
-        } else if (autoTargetCardType === 'sub') {
-            summaryCardName.textContent = 'サブカード';
-        }
-    }
-
-    const autochargeModal = document.getElementById('autochargeModal');
-
-    if (autochargeModal) {
-        autochargeModal.classList.remove('is-active');
-    }
-
-    // オートチャージ保存後　【ヒーロー・第１・第２】のオートチャージ表示のDOM更新
-    renderAutochargeUI();
-
-}
-	
-
-	
 
 
 
