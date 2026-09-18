@@ -14,6 +14,23 @@
 💡　無代に渡す用 
 
 
+if (depositLine) {
+    depositLine.classList.toggle(
+        'is-active',
+        isDepositTarget
+    );
+
+    console.log(
+        '【第2ライン更新直後】',
+        'isDepositTarget =',
+        isDepositTarget,
+        'class =',
+        depositLine.className
+    );
+}
+
+
+
 
 script.js:305 【第1】カード切替後 currentSelectedCardType = sub autoTargetCardType = main
 script.js:490 【第２を開く直前】 currentSelectedCardType = sub depositTargetCardtype = sub autoTargetCardType = main
