@@ -20,8 +20,20 @@ renderAutochargeUI() を基準にして「この関数は残す／この関数�
 どこが該当部分なのかがわからないんだけど。
 だから、ここの犯人炙り出すのが先じゃない？
 
+script.js:1388 【第2 保存状態判定】 isEnabled = true depositTargetCardType = main autoTargetCardType = sub isDepositTarget = false
+script.js:1447 【第2ライン更新直後】 isDepositTarget = false class = deposit-card-balance-line
+script.js:477 【第２を開く直前】 currentSelectedCardType = sub depositTargetCardtype = sub autoTargetCardType = sub
+script.js:499 【第２を開いた後】 currentSelectedCardType = sub depositTargetCardType = sub autoTargetCardType = sub
 
-どうして同じサブのカードを表示してるのに、第1から第2で引き継いだ場合は、オートチャージの保存使用が無効になるのか、ドロップダウンで選択した後有効になるのか
+script.js:695 【第2】カード切替後 currentSelectedCardType = sub depositTargetCardType = sub autoTargetCardType = sub
+script.js:1353 summaryCardText: 2
+script.js:1360 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
+script.js:1365 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
+script.js:1370 depositLine: <div class=​"deposit-card-balance-line is-active">​…​</div>​
+script.js:1388 【第2 保存状態判定】 isEnabled = true depositTargetCardType = sub autoTargetCardType = sub isDepositTarget = true
+script.js:1447 【第2ライン更新直後】 isDepositTarget = true class = deposit-card-balance-line is-active
+
+どうして第２では、同じサブのカードを表示してるのに、【第１モーダル】現在表示カードを、【第２モーダル】現在選択中の入金対象のカードの「初期値」として引き継いだ瞬間は、オートチャージの保存仕様が無効になるのか、ドロップダウンで選択した後になら有効になるのか？
 
 
 
