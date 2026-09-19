@@ -13,12 +13,41 @@
 　
 💡　無代に渡す用 
 
+じゃあこれで、executeAutochargeSave() の処理はほぼ完成かな。あとはオートチャージ保存後は第３モーダルの画面を、 	
+#depositModal の turnOffAutocharge() でOFF状態に戻すまで、非表示にするのと、turnOffAutocharge() でOFF状態に戻す処理かな？
+　　　　　<!-- 【オートチャージ設定】リアルタイム更新バナー（初期状態は OFF） -->
+          <div class="autocharge-banner-container"> 
 
+            <!--  OFF 状態-->
+            <div class="banner-view-off">  
+              <p class="banner-title">オートチャージ</p>
+              <p class="banner-sub-title">カードの条件を設定</p>
+              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
+            </div> 
 
+            <!-- ON 状態 　--> 
+            <div class="banner-view-on">
+              <div class="banner-text">
+                <p class="banner-title">オートチャージ</p> 
+                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
+
+                <!-- 💡オートチャージ保存されたカード画像/名前 --> 
+                <img src="images/my-card-main.svg" class="summary-card-img" alt="Starbucks Card">
+                <span class="summary-card-name">Starbucks Card</span>
+              </div>
+
+              <!-- ON 状態スイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
+              <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
+                <span class="autocharge-switch-circle"></span>
+              </button> 
+            </div>  
+          </div>   
 
 
 	
-
+====================================================================================================-
+メモ
+	
 renderCurrentCardToDeposit();　　　【第２モーダル】現在選択中カードを表示する関数　・描画
 	
 renderCurrentCardToAutocharge();  【第３モーダル】現在選択中カードを表示する関数　・描画
@@ -47,222 +76,6 @@ executeAutochargeSave()   未実行      第3の編集中設定を保存
 
 finalDepositBtn()          ⚪︎        実際の入金＋残高表示更新
 
-
-	
-
-
-	
-🔥 - 修正箇所 -----------------------------------------------------------------------------------------------------------------------------
-	
-今の executeAutochargeSave() 処理の状態
-	
-【第１・２】対象カードの 緑⚫︎  renderAutochargeBadges(); 　
-正しく表示されているのはドロップダウンの中のカードのみ、第２の現在選択カードにはオートチャージ対象カードに関係なく、常にバッジが表示されてる状態
-
-function renderAutochargeBadges() {
-
-    const badges = document.querySelectorAll('#qrModal .charge-badge, #depositModal .charge-badge');
-
-    badges.forEach(badge => {
-
-        const cardType = badge.getAttribute('data-card-type');
-
-        badge.classList.toggle(
-            'is-active',
-            cardType === autoTargetCardType
-        );
-    });
-}
-
-	
-【ヒーロー・第１】オートチャージ設定中  
-オートチャージ対象カードに関係なく、常に オートチャージ設定中 が表示されてる状態
-	
-function renderAutochargeText() {
-
-    const summaryCardText = document.querySelectorAll(
-        '#cardFlip .summary-card-text, #qrModal .summary-card-text');
-    
-    summaryCardText.forEach(text => {
-
-        text.classList.toggle(
-            'is-active',
-            isAutochargeEnabled
-        );
-    });
-
-}	
-	
-【ヒーロー・第１・２】金額下ライン  
-オートチャージ有効後 【ヒーロー】金額下にライン追加：追加されない　【第１・２】金額下の既存ラインカラーを変更：変更されない
-	
-function renderAutochargeLine() {
-
-    const isMatching = 
-        currentSelectedCardType === autoTargetCardType;
-
-    const summaryCardLine = document.querySelectorAll(
-        '#cardFlip .hero-card-price-line, ' +
-        '#qrModal .qr-card-price-line, ' +
-        '#depositModal .deposit-card-price-line');
-
-    summaryCardLine.forEach(line => {
-
-        line.classList.toggle(
-            'is-active',
-            isMatching    
-        );
-    });
-}
-
------------------------------------------------
-
-
-
-
-
-
-	
-=============================================================================================================================
-	
-メモ　
-
-
-	
-オートチャージ対象＝メイン
-↓
-第２現在選択中の表示カードにはメイン、サブに関係なく常に⚫︎バッジ表示の状態
-	
-
-オートチャージ対象＝サブ	
-↓
-第２現在選択中の表示カードにはメイン、サブに関係なく常に⚫︎バッジ非表示の状態		
-
-
-
-	
-	
-
-	
-🔥 第３保存の無題提供コード 疑問 ====================================	
-function executeAutochargeSave(event) {
-    if (event) event.stopPropagation();
-
-    // ======================================
-    // ① 第3モーダルの編集内容を正式保存
-    // ======================================
-
-    autoTargetCardType = editingAutoTargetCardType;
-    autochargeAmount = editingAutochargeAmount;
-    autochargeCondition = editingAutochargeCondition;
-    autochargeMethod = editingAutochargeMethod;
-
-    isAutochargeEnabled = true;
-
-
-    // ======================================
-    // ② 第2の「現在表示カード」の情報を更新 　？どうして第２「現在表示カード」の情報までここで更新する必要があるの？第２の更新（バッジ以外）は openDepositModal() で処理されるけど
-    // ======================================
-
-    const currentCardBadge =
-        document.getElementById('depositCurrentBadge');
-
-    const depositCurrentCardImg =
-        document.getElementById('depositCurrentCardImg');
-
-    const depositCardVal =
-        document.getElementById('depositCardVal');
-
-
-    if (autoTargetCardType === 'main') {
-
-        if (currentCardBadge) {
-            currentCardBadge.dataset.cardType = 'main';
-        }
-
-        if (depositCurrentCardImg) {
-            depositCurrentCardImg.src =
-                'images/my-card-main.svg';
-        }
-
-        if (depositCardVal) {
-            depositCardVal.textContent =
-                `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-        }
-
-    } else if (autoTargetCardType === 'sub') {
-
-        if (currentCardBadge) {
-            currentCardBadge.dataset.cardType = 'sub';
-        }
-
-        if (depositCurrentCardImg) {
-            depositCurrentCardImg.src =
-                'images/my-card-sub.png';
-        }
-
-        if (depositCardVal) {
-            depositCardVal.textContent =
-                `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
-    }
-
-
-    // ======================================
-    // ③ すべてのオートチャージバッジを更新
-    // ======================================
-
-    const allChangeBadge =
-        document.querySelectorAll('.charge-badge');
-
-    allChangeBadge.forEach(badge => {
-
-        const cardType =
-            badge.dataset.cardType;
-
-        badge.classList.toggle(
-            'is-active',
-            cardType === autoTargetCardType
-        );
-    });
-
-
-    // ======================================
-    // ④ 第2モーダルのON表示
-    // ======================================
-
-    const bannerViewOff =
-        document.querySelector('.banner-view-off');
-
-    const bannerViewOn =
-        document.querySelector('.banner-view-on');
-
-    const allSummaries =
-        document.querySelectorAll('.autocharge-summary');
-
-    if (bannerViewOff) {
-        bannerViewOff.classList.remove('is-active');
-    }
-
-    if (bannerViewOn) {
-        bannerViewOn.classList.add('is-active');
-    }
-
-    allSummaries.forEach(el => {
-        el.textContent =
-            `オートチャージ：¥${autochargeAmount.toLocaleString()}\n` +
-            `入金条件：残高が¥${autochargeCondition.toLocaleString()}未満`;
-    });
-
-
-    // ======================================
-    // ⑤ 第3モーダルを閉じる
-    // ======================================
-
-    // 後で実装
-}
-
-==============================================================
 
 	
 🔥🔥🔥　第３モーダル、executeAutochargeSave() 保存処理の設計書　🔥🔥　==================================
