@@ -13,65 +13,12 @@
 　
 💡　無代に渡す用 
 
-
-オートチャージ保存後の各表示変更    
-
-・ヒーロー
-表示：「オートチャージ設定中 （#00AF66）」
-表示：金額下にライン追加　（#00AF66） 
-    
-・第1モーダル
-現在選択中カード	
-表示：「オートチャージ設定中（#00AF66）」
-変更：金額下の既存ラインカラーを変更 （#989797 → #00AF66）
-
-ドロップダウン
-表示：対象保存カード → ●バッジ (#00AF66)	
-
-・第2モーダル
-ヘッダー    
-表示変更：オートチャージ状態のリアルタイム更新バナーを OFF状態 → ON状態
-
-現在選択中カード	
-表示：現在選択中カード →  ●バッジ (#00AF66)
-変更：金額下の既存ラインカラーを変更 （#989797 → #00AF66）
-
-ドロップダウン
-表示：対象保存カード → ●バッジ (#00AF66)
+できた。じゃこれで ヒーロー・第１・２・３モーダルのカード設定・金額部分はほぼ完成。あとは、第１のqrCardTimestamp　ON→OFF状態切り替え時のアニメーション、全体のCSSでの装飾
+ヒーローの裏面、デジタルカードの
 	
-・第３モーダル   
-#depositModa：第２ turnOffAutocharge() でOFF状態に戻すまで、非表示
+	
 
 
-じゃあこれで、executeAutochargeSave() の処理はほぼ完成かな。あとはオートチャージ保存後は第３モーダルの画面を、 	
-#depositModal の turnOffAutocharge() でOFF状態に戻すまで、非表示にするのと、turnOffAutocharge() でOFF状態に戻す処理かな？
-　　　　　<!-- 【オートチャージ設定】リアルタイム更新バナー（初期状態は OFF） -->
-          <div class="autocharge-banner-container"> 
-
-            <!--  OFF 状態-->
-            <div class="banner-view-off">  
-              <p class="banner-title">オートチャージ</p>
-              <p class="banner-sub-title">カードの条件を設定</p>
-              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
-            </div> 
-
-            <!-- ON 状態 　--> 
-            <div class="banner-view-on">
-              <div class="banner-text">
-                <p class="banner-title">オートチャージ</p> 
-                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
-
-                <!-- 💡オートチャージ保存されたカード画像/名前 --> 
-                <img src="images/my-card-main.svg" class="summary-card-img" alt="Starbucks Card">
-                <span class="summary-card-name">Starbucks Card</span>
-              </div>
-
-              <!-- ON 状態スイッチ（OFF 状態に戻す：turnOffAutocharge()） -->
-              <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
-                <span class="autocharge-switch-circle"></span>
-              </button> 
-            </div>  
-          </div>   
 
 
 	
@@ -100,19 +47,52 @@ switchCard()　　　　　　     ⚪︎　　　　　第1で現在カード�
 	
 openDepositModal()         ⚪︎　　　　　第2を開く時の初期化・リセット＋現在カード描画  ・ depositTargetCardType = currentSelectedCardType;　・renderCurrentCardToDeposit();
 
-fillDepositConfirm()                【第２モーダル】【確認画面】へ現在の設定内容を書き込む 	
+fillDepositConfirm()       ⚪︎         【第２モーダル】【確認画面】へ現在の設定内容を書き込む 	
 
-openAutochargeModal()   ← 今ここ      第3を開く時の編集状態開始＋現在カード描画
+openAutochargeModal()      ⚪︎      第3を開く時の編集状態開始＋現在カード描画
 
 selectDepositOption()      ⚪︎        第2/第3のドロップダウン内の選択変更　・選択中の値を設定画面に反映し、【第３モーダルの設定値】を更新する 
 
-executeAutochargeSave()   未実行      第3の編集中設定を保存
+executeAutochargeSave()    ⚪︎      第3の編集中設定を保存
 
 finalDepositBtn()          ⚪︎        実際の入金＋残高表示更新
 
 
+
 	
-🔥🔥🔥　第３モーダル、executeAutochargeSave() 保存処理の設計書　🔥🔥　==================================
+オートチャージ保存後の各表示変更    
+
+・ヒーロー
+表示：「オートチャージ設定中 （#00AF66）」
+表示：金額下にライン追加　（#00AF66） 
+    
+・第1モーダル
+現在選択中カード	
+表示：「オートチャージ設定中（#00AF66）」
+変更：金額下の既存ラインカラーを変更 （#989797 → #00AF66）
+
+ドロップダウン
+表示：対象保存カード → ●バッジ (#00AF66)	
+
+・第2モーダル
+ヘッダー    
+表示変更：オートチャージ状態のリアルタイム更新バナーを OFF状態 → ON状態
+
+現在選択中カード	
+表示：現在選択中カード →  ●バッジ (#00AF66)
+変更：金額下の既存ラインカラーを変更 （#989797 → #00AF66）
+
+ドロップダウン
+表示：対象保存カード → ●バッジ (#00AF66)
+	
+・第３モーダル   
+#depositModa：第２ turnOffAutocharge() でOFF状態に戻すまで、非表示
+
+	
+
+
+	
+🔥　第３モーダル、executeAutochargeSave() 保存処理の設計書　==================================
 
 ①何を変更する？
 	
