@@ -13,53 +13,35 @@
 　
 💡　無代に渡す用 
 
-summaryCardImg summaryCardName に classList.add('is-active') を足したけど、サブの画像・名前は出てくるけど、メインの画像・名前は出てこない。
-	
-script.js:475 【第２を開く直前】 currentSelectedCardType = main depositTargetCardtype = main autoTargetCardType = main
-script.js:497 【第２を開いた後】 currentSelectedCardType = main depositTargetCardType = main autoTargetCardType = main
-script.js:1390 summaryCardText: 2
-script.js:1397 heroLine: <div class=​"hero-card-balance-line">​…​</div>​
-script.js:1402 qrLine: <div class=​"qr-card-balance-line">​…​</div>​
-script.js:1407 depositLine: <div class=​"deposit-card-balance-line">​…​</div>​
-script.js:1427 【第2 保存状態判定】 isEnabled = false depositTargetCardType = main autoTargetCardType = main isDepositTarget = false
-script.js:1486 【第2ライン更新直後】 isDepositTarget = false class = deposit-card-balance-line
-script.js:1249 確認画面のclass autocharge-screen-confirm is-active
-script.js:1321 【第２ オートチャージ保存カード表示】 autoTargetCardType = main summaryCardImg =  <img src=​"images/​my-card-main.svg" class=​"summary-card-img" alt=​"Starbucks Card">​ summaryCardName <span class=​"summary-card-name">​Starbucks Card​</span>​
-script.js:1340 【画像設定後】 src = http://192.168.3.4:5500/images/my-card-main.svg class = summary-card-img
-script.js:1361 【名前設定後】 text = Starbucks Card class = summary-card-name
-script.js:1390 summaryCardText: 2
-script.js:1397 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
-script.js:1402 qrLine: <div class=​"qr-card-balance-line is-active">​…​</div>​
-script.js:1407 depositLine: <div class=​"deposit-card-balance-line is-active">​…​</div>​
-script.js:1427 【第2 保存状態判定】 isEnabled = true depositTargetCardType = main autoTargetCardType = main isDepositTarget = true
-script.js:1486 【第2ライン更新直後】 isDepositTarget = true class = deposit-card-balance-line is-active
-script.js:475 【第２を開く直前】 currentSelectedCardType = main depositTargetCardtype = main autoTargetCardType = main
-script.js:497 【第２を開いた後】 currentSelectedCardType = main depositTargetCardType = main autoTargetCardType = main
-script.js:1390 summaryCardText: 2
-script.js:1397 heroLine: <div class=​"hero-card-balance-line is-active">​…​</div>​
-script.js:1402 qrLine: <div class=​"qr-card-balance-line">​…​</div>​
-script.js:1407 depositLine: <div class=​"deposit-card-balance-line is-active">​…​</div>​
-script.js:1427 【第2 保存状態判定】 isEnabled = true depositTargetCardType = main autoTargetCardType = main isDepositTarget = true
-script.js:1486 【第2ライン更新直後】 isDepositTarget = true class = deposit-card-balance-line is-active
-script.js:1249 確認画面のclass autocharge-screen-confirm is-active
-script.js:1321 【第２ オートチャージ保存カード表示】 autoTargetCardType = sub summaryCardImg =  <img src=​"images/​my-card-sub.png" class=​"summary-card-img is-active" alt=​"Starbucks Card">​ summaryCardName <span class=​"summary-card-name is-active">​サブカード​</span>​
-script.js:1340 【画像設定後】 src = http://192.168.3.4:5500/images/my-card-sub.png class = summary-card-img is-active
-script.js:1361 【名前設定後】 text = サブカード class = summary-card-name is-active
-script.js:1390 summaryCardText: 2
-script.js:1397 heroLine: <div class=​"hero-card-balance-line">​…​</div>​
-script.js:1402 qrLine: <div class=​"qr-card-balance-line">​…​</div>​
-script.js:1407 depositLine: <div class=​"deposit-card-balance-line">​…​</div>​
-script.js:1427 【第2 保存状態判定】 isEnabled = true depositTargetCardType = main autoTargetCardType = sub isDepositTarget = false
-script.js:1486 【第2ライン更新直後】 isDepositTarget = false class = deposit-card-balance-line
-script.js:475 【第２を開く直前】 currentSelectedCardType = main depositTargetCardtype = main autoTargetCardType = sub
-script.js:497 【第２を開いた後】 currentSelectedCardType = main depositTargetCardType = main autoTargetCardType = sub
-script.js:1390 summaryCardText: 2
-script.js:1397 heroLine: <div class=​"hero-card-balance-line">​…​</div>​
-script.js:1402 qrLine: <div class=​"qr-card-balance-line">​…​</div>​
-script.js:1407 depositLine: <div class=​"deposit-card-balance-line">​…​</div>​
-script.js:1427 【第2 保存状態判定】 isEnabled = true depositTargetCardType = main autoTargetCardType = sub isDepositTarget = false
-script.js:1486 【第2ライン更新直後】 isDepositTarget = false class = deposit-card-balance-line
 
+    // オートチャージが有効か
+    const isEnabled = isAutochargeEnabled;
+	
+    const summaryCardImg = document.querySelector('.summary-card-img');
+    const summaryCardName = document.querySelector('.summary-card-name');
+
+    if (summaryCardImg) {
+        if (autoTargetCardType === 'main') {
+            summaryCardImg.src = 'images/my-card-main.svg';
+
+        } else if (autoTargetCardType === 'sub') {
+            summaryCardImg.src = 'images/my-card-sub.png';
+        }
+
+        summaryCardImg.classList.add('is-active', isEnabled);
+    }
+
+
+    if (summaryCardName) {
+        if (autoTargetCardType === 'main') {
+            summaryCardName.textContent = 'Starbucks Card';
+
+        } else if (autoTargetCardType === 'sub') {
+            summaryCardName.textContent = 'サブカード'; 
+        }
+
+        summaryCardName.classList.add('is-active', isEnabled);   
+    }
 
 
 	
