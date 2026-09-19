@@ -13,11 +13,19 @@
 　
 💡　無代に渡す用 
 
-ここ長いから段落で書きたいけどどう書くの？	
+全体だとこうなるけど	
 const selectedAmountText = 
-        document.querySelector('#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
-	
+        document.querySelector(
+            '#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '0';
 
+    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
+
+    if (isNaN(depositAmount) || depositAmount === 0) {
+        alert("入金額が正しく取得できませんでした。");
+        return;
+    }
+
+	
 
 オートチャージ保存後の各表示変更    
 
