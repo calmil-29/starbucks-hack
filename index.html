@@ -14,14 +14,13 @@
 💡　無代に渡す用 
 
 
-できた。けど、疑問点、.banner-view-off .banner-view-on の中に、それぞれ 
-off なら
+できた。けど、やっぱ疑問点。じゃあ、
            <div class="banner-view-off">  
               <p class="banner-title">オートチャージ</p>
               <p class="banner-sub-title">カードの条件を設定</p>
               <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
             </div> 	
- on なら
+	
 	        <div class="banner-view-on">
               <div class="banner-text">
                 <p class="banner-title">オートチャージ</p> 
@@ -35,26 +34,9 @@ off なら
                 <span class="autocharge-switch-circle"></span>
               </button> 
             </div>  
-
-が入っている、だから
+で、on状態のときは 「オートチャージ」 「カードの条件を設定」も非表示にしたいから、さらにその部分も個別に非表示処理が必要ってわけになる？
 	
-.autocharge-banner-container .banner-view-off {
-	display: block;
-}    
-.autocharge-banner-container .banner-view-on {
-    display: none;
-}
 
-.autocharge-banner-container .banner-view-off.is-active {
-	display: none;
-}    
-.autocharge-banner-container .banner-view-on.is-active {
-	display: block;
-}	
-
-.classList.remove('is-active');
-.classList.add('is-active');
-で、中身も一緒に表示/非表示できそうなのにできないのはなぜ？
 
 
 
