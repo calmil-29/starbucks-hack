@@ -24,7 +24,8 @@
     if (bannerViewOn) bannerViewOn.classList.toggle('is-active', isEnabled);
 
 で。これを renderAutochargeUI() に移動。さっき書いた autochargeInputBtn は不必要になったから削除。個別に処理する必要があるのは、保存先カードによって切り替える必要がある .banner-view-on の子 .summary-card-img .summary-card-name と、非表示にする瞬間、アニメーションを一瞬見せたいから .autochargeSwitch のみ、って理解であってる？
-あと、executeAutochargeSave() は【第３モーダル】オートチャージ設定を保存、が役目だけど、renderAutochargeUI() はオートチャージ状態を【ヒーロー・第１・第２】DOMへ反映する処理、するのが役目な訳だけど、じゃあ、executeAutochargeSave() はどこまでまかせればいいんだ？allSummaries も renderAutochargeUI() へ移動？
+あと、executeAutochargeSave() は【第３モーダル】オートチャージ設定を保存、が役目だけど、renderAutochargeUI() はオートチャージ状態を【ヒーロー・第１・第２】DOMへ反映する処理、するのが役目な訳だけど、じゃあ、executeAutochargeSave() はどこまでまかせればいいんだ？allSummaries も renderAutochargeUI() へ移動？renderAutochargeUI() には編集中の設定値を”保存済み・有効な状態”の確定と 第３モーダルを閉じるautochargeModal と renderAutochargeUI(); だけ置くとか？
+	
 function executeAutochargeSave(event) {
 
     if (event) event.stopPropagation();
@@ -45,7 +46,7 @@ function executeAutochargeSave(event) {
     // 【第２モーダル】オートチャージ ON 表示 
     // ================================================================
 
-    //💡renderAutochargeUI() へ移動
+    // renderAutochargeUI() へ移動
 
     // ================================================================
     // 【第２モーダル】オートチャージ 設定内容
