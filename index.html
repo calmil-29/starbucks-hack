@@ -12,6 +12,8 @@
 
 	
 💡　無代に渡す用 
+
+	こうしたら、できた。てか、私勘違いしてて、HTML側に is-active を入れてない状態（クラスなし）で、JS側だけでコントロールしたい場合は add と remove 両方の状態を書かないといけないんだね。 
 	
     const isEnabled = isAutochargeEnabled;
 
@@ -21,7 +23,81 @@
     if (bannerViewOff) bannerViewOff.classList.toggle('is-active', isEnabled);
     if (bannerViewOn) bannerViewOn.classList.toggle('is-active', isEnabled);
 
+で。これを renderAutochargeUI() に移動。さっき書いた autochargeInputBtn は不必要になったから削除。個別に処理する必要があるのは、保存先カードによって切り替える必要がある .banner-view-on の子 .summary-card-img .summary-card-name と、非表示にする瞬間、アニメーションを一瞬見せたいから .autochargeSwitch のみ、って理解であってる？
+あと、executeAutochargeSave() は【第３モーダル】オートチャージ設定を保存、が役目だけど、renderAutochargeUI() はオートチャージ状態を【ヒーロー・第１・第２】DOMへ反映する処理、するのが役目な訳だけど、じゃあ、executeAutochargeSave() はどこまでまかせればいいんだ？allSummaries も renderAutochargeUI() へ移動？
+function executeAutochargeSave(event) {
 
+    if (event) event.stopPropagation();
+
+    // ================================================================
+    // 【第３モーダル】の編集中の設定値を”保存済み・有効な状態”として確定させる
+    // ================================================================
+
+    autoTargetCardType = editingAutoTargetCardType;     // オートチャージ対象のカード　
+    autochargeAmount = editingAutochargeAmount;         // オートチャージする金額
+    autochargeCondition = editingAutochargeCondition;   // オートチャージを実行する入金条件 
+    autochargeMethod = editingAutochargeMethod          // オートチャージ支払い方法
+
+    isAutochargeEnabled = true;                         // オートチャージ機能をONにする
+
+
+    // ================================================================
+    // 【第２モーダル】オートチャージ ON 表示 
+    // ================================================================
+
+    //💡renderAutochargeUI() へ移動
+
+    // ================================================================
+    // 【第２モーダル】オートチャージ 設定内容
+    // ================================================================
+
+    const allSummaries = document.querySelectorAll('.autocharge-summary');
+
+    allSummaries.forEach(el => {
+        el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n` +
+                         `入金条件：残高が¥${autochargeCondition.toLocaleString()}未満` ;       
+    });
+
+
+    // 第３モーダルを閉じる
+    const autochargeModal = document.getElementById('autochargeModal');
+
+    if (autochargeModal) {
+        autochargeModal.classList.remove('is-active');
+    }
+
+    // オートチャージ機能ON
+    // 【ヒーロー・第１・第２】DOMへ反映する処理
+    renderAutochargeUI();
+
+}
+
+
+それと、オートチャージ機能のON/OFFアニメーション
+turnOffAutocharge()	
+   const autochargeSwitch = document.querySelector('.autocharge-switch');
+
+    if (autochargeSwitch) {
+        setTimeout(() => {
+            autochargeSwitch.classList.add('is-hidden');
+        }, 200);
+    }	
+ONからOFFに戻る時の一瞬も見えない、
+
+
+次、4.qrCardTimestamp 。
+#qrModal
+<time id="qrCardTimestamp"></time>
+
+openQrModal() 	
+
+   // アクセス固定日時
+    const now = new Data();
+    const year = now.getFullYear();
+    const month = String(now.getData()).padStart(2, '0');
+
+    document.getElementById('qrCardTimestamp').textContent = `${year}/${month}/${data} 時点`;	
+	
 
 	
 ====================================================================================================-
