@@ -41,7 +41,9 @@
               </button> 
             </div>  
           </div>   
-で、ON状態のときには、OFF状態での「オートチャージ」「カードの条件を設定」も非表示にしたいから、さらにその部分も renderAutochargeUI() に、個別に非表示処理が必要ってこと？.banner-view-off  .banner-view-on でそれぞれまとめて非表示/表示の処理できるわけじゃないの？
+で、ON状態のときには、OFF状態での「オートチャージ」「カードの条件を設定」も非表示にしたいから、さらにその部分も renderAutochargeUI() に、個別に表示/非表示する処理が必要ってこと？.banner-title や .banner-sub-title は、.summary-card-img みたいにCSSで何も指定していないのに？それでも .banner-view-off でまとめて非表示/表示の処理できるわけじゃないの？
+
+	
 例えば「オートチャージ」なら	
     const bannerTitle = document.querySelector('.banner-title');
 
@@ -51,7 +53,7 @@
             isEnabled
         )
     }	
-「カードの条件を設定」
+例えば「カードの条件を設定」
 	const bannerSubTitle = document.querySelector('banner-sub-title');
 
     if (bannerSubTitle) {
@@ -60,6 +62,7 @@
             isEnabled
         )
     }
+って感じで個別に処理が必要になるの？	
 
 	
 
