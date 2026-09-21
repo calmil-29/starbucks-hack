@@ -17,7 +17,22 @@
 原因わかった。  <div class="banner-view-off"> て書いてたからだ。.is-active の付け外しはJSに任せてたからだ。だから<div class="banner-view-off is-active"> に書き換えたらできた。  
 
 で、ここで、きみへの疑問、さっきからHTMLのコードも出していたのにこの可能性、というか原因をビシッとピンポイントで指摘しなかったのはなぜ？説明がだいぶ遠回しになってない？	
-          
+
+
+
+元々の状態はこうだけど
+<div class="banner-view-off">  
+に対して
+.autocharge-banner-container .banner-view-off {
+	display: block;
+}    
+
+.autocharge-banner-container .banner-view-off.is-active {
+	display: none;
+}    
+で、非表示にしたい時、
+const bannerViewOff = document.querySelector('.banner-view-off');
+if (bannerViewOff) bannerViewOff.classList.remove('is-active');	
 
 
 
