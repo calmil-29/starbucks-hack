@@ -14,58 +14,10 @@
 💡　無代に渡す用 
 
 
-できた。けど、やっぱ疑問点。繰り返し聞くけど、
-          <div class="autocharge-banner-container"> 
+原因わかった。  <div class="banner-view-off"> て書いてたからだ。.is-active の付け外しはJSに任せてたからだ。だから<div class="banner-view-off is-active"> に書き換えたらできた。  
 
-            <!--  OFF 状態-->
-            <div class="banner-view-off">  
-              <p class="banner-title">オートチャージ</p>
-              <p class="banner-sub-title">カードの条件を設定</p>
-              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
-            </div> 
-
-            <!-- ON 状態 　--> 
-            <div class="banner-view-on">
-              <div class="banner-text">
-                <p class="banner-title">オートチャージ</p> 
-                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
-
-                <!-- 💡オートチャージ保存されたカード画像/名前 --> 
-                <img src="images/my-card-main.svg" class="summary-card-img" alt="Starbucks Card">
-                <span class="summary-card-name">Starbucks Card</span>
-              </div>
-
-              <!-- ON 状態スイッチ（OFF 状態に戻す） -->
-              <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
-                <span class="autocharge-switch-circle"></span>
-              </button> 
-            </div>  
-          </div>   
-で、ON状態のときには、OFF状態での「オートチャージ」「カードの条件を設定」も非表示にしたいから、さらにその部分も renderAutochargeUI() に、個別に表示/非表示する処理が必要ってこと？.banner-title や .banner-sub-title は、.summary-card-img みたいにCSSで何も指定していないのに？それでも .banner-view-off でまとめて非表示/表示の処理できるわけじゃないの？
-
-	
-例えば「オートチャージ」なら	
-    const bannerTitle = document.querySelector('.banner-title');
-
-    if (bannerTitle) {
-        bannerTitle.classList.toggle(
-            'is-hidden',
-            isEnabled
-        )
-    }	
-例えば「カードの条件を設定」
-	const bannerSubTitle = document.querySelector('banner-sub-title');
-
-    if (bannerSubTitle) {
-        bannerTitle.classList.toggle(
-            'is-hidden',
-            isEnabled
-        )
-    }
-って感じで個別に処理が必要になるの？	
-
-	
-
+で、ここで、きみへの疑問、さっきからHTMLのコードも出していたのにこの可能性、というか原因をビシッとピンポイントで指摘しなかったのはなぜ？説明がだいぶ遠回しになってない？	
+          
 
 
 
