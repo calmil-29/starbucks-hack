@@ -13,7 +13,7 @@
 	
 💡　無代に渡す用 
 
-	こうしたら、できた。てか、私勘違いしてて、HTML側に is-active を入れてない状態（クラスなし）で、JS側だけでコントロールしたい場合は add と remove 両方の状態を書かないといけないんだね。 
+	こうしたら、できた。てか、私勘違いしてて、HTML側に is-active を入れてない状態（クラスなし）で、JS側だけでコントロールしたい場合は add と remove 両方（表示状態）を書かないといけないんだね。 
 	
     const isEnabled = isAutochargeEnabled;
 
@@ -82,7 +82,7 @@ turnOffAutocharge()
             autochargeSwitch.classList.add('is-hidden');
         }, 200);
     }	
-ONからOFFに戻る時の一瞬も見えない、
+ONからOFFに戻る時の一瞬が見えない。500 に変えてみたけど。見えない。
 
 
 次、4.qrCardTimestamp 。
@@ -92,29 +92,6 @@ ONからOFFに戻る時の一瞬も見えない、
 openQrModal() 	
 
 
-    // アクセス固定日時
-
-    // 現在の日時を取得
-    const now = new Date();
-
-    // 年
-    const year = now.getFullYear();
-
-    // 月
-    // 月は０から始まるから +1 が必要
-    const month = String(Node.getMonth() +1).padStart(2,'0');
-
-    // 日にち
-    const date = String(now.getDate()).padStart(2,'0');
-
-    // 時刻
-    const hours =String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-
-    const qrCardTimestamp = document.getElementById('qrCardTimestamp');
-    if (qrCardTimestamp) {
-        qrCardTimestamp.textContent = `${year}/${month}/${Date} ${hours}:${minutes} 時点`;
-    }
 
 	
 ====================================================================================================-
