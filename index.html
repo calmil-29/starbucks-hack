@@ -9,84 +9,89 @@
 </head>
 <body>
     
-
 	
 💡　無代に渡す用 
 
-	こうしたら、できた。てか、私勘違いしてて、HTML側に is-active を入れてない状態（クラスなし）で、JS側だけでコントロールしたい場合は add と remove 両方（表示状態）を書かないといけないんだね。 
-	
-    const isEnabled = isAutochargeEnabled;
 
-    const bannerViewOff = document.querySelector('.banner-view-off');
-    const bannerViewOn = document.querySelector('.banner-view-on');
+              <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
+                <span class="autocharge-switch-circle"></span>
+              </button> 
 
-    if (bannerViewOff) bannerViewOff.classList.toggle('is-active', isEnabled);
-    if (bannerViewOn) bannerViewOn.classList.toggle('is-active', isEnabled);
+/* === スイッチの状態（初期状態は OFF状態） === */	
+/* スイッチの枠 */
+.autocharge-switch {
+    position: relative;
 
-で。これを renderAutochargeUI() に移動。さっき書いた autochargeInputBtn は不必要になったから削除。個別に処理する必要があるのは、保存先カードによって切り替える必要がある .banner-view-on の子 .summary-card-img .summary-card-name と、非表示にする瞬間、アニメーションを一瞬見せたいから .autochargeSwitch のみ、って理解であってる？
-あと、executeAutochargeSave() は【第３モーダル】オートチャージ設定を保存、が役目だけど、renderAutochargeUI() はオートチャージ状態を【ヒーロー・第１・第２】DOMへ反映する処理、するのが役目な訳だけど、じゃあ、executeAutochargeSave() はどこまでまかせればいいんだ？allSummaries も renderAutochargeUI() へ移動？renderAutochargeUI() には編集中の設定値を”保存済み・有効な状態”の確定と 第３モーダルを閉じるautochargeModal と renderAutochargeUI(); だけ置くとか？
-	
-function executeAutochargeSave(event) {
+    width: 50px;
+    height: 28px;
 
-    if (event) event.stopPropagation();
-
-    // ================================================================
-    // 【第３モーダル】の編集中の設定値を”保存済み・有効な状態”として確定させる
-    // ================================================================
-
-    autoTargetCardType = editingAutoTargetCardType;     // オートチャージ対象のカード　
-    autochargeAmount = editingAutochargeAmount;         // オートチャージする金額
-    autochargeCondition = editingAutochargeCondition;   // オートチャージを実行する入金条件 
-    autochargeMethod = editingAutochargeMethod          // オートチャージ支払い方法
-
-    isAutochargeEnabled = true;                         // オートチャージ機能をONにする
-
-
-    // ================================================================
-    // 【第２モーダル】オートチャージ ON 表示 
-    // ================================================================
-
-    // renderAutochargeUI() へ移動
-
-    // ================================================================
-    // 【第２モーダル】オートチャージ 設定内容
-    // ================================================================
-
-    const allSummaries = document.querySelectorAll('.autocharge-summary');
-
-    allSummaries.forEach(el => {
-        el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n` +
-                         `入金条件：残高が¥${autochargeCondition.toLocaleString()}未満` ;       
-    });
-
-
-    // 第３モーダルを閉じる
-    const autochargeModal = document.getElementById('autochargeModal');
-
-    if (autochargeModal) {
-        autochargeModal.classList.remove('is-active');
-    }
-
-    // オートチャージ機能ON
-    // 【ヒーロー・第１・第２】DOMへ反映する処理
-    renderAutochargeUI();
-
+    border-radius: 14px;
+    background-color: #ccc; /* OFF 状態のスイッチ枠の色 */
 }
 
+※ここのコードいらない？	
+.autocharge-switch.is-hidden {
+    display: none;
+}
 
-それと、オートチャージ機能のON/OFFアニメーション
-turnOffAutocharge()	
+/* スイッチの丸 */
+.autocharge-switch-circle  {
+    position: absolute;
+
+    top: 3px;
+    left: 3px;
+
+    width: 22px;
+    height: 22px;
+
+    border-radius: 50%;
+    background-color: white;
+
+    /* OFF 位置 */ 
+    transform: translateX(0px);   
+
+    /* スイッチの⚫︎が動く時間 */
+    transition: transform 0.2s ease; 
+}
+
+/* ON状態 */
+.autocharge-switch.is-on {
+    background-color: #00AF66; /* スイッチ枠のカラー変更 */
+}
+
+.autocharge-switch.is-on .autocharge-switch-circle {
+    transform: translateX(22px); /* ⚫︎を移動 */
+}	
+	
+renderAutochargeUI() ※ここのコードいらない？
    const autochargeSwitch = document.querySelector('.autocharge-switch');
+
+    if (autochargeSwitch) {
+
+        if (isEnabled) {
+            autochargeSwitch.classList.remove('is-hidden');
+        }
+
+        autochargeSwitch.classList.toggle(
+            'is-on',
+            isEnabled
+        );
+    }    	
+	
+turnOffAutocharge()
+    // 状態スイッチを非表示にする
+    const autochargeSwitch = document.querySelector('.autocharge-switch');
 
     if (autochargeSwitch) {
         setTimeout(() => {
             autochargeSwitch.classList.add('is-hidden');
-        }, 200);
-    }	
-ONからOFFに戻る時の一瞬が見えない。500 に変えてみたけど。見えない。
+        }, 500);
+    }
 
+	
 
-次、4.qrCardTimestamp 。
+	
+次、4.qrCardTimestamp 
 #qrModal
 <time id="qrCardTimestamp"></time>
 
