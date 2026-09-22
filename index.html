@@ -12,51 +12,33 @@
 	
 💡　無代に渡す用 
 
-これ書いたけど、スイッチのONからOFFになるときの動きがわかる前にOFF画面になる。これって、スイッチだけを指定してるから？やっぱこう言う場合って banner-view-on 全体で切り替わるタイミング合わせないとそもそもできないのかな？	
-renderAutochargeUI() 
-    const autochargeSwitch = document.querySelector('.autocharge-switch');
-
     if (autochargeSwitch) {
-        
-        // ON になったらスイッチを再表示
-        if (isEnabled) {
-            autochargeSwitch.classList.remove('is-hidden');
-        }
 
-        // ON なら右、OFF なら左
-        autochargeSwitch.classList.toggle(
-            'is-on',
-            isEnabled
-        );
-    }    
-
-turnOffAutocharge(event)
-	const autochargeSwitch = document.querySelector('.autocharge-switch');
-
-    if (autochargeSwitch) {
-        const hideSwitch = (event) => {
+        const hideOnview = (event) => {
             if (event.propertyName !== 'transform') return;
 
-            autochargeSwitch.classList.add('is-hidden');
+            // スイッチのアニメーションが終わった
+            // ↓
+            // ここで初めて ON 画像を OFF 画面へ切り替える
+
+            // 保存済み状態を「通常時の画面」に反映する
+            renderAutochargeUI();
 
             autochargeSwitch.removeEventListener(
                 'transitionend',
-                hideSwitch
+                hideOnview
             );
         };
 
         autochargeSwitch.addEventListener(
             'transitionend',
-            hideSwitch
+             hideOnview
         );
-    }
 
+        // ここで ON → OFF の transform を開始
+        autochargeSwitch.classList.remove('is-on');
 
-
-	
- setTimeout(() => {
-            autochargeSwitch.classList.add('is-hidden');
-        }, 200);
+    }    
 	
 
 	
