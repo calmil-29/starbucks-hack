@@ -12,11 +12,17 @@
 	
 💡　無代に渡す用 
 
-	ここ説明をして欲しいんだけど、 'transitionend' と　remove/add につく EventListener　って？CSS指定のこと？
-	 const hideOnview = (event) => {
-            if (event.propertyName !== 'transform') return;
-	の = (event) =>　てどう言う意味？
+	じゃ、さっきのコードを全体を見せた状態で、もう一度、説明してもらってもいい？　
+	
+function turnOffAutocharge(event) {
 
+    if (event) event.stopPropagation();
+
+    // 状態スイッチを非表示にする
+    const autochargeSwitch = document.querySelector('.autocharge-switch');
+
+    // オートチャージをOFFにする
+    isAutochargeEnabled = false;
 
     if (autochargeSwitch) {
 
@@ -45,7 +51,7 @@
         autochargeSwitch.classList.remove('is-on');
 
     }    
-	
+}
 
 	
 次、4.qrCardTimestamp 
@@ -53,6 +59,29 @@
 <time id="qrCardTimestamp"></time>
 
 openQrModal() 	
+
+
+A：今
+5.eGift/eTicket 入り口
+6.商品メニューのJS
+7.商品詳細のJS
+8.「支払う」「モバイルオーダー」の分岐
+9.第２の入金額手動入力
+10.「未登録」の入金バリデーション
+
+B：その他
+11.商品メニュー・商品詳細を含めた全体CSS仕上げ
+12.アニメーション・細かい視覚的フィールドバック
+13.各状態のエッジケース確認
+14.「ホーム→Pay」「ホーム→Order」の同線を通しでテスト
+
+C：今回はやらない
+15.クレジットカード情報の本格登録・保存
+16.PayPay 実決済
+17.Apple Pay 実決済
+18.本物のオートチャージ実行
+	
+	
 
 
 
