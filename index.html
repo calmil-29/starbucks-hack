@@ -14,40 +14,302 @@
 
 現状：
 #qrModal
+
+
+【ヒーロー】カードの表面（メインカード） 
 	
-      <!-- フッター -->
-      <div class="qr-modal-footer-tabs">
-        <button class="tab-item">
-          <div class="notice-wrapper">
-            <span class="badge">3</span>
-            <span class="notice-dot"></span>
-          </div>  
-          <span class="tab-text">eGift</span>
-          <!-- 右向き矢印 -->
-          <span class="arrow-icon"></span>
-        </button>
+  <div  id="cardFlip" class="card-flip-container">
+    <div class="card-flip-inner">
 
-        <div class="tab-divider"></div> <!-- 真ん中区切り線 -->
+      <div class="card-front">
+       ... ヒーローの現在選択中のカード・QRコード：第１モーダルへの入り口・[ [3]| eTicket⚫︎ ]：裏面への入り口
+      </div><!-- .card-front -->		
+      
+【ヒーローカードの裏面(eTicket / eGift eTicket)
+      <div class="card-back">
+	   ...  
+        <div class="ticket-carousel-inner">		  
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">	
+			... eTicket 500チケット	
+          
+			
+        </div><!-- .ticket-carousel-innner -->
+      </div><!-- .card-back -->
 
-        <button class="tab-item">
-          <span class="badge">0</span>
-          <span class="tab-text">eTicket</span>
-          <!-- 右向き矢印 -->
-          <span class="arrow-icon"></span>
-        </button>
-      </div>
-
-    </div><!-- .qr-modal-content -->
-  </div><!-- #qrModal -->
+    </div><!-- .card-flip-inner -->
+  </div><!-- #cardFlip .card-flip-container -->
 
 
-.notice-dot はチケットがある時は赤⚫︎バッジがつく、ない時はなにもなし、の状態を見せるためのものだったんだけど、...今更ながらに気づいたんだけど、私、eGift のデザインを３枚ぶんしてたつもりだったけど、１枚は eTicket だった。これは、どうしよう？「赤⚫︎バッジ」はチケットがない時はつかないってことを示すために、eTicket のデザインは今回使わないで、
-eGift [2]⚫︎　＞ | eTicket [0]　＞　
-にするか、それともヒーローカード画面（#cardFlip .card-front）からのチケットへの入り口表示が「eTicket」なんだけど、今回だと、
-[ [3] | eTicket ]⚫︎ ：ここも赤⚫︎バッジ
-で、あえて
-eGift [2]⚫︎　＞ | eTicket [1]⚫︎　＞	
-の状態にして、 ヒーローカードからの入り口は「eTicket」表示名だけど。「eGift」「eTicket」まとめて示していること、どちらも合わせての合計のカード数であること：[3]、 が理解できるように、両方ともにチケットを置いてた方がいいかな？
+		
+このコードをツリー状にできる？
+
+<div  id="cardFlip" class="card-flip-container">
+    <div class="card-flip-inner">
+      
+      <div class="card-front">
+        
+        <!-- 現在選ばれている【ヒーロー】カード画像 --> 
+        <img src="images/my-card-main.svg" alt="メインカード" id="heroCardImg" class="main-card-visual-img">
+
+        <div class="card-main-visual">
+
+          <!-- 支払いカードタップ領域 -->
+          <div class="qr-tap-area" onclick="openQrModal(event)" data-type="payment">
+             <div class="card-qr-box">
+               <img src="images/QRコード.png" alt="QR" class="qr-main">
+            </div>
+          </div>
+
+          <div class="card-info-side">
+            <img src="images/starbucks-logo.png" alt="ロゴ" class="mini-logo">
+            <div class="balance-display">
+
+              <!-- 💡【ヒーロー】オートチャージ設定後 テキスト・金額下の既存ラインカラーを追加 -->
+              <span class="summary-card-text">オートチャージ設定中</span> 
+
+              <p class="card-label">Starbucks Card</p>
+
+              <div class="hero-card-balance-line">
+                <span class="unit">¥</span>
+                <span id="heroCardBalance" class="hero-card-value">0</span>
+              </div>
+            </div>
+            
+            <!-- eTicket の入り口 -->
+            <button class="btn-etiket-trigger" onclick="flipCard(event)">
+              <div class="count-box">3</div>
+              <span class="eticket-label">eTicket</span>
+              <span class="eticket-badge"></span>
+            </button>
+          </div><!-- .card-info-side -->
+        </div><!-- .card-main-visual -->
+        
+        <!-- スターリワード -->
+        <div class="star-progress-overlay">
+          <div class="rewards-label">
+            <p>STARBUCKS® REWARDS</p>
+          </div>
+
+          <div class="current-stars-group">
+            <div class="current-reward">
+              <span class="big-number">160</span>.5 <img src="images/Star-icon.svg" alt="★">
+            </div>
+            <div class="menber-status-group">
+              <p class="member-status">Green会員</p>
+              <img src="images/status-star.svg" alt="三つ星">
+            </div>  
+          </div>
+
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar-track">
+              <div id="js-progressbar" class="progress-bar-fill"></div><!-- #js-progressbar -->
+              <div class="track-dots">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              </div>
+            </div>
+
+            <div class="progress-steps">
+              <span>25</span><span>90</span><span>130</span><span>190</span><span>400</span>
+            </div>
+          </div><!-- .progress-bar-wrapper -->
+          
+        </div><!-- .star-progress-overlay -->
+      </div><!-- .card-front -->
+      
+      <!--==================================================================--> 
+      <!-- 【ヒーローカードの裏面(eTicket / eGift eTicket) --------------------->
+      <!--==================================================================-->  
+
+      <div class="card-back">
+        <div class="carousel-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+
+        <div class="ticket-carousel-inner">
+          
+          <!--===========================-->
+          <!-- eTicket 500チケット --------->
+          <!--===========================--> 
+
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+              <div class="ticket-visual-upper type-500">
+
+                <!-- 500 メインコンテンツエリア(暗緑色背景) -->
+                <div class="visual-main-area">
+
+                  <!-- 500 QRコード:タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal(event)" data-type="rewards">
+                    <img src="images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
+
+                  <!-- 500 中央情報グループ:タイトル / 500 / eTicket -->
+                  <div class="eticket-info-center">
+                    <div class="brand-title-group">
+                      <span class="brand-name">STARBUCKS®</span>
+                      <span class="brand-name-sub">REWARDS</span>
+                    </div>
+                    <div class="amount-box">
+                      <span class="price-value">500</span>
+                      <span class="ticket-name">eTicket</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- 500 右側: 暗緑の帯エリア -->
+                <div class="visual-side-band">
+                  <div class="star-layer">
+                    <img src="images/star-all-in-one3.svg" alt="星の群れ" class="star-svg">
+                  </div>
+                  <p class="side-detail-text">ドリンク/<br>フード/<br>コーヒー豆/<br>ティー</p>
+                </div>  
+
+              </div><!-- .ticket-visual-upper .type-500 -->
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            
+              <!-- 500チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">500円/505円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆/ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
+                <a href="#" class="detail-link">詳細はこちら</a>
+                <p class="expiry-text"><strong>有効期限 2026年01月31日(土)</strong></p>
+              </div>
+
+              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+            </div><!-- .ticket-content-wrapper -->  
+          </div><!-- .ticket-item -->
+          
+          <!--=======================--> 
+          <!-- eGift 700チケット ------->
+          <!--=======================--> 
+
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+              <div class="ticket-visual-upper type-700">
+                
+                <!-- 700 メインコンテンツエリア(深緑背景)-->  
+                <div class="visual-main-area">
+
+                  <!-- 700 QRコード: タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal(event)" data-type="eGift700">
+                    <img src="images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
+
+                  <!-- 700 中央情報グループ:カップ画像 -->
+                  <div class="egift-info-center">
+                    <span class="brand-name">STARBUCKS®</span>
+                    <div class="cup-icon-area">
+                      <img src="images/cup-icon.svg" alt="カップ">
+                    </div>  
+                  </div>    
+
+                </div>  
+
+                <!-- 700 右側 : 金の帯エリア -->
+                <div class="visual-side-band">
+                  <div class="amount-box">
+                    <span class="type">DRINK TICKET</span>
+                    <span class="price-value">700</span>
+                    <p class="ticket-name">eGift</p>  
+                  </div>
+                </div>
+              </div><!-- .ticket-visual-upper .type-700 -->    
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            
+              <!-- 700チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">お好きなドリンク１杯(税込700円まで)と交換できます。</p>
+                <a href="#" class="detail-link">詳細はこちら</a>
+                <p class="expiry-text"><strong>有効期限 2026年02月28日(土)</strong></p>
+              </div>
+
+              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+            </div><!-- .ticket-content-wrapper -->
+          </div><!-- .ticket-item -->
+
+          <!--========================-->
+          <!-- eGift 300チケット -------->
+          <!--========================--> 
+
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+              <div class="ticket-visual-upper type-300">
+
+                <!-- 300 メインコンテンツエリア(水色背景)-->  
+                <div class="visual-main-area">
+
+                  <!-- 300 QRコード: タップ領域 -->
+                  <div class="qr-tap-area-eticket" onclick="openQrModal(event)" data-type="eGfit300">
+                    <img src="images/QRコード.png" alt="QR" class="qr-eticket">
+                  </div>
+
+                   <!-- 300 中央情報グループ:フード画像 -->
+                  <div class="egift-info-center">
+                    <span class="brand-name">STARBUCKS®</span>
+                    <div class="cup-icon-area">
+                      <img src="images/food-icon.svg" alt="フード">
+                    </div>
+                  </div>  
+
+                </div>
+
+                <!-- 300 右側:ピンクの帯エリア -->
+                <div class="visual-side-band">
+                  <div class="amount-box">
+                    <span class="type">FOOD TICKET</span>
+                    <span class="price-value">300</span>
+                    <p class="ticket-name">eGift</p>
+                  </div>  
+                </div> 
+              </div><!-- .ticket-visual-upper .type-300 -->
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+             
+              <!-- 300チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">お好きなフード１点(税込300円まで)と交換できます。</p>
+                <a href="#" class="detail-link">詳細はこちら</a>
+                <p class="expiry-text"><strong>有効期限 2026年03月31日(火)</strong></p>
+              </div>
+
+              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+            </div><!-- .ticket-content-wrapper -->
+          </div><!-- ticket-item -->
+
+        </div><!-- .ticket-carousel-innner -->
+      </div><!-- .card-back -->
+
+    </div><!-- .card-flip-inner -->
+  </div><!-- #cardFlip .card-flip-container -->
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 
 A：今
