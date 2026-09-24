@@ -298,6 +298,73 @@
 		
 
 
+div #cardFlip (.card-flip-container)
+└── div (.card-flip-inner)
+    ├── div (.card-front)
+    │   ├── img #heroCardImg (.main-card-visual-img) [メインカード画像]
+    │   ├── div (.card-main-visual)
+    │   │   ├── div (.qr-tap-area) [支払いカードタップ領域]
+    │   │   │   └── div (.card-qr-box)
+    │   │   │       └── img (.qr-main) [QRコード]
+    │   │   └── div (.card-info-side)
+    │   │       ├── img (.mini-logo) [スターバックスロゴ]
+    │   │       ├── div (.balance-display)
+    │   │       │   ├── span (.summary-card-text) [オートチャージ設定中]
+    │   │       │   ├── p (.card-label) [Starbucks Card]
+    │   │       │   └── div (.hero-card-balance-line)
+    │   │       │       ├── span (.unit) [¥]
+    │   │       │       └── span #heroCardBalance (.hero-card-value) [0]
+    │   │       └── button (.btn-etiket-trigger) [eTicketの入り口]
+    │   │           ├── div (.count-box) [3]
+    │   │           ├── span (.eticket-label) [eTicket]
+    │   │           └── span (.eticket-badge)
+    │   └── div (.star-progress-overlay) [スターリワード]
+    │       ├── div (.rewards-label)
+    │       │   └── p [STARBUCKS® REWARDS]
+    │       ├── div (.current-stars-group)
+    │       │   ├── div (.current-reward) [160.5 ★]
+    │       │   │   ├── span (.big-number)
+    │       │   │   └── img [Star-icon]
+    │       │   └── div (.menber-status-group)
+    │       │       ├── p (.member-status) [Green会員]
+    │       │       └── img [status-star]
+    │       └── div (.progress-bar-wrapper)
+    │           ├── div (.progress-bar-track)
+    │           │   ├── div #js-progressbar (.progress-bar-fill)
+    │           │   └── div (.track-dots)
+    │           │       └── span (.dot) × 5
+    │           └── div (.progress-steps)
+    │               └── span [25] / span [90] / span [130] / span [190] / span [400]
+    │
+    └── div (.card-back) [ヒーローカードの裏面]
+        ├── div (.carousel-dots)
+        │   └── span (.dot) × 3 (.active含む)
+        └── div (.ticket-carousel-inner)
+            └── div (.ticket-item)
+                └── div (.ticket-content-wrapper)
+                    ├── div (.ticket-visual-upper .type-500)
+                    │   ├── div (.visual-main-area) [500 メインコンテンツエリア]
+                    │   │   ├── div (.qr-tap-area-eticket) [500 QRコードタップ領域]
+                    │   │   │   └── img (.qr-eticket)
+                    │   │   └── div (.eticket-info-center) [500 中央情報グループ]
+                    │   │       ├── div (.brand-title-group)
+                    │   │       │   ├── span (.brand-name)
+                    │   │       │   └── span (.brand-name-sub)
+                    │   │       └── div (.amount-box)
+                    │   │           ├── span (.price-value)
+                    │   │           └── span (.ticket-name)
+                    │   └── div (.visual-side-band) [500 右側: 暗緑の帯エリア]
+                    │       ├── div (.star-layer)
+                    │       │   └── img (.star-svg)
+                    │       └── p (.side-detail-text)
+                    ├── div (.ticket-perforation) [ミシン目]
+                    │   └── span × 15
+                    ├── div (.ticket-explanation) [500チケットの内容]
+                    │   ├── p (.desc-text)
+                    │   ├── a (.detail-link)
+                    │   └── p (.expiry-text)
+                    │       └── strong [有効期限]
+                    └── button (.btn-back-to-front) [BACKボタン]
 
 
 
