@@ -12,38 +12,43 @@
 	
 💡　無代に渡す用 
 
-
-できた。じゃ、次、4.qrCardTimestamp 、これでも大丈夫？：
+現状：
 #qrModal
-<time id="qrCardTimestamp"></time>
-
-openQrModal(event) 	
 	
-    // アクセス固定日時
+      <!-- フッター -->
+      <div class="qr-modal-footer-tabs">
+        <button class="tab-item">
+          <div class="notice-wrapper">
+            <span class="badge">3</span>
+            <span class="notice-dot"></span>
+          </div>  
+          <span class="tab-text">eGift</span>
+          <!-- 右向き矢印 -->
+          <span class="arrow-icon"></span>
+        </button>
 
-    // 現在の日時を取得
-    const now = new Date();
+        <div class="tab-divider"></div> <!-- 真ん中区切り線 -->
 
-    // 年
-    const year = now.getFullYear();
+        <button class="tab-item">
+          <span class="badge">0</span>
+          <span class="tab-text">eTicket</span>
+          <!-- 右向き矢印 -->
+          <span class="arrow-icon"></span>
+        </button>
+      </div>
 
-    // 月
-    // 月は０から始まるから +1 が必要
-    const month = String(now.getMonth() +1).padStart(2,'0');
+    </div><!-- .qr-modal-content -->
+  </div><!-- #qrModal -->
 
-    // 日にち
-    const date = String(now.getDate()).padStart(2,'0');
 
-    // 時刻
-    const hours =String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-
-    const qrCardTimestamp = document.getElementById('qrCardTimestamp');
-    if (qrCardTimestamp) {
-        qrCardTimestamp.textContent = `${year}/${month}/${date} ${hours}:${minutes} 時点`;
-    }
+.notice-dot はチケットがある時は赤⚫︎バッジがつく、ない時はなにもなし、の状態を見せるためのものだったんだけど、...今更ながらに気づいたんだけど、私、eGift のデザインを３枚ぶんしてたつもりだったけど、１枚は eTicket だった。これは、どうしよう？「赤⚫︎バッジ」はチケットがない時はつかないってことを示すために、eTicket のデザインは今回使わないで、
+eGift [2]⚫︎　＞ | eTicket [0]　＞　
+にするか、それともヒーローカード画面（#cardFlip .card-front）からのチケットへの入り口表示が「eTicket」なんだけど、今回だと、
+[ [3] | eTicket ]⚫︎ ：ここも赤⚫︎バッジ
+で、あえて
+eGift [2]⚫︎　＞ | eTicket [1]⚫︎　＞	
+の状態にして、 ヒーローカードからの入り口は「eTicket」表示名だけど。「eGift」「eTicket」まとめて示していること、どちらも合わせての合計のカード数であること：[3]、 が理解できるように、両方ともにチケットを置いてた方がいいかな？
 	
-
 
 A：今
 5.eGift/eTicket 入り口
