@@ -12,53 +12,37 @@
 	
 💡　無代に渡す用 
 
-	じゃ、さっきのコードを全体を見せた状態で、もう一度、説明してもらってもいい？　
-	
-function turnOffAutocharge(event) {
 
-    if (event) event.stopPropagation();
-
-    // 状態スイッチを非表示にする
-    const autochargeSwitch = document.querySelector('.autocharge-switch');
-
-    // オートチャージをOFFにする
-    isAutochargeEnabled = false;
-
-    if (autochargeSwitch) {
-
-        const hideOnview = (event) => {
-            if (event.propertyName !== 'transform') return;
-
-            // スイッチのアニメーションが終わった
-            // ↓
-            // ここで初めて ON 画像を OFF 画面へ切り替える
-
-            // 保存済み状態を「通常時の画面」に反映する
-            renderAutochargeUI();
-
-            autochargeSwitch.removeEventListener(
-                'transitionend',
-                hideOnview
-            );
-        };
-
-        autochargeSwitch.addEventListener(
-            'transitionend',
-             hideOnview
-        );
-
-        // ここで ON → OFF の transform を開始
-        autochargeSwitch.classList.remove('is-on');
-
-    }    
-}
-
-	
-次、4.qrCardTimestamp 
+じゃ、次、4.qrCardTimestamp 、これでも大丈夫？
 #qrModal
 <time id="qrCardTimestamp"></time>
 
-openQrModal() 	
+openQrModal(event) 	
+	
+    // アクセス固定日時
+
+    // 現在の日時を取得
+    const now = new Date();
+
+    // 年
+    const year = now.getFullYear();
+
+    // 月
+    // 月は０から始まるから +1 が必要
+    const month = String(now.getMonth() +1).padStart(2,'0');
+
+    // 日にち
+    const date = String(now.getDate()).padStart(2,'0');
+
+    // 時刻
+    const hours =String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    const qrCardTimestamp = document.getElementById('qrCardTimestamp');
+    if (qrCardTimestamp) {
+        qrCardTimestamp.textContent = `${year}/${month}/${date} ${hours}:${minutes} 時点`;
+    }
+	
 
 
 A：今
