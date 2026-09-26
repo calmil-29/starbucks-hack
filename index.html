@@ -11,8 +11,41 @@
     
 	
 💡　無代に渡す用 
+あと、チケットのビジュアルデザインを、今ままでCSSで指定してたけど、デザイン調節したし、Figmaで作ったものをそのまま持ってこようと思っているんだけど、その場合は <div class="ticket-visual-upper type-500"> 内のコードを削除して、img 持ってくればいい？てか、Figmaで作ったチケットバナー持ってきても問題ない？：
+	
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
 
-有効期限 20XX年XX月XX日(土)　がいいかな？	
+              <div class="ticket-visual type-500">
+
+                <img src="images/eticket_500.svg" alt="eTicket500" class="eTicket-500">
+
+                <!-- 500 QRコード:タップ領域 -->
+                <div class="qr-tap-area-eticket" onclick="openQrModal(event)" data-type="rewards">
+                  <img src="images/QRコード.png" alt="QR" class="qr-eticket">
+                </div>
+          
+              </div><!-- .ticket-visual .type-500 -->
+
+              <div class="ticket-perforation">
+			    <span></span>...
+			  </div>	  
+              <!-- 500チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">500円/505円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆/ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
+                <a href="#" class="detail-link">詳細はこちら</a>
+                <p class="expiry-text"><strong>有効期限 20XX年XX月XX日(土)</strong></p>
+              </div>
+
+              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+            </div><!-- .ticket-content-wrapper -->  
+          </div><!-- .ticket-item -->				  
+	
+
+それと素朴な疑問、有効期限 20XX年XX月XX日(土)　の方がいいかな？	
+あと、 <a href="#" class="detail-link">詳細はこちら</a>　でチケットの細かい注意事項を確認できるふうにしたかったんだけど、ここのページは作る？注意事項の内容は公式のをそのまま持ってくるけど、この場合どうするべき？どこまで書けば（作れば）いいのかな？
+	
 
 ヒーロー画面の現状コード：
 				  
@@ -176,36 +209,6 @@
 </section><!-- .card-hero-section -->
 
 
-あと、チケットのビジュアルデザインを、今ままでCSSで指定してたけど、デザインを調節したし、Figmaで作ったものをそのまま持ってこようと思っているんだけど、その場合は <div class="ticket-visual-upper type-500"> 内のコードを削除して、img 持ってくればいい？てか、Figmaで作ったチケットバナー持ってきても問題ない？：
-	
-          <div class="ticket-item">
-            <div class="ticket-content-wrapper">
-
-              <div class="ticket-visual type-500">
-
-                <img src="images/eticket_500.svg" alt="eTicket500" class="eTicket-500">
-
-                <!-- 500 QRコード:タップ領域 -->
-                <div class="qr-tap-area-eticket" onclick="openQrModal(event)" data-type="rewards">
-                  <img src="images/QRコード.png" alt="QR" class="qr-eticket">
-                </div>
-          
-              </div><!-- .ticket-visual .type-500 -->
-
-              <div class="ticket-perforation">
-			    <span></span>...
-			  </div>	  
-              <!-- 500チケットの内容 -->
-              <div class="ticket-explanation">
-                <p class="desc-text">500円/505円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆/ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
-                <a href="#" class="detail-link">詳細はこちら</a>
-                <p class="expiry-text"><strong>有効期限 2026年01月31日(土)</strong></p>
-              </div>
-
-              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
-
-            </div><!-- .ticket-content-wrapper -->  
-          </div><!-- .ticket-item -->				  
 
 	
 
