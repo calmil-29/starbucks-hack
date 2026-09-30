@@ -12,23 +12,19 @@
 	
 💡　無代に渡す用 
 
-
+このコード、今 .desc-text が左寄せになっているけど、中央揃えにするには？
 <div class="ticket-carousel-inner">
           
-          <!--===========================-->
-          <!-- eTicket 500              --->
-          <!--===========================--> 
-
           <div class="ticket-item">
             <div class="ticket-content-wrapper">
 
               <div class="ticket-visual type-500">
-                <img src="images/rewards_500チケット.svg"
+                <img src="images/eticket-500チケット.svg"
                      alt="500円分のeTicket"
                      class="ticket-basse"
                 >
 
-                <span class="ticket-amount">500</span>
+                <span class="eticket-amount">500</span>
 
                 <button class="ticket-qr-button" onclick="openQrModal(event)">
                   <img src="images/QRコード.png" alt="QRコード">
@@ -51,17 +47,8 @@
 
             </div><!-- .ticket-content-wrapper -->  
           </div><!-- .ticket-item -->
-          ...	
+	    </div><!-- .ticket-carousel-innner -->
 
-.ticket-carousel-inner {
-    width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 0;
-    padding: 0;
-}
 
 .ticket-item {
     flex: 0 0 100%;
@@ -80,7 +67,6 @@
 .ticket-content-wrapper {
     position: relative;
     width: 100%;
-    background-color: white; /* 仮の色 */
     overflow: hidden;
     display: flex; 
     flex-direction: column; 
@@ -92,14 +78,16 @@
     position: relative;
 }
 
+/* チケット画像 */
 .ticket-basse {
     display: block;
     width: 100%;
 }
 
-.ticket-amount {
+/* 数字 500 */
+.eticket-amount {
     position: absolute;
-    right: 30%;
+    right: 25%;
     top: 20%;
 
     font-size: 55px;
@@ -109,9 +97,10 @@
     font-family: poppins;
 }
 
+/* QRコードボタン */
 .ticket-qr-button {
     position: absolute;
-    top: 5%;
+    top: 7%;
     width: 25%;
     aspect-ratio: 1;
 
@@ -120,14 +109,76 @@
     border-radius: 6px;
     width: 100px; 
     height: 100px;
-    margin: 8px 0 0 8px;	
+    margin: 8px 0 0 15px;	
 }
+
 .ticket-qr-button img {
     width: 100%;
     height: 100%;
 }
 
+/* チケット切り取り線 */
+.ticket-perforation {
+    position: absolute;
+    top: 116px;
+    left: 50%;
+    width: 90%;
+    display: flex;
+    justify-content: space-around;
+    transform: translateX(-50%) translateY(calc(-50% + 25px));
+}
 
+/* チケット切り取り線の⚫︎ */
+.ticket-perforation span {
+    width: 8px;
+    height: 8px;
+    background-color: #f4f4f4;
+    border-radius: 50%;
+    box-shadow: inset 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* チケットの内容 */
+.ticket-explanation {
+    max-width: 92%;
+    display: flex;
+    flex-direction: column;
+    color: #0f0f0f;
+    font-size: 14px;
+}
+
+/* テキスト */
+.desc-text {
+    width: 92%;
+    margin-top: 5px;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+}
+
+/* 詳細 */
+.detail-link {
+    color: #4DA66C;
+    text-decoration: none;
+    margin: 3px 0;
+}
+
+/* 戻り（BACK） ボタン */
+.btn-back-to-front {
+    position: absolute;
+    display: flex;
+    bottom: 20px;
+    right: 35px;
+    background-color: #006241;
+    color:white;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 20px;
+    font-weight: bold;
+    z-index: 999;
+    transform: translateZ(1px);
+}
+
+
+===================================================================	
 
 
 ヒーロー画面の現状コード：
