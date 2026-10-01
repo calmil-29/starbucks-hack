@@ -12,47 +12,43 @@
 	
 💡　無代に渡す用 
 
-	それと .eticket-amount のなかの数字を例えば 500 から 1900 に変えた時、私の想像では、.ticket-visual　を基準にしているから、テキストの中心軸は同じになってるから綺麗に収まると思っていたんだけど、1900 にしたら左側に寄ってずれる、こう言う時はどうしたらいい？
+	あとこの.ticket-item ３枚分あってそれぞれ横にスライドしたら表示されるようにしてて、で　.detail-link 詳細はこちら　と　.expiry-text 有効期限 20XX年XX月XX日(土) 、.btn-back-to-front の位置を全部同じ場所にするにはどう CSS で書けばいい？HTML も書き直す必要ある？　
 
-              <div class="ticket-visual type-500">
-                <img src="images/eticket-500チケット.svg"
-                     alt="500円分のeTicket"
+         <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+
+              <div class="ticket-visual type-700">
+                <img src="images/egift-700チケット.svg"
+                     alt="700円分のeTicket"
                      class="ticket-basse"
                 >
 
-                <span class="eticket-amount">1900</span>
+                <span class="egift-amount">700</span>
 
                 <button class="ticket-qr-button" onclick="openQrModal(event)">
                   <img src="images/QRコード.png" alt="QRコード">
                 </button>
                 
-              </div>      
+              </div>            			
 
-.ticket-visual {
-    position: relative;
-}
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            
+              <!-- eGift 700チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">お好きなドリンク１杯(税込700円まで)と交換できます。</p>
+                <a href="#" class="detail-link">詳細はこちら</a>
+                <p class="expiry-text"><strong>有効期限 20XX年XX月XX日(土)</strong></p>
+              </div>
 
-/* チケット画像 */
-.ticket-basse {
-    display: block;
-    width: 100%;
-}
+              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
 
-/* 数字 500 */
-.eticket-amount {
-    position: absolute;
-    right: 25%;
-    top: 20%;
+            </div><!-- .ticket-content-wrapper -->
+          </div><!-- .ticket-item -->
 
-    font-size: 55px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    color: white;
-    font-family: poppins;
-}
 
 	
-
 
 div #cardFlip (.card-flip-container)
 └── div (.card-flip-inner)
