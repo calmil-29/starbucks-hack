@@ -12,43 +12,36 @@
 	
 💡　無代に渡す用 
 
-	あとこの.ticket-item ３枚分あってそれぞれ横にスライドしたら表示されるようにしてて、で　.detail-link 詳細はこちら　と　.expiry-text 有効期限 20XX年XX月XX日(土) 、.btn-back-to-front の位置を全部同じ場所にするにはどう CSS で書けばいい？HTML も書き直す必要ある？　
-
-         <div class="ticket-item">
-            <div class="ticket-content-wrapper">
-
-              <div class="ticket-visual type-700">
-                <img src="images/egift-700チケット.svg"
-                     alt="700円分のeTicket"
-                     class="ticket-basse"
-                >
-
-                <span class="egift-amount">700</span>
-
-                <button class="ticket-qr-button" onclick="openQrModal(event)">
-                  <img src="images/QRコード.png" alt="QRコード">
-                </button>
-                
-              </div>            			
-
-              <div class="ticket-perforation">
-                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-            
-              <!-- eGift 700チケットの内容 -->
-              <div class="ticket-explanation">
-                <p class="desc-text">お好きなドリンク１杯(税込700円まで)と交換できます。</p>
-                <a href="#" class="detail-link">詳細はこちら</a>
-                <p class="expiry-text"><strong>有効期限 20XX年XX月XX日(土)</strong></p>
-              </div>
-
-              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
-
-            </div><!-- .ticket-content-wrapper -->
-          </div><!-- .ticket-item -->
-
-
 	
+/* チケットの内容（説明文の枠） */
+.ticket-explanation {
+    max-width: 85%;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    color: #0f0f0f;
+    font-size: 14px;
+    
+    height: 130px;
+    overflow: hidden;
+}
+
+/* 説明テキスト */
+.desc-text {
+    width:  100%;
+    margin: 8px auto;
+    line-height: 1.4;
+    text-align: justify;
+}
+
+/* 詳細リンク */
+.detail-link {
+    display: inline-block;
+    color: #4DA66C;
+    text-decoration: none;
+    margin-bottom: 8px;
+}
 
 div #cardFlip (.card-flip-container)
 └── div (.card-flip-inner)
