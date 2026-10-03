@@ -12,63 +12,19 @@
 	
 💡　無代に渡す用 
 
-.ticket-qr-button {
-    position: absolute;
-    top: 7%;
-    left: 15px;
+              <div class="ticket-explanation">
+                <p class="desc-text">500円/509円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆・ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
+                <a href="#" class="detail-link" onclick="openTicketDetailModal(event, 'eticket500')">
+                    詳細はこちら
+                </a>
+                <p class="expiry-text"><strong>有効期限 20XX年XX月XX日(土)</strong></p>
+              </div>
 
-    width: 100px;
-    height: 100px;
 
-    background: #fff;
-    padding: 6px;
-    border-radius: 6px;
-    box-sizing: border-box;
-}
-
-.ticket-qr-button img {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-eTicket の数字は一応４桁対応にもしてみた、でもどうだろ、そもそもポートフォリオでの見せ方（説明の仕方）がわかっていないんだけど。４桁ver. の数字をおいた同じデザインのeTicket をどっかに置いた方がいいの？？	
-/* 数字 eTicket 500/1900 */
-.eticket-amount {
-    position: absolute;
-    right: 40%;
-    transform: translateX(50%);
-    text-align: center;
-
-    top: 22%;
-    font-size: 55px;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    color: #ffffff;
-    font-family: poppins;
-}
-
-ORコードは、チケットにFigmaで下地の白いボックスを置いたままだとうまくいかなかったから、数字同様にQRコードも下地もCSSで指定することにしたよ。
-/* QRコードボタン */
-.ticket-qr-button {
-    position: absolute;
-    top: 7%;
-    width: 25%;
-    aspect-ratio: 1;
-
-    background: white;
-    padding: 6px;
-    border-radius: 6px;
-    width: 100px; 
-    height: 100px;
-    margin: 8px 0 0 15px;	
-}
-
-.ticket-qr-button img {
-    width: 100%;
-    height: 100%;
-}
-	
+	.desc-text 
+	700だと：お好きなドリンク１杯(税込700円まで)と交換できます。
+	300：お好きなフード１点(税込300円まで)と交換できます。
+	までは軽く説明書きを置いてるだけ状態なんだけど。
 
 
 
