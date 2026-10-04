@@ -12,6 +12,45 @@
 	
 💡　無代に渡す用 
 
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+
+              <div class="ticket-visual type-500">
+                <img src="images/eticket-500チケット.svg"
+                     alt="500円分のeTicket"
+                     class="ticket-basse"
+                >
+
+                <span class="eticket-amount">1900</span>
+
+                <button class="ticket-qr-button" onclick="openQrModal(event)">
+                  <img src="images/QRコード.png" alt="QRコード">
+                </button>
+                
+              </div>            			
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            
+              <!-- eTicket 500チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">500円/509円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆・ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
+                <a href="#" class="detail-link" onclick="openTicketDetailModal(event, 'eticket500')">
+                    詳細はこちら
+                </a>
+                <p class="expiry-text"><strong>有効期限 20XX年XX月XX日(土)</strong></p>
+              </div>
+
+              <!-- 💡BACK → バツボタンにするか？ -->
+              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+            </div><!-- .ticket-content-wrapper -->  
+          </div><!-- .ticket-item -->
+
+
+	
+
 で、これは前々からきになってて。今回も出てきたバツボタン。前回のカード表面での第１〜３モーダル画面のヘッダーにもあるけど、今回のカード裏のチケット用モーダル画面でのバツボタンも全て共通にして、CSSで実装するのはあり？JS で処理で使う部分は onclick のみだし、button のクラス名に共通名 .close-btn を追加して、バツボタンの「x」指定 span のみだけ共通にしとくのはあり？
          <button 
           class="ticket-detail-close-btn　close-btn" 
