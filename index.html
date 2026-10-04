@@ -12,74 +12,16 @@
 	
 💡　無代に渡す用 
 
-つまり、さっき出してくれたHTMLコード全部じゃなくて、チケット内容 500円分の対象商品のお支払いに利用できます。だけを今回は実装、ご利用条件以降は書かずに　※このプロトタイプでは利用条件を簡略化しています。を書き加えるだけに留めるってこと？	
-
-<div id="ticketDetailModal" class="ticket-detail-modal">
-
-  <div class="ticket-detail-content">
-
-    <div class="ticket-detail-header">
-      <h2>eTicket 500</h2>
-      <button
-        class="ticket-detail-close"
-        onclick="closeTicketDetailModal(event)"
-        aria-label="閉じる">
-        ×
-      </button>
-    </div>
-
-    <section class="ticket-detail-section">
-      <h3>チケット内容</h3>
-      <p>
-        500円分の対象商品のお支払いに利用できます。
-      </p>
-    </section>
-
-	<p>※このプロトタイプでは利用条件を簡略化しています。</p>  
-
- </div>
-
-</div>
-	  
-
+で、これは前々からきになってて。今回も出てきたバツボタン。前回のカード表面での第１〜３モーダル画面のヘッダーにもあるけど、今回のカード裏のチケット用モーダル画面でのバツボタンも全て共通にして、CSSで実装するのはあり？JS で処理で使う部分は onclick のみだし、button のクラス名に共通名 .close-btn を追加して、バツボタンの「x」指定 span のみだけ共通にしとくのはあり？
+         <button 
+          class="ticket-detail-close-btn　close-btn" 
+          onclick="closeTicketDetailModal(event)" 
+          aria-label="閉じる">
+          <span></span>
+          <span></span>
+        </button>
 	
-    <section class="ticket-detail-section">
-      <h3>ご利用条件</h3>
-      <ul>
-        <li>対象商品・対象店舗をご確認ください。</li>
-        <li>チケットに記載された有効期限内にご利用ください。</li>
-        <li>1枚につき1回のみ利用できます。</li>
-      </ul>
-    </section>
-
-    <section class="ticket-detail-section">
-      <h3>ご利用方法</h3>
-      <ol>
-        <li>対象店舗で商品を選びます。</li>
-        <li>チケットのQRコードをレジで提示します。</li>
-        <li>商品を受け取ります。</li>
-      </ol>
-    </section>
-
-    <section class="ticket-detail-section">
-      <h3>ご利用上の注意</h3>
-      <ul>
-        <li>有効期限を過ぎたチケットは利用できません。</li>
-        <li>チケットは1枚につき1回限り利用できます。</li>
-        <li>利用可能な店舗・商品はチケットの内容をご確認ください。</li>
-      </ul>
-    </section>
-
-  </div>
-
-</div>
-
-
-
-
-
-
-
+  
 
 	
 
