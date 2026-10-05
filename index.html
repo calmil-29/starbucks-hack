@@ -26,32 +26,13 @@ closeTicketDetailSheet ：詳細シート閉じる
     padding: 0;
 }
 
-<a href="#" class="detail-link" onclick="openTicketDetailSheet(event, 'eticket500')">
-function openTicketDetailSheet(event, 'eticket500') {
-    if (event) event.preventDefault();
+script.js:13 [UI Update] Progress intialized: 40.125%
+script.js:1674 Uncaught ReferenceError: ticketDetails is not defined
+    at openTicketDetailSheet (script.js:1674:20)
+    at HTMLAnchorElement.onclick (index.html:136:102)
+openTicketDetailSheet @ script.js:1674
+onclick @ index.html:136
 
-    const ticket = ticketDetails.eticket500;
-    if (!ticket) return;
-
-   const sheet = document.getElementById('ticketDetailSheet');
-   if (!sheet) return;
-
-   const title = sheet.querySelector('.ticket-detail-header h2');
-   const description = sheet.querySelector('.ticket-detail-section p');
-
-   if (title) {
-    title.textContent = ticket.title;
-   }
-
-   if (description) {
-    description.textContent = ticket.description;
-   }
-
-   // 詳細シートを開いている間はチケットを固定
-   isTicketDetailOpen = true;
-
-   sheet.classList.add('is-active');
-}	
 
 
 	
