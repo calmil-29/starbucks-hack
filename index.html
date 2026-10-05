@@ -9,115 +9,49 @@
 </head>
 <body>
     
+
+card-back ：カード裏のカルーセル
+openTicketDetailSheet ：詳細シート開ける	
+closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
-      <div class="card-back">
-        <div class="carousel-dots">
-          <span class="dot active"></span>
-          <span class="dot"></span>
-          <span class="dot"></span>
-        </div>
+.ticket-carousel-inner {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0;
+    padding: 0;
+}
 
-        <div class="ticket-carousel-inner">
-			
-          <!-- eTicket 500 --->			
 
-          <div class="ticket-item">
-            <div class="ticket-content-wrapper">
-				
-              <div class="ticket-visual type-500">
-                <img src="images/eticket-500チケット.svg"
-                     alt="500円分のeTicket"
-                     class="ticket-basse"
-                >
+function openTicketDetailSheet(event, 'eticket500') {
+    if (event) event.preventDefault();
 
-                <span class="eticket-amount">500</span>
+    const ticket = ticketDetails.eticket500;
+    if (!ticket) return;
 
-                <button class="ticket-qr-button" onclick="openQrModal(event)">
-                  <img src="images/QRコード.png" alt="QRコード">
-                </button>
-                
-              </div>            			
+   const sheet = document.getElementById('ticketDetailSheet');
+   if (!sheet) return;
 
-              <div class="ticket-perforation">
-                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-            
-              <!-- eTicket 500チケットの内容 -->
-              <div class="ticket-explanation">
-                <p class="desc-text">500円/509円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆・ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
-                <a href="#" class="detail-link" onclick="openTicketDetailSheet(event, 'eticket500')">
-                    詳細はこちら
-                </a>
-                <p class="expiry-text"><strong>有効期限 20XX年XX月XX日(土)</strong></p>
-              </div>
+   const title = sheet.querySelector('.ticket-detail-header h2');
+   const description = sheet.querySelector('.ticket-detail-section p');
 
-              <!-- BACK → バツボタンにするか検討中 -->
-              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
-				
-		    </div><!-- .ticket-content-wrapper -->  
-          </div><!-- .ticket-item -->		
-	
-window.addEventListener('load', () => {
-    const carousel = document.querySelector('.ticket-carousel-inner');
-    const dots = document.querySelectorAll('.carousel-dots .dot');
+   if (title) {
+    title.textContent = ticket.title;
+   }
 
-    // エラー防止のため、カルーセルが存在するときだけ動かす
-    if (carousel) {
-        carousel.addEventListener('scroll', () => {
-            const scrollLeft = carousel.scrollLeft;
-            const itemWidth = carousel.offsetWidth;
-            // 何枚目かを計算
-            const currentIndex = Math.round(scrollLeft / itemWidth);
+   if (description) {
+    description.textContent = ticket.description;
+   }
 
-            // ドットのクラスを付け替える
-            dots.forEach((dot, index) => {
-                if (index === currentIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        });
-    }
-});
+   // 詳細シートを開いている間はチケットを固定
+   isTicketDetailOpen = true;
 
-          <div class="ticket-item">
-            <div class="ticket-content-wrapper">
-
-              <div class="ticket-visual type-500">
-                <img src="images/eticket-500チケット.svg"
-                     alt="500円分のeTicket"
-                     class="ticket-basse"
-                >
-
-                <span class="eticket-amount">1900</span>
-
-                <button class="ticket-qr-button" onclick="openQrModal(event)">
-                  <img src="images/QRコード.png" alt="QRコード">
-                </button>
-                
-              </div>            			
-
-              <div class="ticket-perforation">
-                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-              </div>
-            
-              <!-- eTicket 500チケットの内容 -->
-              <div class="ticket-explanation">
-                <p class="desc-text">500円/509円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆・ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
-                <a href="#" class="detail-link" onclick="openTicketDetailModal(event, 'eticket500')">
-                    詳細はこちら
-                </a>
-                <p class="expiry-text"><strong>有効期限 20XX年XX月XX日(土)</strong></p>
-              </div>
-
-              <!-- 💡BACK → バツボタンにするか？ -->
-              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
-
-            </div><!-- .ticket-content-wrapper -->  
-          </div><!-- .ticket-item -->
+   sheet.classList.add('is-active');
+}	
 
 
 	
