@@ -16,18 +16,77 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
-#ticketDetailSheet {
-    display: block !important;
-    position: fixed !important;
-    left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
 
-    height: 500px !important;
+<body class="home-page">
+  
+<section class="card-hero-section">
 
-    background: #ffffff !important;
-    z-index: 9999 !important;
-}
+  <div  id="cardFlip" class="card-flip-container">
+    <div class="card-flip-inner">
+      
+      <div class="card-front">
+          <!-- QRコード 【第１モーダル】への入り口：openQrModal(event)等がここに入る -->  
+      </div><!-- .card-front -->
+	
+      <div class="card-back">
+        <div class="carousel-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>	
+		  
+        <div class="ticket-carousel-inner">
+			
+         <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+
+			<div class="ticket-visual type-500">	
+				
+            </div><!-- .ticket-content-wrapper -->  
+          </div><!-- .ticket-item --> <!-- type-500 type-700 type-700 と続く-->				
+		  
+        </div><!-- .ticket-carousel-inner -->
+      </div><!-- .card-back -->
+
+    </div><!-- .card-flip-inner -->
+  </div><!-- #cardFlip .card-flip-container -->	
+
+  <div class="card-action-list"> <!-- カード下部 入金/スターリワードに交換/もっと見る ボタン -->
+</section><!-- .card-hero-section -->
+		
+<section class="main-banner-group">
+	
+<section class="news-group"> <!-- 横スクロール ※あとからここは横スクロール（JSでカルーセル処理済み）は廃止して、.banner-group と同じシンプルに縦スクロールにする予定 -->
+	
+<section class="banner-group"> <!-- 縦スクロール -->
+	 
+<nav class="bottom-nav-group" aria-label="メインメニュー">
+	
+. ヒーローエリアのカード表のモーダル / カード裏用のシート組
+	
+<div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
+
+<div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
+	
+<div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">	
+	
+<div id="ticketDetailSheet" class="ticket-detail-sheet">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 
 で、これは前々からきになってて。今回も出てきたバツボタン。前回のカード表面での第１〜３モーダル画面のヘッダーにもあるけど、今回のカード裏のチケット用モーダル画面でのバツボタンも全て共通にして、CSSで実装するのはあり？JS で処理で使う部分は onclick のみだし、button のクラス名に共通名 .close-btn を追加して、バツボタンの「x」指定 span のみだけ共通にしとくのはあり？
          <button 
