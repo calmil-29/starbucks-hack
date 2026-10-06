@@ -96,20 +96,25 @@ closeTicketDetailSheet ：詳細シート閉じる
 
 
 
-#ticketDetailSheet {
-    display: block !important;
-    position: fixed !important;
+.ticket-detail-sheet {
+    position: fixed;
 
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 300px !important;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
-    background: red !important;
-    z-index: 99999 !important;
+    height: 45vh;
+
+    display: none;
+
+    background: #fff;
+
+    z-index: 99999;
 }
 
-
+.ticket-detail-sheet.is-active {
+    display: block;
+}
 
 
 
