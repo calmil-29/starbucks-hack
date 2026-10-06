@@ -16,14 +16,18 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
-script.js:13 [UI Update] Progress intialized: 40.125%
-script.js:1711 詳細シートを開く
-script.js:1712 eticketType = eticket500
-script.js:1713 ticket = {title: 'eTicket 500', description: '500円分の対象商品のお支払いに利用できます。'}
-script.js:1714 sheet = <div id=​"ticketDetailSheet" class=​"ticket-detail-sheet is-active">​…​</div>​
-script.js:1718 class = ticket-detail-sheet is-active
+#ticketDetailSheet {
+    display: block !important;
+    position: fixed !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
 
-	
+    height: 500px !important;
+
+    background: #ffffff !important;
+    z-index: 9999 !important;
+}
 
 で、これは前々からきになってて。今回も出てきたバツボタン。前回のカード表面での第１〜３モーダル画面のヘッダーにもあるけど、今回のカード裏のチケット用モーダル画面でのバツボタンも全て共通にして、CSSで実装するのはあり？JS で処理で使う部分は onclick のみだし、button のクラス名に共通名 .close-btn を追加して、バツボタンの「x」指定 span のみだけ共通にしとくのはあり？
          <button 
