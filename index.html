@@ -16,22 +16,80 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
-.ticket-carousel-inner {
-    width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 0;
-    padding: 0;
+  <div id="ticketDetailSheet" class="ticket-detail-sheet">
+
+    <div class="ticket-detail-sheet-content">
+
+      <div class="ticket-detail-header">
+        <h2>eTicket 500</h2>
+        <button 
+          class="ticket-detail-close-btn" 
+          onclick="closeTicketDetaillSheet(event)" 
+          aria-label="閉じる">
+          <span></span>
+          <span></span>
+        </button>
+      </div>  
+
+      <section class="ticket-detail-section">
+        <h3>チケット内容</h3>
+        <p>500円分の対象商品のお支払いに利用できます。</p>
+      </section>
+
+      <p>※このプロトタイプでは利用条件を簡略化しています。</p>
+
+    </div>	
+
+.ticket-detail-sheet.is-active {
+    display: block;
 }
 
-script.js:13 [UI Update] Progress intialized: 40.125%
-script.js:1674 Uncaught ReferenceError: ticketDetails is not defined
-    at openTicketDetailSheet (script.js:1674:20)
-    at HTMLAnchorElement.onclick (index.html:136:102)
-openTicketDetailSheet @ script.js:1674
-onclick @ index.html:136
+.ticket-detail-sheet {
+    display: none;
+}
+
+const ticketDetails = {
+    eticket500: {
+        title: 'eTicket 500',
+        description: '500円分の対象商品のお支払いに利用できます。'
+    },
+
+    egift700: {
+        title: 'eGift 700',
+        description: 'お好きなドリンク１杯と交換できます。'
+    },
+
+    egift300: {
+        title: 'eGift 300',
+        description: 'お好きなフード１点と交換できます。'
+    },
+};
+
+function openTicketDetailSheet(event, eticketType) {
+    if (event) event.preventDefault();
+
+    const ticket = ticketDetails[eticketType];
+    if (!ticket) return;
+
+   const sheet = document.getElementById('ticketDetailSheet');
+   if (!sheet) return;
+
+   const title = sheet.querySelector('.ticket-detail-header h2');
+   const description = sheet.querySelector('.ticket-detail-section p');
+
+   if (title) {
+    title.textContent = ticket.title;
+   }
+
+   if (description) {
+    description.textContent = ticket.description;
+   }
+
+   // 詳細シートを開いている間はチケットを固定
+   isTicketDetailOpen = true;
+
+   sheet.classList.add('is-active');
+}
 
 
 
