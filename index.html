@@ -16,6 +16,9 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
+1.詳細シートCSSを display:none だけに戻す → オートチャージ画面は元に戻る	
+2.詳細シートを高さ100pxの赤箱で再テスト → オートチャージ画面縦長く変形・詳細シートはオートチャージ画面の後ろに移動 	
+
 .ticket-detail-sheet {
     position: fixed;
     left: 0;
@@ -35,12 +38,17 @@ closeTicketDetailSheet ：詳細シート閉じる
     display: block;
 }
 
-
-1. 詳細シートCSSを display:none だけに戻す
-2. オートチャージ画面が元に戻るか確認
-3. 元に戻ったら、詳細シートを高さ100pxの赤箱で再テスト
-4. そのうえで autochargeModal 側の高さCSSを確認
-
+3.そのうえで autochargeModal 側の高さCSSを確認
+.autocharge-modal-overlay { 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 10001; 
+    display: none;
+}
 
 
 
