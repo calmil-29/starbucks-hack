@@ -9,7 +9,7 @@
 </head>
 <body>
     
-
+♥️♥️ ====================================-
 card-back ：カード裏のカルーセル
 openTicketDetailSheet ：詳細シート開ける	
 closeTicketDetailSheet ：詳細シート閉じる
@@ -19,24 +19,1029 @@ closeTicketDetailSheet ：詳細シート閉じる
 	openTicketDetailSheet(event, 'eticket500')
 
 
-.ticket-detail-sheet {
-    position: fixed !important;
+#autochargeModal (.autocharge-modal-overlay)
+└── .autocharge-modal-content
+    ├── .autocharge-screen-input
+    │   ├── .autocharge-modal-header
+    │   │   └── button.autocharge-close-btn
+    │   │       ├── span
+    │   │       └── span
+    │   └── .autocharge-modal-body
+    │       ├── p.autocharge-title
+    │       ├── p.autocharge-summary
+    │       ├── .autocharge-menu-list
+    │       │   ├── .deposit-menu-item (カード選択)
+    │       │   │   ├── .menu-clickable-area
+    │       │   │   │   ├── img#autochargeCurrentCardImg (.selector-card-img)
+    │       │   │   │   └── .menu-value-box
+    │       │   │   │       ├── span#autoCardVal (.current-value)
+    │       │   │   │       └── span.arrow-balance
+    │       │   │   └── #autochargeCardWindow (.deposit-selector-window)
+    │       │   │       ├── p.deposit-selector-title
+    │       │   │       ├── .deposit-selector-item (メイン)
+    │       │   │       │   ├── img (.selector-card-img)
+    │       │   │       │   └── span.autocharge-main-card-balance
+    │       │   │       └── .deposit-selector-item (サブ)
+    │       │   │           ├── img (.selector-card-img)
+    │       │   │           └── span.autocharge-sub-card-balance
+    │       │   ├── .deposit-menu-item (入金額)
+    │       │   │   ├── .menu-clickable-area
+    │       │   │   │   ├── span.menu-label
+    │       │   │   │   └── .menu-value-box
+    │       │   │   │       ├── span#autoAmountVal (.current-value.autocharge-value-amount)
+    │       │   │   │       └── span.arrow-balance
+    │       │   │   └── #autochargeAmountWindow (.deposit-selector-window)
+    │       │   │       ├── .deposit-selector-item (¥2,000)
+    │       │   │       ├── .deposit-selector-item (¥3,000)
+    │       │   │       ├── .deposit-selector-item (¥5,000)
+    │       │   │       └── .deposit-selector-item (¥10,000)
+    │       │   ├── .deposit-menu-item (入金条件)
+    │       │   │   ├── .menu-clickable-area
+    │       │   │   │   ├── span.menu-label
+    │       │   │   │   └── .menu-value-box
+    │       │   │   │       ├── span#autoConditonVal (.current-value.autocharge-value-condition)
+    │       │   │   │       └── span.arrow-balance
+    │       │   │   ├── #autochargeConditionWindow (.deposit-selector-window)
+    │       │   │   │   ├── .deposit-selector-item
+    │       │   │   │   │   └── span (¥1,000)
+    │       │   │   │   ├── .deposit-selector-item
+    │       │   │   │   │   └── span (¥3,000)
+    │       │   │   │   └── .deposit-selector-item
+    │       │   │   │       └── span (¥5,000)
+    │       │   │   └── #autoErrorMessage (.error-message-box)
+    │       │   │       └── p.error-text
+    │       │   └── .deposit-menu-item (支払い方法)
+    │       │       ├── .menu-clickable-area
+    │       │       │   ├── span.menu-label
+    │       │       │   └── .menu-value-box
+    │       │       │       ├── span#autoMethodval (.current-value.autocharge-value-method)
+    │       │       │       └── span.arrow-balance
+    │       │       └── #autochargeMethodWindow (.deposit-selector-window)
+    │       │           ├── .deposit-selector-item (Apple Pay)
+    │       │           └── .deposit-selector-item (PayPay)
+    │       └── button.deposit-next-stop-btn.autocharge-next-btn (次へ)
+    │
+    ├── .autocharge-screen-confirm
+    │   ├── .autocharge-modal-header
+    │   │   └── button.autocharge-close-btn
+    │   │       ├── span
+    │   │       └── span
+    │   └── .autocharge-modal-body
+    │       ├── p.autocharge-title
+    │       ├── p.autocharge-summary
+    │       └── .confirm-receipt-card
+    │           ├── .receipt-row (入金先カード)
+    │           │   ├── span.receipt-label
+    │           │   └── span#autoConfirmCard (.receipt-value)
+    │           ├── .receipt-row (入金額)
+    │           │   ├── span.receipt-label
+    │           │   └── span#autoConfirmAmount (.receipt-value.autocharge-value-amount)
+    │           ├── .receipt-row (入金条件)
+    │           │   ├── span.receipt-label
+    │           │   └── span#autoConfirmCondition (.receipt-value.autocharge-value-condition)
+    │           ├── .receipt-row (支払い方法)
+    │           │   ├── span.receipt-label
+    │           │   └── span#autochargeconfirmMethod (.receipt-value.autocharge-value-method)
+    │           ├── button#autochargeSaveBtn (.final-deposit-submit-btn) (保存)
+    │           └── button.confirm-back-btn (キャンセル)
+    │
+    └── #ticketDetailSheet (.ticket-detail-sheet)
+        └── .ticket-detail-sheet-content
+            ├── .ticket-detail-header
+            │   ├── h2 (eTicket 500)
+            │   └── button.ticket-detail-close-btn
+            │       ├── span
+            │       └── span
+            ├── section.ticket-detail-section
+            │   ├── h3 (チケット内容)
+            │   └── p
+            └── p (※このプロトタイプでは...)
 
-    top: 0 !important;
-    bottom: auto !important;
-    left: 0 !important;
-    right: auto !important;
-
-    width: 200px !important;
-    height: 100px !important;
-
-    display: block !important;
-
-    background: red !important;
-    z-index: 99999 !important;
-}
+	
 
 
+
+
+
+
+
+	
+<body class="home-page">
+  
+<section class="card-hero-section">
+
+  <div  id="cardFlip" class="card-flip-container">
+    <div class="card-flip-inner">
+      
+      <div class="card-front">
+        
+        <img src="images/my-card-main.svg" id="heroCardImg" class="main-card-visual-img" alt="メインカード">
+
+        <div class="card-main-visual">
+
+          <div class="qr-tap-area" onclick="openQrModal(event)" data-type="payment">
+             <div class="card-qr-box">
+               <img src="images/QRコード.png" class="qr-code" alt="QR">
+            </div>
+          </div>
+
+          <div class="card-info-side">
+            <img src="images/starbucks-logo.png" class="mini-logo" alt="ロゴ">
+            <div class="balance-display">
+
+              <span class="summary-card-text">オートチャージ設定中</span> 
+
+              <p class="card-label">Starbucks Card</p>
+
+              <div class="hero-card-balance-line">
+                <span class="unit">¥</span>
+                <span id="heroCardBalance" class="hero-card-value">0</span>
+              </div>
+            </div>
+            
+
+            <button class="btn-etiket-trigger" onclick="flipCard(event)">
+              <div class="count-box">3</div>
+              <span class="eticket-label">eTicket</span>
+              <span class="eticket-badge"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="star-progress-overlay">
+        ・・・
+          <div class="current-stars-group">
+           ・・・
+          </div>
+
+          <div class="progress-bar-wrapper">
+           ・・・
+          </div>
+          
+        </div>
+      </div>
+      
+
+      <div class="card-back">
+        <div class="carousel-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+
+        <div class="ticket-carousel-inner">
+
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+
+              <div class="ticket-visual type-500">
+                <img src="images/eticket-500チケット.svg"
+                     alt="500円分のeTicket"
+                     class="ticket-basse"
+                >
+
+                <span class="eticket-amount">500</span>
+
+                <button class="ticket-qr-button" onclick="openQrModal(event)">
+                  <img src="images/QRコード.png" alt="QRコード">
+                </button>
+                
+              </div>            			
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            
+              <!-- eTicket 500チケットの内容 -->
+              <div class="ticket-explanation">
+                <p class="desc-text">500円/509円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆・ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
+                <a href="#" class="detail-link" onclick="openTicketDetailSheet(event, 'eticket500')">
+                    詳細はこちら
+                </a>
+                <p class="expiry-text"><strong>有効期限 20XX年XX月XX日(土)</strong></p>
+              </div>
+
+              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+            </div>
+          </div>
+          
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+
+              <div class="ticket-visual type-700">
+                <img src="images/egift-700チケット.svg"
+                     alt="700円分のeTicket"
+                     class="ticket-basse"
+                >
+
+                <span class="egift-amount">700</span>
+
+                <button class="ticket-qr-button" onclick="openQrModal(event)">
+                  <img src="images/QRコード.png" alt="QRコード">
+                </button>
+                
+              </div>            			
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+  
+              <div class="ticket-explanation">
+                <p class="desc-text">お好きなドリンク１杯(税込700円まで)と交換できます。</p>
+                <a href="#" class="detail-link" onclick="openTicketDetailSheet(event, 'egift700')">
+                    詳細はこちら
+                </a>
+                <p class="expiry-text"><strong>有効期限 2026年02月28日(土)</strong></p>
+              </div>
+
+              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+            </div>
+          </div>
+
+          <div class="ticket-item">
+            <div class="ticket-content-wrapper">
+
+              <div class="ticket-visual type-300">
+                <img src="images/egift-300チケット.svg"
+                     alt="300円分のeTicket"
+                     class="ticket-basse"
+                >
+
+                <span class="egift-amount">300</span>
+
+                <button class="ticket-qr-button" onclick="openQrModal(event)">
+                  <img src="images/QRコード.png" alt="QRコード">
+                </button>
+                
+              </div>  
+
+              <div class="ticket-perforation">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+             
+              <div class="ticket-explanation">
+                <p class="desc-text">お好きなフード１点(税込300円まで)と交換できます。</p>
+                <a href="#" class="detail-link" onclick="openTicketDetailSheet(event, 'egift300')">
+                    詳細はこちら
+                </a>
+                <p class="expiry-text"><strong>有効期限 2026年03月31日(火)</strong></p>
+              </div>
+
+              <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="card-action-list">
+    <a href="#" class="btn-charge" aria-label="入金">入金</a>
+    
+    <div class="btn-action-group">
+      <a href="#" class="btn-reward" aria-label="スターリワードに交換する">スターリワードに交換</a>
+      <a href="#" class="btn-reward-more" aria-label="スターリワードをもっと見る">もっと見る</a>
+    </div>
+  </div>
+
+</section>
+ <!--==========================================================================-->
+ <!-- モバイルオーダー / メニューボタンエリア                                       --->
+ <!--==========================================================================--> 
+
+  <section class="main-banner-group">
+    <ul class="main-banner-inner">
+      <li>
+        <a href="#" class="is-order-and-pay" aria-label="モバイルオーダーで注文する">
+          <div class="order-content">
+            <div class="order-text-side">
+              <strong>MOBILE ORDER & PAY</strong>
+              <span class="order-btn">モバイルオーダーする</span>
+            </div>  
+            <div class="order-visual-side">
+              <p class="order-copy">レジに並ばず、<br>お店で受け取り</p>
+              <div class="order-icon">
+                <img src="images/icon-mobile-order.svg" alt="モバイルオーダー">
+              </div>
+            </div>
+          </div>
+        </a>
+      </li>  
+
+      <li>
+        <a href="" class="is-menu" aria-label="メニューを見る">
+          <div class="menu-content">
+            <strong>MENU</strong>
+            <span class="menu-btn">メニューを見る</span> 
+          </div>
+        </a>
+      </li> 
+    </ul>
+  </section>
+
+  <!--==========================================================================-->
+  <!-- 新情報エリア                                                               -->
+  <!--==========================================================================-->
+
+  <section class="news-group"> <!-- 横スクロール -->
+    <ul class="news-inner">
+      <li>
+        <a href="">
+          <img src="images/玉露抹茶.png" alt="新商品情報:玉露抹茶２種類のドリンク">
+          <span class="news-label is-more">もっと見る</span> 
+        </a>
+      </li> 
+      <li>
+        <a href="">
+          <img src="images/はちみつ生姜.png" alt="新商品情報:はちみつ生姜ドリンク">
+          <span class="news-label is-more">もっと見る</span> 
+        </a>
+      </li>  
+      <li>
+        <a href="">
+          <img src="images/新作フード.png" alt="新商品情報:フード">
+          <span class="news-label is-more">もっと見る</span> 
+        </a>
+      </li>  
+      <li>
+        <a href="">
+          <img src="images/新サービス.png" alt="新情報:朝のサービス">
+          <span class="news-label is-more">もっと見る</span> 
+        </a>
+      </li>  
+      <li>
+        <a href="">
+          <img src="images/新グッズ.png" alt="新商品:グッズ">
+          <span class="news-label is-more">もっと見る</span> 
+        </a>
+      </li>  
+      <li>
+        <a href="">
+          <img src="images/モバイルカスタマイズプレゼント.png" alt="プレゼント：モバイルオーダーカスタマイズ">
+          <span class="news-label is-more">もっと見る</span> 
+        </a>
+      </li>  
+      <li>
+        <a href="">
+          <img src="images/運試し.png" alt="エントリー:モバイルオーダー運試し">
+          <span class="news-label is-entry">エントリーはこちら</span> 
+        </a>
+      </li>  
+    </ul>
+  </section>
+
+  <!--==========================================================================-->
+  <!-- バナーグループ                                                             -->
+  <!--==========================================================================-->
+
+  <section class="banner-group">
+    <ul class="banner-inner">
+      <li>
+        <a href="" class="is-reserve" aria-label="スターバックス リザーブ">
+          <div class="banner-reserve">
+            <strong class="title-reserve">STARBUCKS RESERVE®</strong>
+            <span class="is-btn">もっと見る</span> 
+          </div>
+        </a>
+      </li>  
+      <li>
+        <a href="" class="is-gift" aria-label="eGiftを贈る">
+          <div class="banner-gift">
+            <span class="sub-label">Starbucks eGift</span>
+            <strong>eGiftを贈ろう</strong>
+            <span class="is-btn">eGiftを贈る</span> 
+          </div>
+        </a>
+      </li> 
+      <li>
+        <a href="" class="is-card" aria-label="デジタルスターバックスカードを贈る">
+          <div class="banner-card">
+            <span class="sub-label">Digital Starbucks Card Gift</span>
+            <strong>メールやSNSで贈る<br>デジタルタイプの<br>スターバックス カード</strong>
+            <span class="is-btn">Digtal Cardを贈る</span> 
+          </div>
+        </a>
+      </li> 
+      <li>
+        <a href="" class="is-online-store" aria-label="オンラインストア">
+          <div class="banner-online">
+            <span class="sub-label">Online Store</span>
+            <strong>オンラインストア</strong>
+            <span class="is-btn">もっと見る</span> 
+          </div>
+        </a>
+      </li> 
+      <li>
+        <a href="" class="is-passport" aria-label="マイストアパスポート">
+          <div class="banner-passport">
+            <span class="sub-labelt">My store passport</span>
+            <strong>マイストア<br>パスポート</strong>
+            <span class="is-btn">もっと見る</span> 
+          </div>
+        </a>
+      </li>     
+      <li>
+        <a href="" class="is-coffee-passport" aria-label="コーヒーパスポート">
+          <div class="banner-coffee">
+            <strong>My Coffee<br>Passport</strong>
+            <span class="is-btn">もっと見る</span> 
+          </div>
+        </a>
+      </li>   
+      <li>
+        <a href="" class="is-free-wifi" aria-label="free Wi-Fi">
+          <div class="banner-WiFi">
+            <span class="sub-label">Free WiFi</span>
+            <strong>東京都店舗を<br>ご利用のお客様<br>※一部店舗を除く</strong>
+            <span class="is-btn">もっと見る</span> 
+          </div>
+        </a>
+      </li> 
+    </ul>
+  </section>
+  
+  <!--==========================================================================-->
+  <!-- Bottom Nav -->
+  <!--==========================================================================-->
+
+  <nav class="bottom-nav-group" aria-label="メインメニュー">
+    
+    <ul class="bottom-nav-inner">
+      <li class="nav-home is-active"> 
+        <a href="index.html">
+          <img src="images/icon-home.svg" class="icon-off" alt="ホーム"> 
+          <img src="images/icon-home-color.svg" class="icon-on" alt="ホーム">
+          <span class="nav-label">Home</span>    
+        </a>
+      </li>
+      <li class="nav-pay">
+        <a href="pay.html">
+          <div class="pay-icon">
+            <img src="images/icon-pay.svg" class="icon-off" alt="支払い">
+            <img src="images/icon-pay-color.svg" class="icon-on" alt="支払い">
+            <span class="pay-badge">3</span> <!-- eTicket通知バッジ-->
+          </div> 
+          <span class="nav-label">Pay</span>     
+        </a>
+      </li>
+      <li class="nav-order">
+        <a href="order.html">
+          <div class="order-icon-circle">
+            <img src="images/starbucks-logo-removebg-preview.png" alt="モバイルオーダー">
+          </div>
+          <span class="nav-label">Order</span>
+        </a>
+      </li>
+      <li class="nav-store">
+        <a href="store.html">
+          <img src="images/icon-store.svg" class="icon-off" alt="店舗検索">  
+          <img src="images/icon-store-color.svg" class="icon-on" alt="店舗検索">
+          <span class="nav-label">Store</span>  
+        </a>
+      </li>
+      <li class="nav-hamburger-btn-group">
+          <a href="other.html" class="nav-hamburger-btn-inner">
+            <div class="nav-hamburger-icon-badge">
+              <span class="notification-sparkly"><!-- index通知バッジ -->
+                <img src="images/icon-キラキラ.svg">
+              </span>
+            </div>
+            <div class="nav-btn-hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>  
+            <span class="nav-label">Other</span>
+          </a>
+      </li>
+    </ul>
+  </nav>
+
+ <!--==========================================================================-->
+ <!--💡【第１モーダル】QR拡大モーダル                                              --->
+ <!--==========================================================================-->
+ 
+  <div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
+
+    <div class="qr-modal-content">
+
+      <div class="qr-modal-header">
+        <button class="qr-close-btn" onclick="closeQrModal(event)">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <div class="qr-modal-zone">
+
+        <img id="qrModalImg" src="" alt="支払いコード"> 
+
+        <div class="qr-code-toggle-wrapper">
+          <p class="qr-code-toggle">コード番号を表示</p>
+          <span class="qr-arrow-number"></span>
+        </div>
+        
+        <p class="qr-code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
+      </div>  
+      
+      <!-- カード選択 --> 
+      <div class="qr-modal-card-zone">
+        <div class="qr-card-meta">
+
+          <!-- 💡【第１モーダル】オートチャージ保存時にテキスト（ヒーロー共通クラス）+ 金額の下ラインのカラー変更 --> 
+          <span class="summary-card-text">オートチャージ設定中</span> 
+          
+          <span class="qr-card-name">Starbucks Card</span>
+
+          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
+
+            <!-- 金額の下ライン -->
+            <div class="qr-card-balance-line">
+              <span class="qr-card-balance">¥0</span>
+            </div>
+            <!-- アロー -->
+            <span class="qr-arrow-balance"></span>
+          </div>
+          <!-- アクセス固定日時 -->
+          <time id="qrCardTimestamp"></time>
+        </div>
+
+        <!-- 【第２モーダル】入金設定へ進むためのボタン -->
+        <button class="qr-deposit-btn" onclick="openDepositModal(event)">入金</button>
+
+        <!-- 第１カード選択のドロップダウン -->
+        <div class="qr-card-selector-window">
+          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
+
+            <div class="card-wrapper">
+              <!-- 💡オートチャージが保存されたときの 緑⚫︎バッジ（第２と共通クラス） -->
+              <span class="charge-badge" data-card-type="main"></span>
+              <!-- カード画像 --> 
+              <img src="images/my-card-main.svg" class="qr-selector-card-img" alt="メインカード">
+            </div>
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-main-card-balance">¥0</span>
+            </div>
+          </div> 
+
+          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <div class="card-wrapper">
+              <!-- 💡オートチャージが保存されたときの 緑⚫︎バッジ -->
+              <span class="charge-badge" data-card-type="sub"></span>
+
+              <img src="images/my-card-sub.png" class="qr-selector-card-img" alt="サブカード">
+            </div>  
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-sub-card-balance">¥3,500</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
+        </div><!-- .qr-card-selector-window -->   
+
+      </div><!-- .qr-modal-card-zone -->
+
+      <!-- カードデザイン画像 -->
+      <div class="qr-modal-card-graphic">
+        <img id="qrModalCardImg" src="images/starbucks-card-design.png" alt="スタバカードデザイン">
+      </div>
+
+      <!-- フッター -->
+      <div class="qr-modal-footer-tabs">
+        <button class="tab-item">
+          <div class="notice-wrapper">
+            <span class="badge">2</span>
+            <span class="notice-dot"></span>
+          </div>  
+          <span class="tab-text">eGift</span>
+          <!-- 右向き矢印 -->
+          <span class="arrow-icon"></span>
+        </button>
+
+        <div class="tab-divider"></div> <!-- 真ん中区切り線 -->
+
+        <button class="tab-item">
+          <div class="notice-wrapper">
+            <span class="badge">1</span>
+            <span class="notice-dot"></span>
+          </div>  
+          <span class="tab-text">eTicket</span>
+          <!-- 右向き矢印 -->
+          <span class="arrow-icon"></span>
+        </button>
+      </div>
+
+    </div><!-- .qr-modal-content -->
+  </div><!-- #qrModal -->
+
+  <!--==========================================================================-->
+  <!---💡 【第2モーダル】【入金設定画面】                                            ---> 
+  <!--==========================================================================-->
+
+  <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
+    <div class="deposit-modal-content">  
+
+      <!-- 【入金設定画面】 -->
+      <div class="deposit-screen-input">
+        
+        <!-- 【第２モーダル】ヘッダー（バツボタン）-->
+        <div class="deposit-modal-header">
+          <button class="deposit-close-btn" onclick="closeDepositModalForce()"> <!-- ※ CSSバツボタン実装・第１・３も共同？ -->
+            <span></span>
+            <span></span>
+          </button>
+        </div>    
+
+        <!-- 第２ body① -->
+        <div class="deposit-modal-body">
+
+          <!-- 【オートチャージ設定】リアルタイム更新バナー（初期状態は OFF） -->
+          <div class="autocharge-banner-container"> 
+
+            <!--  OFF 状態-->
+            <div class="banner-view-off">  
+              <p class="banner-title">オートチャージ</p>
+              <p class="banner-sub-title">カードの条件を設定</p>
+              <button class="autocharge-input-btn" onclick="openAutochargeModal(event)">設定する</button>
+            </div> 
+
+            <!-- ON 状態 　--> 
+            <div class="banner-view-on">
+              <div class="banner-text">
+                <p class="banner-title">オートチャージ</p> 
+                <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
+
+                <!-- 💡オートチャージ保存されたカード画像/名前 --> 
+                <img src="images/my-card-main.svg" class="summary-card-img" alt="Starbucks Card">
+                <span class="summary-card-name">Starbucks Card</span>
+              </div>
+
+              <!-- ON 状態スイッチ（OFF 状態に戻す） -->
+              <button class="autocharge-switch" onclick="turnOffAutocharge(event)">
+                <span class="autocharge-switch-circle"></span>
+              </button> 
+            </div>  
+          </div>   
+
+
+          <!-- 【第２モーダル】各種設定メニュー一覧 -->
+          <div class="deposit-menu-list">
+          
+            <!-- 1. 第２「カード選択」 -->
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleDepositWindow('card', event)">
+
+                <div class="card-wrapper">
+
+                  <!-- 💡現在選択中カード オートチャージが保存されたときの 緑⚫︎バッジ -->
+                  <span class="charge-badge" id="depositCurrentBadge"></span> 
+
+                  <!-- 第２ カード画像 -->
+                  <img src="images/my-card-main.svg"  id="depositCurrentCardImg" class="selector-card-img" alt="メイン">
+                </div>
+
+                <div class="menu-value-box">
+                  <span class="current-name" id="depositCardName">Starbucks Card</span>
+
+                  <!-- 金額下ライン -->
+				          <div class="deposit-card-balance-line">
+				            <span class="current-value" id="depositCardVal">¥0</span>
+				          </div>	
+
+                  <span class="arrow-balance"></span> 
+                </div>  
+              </div>
+
+              <!-- 第２ カード選択のドロップダウン -->
+              <div class="deposit-selector-window" id="depositCardWindow">
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+
+                  <div class="card-wrapper">
+
+                    <!-- 💡オートチャージが保存されたときの 緑⚫︎バッジ -->
+                    <span class="charge-badge" data-card-type="main"></span>
+
+                    <!-- カード画像 -->
+                    <img src="images/my-card-main.svg" class="selector-card-img" alt="メイン">
+                  </div>
+                  <span class="deposit-main-card-balance">¥0</span>
+                </div>
+
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                  <div class="card-wrapper">
+
+                    <!-- 💡オートチャージが保存されたときの 緑⚫︎バッジ -->
+                    <span class="charge-badge" data-card-type="sub"></span>
+
+                    <!-- カード画像 -->
+                    <img src="images/my-card-sub.png" class="selector-card-img" alt="サブ">
+                  </div>
+                  <span class="deposit-sub-card-balance">¥3,500</span>
+                </div>
+                
+              </div>
+            </div> 
+
+            <!-- 2. 「入金額」 -->
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleDepositWindow('amount', event)">
+                <span class="menu-label">入金額</span>
+                <div class="menu-value-box">
+                  <span class="current-value">¥1,000</span>
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div>
+
+              <!-- 「入金額選択のドロップダウン」 -->
+              <div class="deposit-selector-window" id="depositAmountWindow">
+                <div class="deposit-selector-item" onclick="selectDepositOption('amount', 1000, event)">¥1,000</div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('amount', 3000, event)">¥3,000</div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('amount', 5000, event)">¥5,000</div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('amount', 10000, event)">¥10,000</div>
+              </div>
+            </div> 
+          
+            <!-- 3. 「支払い方法」 -->
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleDepositWindow('method', event)">
+                <span class="menu-label">支払い方法</span>
+                <div class="menu-value-box">
+                  <span class="current-value">未登録</span>
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div>
+
+              <!-- 「支払い方法選択のドロップダウン」 -->
+              <div class="deposit-selector-window" id="depositMethodWindow">
+                <div class="deposit-selector-item" onclick="selectDepositOption('method', 'Apple Pay', event)">Apple Pay</div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('method', 'PayPay', event)">PayPay</div>
+              </div>
+            </div>
+
+          </div> <!-- .deposit-menu-list -->
+          
+          <!-- 【設定画面】「次へ」ボタン -->
+          <button class="deposit-next-step-btn" onclick="goToDepositConfirm(event)">次へ</button> 
+
+        </div><!-- .deposit-modal-body ①-->    
+      </div><!-- .deposit-screen-input -->  
+        
+      <!-- 第２モーダル【確認画面】-->
+      <div class="deposit-screen-confirm">
+
+        <!-- 【確認画面】のヘッダー（バツボタン）　-->
+        <div class="deposit-modal-header">
+          <button class="deposit-close-btn" onclick="closeDepositModalForce()">
+            <span></span>
+            <span></span>
+          </button>
+        </div>  
+
+        <div class="deposit-modal-body"><!-- body② -->   
+        
+          <!-- ⚠️最後に消す。（step-confirm → deposit-confirm に変更）：JSとCSSに役割をdeposit-screen-confirmにパスして修正するまでこのまま!! CSS・JSにないことを確認完了！-->   
+          <div class="deposit-step-box deposit-confirm" id="depositConfirmBox">
+
+            <p class="confirm-intro-title">以下の内容で入金します</p>
+
+            <div class="confirm-receipt-card">
+              <div class="receipt-row">
+                <span class="receipt-label">入金先カード</span>
+                <span class="receipt-value" id="confirmCard">--</span>
+              </div>
+              <div class="receipt-row">
+                <span class="receipt-label">支払い方法</span>
+                <span class="receipt-value" id="confirmMethod">--</span>
+              </div>
+            </div> 
+            
+            <!-- 【入金確定ボタン】 -->
+            <button class="final-deposit-submit-btn" id="finalDepositBtn">¥1,000 入金する</button> <!-- ⭐️！ここの入金の数字の入れ方もJSに沿った書き方にする？ -->
+            
+            <!-- 【キャンセルボタン】 -->
+            <button class="confirm-back-btn" onclick="closeDepositModalForce()">キャンセル</button>
+
+          </div><!-- 最後に消す！#depositConfirmBox .deposit-step-box .deposit-confirm --> 
+
+        </div><!-- .deposit-modal-body ②-->
+      </div><!-- .deposit-screen-confirm -->
+
+    </div><!-- .deposit-modal-content -->
+  </div><!-- #depositModal -->
+
+  <!--==========================================================================-->
+  <!-- 💡【第３モーダル】【オートチャージ設定】                                       --->
+  <!--==========================================================================--> 
+
+  <div id="autochargeModal" class="autocharge-modal-overlay" onclick="closeAutochargeModal(event)">
+    <div class="autocharge-modal-content">
+		
+      <div class="autocharge-screen-input">
+      
+        <div class="autocharge-modal-header">
+          <button class="autocharge-close-btn" onclick="closeAutochargeModalForce()">
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+        <div class="autocharge-modal-body">
+        
+          <p class="autocharge-title">オートチャージ</p>
+          <p class="autocharge-summary">オートチャージ：¥2,000 入金条件：残高が¥1,000未満</p>
+        
+          <div class="autocharge-menu-list">
+          
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleAutochargeWindow('card', event)">
+  
+                <img src="images/my-card-main.svg" id="autochargeCurrentCardImg" class="selector-card-img"  alt="メイン">
+
+                <div class="menu-value-box">
+                  <span class="current-value" id="autoCardVal">Starbucks Card ¥0</span>
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div>
+
+              <div class="deposit-selector-window" id="autochargeCardWindow">
+                <p class="deposit-selector-title">カードを選択</p>
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'main', event)">
+                  <img src="images/my-card-main.svg" alt="メイン" class="selector-card-img">
+                  <span class="autocharge-main-card-balance">¥0</span>
+                </div>
+
+                <div class="deposit-selector-item" onclick="selectDepositOption('card', 'sub', event)">
+                  <img src="images/my-card-sub.png" alt="サブ" class="selector-card-img">
+                  <span class="autocharge-sub-card-balance">¥3,500</span>
+                </div>
+              </div>
+            </div> 
+			  
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleAutochargeWindow('amount', event)">
+                <span class="menu-label">入金額</span>
+                <div class="menu-value-box">
+                  <span 
+                      class="current-value autocharge-value-amount"
+                      id="autoAmountVal">
+                      ¥2,000
+                  </span>
+
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div>
+
+              <div class="deposit-selector-window" id="autochargeAmountWindow">
+                <div class="deposit-selector-item" onclick="selectDepositOption('amount', 2000, event)">¥2,000</div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('amount', 3000, event)">¥3,000</div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('amount', 5000, event)">¥5,000</div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('amount', 10000, event)">¥10,000</div>
+              </div>
+            </div> 
+          
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleAutochargeWindow('condition', event)">
+                <span class="menu-label">入金条件</span>
+                <div class="menu-value-box">
+                  <span class="current-value autocharge-value-condition" 
+                        id="autoConditonVal">
+                        ¥1,000
+                  </span>
+
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div>
+           
+              <div class="deposit-selector-window" id="autochargeConditionWindow">
+
+                <div class="deposit-selector-item" onclick="selectDepositOption('condition', 1000, event)">
+                  <span>¥1,000</span>
+                </div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('condition', 3000, event)">
+                  <span>¥3,000</span>
+                </div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('condition', 5000, event)">
+                  <span>¥5,000</span>
+                </div>
+              </div> 
+
+              <div class="error-message-box" id="autoErrorMessage" style="display: none;">
+                <p class="error-text">入金額は入金条件の金額以上に設定してください</p>  
+              </div> 
+            </div>
+           
+            <div class="deposit-menu-item">
+              <div class="menu-clickable-area" onclick="toggleAutochargeWindow('method', event)">
+                <span class="menu-label">支払い方法</span>
+                <div class="menu-value-box">
+                  <span class="current-value autocharge-value-method" 
+                        id="autoMethodval">
+                        未登録
+                  </span>
+                  <span class="arrow-balance"></span> 
+                </div>
+              </div>
+
+              <div class="deposit-selector-window" id="autochargeMethodWindow">
+                <div class="deposit-selector-item" onclick="selectDepositOption('method', 'Apple Pay', event)">Apple Pay</div>
+                <div class="deposit-selector-item" onclick="selectDepositOption('method', 'PayPay', event)">PayPay</div>
+              </div>
+            </div>
+
+          </div>
+
+          <button class="deposit-next-stop-btn autocharge-next-btn" onclick="goToAutochargeConfirm(event)">次へ</button> 
+
+        </div>
+      </div>
+        
+      <div class="autocharge-screen-confirm">
+
+        <div class="autocharge-modal-header">
+          <button class="autocharge-close-btn" onclick="closeAutochargeModalForce()">
+            <span></span>
+            <span></span>
+          </button>
+        </div>  
+
+        <div class="autocharge-modal-body">
+          <p class="autocharge-title">オートチャージ</p>
+          <p class="autocharge-summary">¥2,000（入金条件：残高が¥1,000未満）</p>
+
+          <div class="confirm-receipt-card">
+            <div class="receipt-row">
+              <span class="receipt-label">入金先カード</span>
+              <span class="receipt-value" id="autoConfirmCard">--</span>
+            </div>
+
+            <div class="receipt-row">
+              <span class="receipt-label">入金額</span>
+              <span class="receipt-value autocharge-value-amount"
+                       id="autoConfirmAmount">
+                       ¥2,000
+              </span>
+            </div>
+
+            <div class="receipt-row">
+              <span class="receipt-label">入金条件</span>
+              <span class="receipt-value autocharge-value-condition"
+                    id="autoConfirmCondition">
+                    ¥1,000
+              </span>
+            </div>
+            
+            <div class="receipt-row">
+              <span class="receipt-label">支払い方法</span>
+              <span class="receipt-value  autocharge-value-method" 
+                    id="autochargeconfirmMethod">
+                    未登録
+              </span>
+            </div>
+
+            <button class="final-deposit-submit-btn" id="autochargeSaveBtn" onclick="executeAutochargeSave(event)">保存</button>
+
+            <button class="confirm-back-btn" onclick="closeAutochargeModalForce()">キャンセル</button>
+        
+        </div>
+      </div>
+
+    </div>
+  </div>
+	  
+  <div id="ticketDetailSheet" class="ticket-detail-sheet">
+
+    <div class="ticket-detail-sheet-content">
+
+      <div class="ticket-detail-header">
+        <h2>eTicket 500</h2>
+        <button 
+          class="ticket-detail-close-btn" 
+          onclick="closeTicketDetaillSheet(event)" 
+          aria-label="閉じる">
+          <span></span>
+          <span></span>
+        </button>
+      </div>  
+
+      <section class="ticket-detail-section">
+        <h3>チケット内容</h3>
+        <p>500円分の対象商品のお支払いに利用できます。</p>
+      </section>
+
+      <p>※このプロトタイプでは利用条件を簡略化しています。</p>
+
+    </div>
+  </div>
+
+
+  <script src="script.js"></script>
+</body>  
+
+♥️♥️♥️ ===========================================================================
 
 <body class="home-page">
   
