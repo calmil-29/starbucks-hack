@@ -16,11 +16,9 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
-document.getElementById('autochargeModal').outerHTML.includes('ticketDetailSheet')
-
-console.log(document.getElementById('autochargeModal').outerHTML);
-
-
+document.getElementById('autochargeModal').contains(
+  document.getElementById('ticketDetailSheet')
+)
 		
 
 #depositConfirmBox はいらない部分だったから消した。これでも閉じ忘れタグある？ 
