@@ -16,15 +16,16 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
-console.log(document.getElementById('ticketDetailSheet').parentElement.outerHTML);
+document.getElementById('autochargeModal').outerHTML.includes('ticketDetailSheet')
 
-	
-console.log(document.getElementById('ticketDetailSheet').previousElementSibling);
-console.log(document.getElementById('ticketDetailSheet').parentElement.id);
-VM1379:1 <div class=​"autocharge-modal-content">​<!-- 【オートチャージ設定画面】 --><div class=​"autocharge-screen-input">​…​</div>​<!-- .autocharge-screen-input --><!--オートチャージ【確認画面】--><div class=​"autocharge-screen-confirm">​…​</div>​<!-- .autocharge-modal-content --></div>​
-VM1379:2 autochargeModal
-undefined
 
+document.getElementById('ticketDetailSheet').dataset.test = 'check';
+document.getElementById('ticketDetailSheet').parentElement.id
+
+
+document.getElementById('autochargeModal').contains(
+  document.getElementById('ticketDetailSheet')
+)
 
 #depositConfirmBox はいらない部分だったから消した。これでも閉じ忘れタグある？ 
   <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
