@@ -16,12 +16,21 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
+貼り付けを許可
+VM1252:1 Uncaught ReferenceError: 貼り付けを許可 is not defined
+    at <anonymous>:1:1
+（匿名） @ VM1252:1
 let el = document.getElementById('ticketDetailSheet');
 
 while (el) {
   console.log(el.tagName, el.id, el.className);
   el = el.parentElement;
 }
+VM1257:4 DIV ticketDetailSheet ticket-detail-sheet
+VM1257:4 DIV autochargeModal autocharge-modal-overlay
+VM1257:4 BODY  home-page
+VM1257:4 HTML  
+null
 
 
 #depositConfirmBox はいらない部分だったから消した。これでも閉じ忘れタグある？ 
