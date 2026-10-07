@@ -16,6 +16,26 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
+.ticket-detail-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 100px;
+
+    display: none;
+
+    background: red;
+
+    z-index: 99999;
+}
+
+.ticket-detail-sheet.is-active {
+    display: block;
+}
+
+
 
 <body class="home-page">
   
