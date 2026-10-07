@@ -16,6 +16,13 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
+let el = document.getElementById('ticketDetailSheet');
+
+while (el) {
+  console.log(el.tagName, el.id, el.className);
+  el = el.parentElement;
+}
+
 
 #depositConfirmBox はいらない部分だったから消した。これでも閉じ忘れタグある？ 
   <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
