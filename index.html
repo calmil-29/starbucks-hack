@@ -19,7 +19,11 @@ closeTicketDetailSheet ：詳細シート閉じる
 document.getElementById('autochargeModal').contains(
   document.getElementById('ticketDetailSheet')
 )
-		
+		console.log(document.getElementById('autochargeModal').outerHTML);
+    
+    
+    
+    
 
 #depositConfirmBox はいらない部分だったから消した。これでも閉じ忘れタグある？ 
   <div id="depositModal" class="deposit-modal-overlay" onclick="closeDepositModal(event)">
