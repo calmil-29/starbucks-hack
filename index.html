@@ -15,80 +15,12 @@ openTicketDetailSheet ：詳細シート開ける
 closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
-const sheet = document.getElementById('ticketDetailSheet');
-
-console.log('class:', sheet.className);
-console.log('inline display:', sheet.style.display);
-console.log('computed display:', getComputedStyle(sheet).display);
-
-
-
-const ticketDetails = {
-    eticket500: {
-        title: 'eTicket 500',
-        description: '500円分の対象商品のお支払いに利用できます。'
-    },
-
-    egift700: {
-        title: 'eGift 700',
-        description: 'お好きなドリンク１杯と交換できます。'
-    },
-
-    egift300: {
-        title: 'eGift 300',
-        description: 'お好きなフード１点と交換できます。'
-    },
-};
-
-function openTicketDetailSheet(event, eticketType) {
-    if (event) event.preventDefault();
-
-    const ticket = ticketDetails[eticketType];
-    if (!ticket) return;
-
-   const sheet = document.getElementById('ticketDetailSheet');
-   if (!sheet) return;
-
-   const title = sheet.querySelector('.ticket-detail-header h2');
-   const description = sheet.querySelector('.ticket-detail-section p');
-
-   if (title) {
-    title.textContent = ticket.title;
-   }
-
-   if (description) {
-    description.textContent = ticket.description;
-   }
-
-   // 詳細シートを開いている間はチケットを固定
-   isTicketDetailOpen = true;
-
-   console.log('詳細シートを開く');
-   console.log('eticketType =', eticketType);
-   console.log('ticket =', ticket);
-   console.log('sheet =', sheet);
-
-   sheet.classList.add('is-active');
-
-   console.log('class =', sheet.className);
-}
-
-
-function closeTicketDetailSheet(event) {
-    if (event) event.stopPropagation();
-
-    const sheet = document.getElementById('ticketDetailSheet');
-    if (!sheet) return;
-
-    sheet.classList.remove('is-active');
-
-    // カルーセル操作を再開
-    isTicketDetailOpen = false;
-}
 	
+#autochargeModal の　.confirm-receipt-card の閉じタグのつけ忘れ。
+気づいたヒントは、vscode のタグの左端にある 「▼」の折りたたみボタン（アローマーク）が #autochargeModal だけ表示されてないから、やっぱ原因はここかなと思ってサイド ##autochargeModal 全体のコードを送ったら Gemmine　が特定してくれた。折りたたみボタンに引っかかるのもHTML全体のコードにミスがないことを確認して、それでも特定できなかったから「ファイル全体のインデックス（結合部分の枠組み）」をまとめようにしたときに #autochargeModal だけ表示されてないことに気づいたわけだけど。こう言うミスって、君としていた、検証のコンソールとかで特定できてたりするの？
 
 	
-    =-------------------------------------------------------------------
+♥️♥️♥️ -------------------------------------------------------------------
     
 
 #depositConfirmBox はいらない部分だったから消した。これでも閉じ忘れタグある？ 
