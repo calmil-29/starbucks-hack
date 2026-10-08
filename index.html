@@ -15,9 +15,146 @@ openTicketDetailSheet ：詳細シート開ける
 closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
-	
+#autochargeModal と #ticketDetailSheet のが入り込み解消！	
 #autochargeModal の　.confirm-receipt-card の閉じタグのつけ忘れ。そこを私もGeminiも見落としてた。
 気づいたきっかけは、vscode のタグの左端にある 「v」の折りたたみボタン（アローマーク）が #autochargeModal だけ表示されてないことに引っかかったから。やっぱ原因はここかなと思って、再度 #autochargeModal のコードを送ったら Gemini　が特定してくれた。折りたたみボタンがないことに引っかかるのも HTML 全体のコードにミスがないことを確認して、それでも特定できなかったら、Gemini が「ファイル全体のインデックス（結合部分の枠組み）」を見せてくれるか聞いてきて（全部のコードを載せると長すぎて送信できないから個別に見てもらっていた）、外枠のタグだけをくり抜いた骨組みをまとめようにしたときに #autochargeModal だけ表示されてないことに気づいたからなんだけど。でも、こう言うミスって、君としていた、検証のコンソールとかで特定できてたりするの？
+で、そこは解決したけど、「詳細シート」を押しても表示がされない。これは単純にCSSで指定できていないから？
+
+
+
+💡Gemini用
+
+このCSSだと一番下にいって見えなくなる。#ticketDetailSheet は .ticket-visualの直下に置きたい、.ticket-explanation と入れ替わる感じになるんだけど、でも、.card-back の中身は .card-flip-inner で height: 300px; 指定していて、その中にまとめているデザイン。でも詳細ページは、詳細内容に合わせるように（長いから）下までスクロールできるようにしたい。つまり、 .card-hero-section の下に .main-banner-group ・・・ .bottom-nav-group までが続くけど、 .bottom-nav-group も含めて非表示にして、#ticketDetailSheet を表示させたい。で、アニメーションも そのまま画面が切り替わる感じで。ちなみに JS で .card-hero-section 全体の処理は実行済み。
+	
+<section class="card-hero-section">	
+<div  id="cardFlip" class="card-flip-container">
+</div><!-- #cardFlip .card-flip-container -->
+  <div class="card-flip-inner">	
+    <div class="card-front">...</div>
+    <div class="card-back">...</div>	
+  </div>	  
+<div class="card-action-list">	
+</div><!-- .card-action-list -->	
+</section><!-- .card-hero-section -->	
+	
+.card-flip-container {
+    perspective: 1000px;
+    -webkit-perspective: 1000px;/* Safari用 */
+
+    perspective: 1000px;/* 3D奥行き感(遠近感)用 */
+}
+
+/* 回転する軸 : ここをJSで動かす */
+.card-flip-inner {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    transition: transform 0.6s;
+    -webkit-transform-style: preserve-3d;
+    transform-style: preserve-3d;/* これがないと3Dに見えない */ 
+}
+
+.card-flip-inner.is-flipped {
+    transform: rotateY(180deg);
+}
+
+/* ヒーロー カード】表と『裏』の共通設定 */
+.card-front, .card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+
+    /* 裏側を向いているときは隠す */
+    backface-visibility: hidden;
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+}
+
+/* 『裏面』 : あらかじめ180度回しておく */
+.card-back {
+    width: 100%;
+    transform: rotateY(180deg);
+}
+
+.card-front {
+    width: 100%;
+    aspect-ratio: 1.58;
+    position: relative;
+    color: white;
+    display: flex;
+    flex-direction: column;/* 上下に分ける */
+    padding: 0;/* paddingを一旦リセット */
+    background-color: #000000;
+}	
+
+	
+            <div class="ticket-item">
+              <div class="ticket-content-wrapper">
+
+                <div class="ticket-visual type-500">
+                  <img src="images/eticket-500チケット.svg"
+                      alt="500円分のeTicket"
+                      class="ticket-basse"
+                  >
+
+                  <span class="eticket-amount">500</span>
+
+                  <button class="ticket-qr-button" onclick="openQrModal(event)">
+                    <img src="images/QRコード.png" alt="QRコード">
+                  </button>
+                
+                </div>            			
+
+                <div class="ticket-perforation">
+				・・・	
+                </div>
+            
+                <div class="ticket-explanation">
+                  <p class="desc-text">500円/509円(持ち帰り価格/店内価格)までお好きなドリンク・フード・コーヒー豆・ティー関連商品いずれか１点のお支払いにご利用いただけます。</p>
+                  <a href="#" class="detail-link" onclick="openTicketDetailSheet(event, 'eticket500')">
+                    詳細はこちら
+                  </a>
+                  <p class="expiry-text"><strong>有効期限 20XX年XX月XX日(土)</strong></p>
+                </div>
+
+                <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
+
+              </div><!-- .ticket-content-wrapper -->  
+            </div><!-- .ticket-item （後3つ並ぶ）-->	　
+
+	
+	<div id="ticketDetailSheet" class="ticket-detail-sheet">
+
+    <div class="ticket-detail-sheet-content">
+
+      <div class="ticket-detail-header">
+        <h2>eTicket 500</h2>
+        <button 
+          class="ticket-detail-close-btn" 
+          onclick="closeTicketDetaillSheet(event)" 
+          aria-label="閉じる">
+          <span></span>
+          <span></span>
+        </button>
+      </div>  
+
+      <section class="ticket-detail-section">
+        <h3>チケット内容</h3>
+        <p>500円分の対象商品のお支払いに利用できます。</p>
+      </section>
+
+      <p>※このプロトタイプでは利用条件を簡略化しています。</p>
+
+    </div>
+  </div>
+
+
+
+
+	
 
 	
 ♥️♥️♥️ -------------------------------------------------------------------
