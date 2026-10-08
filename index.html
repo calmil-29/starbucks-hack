@@ -15,6 +15,13 @@ openTicketDetailSheet ：詳細シート開ける
 closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
+const sheet = document.getElementById('ticketDetailSheet');
+
+console.log('class:', sheet.className);
+console.log('inline display:', sheet.style.display);
+console.log('computed display:', getComputedStyle(sheet).display);
+
+
 
 const ticketDetails = {
     eticket500: {
