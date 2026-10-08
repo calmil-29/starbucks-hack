@@ -66,6 +66,20 @@ function openTicketDetailSheet(event, eticketType) {
    console.log('class =', sheet.className);
 }
 
+
+function closeTicketDetailSheet(event) {
+    if (event) event.stopPropagation();
+
+    const sheet = document.getElementById('ticketDetailSheet');
+    if (!sheet) return;
+
+    sheet.classList.remove('is-active');
+
+    // カルーセル操作を再開
+    isTicketDetailOpen = false;
+}
+	
+
 	
     =-------------------------------------------------------------------
     
