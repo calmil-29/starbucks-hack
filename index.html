@@ -17,26 +17,23 @@ closeTicketDetailSheet ：詳細シート閉じる
 💡　無代に渡す用 
 #autochargeModal と #ticketDetailSheet のが入り込み解消！	
 #autochargeModal の　.confirm-receipt-card の閉じタグのつけ忘れ。そこを私もGeminiも見落としてた。
-気づいたきっかけは、vscode のタグの左端にある 「v」の折りたたみボタン（アローマーク）が #autochargeModal だけ表示されてないことに引っかかったから。やっぱ原因はここかなと思って、再度 #autochargeModal のコードを送ったら Gemini　が特定してくれた。折りたたみボタンがないことに引っかかるのも HTML 全体のコードにミスがないことを確認して、それでも特定できなかったら、Gemini が「ファイル全体のインデックス（結合部分の枠組み）」を見せてくれるか聞いてきて（全部のコードを載せると長すぎて送信できないから個別に見てもらっていた）、外枠のタグだけをくり抜いた骨組みをまとめようにしたときに #autochargeModal だけ表示されてないことに気づいたからなんだけど。でも、こう言うミスって、君としていた、検証のコンソールとかで特定できてたりするの？
-で、そこは解決したけど、「詳細シート」を押しても表示がされない。これは単純にCSSで指定できていないから？
+気づいたきっかけは、vscode のタグの左端にある 「v」の折りたたみボタン（アローマーク）が #autochargeModal だけ表示されてないことに引っかかったから。やっぱ原因はここかなと思って、再度 #autochargeModal のコードを送ったら Gemini　が特定。折りたたみボタンがないことに引っかかるのも HTML 全体のコードにミスがないことを確認して、それでも特定できなかったら、Gemini が「ファイル全体のインデックス（結合部分の枠組み）」を見せて欲しいと聞いてきて（全部のコードを載せると長すぎて送信できないから個別に見てもらっていた）、外枠のタグだけをくり抜いた骨組みをまとめようにしたときに #autochargeModal だけ「v」ボタンが表示されてないことに気づいたからなんだけど。でも、こう言うミスって、君としていた、検証のコンソールとかで特定できてたりするの？で、そこは解決したけど、「詳細シート」を押しても表示がされない。これは単純にCSSで指定できていないから？#ticketDetailSheet は .ticket-visualの直下に置きたい、.ticket-explanation と入れ替わる感じになるけど、でも、.card-back の中身は .card-flip-inner で height: 300px; 指定していて、その高さの中にまとめているデザイン。でも詳細ページは、詳細内容に合わせるように（長いから）下までスクロールできるようにしたい。つまり、 .card-hero-section の下に .main-banner-group ・・・ .bottom-nav-group まで続くけど、 .bottom-nav-group も含めて非表示にして、#ticketDetailSheet を表示させたい。で、アニメーションも そのまま画面が切り替わる感じで。
 
-
-
-💡Gemini用
-
-このCSSだと一番下にいって見えなくなる。#ticketDetailSheet は .ticket-visualの直下に置きたい、.ticket-explanation と入れ替わる感じになるんだけど、でも、.card-back の中身は .card-flip-inner で height: 300px; 指定していて、その中にまとめているデザイン。でも詳細ページは、詳細内容に合わせるように（長いから）下までスクロールできるようにしたい。つまり、 .card-hero-section の下に .main-banner-group ・・・ .bottom-nav-group までが続くけど、 .bottom-nav-group も含めて非表示にして、#ticketDetailSheet を表示させたい。で、アニメーションも そのまま画面が切り替わる感じで。ちなみに JS で .card-hero-section 全体の処理は実行済み。
-	
+ヒーローの構造はこう：	
 <section class="card-hero-section">	
 <div  id="cardFlip" class="card-flip-container">
-</div><!-- #cardFlip .card-flip-container -->
   <div class="card-flip-inner">	
+	  
     <div class="card-front">...</div>
     <div class="card-back">...</div>	
-  </div>	  
+	  
+  </div><!-- card-flip-inner --> 
+</div><!-- #cardFlip .card-flip-container -->
+	
 <div class="card-action-list">	
 </div><!-- .card-action-list -->	
 </section><!-- .card-hero-section -->	
-	
+
 .card-flip-container {
     perspective: 1000px;
     -webkit-perspective: 1000px;/* Safari用 */
@@ -90,7 +87,15 @@ closeTicketDetailSheet ：詳細シート閉じる
     background-color: #000000;
 }	
 
-	
+     <div class="card-back">
+          <div class="carousel-dots">
+            <span class="dot active"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+
+          <div class="ticket-carousel-inner">
+
             <div class="ticket-item">
               <div class="ticket-content-wrapper">
 
@@ -106,10 +111,10 @@ closeTicketDetailSheet ：詳細シート閉じる
                     <img src="images/QRコード.png" alt="QRコード">
                   </button>
                 
-                </div>            			
+                </div>     
 
                 <div class="ticket-perforation">
-				・・・	
+                 ・・・
                 </div>
             
                 <div class="ticket-explanation">
@@ -122,36 +127,67 @@ closeTicketDetailSheet ：詳細シート閉じる
 
                 <button class="btn-back-to-front" onclick="flipCard(event)">BACK</button>
 
-              </div><!-- .ticket-content-wrapper -->  
-            </div><!-- .ticket-item （後3つ並ぶ）-->	　
+              </div>
+            </div>
+			  
+			・・・700と300チケットが続く  
+
+          </div><!-- .ticket-carousel-inner -->
+        </div><!-- .card-back -->			  
+
+
+
 
 	
-	<div id="ticketDetailSheet" class="ticket-detail-sheet">
+	
+	
+	
+♥️
+/* 初期状態は画面の最前面に完全に隠しておく */
+.ticket-detail-sheet {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff; /* 下にあるボトムナビやカードをすべて真っ白に隠す */
+    
+    /* 初期状態は非表示 */
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    
+    /* 画面切り替えのアニメーション（スッとフェードイン） */
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+    
+    /* 内容が長くても下までスクロールできるようにする */
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch; /* iOS用の滑らかなスクロール */
+    
+    /* ボトムナビ（通常1000前後）すらも完全に覆い隠す最前面の数値を指定 */
+    z-index: 9999; 
+}
 
-    <div class="ticket-detail-sheet-content">
+/* アクティブ状態（詳細画面に切り替わったとき）　*/
+.ticket-detail-sheet.is-active {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+}
 
-      <div class="ticket-detail-header">
-        <h2>eTicket 500</h2>
-        <button 
-          class="ticket-detail-close-btn" 
-          onclick="closeTicketDetaillSheet(event)" 
-          aria-label="閉じる">
-          <span></span>
-          <span></span>
-        </button>
-      </div>  
+/* 中身のコンテナー */
+.ticket-detail-sheet-content {
+    padding: 24px 16px 100px 16px; /* 下部に大きめの余白（100px）を確保 */
+    box-sizing: border-box;
+}
+	
+💡Gemini用
 
-      <section class="ticket-detail-section">
-        <h3>チケット内容</h3>
-        <p>500円分の対象商品のお支払いに利用できます。</p>
-      </section>
+このCSSだと一番下にいって見えなくなる。#ticketDetailSheet は .ticket-visualの直下に置きたい、.ticket-explanation と入れ替わる感じになるんだけど、でも、.card-back の中身は .card-flip-inner で height: 300px; 指定していて、その中にまとめているデザイン。でも詳細ページは、詳細内容に合わせるように（長いから）下までスクロールできるようにしたい。つまり、 .card-hero-section の下に .main-banner-group ・・・ .bottom-nav-group までが続くけど、 .bottom-nav-group も含めて非表示にして、#ticketDetailSheet を表示させたい。で、アニメーションも そのまま画面が切り替わる感じで。ちなみに JS で .card-hero-section 全体の処理は実行済み。
 
-      <p>※このプロトタイプでは利用条件を簡略化しています。</p>
+	
 
-    </div>
-  </div>
-
-
+	
 
 
 	
