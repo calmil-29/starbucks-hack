@@ -17,6 +17,39 @@ closeTicketDetailSheet ：詳細シート閉じる
 
 	
 💡　無代に渡す用 
+
+window.addEventListener('load', () => {
+    const carousel = document.querySelector('.ticket-carousel-inner');
+    const dots = document.querySelectorAll('.carousel-dots .dot');
+
+    // エラー防止のため、カルーセルが存在するときだけ動かす
+    if (carousel) {
+        carousel.addEventListener('scroll', () => {
+
+            // 詳細シートが開いている間は、これ以降のカルーセル処理を完全にストップ
+            if (isTicketDetailOpen) {
+                return; 
+            }
+
+            const scrollLeft = carousel.scrollLeft;
+            const itemWidth = carousel.offsetWidth;
+            // 何枚目かを計算
+            const currentIndex = Math.round(scrollLeft / itemWidth);
+
+            // ドットのクラスを付け替える
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        });
+    }
+});
+
+
+♥️	
 	
 詳細シートを開いたら、チケットのカルーセル部分は動かない処理をしてるはずなのに、動く。
 
