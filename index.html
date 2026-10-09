@@ -20,7 +20,8 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 詳細シートを開いたら、チケットのカルーセル部分は動かない処理をしてるはずなのに、動く。
 
-let isTicketDetailOpen = false; を openTicketDetailSheet(event, eticketType) → let isTicketDetailOpen = true  closeTicketDetailSheet(event) → let isTicketDetailOpen = false; を置いてるけど、window.addEventListener('load', () => { には書いてないから？
+let isTicketDetailOpen = false; を openTicketDetailSheet(event, eticketType) → let isTicketDetailOpen = true  closeTicketDetailSheet(event) → let isTicketDetailOpen = false; を置いてるけど、window.addEventListener('load', () => {...} には書いてないから？
+	
 window.addEventListener('load', () => {
     const carousel = document.querySelector('.ticket-carousel-inner');
     const dots = document.querySelectorAll('.carousel-dots .dot');
