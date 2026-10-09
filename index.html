@@ -18,95 +18,39 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
-勘違いしてた。できたけど、先にここの処理たちの説明欲しい。
+カルーセル（.ticket-carousel-inner）自体の動きはCSSで指定してた。addEventListener('load', () => {...} はドットの処理だった...だよね？
 
-let isTicketDetailOpen = false;　→ カルーセルではなくイベントの処理を止める/動かす？で、CSSで指定したから今カルーセルも加わった？
-	
-body.is-ticket-detail-open .ticket-carousel-inner {
-    overflow: hidden;
-    touch-action: none;
-}	
-	
-
-
-window.addEventListener('load', () => {
-    const carousel = document.querySelector('.ticket-carousel-inner');
-    const dots = document.querySelectorAll('.carousel-dots .dot');
-
-    // エラー防止のため、カルーセルが存在するときだけ動かす
-    if (carousel) {
-        carousel.addEventListener('scroll', () => {
-
-            // 詳細シートが開いている間は、これ以降のカルーセル処理を完全にストップ　→ ここもカルーセルの動きを指してるわけじゃないの？
-            if (isTicketDetailOpen) {
-                return; 
-            }
-
-            const scrollLeft = carousel.scrollLeft;
-            const itemWidth = carousel.offsetWidth;
-            // 何枚目かを計算
-            const currentIndex = Math.round(scrollLeft / itemWidth);
-
-            // ドットのクラスを付け替える
-            dots.forEach((dot, index) => {
-                if (index === currentIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        });
-    }
-});	
-	
-function openTicketDetailSheet(event, eticketType) {
-    if (event) event.preventDefault();
-
-    const ticket = ticketDetails[eticketType];
-    if (!ticket) return;
-
-   const sheet = document.getElementById('ticketDetailSheet');
-   if (!sheet) return;
-
-   const title = sheet.querySelector('.ticket-detail-header h2');
-   const description = sheet.querySelector('.ticket-detail-section p');
-
-   if (title) {
-    title.textContent = ticket.title;
-   }
-
-   if (description) {
-    description.textContent = ticket.description;
-   }
-
-   // 詳細シートを開いている間はチケットを固定　→ どういう説明になる？
-   isTicketDetailOpen = true;
-
-   // カルーセルを止める → これは？
-   const carousel = document.querySelector('.ticket-carousel-inner');
-   
-   if (carousel) {
-        carousel.dataset.savedScrollleft = carousel.scrollLeft;
-   }
-
-   document.body.classList.add('is-ticket-detail-open');
-
-   sheet.classList.add('is-active');
+.carousel-dots {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%) translateZ(0);
+    -webkit-transform-style: flat; /* 3D空間の計算に混ぜない(2Dとしての扱いを指定) */
+    transform-style: flat;
+    display: flex;
+    gap: 10px;
 }
 
-function closeTicketDetailSheet(event) {
-    if (event) event.stopPropagation();
-
-    const sheet = document.getElementById('ticketDetailSheet');
-    if (!sheet) return;
-
-    isTicketDetailOpen = false;
-
-    sheet.classList.remove('is-active');
-
-    document.body.classList.remove('is-ticket-detail-open');
-
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+    border: 1px solid rgb(55, 55, 55);
 }
+
+.dot.active { background-color: red;}
+
+.ticket-carousel-inner {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0;
+    padding: 0;
+}
+
 
 
 
