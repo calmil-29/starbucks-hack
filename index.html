@@ -18,6 +18,17 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
+勘違いしてた。できたけど、先にここの処理たちの説明欲しい。
+
+let isTicketDetailOpen = false;　→ カルーセルではなくイベントの処理を止める/動かす？で、CSSで指定したから今カルーセルも加わった？
+	
+body.is-ticket-detail-open .ticket-carousel-inner {
+    overflow: hidden;
+    touch-action: none;
+}	
+	
+
+
 window.addEventListener('load', () => {
     const carousel = document.querySelector('.ticket-carousel-inner');
     const dots = document.querySelectorAll('.carousel-dots .dot');
@@ -26,7 +37,7 @@ window.addEventListener('load', () => {
     if (carousel) {
         carousel.addEventListener('scroll', () => {
 
-            // 詳細シートが開いている間は、これ以降のカルーセル処理を完全にストップ
+            // 詳細シートが開いている間は、これ以降のカルーセル処理を完全にストップ　→ ここもカルーセルの動きを指してるわけじゃないの？
             if (isTicketDetailOpen) {
                 return; 
             }
@@ -46,9 +57,66 @@ window.addEventListener('load', () => {
             });
         });
     }
-});
+});	
+	
+function openTicketDetailSheet(event, eticketType) {
+    if (event) event.preventDefault();
+
+    const ticket = ticketDetails[eticketType];
+    if (!ticket) return;
+
+   const sheet = document.getElementById('ticketDetailSheet');
+   if (!sheet) return;
+
+   const title = sheet.querySelector('.ticket-detail-header h2');
+   const description = sheet.querySelector('.ticket-detail-section p');
+
+   if (title) {
+    title.textContent = ticket.title;
+   }
+
+   if (description) {
+    description.textContent = ticket.description;
+   }
+
+   // 詳細シートを開いている間はチケットを固定　→ どういう説明になる？
+   isTicketDetailOpen = true;
+
+   // カルーセルを止める → これは？
+   const carousel = document.querySelector('.ticket-carousel-inner');
+   
+   if (carousel) {
+        carousel.dataset.savedScrollleft = carousel.scrollLeft;
+   }
+
+   document.body.classList.add('is-ticket-detail-open');
+
+   sheet.classList.add('is-active');
+}
+
+function closeTicketDetailSheet(event) {
+    if (event) event.stopPropagation();
+
+    const sheet = document.getElementById('ticketDetailSheet');
+    if (!sheet) return;
+
+    isTicketDetailOpen = false;
+
+    sheet.classList.remove('is-active');
+
+    document.body.classList.remove('is-ticket-detail-open');
+
+}
 
 
+
+
+
+
+
+
+
+	
 ♥️	
 	
 詳細シートを開いたら、チケットのカルーセル部分は動かない処理をしてるはずなのに、動く。
