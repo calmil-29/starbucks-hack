@@ -32,7 +32,7 @@ CSSの仕様（W3Cの仕様）として、ある要素に perspective（遠近�
 
 #ticketDetailSheet の position fixed　→ absolute 、height 100dvh → auto; にしても解決せず。 	
 
-だから、詳細シートを浮かすのではなく、カードの親玉の「3Dの魔法」を一時的に解く：
+で。解決法。詳細シートを浮かすのではなく、カードの親玉の「3Dの魔法」を一時的に解く。body.is-ticket-detail-open .card-hero-section を追加したことで解決したんだけど、構造的に問題ある？		
 	
 /* 詳細シートが開いたときは、カードの親玉の「3Dレイヤー」を一時的に通常化する */
 body.is-ticket-detail-open .card-hero-section {
@@ -86,7 +86,7 @@ body.is-ticket-detail-open .bottom-nav-group {
     display: none;
 }	
 
-で. body.is-ticket-detail-open .card-hero-section を追加したことで解決したんだけど、構造的に問題ある？	
+
 
 	
 	
