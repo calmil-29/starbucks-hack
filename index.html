@@ -14,133 +14,40 @@
 card-back ：カード裏のカルーセル
 openTicketDetailSheet ：詳細シート開ける	
 closeTicketDetailSheet ：詳細シート閉じる
+
 	
 💡　無代に渡す用 
 	
-Geminiに相談してきた。
-原因は、詳細シート（#ticketDetailSheet）ではなく、上に残っている .card-hero-section（カード全体の親玉）。
-CSSの仕様（W3Cの仕様）として、ある要素に perspective（遠近感） や transform-style: preserve-3d が指定されていると、その要素はブラウザの内部で「独立した立体レイヤー（3D空間）」として扱われる。
-現在、詳細シートを開いたときに周りのバナーやニュースは display: none で消えている。でも、カード全体の親である .card-hero-section は消えずに画面の上部に残っている。
-
-➔ その結果起きていること
-
-1. .card-hero-section が画面上部（高さ300pxほど）に居座り、独自の3Dレイヤーを展開し続ける。
-2. 詳細シート（#ticketDetailSheet）は3D空間の「外」に配置されていますが、.card-hero-section が通常どおり画面上のスペース（高さ300px分）を占有しているため、詳細シートの表示開始位置がその直後（＝カードの底辺の下）に押し下げられてしまう。
-3. 検証ツールで見ると、.card-hero-section の中にある .ticket-content-wrapper があたかも上部で邪魔をしている（物理的にそこにスペースが存在している）ように見えていた。
+let isTicketDetailOpen = false; を openTicketDetailSheet(event, eticketType) closeTicketDetailSheet(event) には置いてるけど、window.addEventListener('load', () => { には書いてないから？
 	
-だから、チケット画像の部分を .card-hero-section から出して、詳細シート用に丸ごとカード画像込みを作って入れ替えた方が構造的にもいいのかなと思ったけど出したらいろいろ問題発生しそうってことで、シンプルに .card-hero-section の上に被せるようにして動かそうとした結果：
+window.addEventListener('load', () => {
+    const carousel = document.querySelector('.ticket-carousel-inner');
+    const dots = document.querySelectorAll('.carousel-dots .dot');
 
-#ticketDetailSheet の position fixed　→ absolute 、height 100dvh → auto; にしても解決せず。 	
+    // エラー防止のため、カルーセルが存在するときだけ動かす
+    if (carousel) {
+        carousel.addEventListener('scroll', () => {
+            const scrollLeft = carousel.scrollLeft;
+            const itemWidth = carousel.offsetWidth;
+            // 何枚目かを計算
+            const currentIndex = Math.round(scrollLeft / itemWidth);
 
-で。解決法。詳細シートを浮かすのではなく、カードの親玉の「3Dの魔法」を一時的に解く。body.is-ticket-detail-open .card-hero-section を追加したことで解決したんだけど、構造的に問題ある？		
-	
-/* 詳細シートが開いたときは、カードの親玉の「3Dレイヤー」を一時的に通常化する */
-body.is-ticket-detail-open .card-hero-section {
-    transform-style: flat;      /* preserve-3d を通常フラットに */
-    perspective: none;         /* 遠近感をリセット */
-    transform: none;           /* もしtransformがかかって入ればリセット */
-    
-    /* カード自体は画面の上に残したいので、高さはそのまま維持します */
-    height: 300px; 
-    position: relative;
-}
-
-.ticket-detail-sheet {
-    position: fixed;
-    top: 200px; /* チケットと被らないように配置 */
-    left: 0;
-    width: 100vw;
-    height: 100dvh;
-
-    overflow-y: auto;
-
-    /* 初期状態は非表示 */
-    opacity: 0;
-    transform: translateY(20px);
-    visibility: hidden;
-    pointer-events: none;
-    transition: 
-        opacity .3s ease,
-        transform .3s ease;    
-}
-
-.ticket-detail-sheet.is-active {
-    opacity: 1;
-    transform: translateY(0);
-    visibility: visible;
-    pointer-events: auto;
-}
-
-.ticket-detail-sheet-content {
-    padding: 0 16px 100px; /* 下部に大きめの余白（100px）を確保 */
-    box-sizing: border-box;
-}
-
-body.is-ticket-detail-open .card-action-list,
-body.is-ticket-detail-open .ticket-explanation,
-body.is-ticket-detail-open .btn-back-to-front,
-body.is-ticket-detail-open .main-banner-group,
-body.is-ticket-detail-open .news-group,
-body.is-ticket-detail-open .banner-group,
-body.is-ticket-detail-open .bottom-nav-group {
-    display: none;
-}	
-
-
-
+            // ドットのクラスを付け替える
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        });
+    }
+});	
 	
 	
-	
-	
-♥️
-/* 初期状態は画面の最前面に完全に隠しておく */
-.ticket-detail-sheet {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #ffffff; /* 下にあるボトムナビやカードをすべて真っ白に隠す */
-    
-    /* 初期状態は非表示 */
-    opacity: 0;
-    pointer-events: none;
-    visibility: hidden;
-    
-    /* 画面切り替えのアニメーション（スッとフェードイン） */
-    transition: opacity 0.4s ease, visibility 0.4s ease;
-    
-    /* 内容が長くても下までスクロールできるようにする */
-    overflow-y: auto; 
-    -webkit-overflow-scrolling: touch; /* iOS用の滑らかなスクロール */
-    
-    /* ボトムナビ（通常1000前後）すらも完全に覆い隠す最前面の数値を指定 */
-    z-index: 9999; 
-}
-
-/* アクティブ状態（詳細画面に切り替わったとき）　*/
-.ticket-detail-sheet.is-active {
-    opacity: 1;
-    pointer-events: auto;
-    visibility: visible;
-}
-
-/* 中身のコンテナー */
-.ticket-detail-sheet-content {
-    padding: 24px 16px 100px 16px; /* 下部に大きめの余白（100px）を確保 */
-    box-sizing: border-box;
-}
 	
 💡Gemini用
 
-このCSSだと一番下にいって見えなくなる。#ticketDetailSheet は .ticket-visualの直下に置きたい、.ticket-explanation と入れ替わる感じになるんだけど、でも、.card-back の中身は .card-flip-inner で height: 300px; 指定していて、その中にまとめているデザイン。でも詳細ページは、詳細内容に合わせるように（長いから）下までスクロールできるようにしたい。つまり、 .card-hero-section の下に .main-banner-group ・・・ .bottom-nav-group までが続くけど、 .bottom-nav-group も含めて非表示にして、#ticketDetailSheet を表示させたい。で、アニメーションも そのまま画面が切り替わる感じで。ちなみに JS で .card-hero-section 全体の処理は実行済み。
-
-	
-
-	
-
-
-	
 
 	
 ♥️♥️ -------------------------------------------------------------------
