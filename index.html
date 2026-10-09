@@ -18,82 +18,44 @@ closeTicketDetailSheet ：詳細シート閉じる
 	
 💡　無代に渡す用 
 
-カルーセル（.ticket-carousel-inner）自体の動きはCSSで指定してた。addEventListener('load', () => {...} はドットの処理だった...だよね？
-
-.carousel-dots {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%) translateZ(0);
-    -webkit-transform-style: flat; /* 3D空間の計算に混ぜない(2Dとしての扱いを指定) */
-    transform-style: flat;
-    display: flex;
-    gap: 10px;
-}
-
-.dot {
-    width: 8px;
-    height: 8px;
-    background-color: white;
-    border-radius: 50%;
-    border: 1px solid rgb(55, 55, 55);
-}
-
-.dot.active { background-color: red;}
-
-.ticket-carousel-inner {
-    width: 100%;
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 0;
-    padding: 0;
-}
-
-
-
-
-
-
-
-
-
-
+openTicketDetailSheet(event, eticketType) の
 	
-♥️	
+	isTicketDetailOpen = true;
+   
+   const carousel = document.querySelector('.ticket-carousel-inner');
+   
+   if (carousel) {
+        carousel.dataset.savedScrollleft = carousel.scrollLeft;
 	
-詳細シートを開いたら、チケットのカルーセル部分は動かない処理をしてるはずなのに、動く。
+に // で説明をいれるならなんて書くのがいい？
 
-let isTicketDetailOpen = false; を openTicketDetailSheet(event, eticketType) → let isTicketDetailOpen = true  closeTicketDetailSheet(event) → let isTicketDetailOpen = false; を置いてるけど、window.addEventListener('load', () => {...} には書いてないから？
-	
-window.addEventListener('load', () => {
-    const carousel = document.querySelector('.ticket-carousel-inner');
-    const dots = document.querySelectorAll('.carousel-dots .dot');
-
-    // エラー防止のため、カルーセルが存在するときだけ動かす
-    if (carousel) {
-        carousel.addEventListener('scroll', () => {
-            const scrollLeft = carousel.scrollLeft;
-            const itemWidth = carousel.offsetWidth;
-            // 何枚目かを計算
-            const currentIndex = Math.round(scrollLeft / itemWidth);
-
-            // ドットのクラスを付け替える
-            dots.forEach((dot, index) => {
-                if (index === currentIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        });
+ここのこと？
+function flipCard(event) {
+    //1. ボタンそのものの動作以外(親への連鎖)を止める
+    if(event) {
+        event.stopPropagation();
     }
-});	
+    
+    // 2. 回転させる対象（inner）を取得
+    const cardInner =
+    document.querySelector('.card-flip-inner');
+
+    // 3. クラスを付け外して回転させる
+    cardInner.classList.toggle ('is-flipped');
+}
+	
+
+
+
+
+
+
+
+	
+
 	
 	
-	
-💡Gemini用
+
 
 
 	
