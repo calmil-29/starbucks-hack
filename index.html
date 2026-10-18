@@ -10,28 +10,26 @@
 <body>
     
 ♥️♥️ 
+最新版の優先順位（9/20）
 	
-card-back ：カード裏のカルーセル
-openTicketDetailSheet ：詳細シート開ける	
-closeTicketDetailSheet ：詳細シート閉じる
-
+デザイン変更	
+スターリワードに交換/もっと見る 小さく・
 	
-💡　無代に渡す用 
-
-ticket-explanation
-
-
-9/20   
-
-最新版の優先順位
+追加
+5. で、チケットの仕様変更　独自デザインから公式へ再定義により	
+ボトムナビのOther≡ を消去 → Giftへ
+ヒーローエリアの上層部へIndexを移動	
 
 A：今
 
-1. turnOffAutocharge()
-2. 第3「設定する」のON中非表示
-3. オートチャージON/OFFアニメーション
-4. qrCardTimestamp
+1. turnOffAutocharge() ：実行済
+2. 第3「設定する」のON中非表示　：実行済
+3. オートチャージON/OFFアニメーション ：実行済
+4. qrCardTimestamp ：実行済
+	
 5. eGift / eTicket入口
+※ チケットの仕様変更　独自デザインから公式へ再定義
+	
 6. 商品メニューのJS
 7. 商品詳細のJS
 8. 「支払う」/「モバイルオーダー」の分岐
@@ -50,7 +48,95 @@ C：今回はやらない
 15. クレジットカード情報の本格登録・保存
 16. PayPay実決済
 17. Apple Pay実決済
-18. 本物のオートチャージ実行
+18. 本物のオートチャージ実行	
+	
+
+	
+💡　無代に渡す用 
+ヒーロー cardFlip 
+
+  <div class="card-front">
+        
+          <!-- 【ヒーロー】現在選ばれているカード画像 --> 
+          <img src="images/my-card-main.svg" id="heroCardImg" class="main-card-visual-img" alt="メインカード">
+
+          <div class="card-main-visual">
+
+            <!-- QRコード 【第１モーダル】への入り口 -->
+            <div class="qr-tap-area" onclick="openQrModal(event)" data-type="payment">
+               <div class="card-qr-box">
+                 <img src="images/QRコード.png" class="qr-code" alt="QR">
+              </div>
+            </div>
+
+            <div class="card-info-side">
+			 ※ ついでに、ここのロゴも必要かどうか。カードの種類によっては視認性を上げるグラデーション（background 60%）でも、ほぼ同じ位置に重なって見えるから、なんかノイズになりそうで不要な予感で迷い中。過剰な情報？
+              <img src="images/starbucks-logo.png" class="mini-logo" alt="ロゴ">
+              <div class="balance-display">
+
+                <!-- 【ヒーロー】オートチャージ設定後 テキスト・金額下の既存ラインカラーを追加 -->
+                <span class="summary-card-text">オートチャージ設定中</span> 
+
+                <p class="card-label">Starbucks Card</p>
+
+                <div class="hero-card-balance-line">
+                  <span class="unit">¥</span>
+                  <span id="heroCardBalance" class="hero-card-value">0</span>
+                </div>
+              </div>
+
+			 ※ .btn-etiket-trigger のJSを裏側にひっく返すカルーセル処理を、横スライドの動きで表示/非表示へ変更	
+			 ※ cardFlip から出して、公式通り最上部へ移動 = カード画像から出す（同じ支払いとしてまとめてたけど、独立感を尊重する方へ再定義）
+			 ※ eTicket：
+               (＜ボタン)で横スライドで非表示（ヒーローカード画面に戻る） 	
+               タイトル：eTicket
+               選択選択(横カルーセル・選択時は選択タイトルの下に緑ラインがついてくる・タイトルの文字もグレー→黒)： 利用可能/利用開始日付/利用済み
+               テキスト(利用可能)：チケットはありません 現在ご利用可能なチケットはありません。
+               テキスト(利用開始日付)：チケットはありません 利用開始日前のチケットはありません。
+               テキスト(利用済み)：チケットはありません チケットを利用すると履歴がここに表示されます。	
+              <!-- [eTicket]への入り口 --> 
+              <button class="btn-etiket-trigger" onclick="flipCard(event)">
+                <div class="count-box">3</div> ※ 0へ変更（チケットの使われる動きは無しで。今回のハック対象として外しても問題ないと判断）  
+                <span class="eticket-label">eTicket</span>
+                <span class="eticket-badge"></span>
+              </button>
+            </div><!-- .card-info-side -->
+          </div><!-- .card-main-visual -->
+        
+          <!-- スターリワード -->
+          <div class="star-progress-overlay">
+			  ...
+          </div><!-- .star-progress-overlay -->
+        </div><!-- .card-front -->
+
+※ .card-back 全消去【ヒーロー カードの裏面】eTicket 500 / eGift 700 300 だった部分
+<div class="card-back">
+	
+<!-- ヒーロー表示カード下部アクションボタン -->
+    <div class="card-action-list">
+      <a href="#" class="btn-charge" aria-label="入金">入金</a> ※ 消去 ヒーローカード画像のQRコードから、下部ナビからの入金への動線あり、なので必要なしと判断	
+    
+      <div class="btn-action-group">
+        <a href="#" class="btn-reward" aria-label="スターリワードに交換する">スターリワードに交換</a>
+        <a href="#" class="btn-reward-more" aria-label="スターリワードをもっと見る">もっと見る</a>
+      </div>
+    </div>	
+
+	
+第１モーダル qrModal 下部にある eGift / eTicket への入口（タップしたら画面したから競り上がる処理 ）	
+	
+eGift：
+(バツボタン) で画面下にスライドダウンで非表示（第１モーダル画面に戻る） 	
+タイトル：保存ギフト　
+テキスト：eGiftはありません 現在ご利用可能な保存されたeGiftはありません。
+	
+eTicket：
+(バツボタン) で画面下にスライドダウンで非表示（第１モーダル画面に戻る） 		
+タイトル： eTicket
+選択選択(横カルーセル・選択時は選択タイトルの下に緑ラインがついてくる・タイトルの文字もグレー→黒)： 利用可能/利用開始日付/利用済み
+テキスト(利用可能)：チケットはありません 現在ご利用可能なチケットはありません。
+テキスト(利用開始日付)：チケットはありません 利用開始日前のチケットはありません。
+テキスト(利用済み)：チケットはありません チケットを利用すると履歴がここに表示されます。
 	
 
 	
