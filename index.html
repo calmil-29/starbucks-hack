@@ -12,16 +12,35 @@
 	
 無代へ渡す用 
 	
-デザイン変更：
+デザイン・仕様変更：
 	
-> ヒーローエリア	
-・ヒーロー表示カードのロゴを消去	
-・チケットのデザイン変更（仮）15% の白い帯、>　でチケットの入り口を示唆
-・リワードまでグラデーション範囲に収める
+> ヒーローエリア		
+・ヒーローエリアを現在包んでいるコードの整理
+1 <section class="card-hero-section"> heroCardImg ... .card-action-list </section>
+2 <div  id="cardFlip" class="card-flip-container"> heroCardImg ... .card-back </div>		
+3 <div class="card-flip-inner"> heroCardImg ... .card-back </div>	
+4 <div class="card-front"> heroCardImg ... .progress-steps </div>	
+
 	
-・チケットの仕様変更　独自デザイン（カルーセル）から、公式へ（横スライド）再定義
- eTicket：
-<button class="btn-etiket-trigger" onclick="flipCard(event)"> 
+・カード表裏の切り替え処理の消去	flipCard(event) {...} 
+・カード裏面上部のドットも消去 addEventListener(){...}
+・チケット入り口を変更	
+・カードの裏面チケットの既存ページを消去 .card-back 
+・ヒーロー表示カードのロゴを消去	.mini-logo
+・チケットのデザイン変更 （デザイン）場所はカードとリワードの間・チケットテキストの枠（border）は消す・代わりに端から端までの 15% の白い帯と > を追加 でチケットの入り口を示唆
+・リワード用のアクションボタン .card-action-list（クラス名も変更） までグラデーション範囲（.card-front::before）に収める
+・入金ボタンの消去 .btn-charge	（ヒーローカード画像のQRコード、下部ナビに入金への動線あり、必要なしと判断）
+
+	
+> ヒーローエリア表示カードからチケットへの仕様変更・独自デザイン（カルーセル）から、公式へ（横スライド）再定義
+
+・ヒーローエリア
+<section class="card-hero-section">	
+<div  id="cardFlip" class="card-flip-container">	
+
+	 
+・チケット入り口
+<button class="btn-etiket-trigger" onclick="slideInTicket(event)"> 
   <div class="count-box">0</div>
   <span class="eticket-label">eTicket</span>
   <div class="arrow-eticket">
@@ -32,15 +51,16 @@
 	
 	
 横スライドで ＞表示/ ＜非表示（ヒーローカード画面に戻る）
-【チケットページ】：	
+・チケットページ	
 タイトル：eTicket
+・選択ページ	
 選択：利用可能/利用開始日付/利用済み（横カルーセル・選択時は選択タイトルの下に緑ラインがついてくる・タイトルの文字もグレー→黒へ）
 利用可能：チケットはありません 現在ご利用可能なチケットはありません。
 利用開始日付：チケットはありません 利用開始日前のチケットはありません。
-利用済み：チケットはありません チケットを利用すると履歴がここに表示されます。		
+利用済み：チケットはありません チケットを利用すると履歴がここに表示されます。	
+	
   <div class="ticket-page" id="ticketPage">
     
-    <!-- ヘッダー -->
     <header class="ticket-header">
       <button class="btn-back" onclick="closeTicketPage()">＜</button>
       <h1 class="ticket-title">eTicket</h1>
@@ -77,8 +97,13 @@
     </div>
 
   </div>
+
+
+
+
 	
- <div  id="cardFlip" class="card-flip-container">	
+	
+
 
 
 最新版の優先順位（9/20）
