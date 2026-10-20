@@ -38,7 +38,45 @@
 利用可能：チケットはありません 現在ご利用可能なチケットはありません。
 利用開始日付：チケットはありません 利用開始日前のチケットはありません。
 利用済み：チケットはありません チケットを利用すると履歴がここに表示されます。		
+  <div class="ticket-page" id="ticketPage">
+    
+    <!-- ヘッダー -->
+    <header class="ticket-header">
+      <button class="btn-back" onclick="closeTicketPage()">＜</button>
+      <h1 class="ticket-title">eTicket</h1>
+    </header>
 
+    <!-- タブカルーセル -->
+    <div class="tab-carousel-container">
+      <div class="tab-carousel">
+        <div class="tab-item is-active" onclick="switchTab(0)">利用可能</div>
+        <div class="tab-item" onclick="switchTab(1)">利用開始日付</div>
+        <div class="tab-item" onclick="switchTab(2)">利用済み</div>
+      </div>
+      <!-- 動く緑のライン -->
+      <div class="tab-indicator" id="tabIndicator"></div>
+    </div>
+
+    <!-- コンテンツ表示エリア -->
+    <div class="content-container">
+      <!-- 利用可能 -->
+      <div class="content-panel is-active">
+        <div class="msg-title">チケットはありません</div>
+        <div class="msg-desc">現在ご利用可能なチケットはありません。</div>
+      </div>
+      <!-- 利用開始日付 -->
+      <div class="content-panel">
+        <div class="msg-title">チケットはありません</div>
+        <div class="msg-desc">利用開始日前のチケットはありません。</div>
+      </div>
+      <!-- 利用済み -->
+      <div class="content-panel">
+        <div class="msg-title">チケットはありません</div>
+        <div class="msg-desc">チケットを利用すると履歴がここに表示されます。</div>
+      </div>
+    </div>
+
+  </div>
 	
  <div  id="cardFlip" class="card-flip-container">	
 
