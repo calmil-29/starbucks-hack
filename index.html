@@ -12,22 +12,19 @@
 	
 無代へ渡す用 
 
-flipCard
-cardFlip
-card-flip-inner
-ticket-carousel-inner
-carousel-dots
-ticket-item
-isTicketDetailOpen
-is-ticket-detail-open
- 
 
-
-
-
-調べた限りだと、たぶん、関係するのはこれだけだった
-3. カード反転やチケット表示に関係する状態変数、は、正直わからなかったクラス名やidで指定しないと見つけるの無理。でも多分見つけた限りでも問題ないかな？反転させた.card-backに関するJS処理はこれだけだと思うけど
+今、きみが出してくれた中で新しく見つけたのはこれだけ	
 	
+- isTicketDetailOpen
+// 詳細シートが開いているかどうか (初期は閉じている)
+let isTicketDetailOpen = false;
+
+	
+
+
+
+
+
 1.flipCard() 関数	
 - カード表裏の切り替え 
 function flipCard(event) {
