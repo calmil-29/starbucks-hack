@@ -12,132 +12,167 @@
 	
 無代へ渡す用 
 
+調べた限りだと、関係するのはたぶんこれだけ	
+- カード表裏の切り替え 
+function flipCard(event) {
 
-- .card-hero-section　	
-body.is-ticket-detail-open .card-hero-section {
-    transform-style: flat;      /* preserve-3d を通常フラットに */
-    perspective: none;          /* 遠近感をリセット */
+    // 1. ボタンのクリックイベントが親要素へ伝わるのを防ぐ
+    if (event) {
+        event.stopPropagation();
+    }
     
-}
-	
-- .card-flip-container	
-.card-flip-container {
-    perspective: 1000px;
-    -webkit-perspective: 1000px;/* Safari用 */
+    // 2. 回転させる対象を取得
+    const cardInner = document.querySelector('.card-flip-inner');
 
-    perspective: 1000px;/* 3D奥行き感(遠近感)用 */
-}
-	
-- .card-flip-inner
-.card-flip-inner {
-    position: relative;
-    width: 100%;
-    height: 300px;
-    transition: transform 0.6s;
-    -webkit-transform-style: preserve-3d;
-    transform-style: preserve-3d;/* これがないと3Dに見えない */ 
-}
+    if (!cardInner) return;
 
-.card-flip-inner.is-flipped {
-    transform: rotateY(180deg);
-}
-	
-- .card-front
-.card-front, .card-back {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
+    // 3. 現在の裏表状態を確認
+    const isFlipped = cardInner.classList.contains('is-flipped');
 
-    /* 裏側を向いているときは隠す */
-    backface-visibility: hidden;
-    -webkit-transform: translate3d(0,0,0);
-    transform: translate3d(0,0,0);
+    // 4. 表面から裏面に切り替えるときだけ、カルーセルを先頭に戻す
+    if (!isFlipped) {
+        const carousel = document.querySelector('.ticket-carousel-inner');
+
+        if (carousel) {
+            carousel.scrollTo({
+                left: 0,
+                behavior: 'auto'
+            });
+        }    
+    }
+
+    // 5. カードを回転させる
+    cardInner.classList.toggle('is-flipped');
+
 }
 
-.card-front {
-    width: 100%;
-    aspect-ratio: 1.58;
-    position: relative;
-    color: white;
-    display: flex;
-    flex-direction: column;/* 上下に分ける */
-    padding: 0;/* paddingを一旦リセット */
-    background-color: #000000;
-}
+- 【ヒーロー カード裏面上部のドット】　カルーセルがスクロールしたときに実行するコード
+window.addEventListener('load', () => {
+    const carousel = document.querySelector('.ticket-carousel-inner');
+    const dots = document.querySelectorAll('.carousel-dots .dot');
 
-- .card-front::before	
-.card-front::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;  
-    background: /* 下部をくっきり引き締める、下から上(100%)へ消えてくグラデ */ 
-                linear-gradient(to bottom,
-                rgba(0, 0, 0, 0.2) 0%, 
-                rgba(0, 0, 0, 0.9) 60%, 
-                rgba(0, 0, 0, 1.0) 100% 
+    // エラー防止のため、カルーセルが存在するときだけ動かす
+    if (carousel) {
+        carousel.addEventListener('scroll', () => {
+
+            // 詳細シートが開いている間は、ドットの更新処理を行わない
+            if (isTicketDetailOpen) {
+                return; 
+            }
+
+            const scrollLeft = carousel.scrollLeft;
+            const itemWidth = carousel.offsetWidth;
+            // 何枚目かを計算
+            const currentIndex = Math.round(scrollLeft / itemWidth);
+
+            // ドットのクラスを付け替える
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        });
+    }
+});
+
+- オートチャージ保存状態を各UI【ヒーロー・第１・第2 DOM 】へ反映する処理	
+function renderAutochargeUI() {...}  
+① オートチャージ設定中テキスト
+    const summaryCardText = document.querySelectorAll(
+        '#cardFlip .summary-card-text, #qrModal .summary-card-text'
     );
-    border: 1px solid rgba(225, 225, 225, 0.2);/* 白い境界線 */
-    box-sizing: border-box;
-    box-shadow: inset 0 1px 0 0 rgba(225, 225, 225, 0.2);/* インナーシャドウ(内側の白い光) */
-    z-index: 2;
-    border-radius: 10px;
-}	
-	
 
-- .card-back
-.card-back {
-    width: 100%;
-    transform: rotateY(180deg);
+    summaryCardText.forEach(text => {
+        text.classList.toggle(
+            'is-active',
+            isQrTarget
+        );
+    });	
+
+② 第1・第2・ヒーローのライン
+    const heroLine = document.querySelector(
+        '#cardFlip .hero-card-balance-line'
+    );		
+   if (heroLine) {
+        heroLine.classList.toggle(
+            'is-active',
+            isQrTarget
+        );
+    }	
+
+- 【 カード裏面 Ticket / eGift 】の 詳細シートを開く
+const ticketDetails = {
+    eticket500: {
+        title: 'eTicket 500',
+        description: '500円分の対象商品のお支払いに利用できます。'
+    },
+
+    egift700: {
+        title: 'eGift 700',
+        description: 'お好きなドリンク１杯と交換できます。'
+    },
+
+    egift300: {
+        title: 'eGift 300',
+        description: 'お好きなフード１点と交換できます。'
+    },
+};
+function openTicketDetailSheet(event, eticketType) {
+    if (event) event.preventDefault();
+
+    const ticket = ticketDetails[eticketType];
+    if (!ticket) return;
+
+   const sheet = document.getElementById('ticketDetailSheet');
+   if (!sheet) return;
+
+   const title = sheet.querySelector('.ticket-detail-header h2');
+   const description = sheet.querySelector('.ticket-detail-section p');
+
+   if (title) {
+    title.textContent = ticket.title;
+   }
+
+   if (description) {
+    description.textContent = ticket.description;
+   }
+
+   // 詳細シートを開いている間はチケットを固定
+   isTicketDetailOpen = true;
+
+   // カルーセルを止める 
+   const carousel = document.querySelector('.ticket-carousel-inner');
+   
+   if (carousel) {
+        carousel.dataset.savedScrollleft = carousel.scrollLeft;
+   }
+
+   document.body.classList.add('is-ticket-detail-open');
+
+   sheet.classList.add('is-active');
+}
+- 【 カード裏面 eTicket / eGift 】 詳細シートを閉じる	
+function closeTicketDetailSheet(event) {
+    if (event) event.stopPropagation();
+
+    const sheet = document.getElementById('ticketDetailSheet');
+    if (!sheet) return;
+
+    isTicketDetailOpen = false;
+
+    sheet.classList.remove('is-active');
+
+    document.body.classList.remove('is-ticket-detail-open');
+
 }
 	
-- .card-main-visual
-.card-main-visual {
-    position: relative;
-    display: flex; /* 横に並べる */
-    padding: 20px;
-    gap: 15px;
-}	
 	
-- .star-progress-overlay
-.star-progress-overlay {
-    display: flex;
-    flex-direction: column;
-    margin-top: auto; /* 底に寄せる */
-    padding: 15px 20px;
-    z-index: 3;
-}	
 	
-- .card-action-list
-body.is-ticket-detail-open .card-action-list {
-    display: none;
-}	
-	
-- .btn-etiket-trigger
-.btn-etiket-trigger {
-    position: relative; /* バッジ用 */
-    width: fit-content; /* 中身に合わせる */
-    height: 35px;
-    display: flex;
-    align-items: center;
-    background: rgba(225, 225, 225, 0.3);
-    border: 1px solid rgba(225, 225, 225, 0.4);
-    border-radius: 5px;
-    backdrop-filter: blur(10px);
-    padding: 0 10px;
-    margin: 15px 9px;
-    font-size: 16px;
-    color: #ffffff;
-}	
 
 
-
+10/21
 ♥️ .card-front のクラス名もあとでわかりやすくするために変更	
 	
 ♥️ 【第１モーダル:qrModa 用の　チケットページ】 eGift / eTicket への入口：タップしたら画面したから競り上がる処理 	
