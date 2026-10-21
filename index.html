@@ -12,36 +12,43 @@
 	
 無代へ渡す用 
 	
-デザイン・仕様変更：
+
 	
-> ヒーローエリア	
+【ヒーローエリアのデザイン・仕様変更】：
+・ヒーローエリア表示カードからチケットページへのデザイン・仕様変更：独自デザイン（カルーセル）から、公式へ（横スライド）再定義、それに伴いヒーローエリア全体のデザインの調整
 	
-♥️ ここの何を包んでいるかを、無代に 説明・整理する所から！	
-・ヒーローエリアを現在包んでいるコードの整理
-1 <section class="card-hero-section"> heroCardImg ... .card-action-list </section>
-2 <div  id="cardFlip" class="card-flip-container"> heroCardImg ... .card-back </div>		
+> ヒーローエリアを現在包んでいる主軸コードの整理
+外側から	
+1 <section class="card-hero-section"> heroCardImg（QRコードが置かれた、現在選ばれているヒーローエリア表示カード画像） ... .card-action-list（リワード用アクションボタン、今回.card-front内に収めたい箇所） </section>
+2 <div  id="cardFlip" class="card-flip-container"> heroCardImg ... .card-back（カードの裏面チケットページ） </div>		
 3 <div class="card-flip-inner"> heroCardImg ... .card-back </div>	
-4 <div class="card-front"> heroCardImg ... .progress-steps </div>	
+4 <div class="card-front"> heroCardImg ... .progress-steps（リワードの進歩状況を示すバー画像） </div>	
+	
+・cardFlip と card-flip-inner は、カード表裏の切り替え処理のために置いてたものだから、ひっくり返す動作処理はもうしないから、これで包む必要なくなる？てことで、.card-hero-section と .card-front だけでヒーローエリアは包むのはあり？
+
+> ヒーローエリアのデザイン・仕様変更	
+	
+・カード表裏の切り替え処理の消去	→ flipCard(event) {...} 
+・カード裏面上部のドットも消去 → addEventListener() {...}
+・チケットのデザイン変更：場所はカードとリワードの間・チケットテキストの枠（border）は消す・代わりに端から端までの 15% の白い帯と > を追加 でチケットの入り口を示唆	
+・カードの裏面チケットの既存ページを消去 → .card-back 
+・ヒーロー表示カードのロゴを消去	→ .mini-logo
+・リワード用のアクションボタン：.card-action-list（クラス名も変更） までグラデーション範囲（.card-front::before）に収める
+・.card-action-list でいっしょに置いてある、入金ボタンはヒーローカード画像のQRコード、下部ナビに入金への動線もあり、情報の統一として、必要なしと判断の消去 → .btn-charge 
 
 	
-・カード表裏の切り替え処理の消去	flipCard(event) {...} 
-・カード裏面上部のドットも消去 addEventListener(){...}
-・チケット入り口を変更	
-・カードの裏面チケットの既存ページを消去 .card-back 
-・ヒーロー表示カードのロゴを消去	.mini-logo
-・チケットのデザイン変更 （デザイン）場所はカードとリワードの間・チケットテキストの枠（border）は消す・代わりに端から端までの 15% の白い帯と > を追加 でチケットの入り口を示唆
-・リワード用のアクションボタン .card-action-list（クラス名も変更） までグラデーション範囲（.card-front::before）に収める
-・入金ボタンの消去 .btn-charge	（ヒーローカード画像のQRコード、下部ナビに入金への動線あり、必要なしと判断）
 
-	
-> ヒーローエリア表示カードからチケットへの仕様変更・独自デザイン（カルーセル）から、公式へ（横スライド）再定義
+【チケットページ】.card-front 内
+タイトル：eTicket
+選択ページ（横カルーセル式)：利用可能/利用開始日付/利用済み（選択時は選択タイトルの下に緑ラインがついてくる & タイトルの文字もグレー → 黒へ）
+利用可能：チケットはありません 現在ご利用可能なチケットはありません。
+利用開始日付：チケットはありません 利用開始日前のチケットはありません。
+利用済み：チケットはありません チケットを利用すると履歴がここに表示されます。	
 
-・ヒーローエリア
-<section class="card-hero-section">	
-<div  id="cardFlip" class="card-flip-container">	
-
+※ 横スライド表示で ＞：表示/ ＜：非表示（元のヒーローエリア表示カード画像に戻る）	
 	 
-・チケット入り口
+【チケット入り口】	
+<!-- チケット入り口 -->	
 <button class="btn-etiket-trigger" onclick="slideInTicket(event)"> 
   <div class="count-box">0</div>
   <span class="eticket-label">eTicket</span>
@@ -52,15 +59,8 @@
 </button>	
 	
 	
-横スライドで ＞表示/ ＜非表示（ヒーローカード画面に戻る）
-・チケットページ	
-タイトル：eTicket
-・選択ページ	
-選択：利用可能/利用開始日付/利用済み（横カルーセル・選択時は選択タイトルの下に緑ラインがついてくる・タイトルの文字もグレー→黒へ）
-利用可能：チケットはありません 現在ご利用可能なチケットはありません。
-利用開始日付：チケットはありません 利用開始日前のチケットはありません。
-利用済み：チケットはありません チケットを利用すると履歴がここに表示されます。	
-	
+【チケットページ】	
+  <!-- チケットページ -->	
   <div class="ticket-page" id="ticketPage">
     
     <header class="ticket-header">
