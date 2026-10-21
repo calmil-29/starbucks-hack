@@ -12,13 +12,14 @@
 	
 無代へ渡す用 
  
-flipCard() 関数
-チケットカルーセルの切り替え処理（左右スワイプ、ドット、インデックス管理など）
-カード反転やチケット表示に関係する状態変数
-cardFlip、.card-back、.ticket-item などを取得・操作しているJavaScript
-is-ticket-detail-open クラスを追加・削除している処理
 
-調べた限りだと、関係するのはたぶんこれだけ	
+
+
+
+調べた限りだと、たぶん、関係するのはこれだけだった
+3. カード反転やチケット表示に関係する状態変数、は、正直わからなかったクラス名やidで指定しないと見つけるの無理。でも多分見つけた限りでも問題ないかな？反転させた.card-backに関するJS処理はこれだけだと思うけど
+	
+1.flipCard() 関数	
 - カード表裏の切り替え 
 function flipCard(event) {
 
@@ -51,7 +52,8 @@ function flipCard(event) {
     cardInner.classList.toggle('is-flipped');
 
 }
-
+	
+2. チケットカルーセルの切り替え処理（左右スワイプ、ドット、インデックス管理など）
 - 【ヒーロー カード裏面上部のドット】　カルーセルがスクロールしたときに実行するコード
 window.addEventListener('load', () => {
     const carousel = document.querySelector('.ticket-carousel-inner');
@@ -83,6 +85,7 @@ window.addEventListener('load', () => {
     }
 });
 
+4. cardFlip、.card-back、.ticket-item などを取得・操作しているJavaScript	※.card-back、.ticket-item はなし
 - オートチャージ保存状態を各UI【ヒーロー・第１・第2 DOM 】へ反映する処理	
 function renderAutochargeUI() {...}  
 ① オートチャージ設定中テキスト
@@ -108,6 +111,7 @@ function renderAutochargeUI() {...}
         );
     }	
 
+5. is-ticket-detail-open クラスを追加・削除している処理	
 - 【 カード裏面 Ticket / eGift 】の 詳細シートを開く
 const ticketDetails = {
     eticket500: {
@@ -159,6 +163,7 @@ function openTicketDetailSheet(event, eticketType) {
 
    sheet.classList.add('is-active');
 }
+	
 - 【 カード裏面 eTicket / eGift 】 詳細シートを閉じる	
 function closeTicketDetailSheet(event) {
     if (event) event.stopPropagation();
