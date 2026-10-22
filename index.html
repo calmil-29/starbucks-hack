@@ -12,14 +12,11 @@
 	
 無代へ渡す用 
 
-
-今、きみが出してくれた中で新しく見つけたのはこれだけ	
 	
 - isTicketDetailOpen
 // 詳細シートが開いているかどうか (初期は閉じている)
 let isTicketDetailOpen = false;
 
-それと、詳細シートはチケットを０にする時点で必要なくなる。だから、	
 openTicketDetailSheet() 
 closeTicketDetailSheet()
 も廃止になる	
@@ -30,72 +27,17 @@ closeTicketDetailSheet()
 
 1.flipCard() 関数	
 - カード表裏の切り替え 
-function flipCard(event) {
+function flipCard(event) 
 
-    // 1. ボタンのクリックイベントが親要素へ伝わるのを防ぐ
-    if (event) {
-        event.stopPropagation();
-    }
-    
-    // 2. 回転させる対象を取得
-    const cardInner = document.querySelector('.card-flip-inner');
-
-    if (!cardInner) return;
-
-    // 3. 現在の裏表状態を確認
-    const isFlipped = cardInner.classList.contains('is-flipped');
-
-    // 4. 表面から裏面に切り替えるときだけ、カルーセルを先頭に戻す
-    if (!isFlipped) {
-        const carousel = document.querySelector('.ticket-carousel-inner');
-
-        if (carousel) {
-            carousel.scrollTo({
-                left: 0,
-                behavior: 'auto'
-            });
-        }    
-    }
-
-    // 5. カードを回転させる
-    cardInner.classList.toggle('is-flipped');
-
-}
-	
 2. チケットカルーセルの切り替え処理（左右スワイプ、ドット、インデックス管理など）
 - 【ヒーロー カード裏面上部のドット】　カルーセルがスクロールしたときに実行するコード
-window.addEventListener('load', () => {
-    const carousel = document.querySelector('.ticket-carousel-inner');
-    const dots = document.querySelectorAll('.carousel-dots .dot');
+window.addEventListener
 
-    // エラー防止のため、カルーセルが存在するときだけ動かす
-    if (carousel) {
-        carousel.addEventListener('scroll', () => {
-
-            // 詳細シートが開いている間は、ドットの更新処理を行わない
-            if (isTicketDetailOpen) {
-                return; 
-            }
-
-            const scrollLeft = carousel.scrollLeft;
-            const itemWidth = carousel.offsetWidth;
-            // 何枚目かを計算
-            const currentIndex = Math.round(scrollLeft / itemWidth);
-
-            // ドットのクラスを付け替える
-            dots.forEach((dot, index) => {
-                if (index === currentIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
-            });
-        });
-    }
-});
-
-4. cardFlip、.card-back、.ticket-item などを取得・操作しているJavaScript	※.card-back、.ticket-item はなし
+	
+♥️ 4. cardFlip、.card-back、.ticket-item などを取得・操作しているJavaScript	※.card-back、.ticket-item はなし
 - オートチャージ保存状態を各UI【ヒーロー・第１・第2 DOM 】へ反映する処理	
+
+HTMLを組み直す過程で #cardFlip (.card-flip-container)を削除する前に、先にここの処理での #cardFlip	
 function renderAutochargeUI() {...}  
 ① オートチャージ設定中テキスト
     const summaryCardText = document.querySelectorAll(
