@@ -12,6 +12,137 @@
 	
 無代へ渡す用 
 
+工程1：HTMLの変更・廃止・追加
+
+1-1. 旧カード反転構造を取り除く
+
+変更後は、card-front を反転用の入れ子から外し、カード本体として扱う。
+.card-flip-container：廃止
+.card-flip-inner：廃止
+.card-back：廃止
+.ticket-carousel-inner：廃止
+.ticket-item：旧カルーセル用のものは廃止
+.carousel-dots：旧カルーセル用のものは廃止
+
+#cardFlip は、後述するJavaScriptのセレクターも変更するため、旧構造と一緒に取り除く。
+
+1-2. カード表面の要素は残す
+
+以下はヒーローエリアの機能として維持する。
+カード画像 #heroCardImg
+QRコードと openQrModal(event)
+残高 #heroCardBalance
+オートチャージ表示 .summary-card-text
+残高ライン .hero-card-balance-line
+Star Rewards .star-progress-overlay
+アクションエリア .card-action-list のうち、引き続き使うボタン
+
+1-3. eTicketの入口を変更する
+現在の flipCard(event) を呼ぶ入口を、slideInTicket(event) を呼ぶ入口に置き換える。
+
+<button class="btn-etiket-trigger"
+        type="button"
+        onclick="slideInTicket(event)">
+  <div class="count-box">0</div>
+  <span class="eticket-label">eTicket</span>
+  <div class="arrow-eticket">
+    <span></span>
+    <span></span>
+  </div>
+</button>
+
+1-4. 独立したeTicket画面を追加する
+
+配置は .card-front の内部ではなく、.card-hero-section の中で、カード本体とは兄弟要素になるようにする。
+
+<section class="card-hero-section">
+  <div class="card-main-area">
+    <!-- カード画像・QR・残高・eTicket入口・Star Rewards -->
+  </div>
+
+  <div class="ticket-page" id="ticketPage">
+    <!-- eTicket画面 -->
+  </div>
+</section>
+
+工程2：CSSの変更・廃止・追加
+
+対象 作業
+.card-flip-container 削除
+.card-flip-inner 削除
+.card-flip-inner.is-flipped 削除
+.card-front, .card-back の共通指定 分離し、必要なカード本体の指定だけ残す
+.card-back 削除
+.card-front カード本体として再構成
+.card-front::before グラデーションの意図を維持して再調整
+.card-main-visual 新しいカード構造に合わせて調整
+.star-progress-overlay カード本体の中で引き続き表示
+.btn-etiket-trigger 新しい入口デザインに合わせて調整
+.card-action-list body.is-ticket-detail-open による非表示指定を削除
+.ticket-page 新規作成
+.ticket-header 新規作成
+.tab-carousel-container など タブ表示と切り替え用に新規作成
+.content-panel 選択中のタブに対応するパネルを表示するため新規作成
+
+また、.card-front::before のグラデーションは、カード画像からチケット入口、Star Rewardsまでのまとまりを保つためのもの。新しいHTML構造に移した後も、疑似要素がどの要素を覆うかを確認して調整する。
+
+工程3：JavaScriptの変更・廃止・追加
+
+3-1. 廃止する関数・処理
+
+既存コード 理由
+flipCard() カード反転を廃止するため
+旧カルーセルの scroll イベント カルーセルとドットを廃止するため
+.ticket-carousel-inner の scrollTo() 旧カルーセルを廃止するため
+ticketDetails チケット詳細シートを廃止するため
+openTicketDetailSheet() 詳細シートを廃止するため
+closeTicketDetailSheet() 詳細シートを廃止するため
+isTicketDetailOpen 詳細シートと旧カルーセルのためだけに使っているなら廃止
+
+isTicketDetailOpen は、貼ってくれた範囲では詳細シートと旧カルーセルに関係している。ほかに参照がないことを確認したうえで削除する。
+
+3-2. renderAutochargeUI() のセレクターを変更する
+
+現在のコードでは、ヒーロー側の要素を #cardFlip から探している。
+
+#cardFlip を廃止した後は、カード本体に残した要素を新しいセレクターで取得するよう変更する。
+
+3-3. 新規実装するJavaScript
+
+まず必要なのは、次の3つ。
+slideInTicket(event)：eTicket画面を開く
+closeTicketPage()：eTicket画面を閉じる
+switchTab(index)：タブと対応するコンテンツパネルを切り替える
+これに加えて、タブのインジケーター位置や、選択中のタブを示すクラスの更新を実装する。
+なお、チケット数を 0 にする前提なので、チケット一覧には空状態のメッセージを表示する。現時点では旧チケットデータを移植する必要はない。
+
+工程4：動作確認
+実装後は、次の順で確認する。
+
+• カード画像・QR・残高が正しく表示される
+• オートチャージの設定状態が、ヒーローとQRモーダルに反映される
+• Star Rewardsの文字とプログレスバーが読める
+• eTicket入口から独立画面がスライドして開く
+● 戻るボタンでヒーローエリアに戻る
+• 3つのタブで選択状態とコンテンツが切り替わる
+• チケットが0枚のとき、それぞれの空状態が表示
+される
+• カード反転用のCSS・JSが残っていない
+⚫︎削除した詳細シートや旧カルーセルを参照するコ
+ードが残っていない
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 - isTicketDetailOpen
 // 詳細シートが開いているかどうか (初期は閉じている)
