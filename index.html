@@ -11,40 +11,18 @@
 
 	
 ♥️ 無代へ渡す用 
+
+まず、
+<section class="card-hero-section">	
+<div class="card-front">	
+カード画像・QRコード・チケットページの入り口・REWARDS　...	
+</div><!-- .card-front -->	
+チケットページ 
+</section><!-- .card-hero-section -->	
+
+
+
 	
-進行状態
-	
-実行済み：
-工程1：HTMLの変更・廃止・追加	
-1-1. 旧カード反転構造を取り除く 
-1-2. カード表面の要素は残す　	
-	mini-logo と btn-charge は、デザイン方針に従って削除 
-1-3. eTicketの入口を変更する	
-1-4. 独立したeTicket画面を追加する 	
-	配置は .card-front の内部ではなく、.card-hero-section の中で、カード本体とは兄弟要素になるようにする　
-
-工程2：CSSの変更・廃止・追加
-.card-flip-container 削除　
-.card-flip-inner 削除　
-.card-flip-inner.is-flipped 削除　
-.card-back 削除　
-.card-action-list body.is-ticket-detail-open による非表示指定を削除 		
-.card-front, .card-back の共通指定 分離し、必要なカード本体の指定だけ残す　	
-
-工程3：JavaScriptの変更・廃止・追加	
-3-1. 廃止する関数・処理　
-廃止した既存コード
-flipCard() 
-旧カルーセルのscrollイベント	
-.ticket-carousel-inner の scrollTo() 　
-ticketDetails　
-openTicketDetailSheet() 
-closeTicketDetailSheet() 　
-isTicketDetailOpen 　
-	
-3-2. renderAutochargeUI() のセレクターを変更する　
-
-
 未実行：
 工程2：CSSの変更・廃止・追加	
 .card-front カード本体として再構成	
@@ -60,6 +38,7 @@ isTicketDetailOpen 　
 .tab-carousel-container など タブ表示と切り替え用に新規作成
 .content-panel 選択中のタブに対応するパネルを表示するため新規作成
 
+♥️ 10/23 作業	
 3-3. 新規実装するJavaScript	
 slideInTicket(event)：eTicket画面を開く
 closeTicketPage()：eTicket画面を閉じる
