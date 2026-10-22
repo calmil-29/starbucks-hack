@@ -13,108 +13,23 @@
 ♥️ 無代へ渡す用 
 
 
-.card-front {
-    position: relative;
-    width: 100%;
-    min-height: 500px;
-    height: auto;
-    aspect-ratio: auto;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    background-color: #000000;
-}
 
-.card-hero-section の指定はなし
+
+.card-front::before — カード画像からeTicket入口、Star Rewardsまでのグラデーションを維持する。は、今の状態でもうまいことハマってるから、一旦ここは問題なし。
+だから次は、	
+.card-main-visual — QR・残高・eTicket入口の配置を新しい構造に合わせる。だけど、QR・残高は今は触る必要はないかな、だから、するのは一旦１つだけ、.btn-etiket-trigger を新しい入口デザインに合わせて調整だけする。	
 	
-.card-action-list 
-  
-
-.card-action-list a 
-
-.card-action-list a:active { opacity: 0.7;}
-
-.btn-action-group 
-  
-
-.card-front 
+でも、.card-action-list のボタンのデザイン変更は先にしておきたい、今2つのボタンを連結させてるデザインだから１つ１つに個別化だけした状態を知りたい。
+.card-front QR・残高・eTicket入口・REWARDS の細かい配置、デザインの微調整は全体のページと処理の後。とりあえず、今は、.card-frontの中の全体的なバランスと、ヒーローエリア自体の高さが分かればいい。
 	
-.main-card-visual-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    z-index: 1;
-}
-
-.card-front::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;  
-    background: /* 下部をくっきり引き締める、下から上(100%)へ消えてくグラデ */ 
-                linear-gradient(to bottom,
-                rgba(0, 0, 0, 0.2) 0%, 
-                rgba(0, 0, 0, 0.9) 60%, 
-                rgba(0, 0, 0, 1.0) 100% 
-    );
-    border: 1px solid rgba(225, 225, 225, 0.2);/* 白い境界線 */
-    box-sizing: border-box;
-    box-shadow: inset 0 1px 0 0 rgba(225, 225, 225, 0.2);/* インナーシャドウ(内側の白い光) */
-    z-index: 2;
-    border-radius: 10px;
-}
-	
-.card-info-side {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    position: relative;
-    z-index: 3;
-}
-
-.star-progress-overlay {
-    display: flex;
-    flex-direction: column;
-    margin-top: auto; /* 底に寄せる */
-    padding: 15px 20px;
-    z-index: 3;
-}	
-
-
-
-
-	
-	
-
-
-.card-front::before — カード画像からeTicket入口、Star Rewardsまでのグラデーションを維持する。
-.card-main-visual — QR・残高・eTicket入口の配置を新しい構造に合わせる。
-.star-progress-overlay — Star Rewardsをカード内で引き続き表示する。
-
-
-	
-未実行：
-工程2：CSSの変更・廃止・追加	
-.card-front カード本体として再構成	
-.card-front::before グラデーションの意図を維持して再調整
-（.card-front::before のグラデーションは、カード画像からチケット入口、Star Rewardsまでのまとまりを保つためのもの。新しいHTML構造に移した後も、疑似要素がどの要素を覆うかを確認して調整）	
-.card-main-visual 新しいカード構造に合わせて調整
-.star-progress-overlay カード本体の中で引き続き表示
-.btn-etiket-trigger 新しい入口デザインに合わせて調整
-
-※ JS処理のために、まずは最低限必要なCSS指定	
+で、チケットページ。JS処理のために、まずは最低限必要なCSS指定をする	
 .ticket-page 新規作成
 .ticket-header 新規作成	
 .tab-carousel-container など タブ表示と切り替え用に新規作成
 .content-panel 選択中のタブに対応するパネルを表示するため新規作成
 
+どう？	
+	
 ♥️ 10/23 作業	
 3-3. 新規実装するJavaScript	
 slideInTicket(event)：eTicket画面を開く
