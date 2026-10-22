@@ -12,7 +12,50 @@
 	
 ♥️ 無代へ渡す用 
 
-.card-front をカード本体として整えたいんだけど、まず、.card-action-list が出てこない。下敷き状態
+.card-hero-section の指定はなし
+	
+.card-action-list {
+    display: flex;
+    padding: 10px 15px;
+    gap: 12px; /* 入金ボタンと連結ボタンの間の隙間 */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.card-action-list a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border: none;
+    height: 44px;
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.02em;
+    color: white;
+    width: 100%;
+    white-space: nowrap; /* 改行防止 */
+    border-radius: 50px;
+    transition: opacity 0.2s;
+}
+
+.card-action-list a:active { opacity: 0.7;}
+
+.btn-action-group {
+    display: flex;
+    flex: 1; /* 残りの幅をすべて使う */
+    border-radius: 50px;
+    overflow: hidden; /* 中の斜め板のはみ出しをカット */
+    background-color: var(--stb-deepgreen);
+    position: relative;
+}
+
+.btn-action-group a {
+    position: relative;
+    flex: 1;
+    justify-content: center;
+}
+
 .card-front {
     position: relative;
     top: 0;
@@ -22,22 +65,11 @@
     aspect-ratio: 1.58;
     color: white;
     display: flex;
-    flex-direction: column;
-    padding: 0;
+    flex-direction: column;/* 上下に分ける */
+    padding: 0;/* paddingを一旦リセット */
     background-color: #000000;
-}	
+}
 
-.card-action-list {
-    display: flex;
-    padding: 10px 15px;
-    gap: 12px; /* 入金ボタンと連結ボタンの間の隙間 */
-    width: 100%;
-    box-sizing: border-box;
-}	
-	
-
-.card-front 内で大きく分かれるものだとこのあたりかな？
-	
 .main-card-visual-img {
     position: absolute;
     top: 0;
@@ -48,29 +80,42 @@
     z-index: 1;
 }
 
+.card-front::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;  
+    background: /* 下部をくっきり引き締める、下から上(100%)へ消えてくグラデ */ 
+                linear-gradient(to bottom,
+                rgba(0, 0, 0, 0.2) 0%, 
+                rgba(0, 0, 0, 0.9) 60%, 
+                rgba(0, 0, 0, 1.0) 100% 
+    );
+    border: 1px solid rgba(225, 225, 225, 0.2);/* 白い境界線 */
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 0 0 rgba(225, 225, 225, 0.2);/* インナーシャドウ(内側の白い光) */
+    z-index: 2;
+    border-radius: 10px;
+}
+	
+.card-info-side {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    position: relative;
+    z-index: 3;
+}
+
 .star-progress-overlay {
     display: flex;
     flex-direction: column;
     margin-top: auto; /* 底に寄せる */
     padding: 15px 20px;
     z-index: 3;
-}
-
-/* 上半分のエリア（QRコード・金額・チケットエリア） */	
-.card-main-visual {
-    position: relative;
-    display: flex; /* 横に並べる */
-    padding: 20px;
-    gap: 15px;
-}
-
-.card-front  .card-action-list に関係する他のCSSって全部？		
-
-
-
-
-
-
+}	
 
 
 
