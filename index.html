@@ -13,48 +13,78 @@
 ♥️ 無代へ渡す用 
 
 
-ありがと、じゃあ、次はそのチケットページの中身のCSS指定する。
-でも、全部を完璧にするわけじゃなくて、あくまでJS処理のために最低限のCSSをつくりたい。
-	
-<div id="ticketPage" class="ticket-page">
+/* ==========================================================================
+   1. チケットページ全体のレイアウト（スライドインアニメーション用）
+   ========================================================================== */
+.ticket-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff; /* 下が透けないように背景色は必須 */
+    z-index: 100;              /* 一番手前に表示 */
     
-      <header class="ticket-header">
-        <button class="btn-back" onclick="closeTicketPage()">
-          <span class="arrow-icon is-tticket-page"></span>
-        </button>
-        <h1 class="ticket-title">eTicket</h1>
-      </header>
+    /* 初期状態は画面の「右端の外側」に隠しておく */
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out; /* スライドインの速度 */
+}
 
-      <!-- タブカルーセル -->
-      <div class="tab-carousel-container">
-        <div class="tab-carousel">
-          <div class="tab-item is-active" onclick="switchTab(0)">利用可能</div>
-          <div class="tab-item" onclick="switchTab(1)">利用開始日付</div>
-          <div class="tab-item" onclick="switchTab(2)">利用済み</div>
-        </div>
-        <!-- 選択時に動く緑のライン -->
-        <div class="tab-indicator" id="tabIndicator"></div>
-      </div>
+/* JSでこのクラス（is-openなど）を付与すると画面内にスライドインする */
+.ticket-page.is-open {
+    transform: translateX(0);
+}
 
-      <!-- コンテンツ表示エリア -->
-      <div class="content-container">
-        <!-- 利用可能 -->
-        <div class="content-panel is-active">
-          <div class="msg-title">チケットはありません</div>
-          <div class="msg-desc">現在ご利用可能なチケットはありません。</div>
-        </div>
-        <!-- 利用開始日付 -->
-        <div class="content-panel">
-          <div class="msg-title">チケットはありません</div>
-          <div class="msg-desc">利用開始日前のチケットはありません。</div>
-        </div>
-        <!-- 利用済み -->
-        <div class="content-panel">
-          <div class="msg-title">チケットはありません</div>
-          <div class="msg-desc">チケットを利用すると履歴がここに表示されます。</div>
-        </div>
-      </div>
-    </div>
+/* ==========================================================================
+   2. タブカルーセル（緑のラインの移動・横並び用）
+   ========================================================================== */
+.tab-carousel-container {
+    position: relative; /* インジケーター（ライン）の基準点にするために必須 */
+    width: 100%;
+}
+
+.tab-carousel {
+    display: flex; /* タブを横並びにする */
+    width: 100%;
+}
+
+.tab-item {
+    flex: 1;              /* タブの幅を3等分に均等に広げる */
+    text-align: center;
+    padding: 15px 0;      /* タップ領域の確保 */
+    cursor: pointer;
+}
+
+/* 緑のライン（JSで `left` や `width` を書き換えて動かす前提） */
+.tab-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background-color: var(--stb-deepgreen, #00704a);
+    transition: left 0.3s ease, width 0.3s ease; /* ラインが滑らかに動くアニメーション */
+}
+
+/* ==========================================================================
+   3. コンテンツ表示エリア（切り替え用）
+   ========================================================================== */
+.content-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* 初期状態はすべてのコンテンツパネルを非表示にする */
+.content-panel {
+    display: none;
+    width: 100%;
+}
+
+/* JSでこのクラスがついたパネルだけを表示する */
+.content-panel.is-active {
+    display: block;
+}
+
 
 	
 
