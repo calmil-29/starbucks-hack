@@ -13,8 +13,52 @@
 ♥️ 無代へ渡す用 
 
 
+.card-info-side {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    position: relative;
+    z-index: 3;
+}
+          <div class="card-main-visual">
 
+            <!-- QRコード 【第１モーダル】への入り口 -->
+            <div class="qr-tap-area" onclick="openQrModal(event)" data-type="payment">
+               <div class="card-qr-box">
+                 <img src="images/QRコード.png" class="qr-code" alt="QR">
+              </div>
+            </div>
 
+            <div class="card-info-side">
+
+              <!-- カード情報 -->
+              <div class="balance-display">
+
+                <!-- ※【ヒーロー】オートチャージ設定後 テキスト・金額下の既存ラインカラーが追加 -->
+                <span class="summary-card-text">オートチャージ設定中</span> 
+
+                <p class="card-label">Starbucks Card</p>
+
+                <div class="hero-card-balance-line">
+                  <span class="unit">¥</span>
+                  <span id="heroCardBalance" class="hero-card-value">0</span>
+                </div>
+              </div>
+            
+              <!-- 【チケットページ】への入り口 -->
+              <button class="btn-etiket-trigger"
+                      type="button"
+                      onclick="slideInTicket(event)">
+                <div class="count-box">0</div>
+                <span class="eticket-label">eTicket</span>
+                <div class="arrow-eticket">
+                  <span></span>
+                  <span></span>
+                </div>
+              </button>
+
+            </div>
+          </div>
 
 
 
