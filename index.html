@@ -12,16 +12,47 @@
 	
 ♥️ 無代へ渡す用 
 
-このボタンをそれぞれ別にCSSで横並びに指定して装飾する場合、.btn-action-group　で2つをまとめない方がいい？
+他の要素もあって.card-action-listの指定をなくすと消える＆ずれる、btn-action-group　に　justify-content　指定しても効かない。それと　btn-action-group　を上に少し動かしたい
+	
+/* アクションボタン全体の配置 */
+.card-action-list {
+    display: flex;
+    padding: 10px 15px;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 3;
+}
 
-          <div class="card-action-list">
-    
-            <div class="btn-action-group">
-              <a href="#" class="btn-reward" aria-label="スターリワードに交換する">スターリワードに交換</a>
-              <a href="#" class="btn-reward-more" aria-label="スターリワードをもっと見る">もっと見る</a>
-            </div>
-          </div><
+/* 連結ボタンのコンテナ */
+.btn-action-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
 
+/* 「スターリワードに交換」 */
+.btn-reward { 
+    display: inline-block;
+    padding: 5px 20px;
+    background-color: var(--stb-deepgreen);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    border: 2px solid white;
+    font-weight: bold;
+} 
+
+/* 「もっと見る」 */
+.btn-reward-more { 
+    display: inline-block;
+    padding: 5px 20px;
+    background-color: white;
+    color: var(--stb-deepgreen);
+    text-decoration: none;
+    border-radius: 50px;
+    border: 2px solid var(--stb-deepgreen);
+    font-weight: bold;
+} 
 
 
 
