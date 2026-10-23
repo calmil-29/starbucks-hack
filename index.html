@@ -11,27 +11,38 @@
 
 	
 ♥️ 無代へ渡す用 
+ 右向き矢印ができない。違う場所での.arrow-icon　と形は同じだから、クラス名は共通にして、形は間違っていないとは思うんだけど、	
 
+          <button class="btn-etiket-trigger"
+                  type="button"
+                  onclick="slideInTicket(event)">
+            <div class="count-box">0</div>
+            <span class="eticket-label">eTicket</span>
+            <!-- 右向き矢印 -->
+            <div class="arrow-eticket">
+              <span class="arrow-icon"></span>
+            </div>
+          </button>
+	
+	.arrow-icon {
+    /* まずは目に見えない正方形を作る */
+    width: 10px;
+    height: 10px;
+
+    /* 上と右だけに枠線をつける（これで形になる）*/
+    border-top: 1px solid #696969;
+    border-right: 1px solid #696969;
+
+    /* 45度回転させて、上に50%ずれた位置を微調整する */
+    transform: rotate(45deg);
+
+    /* タップ対策 */
+    pointer-events: none; 
+}
+	
 
 今のままだと、どんなにCSSを調整しても「右側ブロックの中」から抜け出せないため、QRコードの下に回り込ませることができません。
 
-	
-.btn-etiket-trigger を .qr-tap-area .balance-display の下に配置したい場合。 .card-main-visual　から出して指定した方がいい？
-
-.card-main-visual {
-    position: relative;
-    display: flex; /* 横に並べる */
-    padding: 20px;
-    gap: 15px;
-}	
-
-.card-info-side {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    position: relative;
-    z-index: 3;
-}
           <div class="card-main-visual">
 
             <!-- QRコード 【第１モーダル】への入り口 -->
