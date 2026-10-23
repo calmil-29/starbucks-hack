@@ -11,80 +11,31 @@
 
 	
 ♥️ 無代へ渡す用 
+	
+<section class="card-hero-section">
+<div class="card-front">
+...	チケットページへの入り口とか　...
+</div>	
+<div id="ticketPage" class="ticket-page">	
+...	チケットページ
+</div>	
+</section>	
 
-
-/* ==========================================================================
-   1. チケットページ全体のレイアウト（スライドインアニメーション用）
-   ========================================================================== */
-.ticket-page {
-    position: fixed;
+.card-hero-section のCSS指定はなし
+	
+.card-front {
+    position: relative;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #ffffff; /* 下が透けないように背景色は必須 */
-    z-index: 100;              /* 一番手前に表示 */
-    
-    /* 初期状態は画面の「右端の外側」に隠しておく */
-    transform: translateX(100%);
-    transition: transform 0.3s ease-out; /* スライドインの速度 */
-}
-
-/* JSでこのクラス（is-openなど）を付与すると画面内にスライドインする */
-.ticket-page.is-open {
-    transform: translateX(0);
-}
-
-/* ==========================================================================
-   2. タブカルーセル（緑のラインの移動・横並び用）
-   ========================================================================== */
-.tab-carousel-container {
-    position: relative; /* インジケーター（ライン）の基準点にするために必須 */
     width: 100%;
+    height: auto;
+    aspect-ratio: 1.58;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 0; 
+    background-color: #000000;
 }
-
-.tab-carousel {
-    display: flex; /* タブを横並びにする */
-    width: 100%;
-}
-
-.tab-item {
-    flex: 1;              /* タブの幅を3等分に均等に広げる */
-    text-align: center;
-    padding: 15px 0;      /* タップ領域の確保 */
-    cursor: pointer;
-}
-
-/* 緑のライン（JSで `left` や `width` を書き換えて動かす前提） */
-.tab-indicator {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    background-color: var(--stb-deepgreen, #00704a);
-    transition: left 0.3s ease, width 0.3s ease; /* ラインが滑らかに動くアニメーション */
-}
-
-/* ==========================================================================
-   3. コンテンツ表示エリア（切り替え用）
-   ========================================================================== */
-.content-container {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-}
-
-/* 初期状態はすべてのコンテンツパネルを非表示にする */
-.content-panel {
-    display: none;
-    width: 100%;
-}
-
-/* JSでこのクラスがついたパネルだけを表示する */
-.content-panel.is-active {
-    display: block;
-}
-
 
 	
 
