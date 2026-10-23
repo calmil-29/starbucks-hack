@@ -12,64 +12,55 @@
 	
 ♥️ 無代へ渡す用 
 
-他の要素もあって.card-action-listの指定をなくすと消える＆ずれる、btn-action-group　に　justify-content　指定しても効かない。それと　btn-action-group　を上に少し動かしたい
-	
-/* アクションボタン全体の配置 */
-.card-action-list {
-    display: flex;
-    padding: 10px 15px;
-    width: 100%;
-    box-sizing: border-box;
-    z-index: 3;
-}
+.btn-etiket-trigger は .qr-tap-area .balance-display の下に配置したい場合。 .card-main-visual　から出して指定した方がいいの？
 
-/* 連結ボタンのコンテナ */
-.btn-action-group {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
+        <div class="card-main-visual">
 
-/* 「スターリワードに交換」 */
-.btn-reward { 
-    display: inline-block;
-    padding: 5px 20px;
-    background-color: var(--stb-deepgreen);
-    color: white;
-    text-decoration: none;
-    border-radius: 50px;
-    border: 2px solid white;
-    font-weight: bold;
-} 
+            <!-- QRコード 【第１モーダル】への入り口 -->
+            <div class="qr-tap-area" onclick="openQrModal(event)" data-type="payment">
+               <div class="card-qr-box">
+                 <img src="images/QRコード.png" class="qr-code" alt="QR">
+              </div>
+            </div>
 
-/* 「もっと見る」 */
-.btn-reward-more { 
-    display: inline-block;
-    padding: 5px 20px;
-    background-color: white;
-    color: var(--stb-deepgreen);
-    text-decoration: none;
-    border-radius: 50px;
-    border: 2px solid var(--stb-deepgreen);
-    font-weight: bold;
-} 
+            <div class="card-info-side">
+
+              <!-- カード情報 -->
+              <div class="balance-display">
+
+                <!-- ※【ヒーロー】オートチャージ設定後 テキスト・金額下の既存ラインカラーが追加 -->
+                <span class="summary-card-text">オートチャージ設定中</span> 
+
+                <p class="card-label">Starbucks Card</p>
+
+                <div class="hero-card-balance-line">
+                  <span class="unit">¥</span>
+                  <span id="heroCardBalance" class="hero-card-value">0</span>
+                </div>
+              </div>
+            
+              <!-- 【チケットページ】への入り口 -->
+              <button class="btn-etiket-trigger"
+                      type="button"
+                      onclick="slideInTicket(event)">
+                <div class="count-box">0</div>
+                <span class="eticket-label">eTicket</span>
+                <div class="arrow-eticket">
+                  <span></span>
+                  <span></span>
+                </div>
+              </button>
+
+            </div>
+          </div>
 
 
 
-.card-front::before — カード画像からeTicket入口、Star Rewardsまでのグラデーションを維持する。は、今の状態でもうまいことハマってるから、一旦ここは問題なし。
-だから次は、	
-.card-main-visual — QR・残高・eTicket入口の配置を新しい構造に合わせる。だけど、QR・残高は今は触る必要はないかな、だから、するのは一旦１つだけ、.btn-etiket-trigger を新しい入口デザインに合わせて調整だけする。	
-	
-でも、.card-action-list のボタンのデザイン変更は先にしておきたい、今2つのボタンを連結させてるデザインだから１つ１つに個別化だけした状態を知りたい。
-.card-front QR・残高・eTicket入口・REWARDS の細かい配置、デザインの微調整は全体のページと処理の後。とりあえず、今は、.card-frontの中の全体的なバランスと、ヒーローエリア自体の高さが分かればいい。
-	
-で、チケットページ。JS処理のために、まずは最低限必要なCSS指定をする	
-.ticket-page 新規作成
-.ticket-header 新規作成	
-.tab-carousel-container など タブ表示と切り替え用に新規作成
-.content-panel 選択中のタブに対応するパネルを表示するため新規作成
 
-どう？	
+
+
+
+
 	
 ♥️ 10/23 作業	
 3-3. 新規実装するJavaScript	
