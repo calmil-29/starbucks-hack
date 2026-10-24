@@ -12,30 +12,56 @@
 	
 ♥️ 無代へ渡す用 
 	
-<section class="card-hero-section">
-<div class="card-front">
-...	チケットページへの入り口とか　...
-</div>	
-<div id="ticketPage" class="ticket-page">	
-...	チケットページ
-</div>	
-</section>	
+/* ==========================================
+   1. 【完全共通】どこのページでも使うアローの基本形
+   ========================================== */
+.arrow-icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-top: 2px solid #696969;
+    border-right: 2px solid #696969;
+    transform: rotate(45deg); /* 基本は右向き */
+}
 
-.card-hero-section のCSS指定はなし
-	
-.card-front {
+/* ==========================================
+   2. 【チケットページ専用】左向き矢印（＜）にする指定
+   ========================================== */
+.arrow-icon.is-ticket-page {
+    transform: rotate(-135deg); /* 左向きにする */
+}
+
+/* ==========================================
+   3. 【チケットページ専用】さらに「バツ（×）」にする指定
+   ========================================== */
+/* 
+  頭に「.btn-close-ticket.mode-cross」を付けることで、
+  チケットページの、さらにJSでバツモードに切り替わった時「だけ」に限定して上書きします。
+  これなら、他の場所にある .arrow-icon には絶対に影響しません！
+*/
+.btn-close-ticket.mode-cross .arrow-icon.is-ticket-page {
+    border-top: none;
+    border-right: none;
+    border-bottom: 2px solid #696969; /* 1本の直線に変形 */
+    border-left: none;
+    width: 14px;
+    height: 0;
+    transform: rotate(45deg); /* 1本目の斜め線 */
     position: relative;
+}
+
+/* CSSの力で自動的に2本目の線を交差させて「×」にする */
+.btn-close-ticket.mode-cross .arrow-icon.is-ticket-page::after {
+    content: "";
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: auto;
-    aspect-ratio: 1.58;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    padding: 0; 
-    background-color: #000000;
+    width: 14px;
+    height: 2px;
+    background-color: #696969;
+    transform: rotate(90deg); /* 90度回転させて交差させる */
 }
+
 
 	
 
