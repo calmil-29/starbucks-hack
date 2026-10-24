@@ -11,65 +11,19 @@
 
 	
 ♥️ 無代へ渡す用 
-	
-/* ==========================================
-   1. 【完全共通】どこのページでも使うアローの基本形
-   ========================================== */
-.arrow-icon {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    border-top: 2px solid #696969;
-    border-right: 2px solid #696969;
-    transform: rotate(45deg); /* 基本は右向き */
-}
 
-/* ==========================================
-   2. 【チケットページ専用】左向き矢印（＜）にする指定
-   ========================================== */
-.arrow-icon.is-ticket-page {
-    transform: rotate(-135deg); /* 左向きにする */
-}
+.btn-etiket-trigger は .card-main-visual .card-info-side の中だと「右側ブロックの中」から抜け出せなくて、QRコードの下に回り込ませることができないから出した。
+そもカード情報に関するものでもないしね。
 
-/* ==========================================
-   3. 【チケットページ専用】さらに「バツ（×）」にする指定
-   ========================================== */
-/* 
-  頭に「.btn-close-ticket.mode-cross」を付けることで、
-  チケットページの、さらにJSでバツモードに切り替わった時「だけ」に限定して上書きします。
-  これなら、他の場所にある .arrow-icon には絶対に影響しません！
-*/
-.btn-close-ticket.mode-cross .arrow-icon.is-ticket-page {
-    border-top: none;
-    border-right: none;
-    border-bottom: 2px solid #696969; /* 1本の直線に変形 */
-    border-left: none;
-    width: 14px;
-    height: 0;
-    transform: rotate(45deg); /* 1本目の斜め線 */
-    position: relative;
-}
-
-/* CSSの力で自動的に2本目の線を交差させて「×」にする */
-.btn-close-ticket.mode-cross .arrow-icon.is-ticket-page::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 14px;
-    height: 2px;
-    background-color: #696969;
-    transform: rotate(90deg); /* 90度回転させて交差させる */
-}
-
-
-	
-
-今のままだと、どんなにCSSを調整しても「右側ブロックの中」から抜け出せないため、QRコードの下に回り込ませることができません。
+それと、ticketPage　も .card-hero-section  から出した。モーダルやフルスクリーンページを作るときは、カードの枠内じゃなく <body>　タグの直下に配置するのがWed制作の鉄則らしいから。
+つまり、現状コード:
+<section class="card-hero-section">
+        <div class="card-front">
+        
+          <img class="main-card-visual-img" id="heroCardImg" src="images/my-card-main.svg" alt="メインカード">
 
           <div class="card-main-visual">
 
-            <!-- QRコード 【第１モーダル】への入り口 -->
             <div class="qr-tap-area" onclick="openQrModal(event)" data-type="payment">
                <div class="card-qr-box">
                  <img src="images/QRコード.png" class="qr-code" alt="QR">
@@ -78,7 +32,6 @@
 
             <div class="card-info-side">
 
-              <!-- カード情報 -->
               <div class="balance-display">
 
                 <!-- ※【ヒーロー】オートチャージ設定後 テキスト・金額下の既存ラインカラーが追加 -->
@@ -91,25 +44,114 @@
                   <span id="heroCardBalance" class="hero-card-value">0</span>
                 </div>
               </div>
-            
-              <!-- 【チケットページ】への入り口 -->
-              <button class="btn-etiket-trigger"
-                      type="button"
-                      onclick="slideInTicket(event)">
-                <div class="count-box">0</div>
-                <span class="eticket-label">eTicket</span>
-                <div class="arrow-eticket">
-                  <span></span>
-                  <span></span>
-                </div>
-              </button>
 
             </div>
           </div>
 
+          <!-- 【チケットページ】への入り口 -->
+          <button class="btn-etiket-trigger"
+                  type="button"
+                  onclick="slideInTicket(event)">
+            <div class="eticket-text">       
+              <div class="count-box">0</div>
+              <span class="eticket-label">eTicket</span>
+            </div> 
+            <!-- 右向き矢印 > -->
+            <div class="eticket-arrow">
+              <span class="arrow-icon is-ticket"></span>
+            </div>
+          </button>
+        
+          <div class="star-progress-overlay">
+
+            <div class="rewards-label">
+              <p>STARBUCKS® REWARDS</p>
+            </div>
+
+            <div class="current-stars-group">
+              <div class="current-reward">
+                <span class="big-number">160</span>.5 <img src="images/Star-icon.svg" alt="★">
+              </div>
+              <div class="member-status-group">
+                <p class="member-status">Green会員</p>
+                <img src="images/status-star.svg" alt="三つ星">
+              </div>  
+            </div>
+
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-track">
+                <div id="js-progressbar" class="progress-bar-fill"></div>
+                <div class="track-dots">
+                  <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                </div>
+              </div>
+
+              <div class="progress-steps">
+                <span>25</span><span>90</span><span>130</span><span>190</span><span>400</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rewards-action-list">
+    
+            <div class="btn-action-group">
+              <a href="#" class="btn-reward" aria-label="スターリワードに交換する">スターリワードに交換</a>
+              <a href="#" class="btn-reward-more" aria-label="スターリワードをもっと見る">もっと見る</a>
+            </div>
+          </div>
+        </div>
+    
+  </section>
+
+<div id="ticketPage" class="ticket-page">
+    
+      <header class="ticket-header">
+        <!-- アイコンに切り替え 左向き矢印 <  か　× （.mode-cross）-->
+        <button class="btn-close-ticket mode-arrow"  type="button" onclick="closeTicketPage()">
+          <span class="arrow-icon is-ticket-page"></span>
+        </button>
+        <h1 class="ticket-title">eTicket</h1>
+      </header>
+
+      <!-- タブカルーセル -->
+      <div class="tab-carousel-container">
+        <div class="tab-carousel">
+          <div class="tab-item is-active" onclick="switchTab(0)">利用可能</div>
+          <div class="tab-item" onclick="switchTab(1)">利用開始日付</div>
+          <div class="tab-item" onclick="switchTab(2)">利用済み</div>
+        </div>
+        <!-- 選択時に動く緑のライン -->
+        <div class="tab-indicator" id="tabIndicator"></div>
+      </div>
+
+      <!-- コンテンツ表示エリア -->
+      <div class="content-container">
+        <!-- 利用可能 -->
+        <div class="content-panel is-active">
+          <div class="msg-title">チケットはありません</div>
+          <div class="msg-desc">現在ご利用可能なチケットはありません。</div>
+        </div>
+        <!-- 利用開始日付 -->
+        <div class="content-panel">
+          <div class="msg-title">チケットはありません</div>
+          <div class="msg-desc">利用開始日前のチケットはありません。</div>
+        </div>
+        <!-- 利用済み -->
+        <div class="content-panel">
+          <div class="msg-title">チケットはありません</div>
+          <div class="msg-desc">チケットを利用すると履歴がここに表示されます。</div>
+        </div>
+      </div>
+  </div>
 
 
 
+
+
+
+
+
+	
 	
 ♥️ 10/23 作業	
 3-3. 新規実装するJavaScript	
