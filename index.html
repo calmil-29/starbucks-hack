@@ -11,7 +11,78 @@
 
 	
 ♥️ 無代へ渡す用 
+// ==============================
+// eTicketページ
+// ==============================
 
+// チケットページを開く
+function slideInTicket(event) {
+  if (event) {
+    event.preventDefault();
+  }
+
+  const ticketPage = document.getElementById("ticketPage");
+
+  if (!ticketPage) return;
+
+  ticketPage.classList.add("is-open");
+
+  // 開いたときは「利用可能」タブを表示
+  switchTab(0);
+}
+
+
+// チケットページを閉じる
+function closeTicketPage() {
+  const ticketPage = document.getElementById("ticketPage");
+
+  if (!ticketPage) return;
+
+  ticketPage.classList.remove("is-open");
+}
+
+
+// タブを切り替える
+function switchTab(index) {
+  const tabs = document.querySelectorAll(
+    "#ticketPage .tab-item"
+  );
+
+  const panels = document.querySelectorAll(
+    "#ticketPage .content-panel"
+  );
+
+  const indicator = document.getElementById("tabIndicator");
+
+  // 指定したタブ・コンテンツが存在するか確認
+  if (
+    index < 0 ||
+    index >= tabs.length ||
+    index >= panels.length
+  ) {
+    return;
+  }
+
+  // すべてのタブの選択状態を解除
+  tabs.forEach((tab) => {
+    tab.classList.remove("is-active");
+  });
+
+  // すべてのコンテンツを非表示状態にする
+  panels.forEach((panel) => {
+    panel.classList.remove("is-active");
+  });
+
+  // 選択したタブとコンテンツを有効にする
+  tabs[index].classList.add("is-active");
+  panels[index].classList.add("is-active");
+
+  // 緑のインジケーターを選択タブに合わせる
+  if (indicator) {
+    indicator.style.width = `${100 / tabs.length}%`;
+    indicator.style.transform = `translateX(${index * 100}%)`;
+  }
+}
 
 
 
