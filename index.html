@@ -12,114 +12,46 @@
 	
 ♥️ 無代へ渡す用 
 	
-/* 【チケットページ】全体のレイアウト（スライドインアニメーション用） */
-.ticket-page {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #ffffff; 
-    
-    /* 初期状態は画面の「右端の外側」に隠しておく */
-    transform: translateX(100%);
-    transition: transform 0.3s ease-out; /* スライドインの速度 */
+// タブを切り替える
+function switchTab(index) {
+  const tabs = document.querySelectorAll(
+    "#ticketPage .tab-item"
+  );
 
-    z-index: 3;
-}
+  const panels = document.querySelectorAll(
+    "#ticketPage .content-panel"
+  );
 
-.ticket-page.is-open {
-    transform: translateX(0);
-}
+  const indicator = document.getElementById("tabIndicator");
 
-/* タブカルーセル（緑のラインの移動・横並び用）*/
-.tab-carousel-container {
-    position: relative; 
-    width: 100%;
-}
+  // 対象の要素がそろっているか確認
+  if (
+    tabs.length !== 3 ||
+    panels.length !== 3 ||
+    index < 0 ||
+    index >= tabs.length
+  ) {
+    console.error("タブ切り替えに必要な要素が見つかりません。", {
+      tabs: tabs.length,
+      panels: panels.length,
+      index
+    });
+    return;
+  }
 
-.tab-carousel {
-    display: flex; /* タブを横並びにする */
-    width: 100%;
-}
+  // 選択状態をいったんすべて解除
+  tabs.forEach(tab => tab.classList.remove("is-active"));
+  panels.forEach(panel => panel.classList.remove("is-active"));
 
-.tab-item {
-	/* タブの幅を3等分に均等に広げる */
-    flex: 1;   
-	
-    text-align: center;
-    padding: 15px 0;      
-    cursor: pointer;
-}
+  // 選択したタブと対応するコンテンツを有効化
+  tabs[index].classList.add("is-active");
+  panels[index].classList.add("is-active");
 
-/* 緑のライン */
-.tab-indicator {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    background-color: var(--stb-deepgreen, #00704a);
-
-	/* ラインが滑らかに動くアニメーション */
-    transition: left 0.3s ease, width 0.3s ease; 
-}
-
-/* コンテンツ表示エリア（切り替え用）*/
-.content-container {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-}
-
-/* 初期状態はすべてのコンテンツパネルを非表示にする */
-.content-panel {
-    display: none;
-    width: 100%;
-}
-
-.content-panel.is-active {
-    display: block;
-}
-
-/* チケットページの閉じるボタン */
-.btn-close-ticket {
-    position: relative;
-    background-color: none;
-    border: none;
-    cursor: pointer;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* 左向き矢印 < */
-.arrow-icon.is-ticket-page {
-    transform: rotate(-135deg);
-} 
-
-/* バツボタンに上書き */
-.btn-close-ticket.mode-cross .arrow-icon.is-ticket-page {
-    border-top: none;
-    border-right: none;
-    border-bottom: 2px solid #696969; /* 1本の直線に変形 */
-    border-left: none;
-    width: 14px;
-    height: 0;
-    transform: rotate(45deg); /* 1本目の斜め線 */
-    position: relative;
-}
-
-/* 「×」用に、2本目の線を追加 */
-.btn-close-ticket.mode-cross .arrow-icon.is-ticket-page::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 14px;
-    height: 2px;
-    background-color: #696969;
-    transform: rotate(90deg); /* 90度回転させて交差させる */
+  // インジケーターを移動
+  if (indicator) {
+    indicator.style.width = `${100 / tabs.length}%`;
+    indicator.style.transform = `translateX(${index * 100}%)`;
+  }
 }
 
 
