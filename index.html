@@ -12,42 +12,110 @@
 	
 ♥️ 無代へ渡す用 
 	
-// タブを切り替える
+<!-- コンテンツ表示エリア -->
+<div class="content-container" id="contentContainer">
+
+  <!-- 利用可能 -->
+  <div class="content-panel is-active">
+    <div class="msg-title">チケットはありません</div>
+    <div class="msg-desc">
+      現在ご利用可能なチケットはありません。
+    </div>
+  </div>
+
+  <!-- 利用開始日前 -->
+  <div class="content-panel">
+    <div class="msg-title">チケットはありません</div>
+    <div class="msg-desc">
+      利用開始日前のチケットはありません。
+    </div>
+  </div>
+
+  <!-- 利用済み -->
+  <div class="content-panel">
+    <div class="msg-title">チケットはありません</div>
+    <div class="msg-desc">
+      チケットを利用すると履歴がここに表示されます。
+    </div>
+  </div>
+
+</div>
+
+
+/* コンテンツの横スライド領域 */
+.content-container {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
+}
+
+.content-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* 各パネルを画面幅いっぱいにする */
+.content-panel {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    scroll-snap-align: start;
+}
+
+/* is-active による display 切り替えは不要 */
+
+
 function switchTab(index) {
   const tabs = document.querySelectorAll(
     "#ticketPage .tab-item"
   );
 
-  const panels = document.querySelectorAll(
-    "#ticketPage .content-panel"
+  const container = document.getElementById(
+    "contentContainer"
   );
+
+  const panels = container
+    ? container.querySelectorAll(".content-panel")
+    : [];
 
   const indicator = document.getElementById("tabIndicator");
 
-  // 対象の要素がそろっているか確認
   if (
+    !container ||
     tabs.length !== 3 ||
     panels.length !== 3 ||
     index < 0 ||
     index >= tabs.length
   ) {
-    console.error("タブ切り替えに必要な要素が見つかりません。", {
-      tabs: tabs.length,
-      panels: panels.length,
-      index
-    });
+    console.error("タブ切り替えに必要な要素が見つかりません。");
     return;
   }
 
-  // 選択状態をいったんすべて解除
-  tabs.forEach(tab => tab.classList.remove("is-active"));
-  panels.forEach(panel => panel.classList.remove("is-active"));
+  // 選択中のタブ見出しを更新
+  tabs.forEach((tab, i) => {
+    tab.classList.toggle("is-active", i === index);
+  });
 
-  // 選択したタブと対応するコンテンツを有効化
-  tabs[index].classList.add("is-active");
-  panels[index].classList.add("is-active");
+  // 選択中のパネルを更新
+  panels.forEach((panel, i) => {
+    panel.classList.toggle("is-active", i === index);
+  });
 
-  // インジケーターを移動
+  // 選択したパネルへ横スクロール
+  container.scrollTo({
+    left: index * container.clientWidth,
+    behavior: "smooth"
+  });
+
+  // 緑のラインを移動
   if (indicator) {
     indicator.style.width = `${100 / tabs.length}%`;
     indicator.style.transform = `translateX(${index * 100}%)`;
