@@ -12,12 +12,132 @@
 	
 ♥️ 無代へ渡す用 
 	
+<div id="ticketPage" class="ticket-page">
 
-.tab-item　が見えない状態になってる .tab-carousel-container が　.ticket-header の下にあるみたい、.ticket-header 部分から下に移動させるには？
-それと、.content-panel をスライドさせるとき、コンテンツの横スライド領域 ..content-container を .ticket-header エリアを除いた画面いっぱいにしたい。で、.tab-carousel-container も .ticket-header と一緒にする？ヘッダーとして画面に固定表示する部分だし。.tab-item は、3つとも横並びに常に表示させる状態にもしたいんだけど。
+  <!-- 固定ヘッダー領域 -->
+  <div class="ticket-fixed-header">
 
+    <header class="ticket-header">
+      <button
+        class="btn-close-ticket mode-arrow"
+        type="button"
+        onclick="closeTicketPage()"
+      >
+        <span class="arrow-icon is-ticket-page"></span>
+      </button>
 
+      <h1 class="ticket-title">eTicket</h1>
+    </header>
 
+    <!-- 3つのタブを常に表示 -->
+    <div class="tab-carousel-container">
+      <div class="tab-carousel">
+        <div class="tab-item is-active" onclick="switchTab(0)">
+          利用可能
+        </div>
+        <div class="tab-item" onclick="switchTab(1)">
+          利用開始日前
+        </div>
+        <div class="tab-item" onclick="switchTab(2)">
+          利用済み
+        </div>
+      </div>
+
+      <div class="tab-indicator" id="tabIndicator"></div>
+    </div>
+
+  </div>
+
+  <!-- ヘッダー以外の残りの画面領域 -->
+  <div class="content-container" id="contentContainer">
+
+    <div class="content-panel is-active">
+      <div class="msg-title">チケットはありません</div>
+      <div class="msg-desc">
+        現在ご利用可能なチケットはありません。
+      </div>
+    </div>
+
+    <div class="content-panel">
+      <div class="msg-title">チケットはありません</div>
+      <div class="msg-desc">
+        利用開始日前のチケットはありません。
+      </div>
+    </div>
+
+    <div class="content-panel">
+      <div class="msg-title">チケットはありません</div>
+      <div class="msg-desc">
+        チケットを利用すると履歴がここに表示されます。
+      </div>
+    </div>
+
+  </div>
+</div>
+
+.ticket-page {
+    display: flex;
+    flex-direction: column;
+
+    /* 既存の position、transform、transition、z-index は維持 */
+}
+
+/* タイトルとタブをまとめる領域 */
+.ticket-fixed-header {
+    flex: 0 0 auto;
+    width: 100%;
+    background-color: #ffffff;
+    position: relative;
+    z-index: 2;
+}
+
+/* タブは3つとも横並び */
+.tab-carousel {
+    display: flex;
+    width: 100%;
+}
+
+.tab-item {
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+/* コンテンツが残りの高さを使う */
+.content-container {
+    flex: 1 1 0;
+    min-height: 0;
+    min-width: 0;
+
+    display: flex;
+    width: 100%;
+
+    overflow-x: auto;
+    overflow-y: auto;
+
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+
+    scrollbar-width: none;
+}
+
+.content-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* 各パネルはコンテンツ領域と同じ幅・高さ */
+.content-panel {
+    flex: 0 0 100%;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    box-sizing: border-box;
+
+    scroll-snap-align: start;
+}
 
 
 
