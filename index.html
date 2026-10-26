@@ -55,6 +55,47 @@ function switchTab(index) {
     indicator.style.transform =
         `translateX(${selectedTab.offsetLeft}px)`;
 }
+
+const ticketContentContainer = document.getElementById("contentContainer");
+
+if (ticketContentContainer) {
+    let scrollTimer;
+
+    ticketContentContainer.addEventListener("scroll", () => {
+        clearTimeout(scrollTimer);
+
+        scrollTimer = setTimeout(() => {
+            const containerWidth = ticketContentContainer.clientWidth;
+
+            if (containerWidth === 0) {
+                return;
+            }
+
+            const index = Math.max(
+                0,
+                Math.min(
+                    2,
+                    Math.round(
+                        ticketContentContainer.scrollLeft / containerWidth
+                    )
+                )
+            );
+
+            const tabs = document.querySelectorAll("#ticketPage .tab-item");
+            const indicator = document.getElementById("tabIndicator");
+
+            tabs.forEach((tab, i) => {
+                tab.classList.toggle("is-active", i === index);
+            });
+
+            if (indicator && tabs[index]) {
+                indicator.style.width = `${tabs[index].offsetWidth}px`;
+                indicator.style.transform =
+                    `translateX(${tabs[index].offsetLeft}px)`;
+            }
+        }, 80);
+    });
+}
 	
 	
 ♥️ 10/23 作業	
