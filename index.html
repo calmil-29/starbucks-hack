@@ -12,10 +12,66 @@
 	
 ♥️ 無代へ渡す用 
 
-.ticket-fixed-header の中に .ticket-header と　.tab-carousel-container が入っている状態で、.tab-carousel-container　を表示させるために  padding-top: 50px; で指定方法はさけたほうがいいってこと？実務ではどうすべき？
-きみ、なんか毎回逃げ道を残したような曖昧な言い方してるよね。	
-	
-	
+.ticket-fixed-header の中に .ticket-header と　.tab-carousel-container が入っている状態なんだけど、今、.ticket-header　と重なって .tab-carousel-container が見えない状態。.tab-carousel-container を表示させるためにはどうしたらいい？
+ <div id="ticketPage" class="ticket-page">
+    
+    <!-- 固定ヘッダー領域 -->
+    <div class="ticket-fixed-header">  
+    
+      <header class="ticket-header">
+        <!-- 左向き矢印 <  か　× （.mode-cross）　アイコンに切り替え-->
+        <button class="btn-close-ticket mode-arrow"  type="button" onclick="closeTicketPage()">
+          <span class="arrow-icon is-ticket-page"></span>
+        </button>
+
+        <!-- タイトル -->
+        <h1 class="ticket-title">eTicket</h1>
+      </header>
+
+      <!-- 3つのタブを常に表示 -->
+      <div class="tab-carousel-container">
+        <div class="tab-carousel">
+          <div class="tab-item is-active" onclick="switchTab(0)">
+            利用可能
+          </div>
+          <div class="tab-item" onclick="switchTab(1)">
+            利用開始日前
+          </div>
+          <div class="tab-item" onclick="switchTab(2)">
+            利用済み
+          </div>
+        </div>  
+
+        <!-- 選択中のタブを示すライン -->
+        <div class="tab-indicator" id="tabIndicator"></div>
+      </div>
+
+    </div>
+
+    <!-- コンテンツ表示エリア -->
+    <div class="content-container" id="contentContainer">
+
+      <!-- 利用可能 -->
+      <div class="content-panel is-active">
+        <div class="msg-title">チケットはありません</div>
+        <div class="msg-desc">現在ご利用可能なチケットはありません。</div>
+      </div>
+
+      <!-- 利用開始日前 -->
+      <div class="content-panel">
+        <div class="msg-title">チケットはありません</div>
+        <div class="msg-desc">利用開始日前のチケットはありません。</div>
+      </div>
+
+      <!-- 利用済み -->
+      <div class="content-panel">
+        <div class="msg-title">チケットはありません</div>
+        <div class="msg-desc">チケットを利用すると履歴がここに表示されます。</div>
+      </div>
+
+    </div>
+
+  </div><!-- #ticketPage .ticket-page -->
 
 
 	
