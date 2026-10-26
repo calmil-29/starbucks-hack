@@ -12,7 +12,49 @@
 	
 ♥️ 無代へ渡す用 
 
+function switchTab(index) {
+    const ticketPage = document.getElementById("ticketPage");
+    const tabs = document.querySelectorAll("#ticketPage .tab-item");
+    const container = document.getElementById("contentContainer");
+    const panels = container
+        ? container.querySelectorAll(".content-panel")
+        : [];
+    const carousel = document.querySelector("#ticketPage .tab-carousel");
+    const indicator = document.getElementById("tabIndicator");
 
+    if (
+        !ticketPage ||
+        !container ||
+        !carousel ||
+        !indicator ||
+        tabs.length !== 3 ||
+        panels.length !== 3 ||
+        index < 0 ||
+        index >= tabs.length
+    ) {
+        console.error("タブ切り替えに必要な要素が見つかりません。");
+        return;
+    }
+
+    tabs.forEach((tab, i) => {
+        tab.classList.toggle("is-active", i === index);
+    });
+
+    panels.forEach((panel, i) => {
+        panel.classList.toggle("is-active", i === index);
+    });
+
+    container.scrollTo({
+        left: index * container.clientWidth,
+        behavior: "smooth"
+    });
+
+    const selectedTab = tabs[index];
+
+    indicator.style.width = `${selectedTab.offsetWidth}px`;
+    indicator.style.transform =
+        `translateX(${selectedTab.offsetLeft}px)`;
+}
 	
 	
 ♥️ 10/23 作業	
