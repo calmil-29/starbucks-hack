@@ -12,6 +12,14 @@
 	
 ♥️ 無代へ渡す用 
 
+
+script.js:185 ① openTicketFromQrModal が呼ばれた
+script.js:193 ② ticketPage: <div id=​"ticketPage" class=​"ticket-page ticket-page-from-qr is-open">​…​</div>​flex
+script.js:194 ③ closeButton: <button class=​"btn-close-ticket mode-cross" type=​"button" onclick=​"closeTicketPage()​">​…​</button>​flex
+script.js:208 ④ ticket-page-from-qr 付与後: ticket-page ticket-page-from-qr
+script.js:215 ⑤ is-open 付与後: ticket-page ticket-page-from-qr is-open
+	
+
 function openTicketFromQrModal() {
     console.log("① openTicketFromQrModal が呼ばれた");
 
