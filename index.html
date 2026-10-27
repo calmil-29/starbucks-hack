@@ -11,41 +11,88 @@
 
 	
 ♥️ 無代へ渡す用 
-
-const underlineExtra = 8;
-const selectedTab = tabs[index];
-const carouselContainer = document.querySelector(
-    "#ticketPage .tab-carousel-container"
-);
-
-if (carouselContainer && indicator && selectedTab) {
-    const containerRect = carouselContainer.getBoundingClientRect();
-    const tabRect = selectedTab.getBoundingClientRect();
-
-    const leftPosition =
-        tabRect.left - containerRect.left - carouselContainer.clientLeft;
-
-    indicator.style.width =
-        `${tabRect.width + underlineExtra * 2}px`;
-
-    indicator.style.transform =
-        `translateX(${leftPosition - underlineExtra}px)`;
-}
 	
-	
-♥️ 10/23 作業	
-3-3. 新規実装するJavaScript	
-slideInTicket(event)：eTicket画面を開く
-closeTicketPage()：eTicket画面を閉じる
-switchTab(index)：タブと対応するコンテンツパネルを切り替える	
-これに加えて、タブのインジケーター位置や、選択中のタブを示すクラスの更新を実装する。
-なお、チケット数を 0 にする前提なので、チケット一覧には空状態のメッセージを表示する。現時点では旧チケットデータを移植する必要はない。
-	
-		
+第１モーダル（qrModal）のフッターにあるチケットページに入る処理と、eGift用のページはまだないので、作成。eTicketのページはさっき作ったものと同じページで大丈夫、ただし、qrModal　から入る場合は、ヘッダー部分の .btn-close-ticket を 左向き矢印 ＜ から × （.mode-cross）に切り替える必要があるからそのための処理も必要。あと、ここでの、動きは横スライドから、上下スライド表に変更。
+それと、.card-hero-section から入る時のチケットページでは .bottom-nav-group が見えるように一緒に表示させていたけど、qrModal から入る場合は表示はさせなない。
 
+チケットページ（ticketPage）のヘッダー
+      <header class="ticket-header">
+        <!-- 左向き矢印 <  か　× （.mode-cross）　アイコンに切り替え-->
+        <button class="btn-close-ticket mode-arrow"  type="button" onclick="closeTicketPage()">
+          <span class="arrow-icon is-ticket-page"></span>
+        </button>
+
+        <!-- タイトル -->
+        <h1 class="ticket-title">eTicket</h1>
+      </header>
 	
+qrModal のフッター
+     <div class="qr-modal-footer-tabs">
+        <button class="qr-tab-item">
+          <div class="notice-wrapper">
+            <span class="badge">0</span>
+            <span class="notice-dot"></span>
+          </div>  
+          <span class="tab-text">eGift</span>
+          <!-- 右向き矢印 -->
+          <span class="arrow-icon"></span>
+        </button>
+
+        <div class="tab-divider"></div> <!-- 真ん中区切り線 -->
+
+        <button class="qr-tab-item">
+          <div class="notice-wrapper">
+            <span class="badge">0</span>
+            <span class="notice-dot"></span>
+          </div>  
+          <span class="tab-text">eTicket</span>
+          <!-- 右向き矢印 -->
+          <span class="arrow-icon"></span>
+        </button>
+      </div>
+
+【ギフトチケットページ】　チケットページの下
+※ 上下スライド表示で × で非表示（元の qrModal ページへ）		
+		  
+タイトル：保存ギフト
+eGiftはありません
+現在ご利用可能な保存されたeGiftはありません。		  
+
+仮コード：	
+  <div id="giftPage" class="gift-page">
+    
+    <!-- 固定ヘッダー領域 -->
+    <div class="gift-fixed-header">  
+    
+      <header class="gift-header">
+
+        <button class="btn-close-gift cross-btn"  type="button" onclick="closeGiftPage()">
+          <span></span>
+		  <span></span>	
+        </button>
+
+        <!-- タイトル -->
+        <h1 class="ticket-title">保存ギフト</h1>
+      </header>
+	</div>
+
+    <!-- コンテンツ表示エリア -->
+    <div class="gift-content-container" id="giftContentContainer">
+
+      <div class="content-panel">
+        <div class="msg-title">eGiftはありません</div>
+        <div class="msg-desc">現在ご利用可能な保存されたeGiftはありません。</div>
+      </div>
+
+    </div>
+
+  </div>
+
+.msg-title と .msg-desc はチケットページと共通クラスなのはCSS指定での大きさ・色は同じだから。		  
+あと今更だけど、.cross-btn 「×」（.arrow-iconもだけど）は別ページでも何度も登場する場合、統一クラスにして、位置は各ページごとに指定する方法でいいの？		  
 
 
+♥️
 ※ クラス名もあとでわかりやすくするために変更	
 • .card-front → .card-main-area へ変更		
 
@@ -116,17 +163,17 @@ Star Rewards .star-progress-overlay
 	
 .card-front, .card-back の共通指定 分離し、必要なカード本体の指定だけ残す　✔︎	
 	
-.card-front カード本体として再構成	
-.card-front::before グラデーションの意図を維持して再調整
-.card-main-visual 新しいカード構造に合わせて調整
-.star-progress-overlay カード本体の中で引き続き表示
-.btn-etiket-trigger 新しい入口デザインに合わせて調整
+.card-front カード本体として再構成	✔︎
+.card-front::before グラデーションの意図を維持して再調整　✔︎
+.card-main-visual 新しいカード構造に合わせて調整 ✔︎
+.star-progress-overlay カード本体の中で引き続き表示 ✔︎
+.btn-etiket-trigger 新しい入口デザインに合わせて調整 ✔︎
 
 ※ JS処理のための最低限必要なCSS指定	
-.ticket-page 新規作成
-.ticket-header 新規作成	
-.tab-carousel-container など タブ表示と切り替え用に新規作成
-.content-panel 選択中のタブに対応するパネルを表示するため新規作成
+.ticket-page 新規作成 ✔︎
+.ticket-header 新規作成 ✔︎	
+.tab-carousel-container など タブ表示と切り替え用に新規作成 ✔︎
+.content-panel 選択中のタブに対応するパネルを表示するため新規作成 ✔︎
 
 また、.card-front::before のグラデーションは、カード画像からチケット入口、Star Rewardsまでのまとまりを保つためのもの。新しいHTML構造に移した後も、疑似要素がどの要素を覆うかを確認して調整する。
 
@@ -154,7 +201,7 @@ isTicketDetailOpen は、貼ってくれた範囲では詳細シートと旧カ�
 - オートチャージ保存状態を各UI【ヒーロー・第１・第2 DOM 】へ反映する処理	
 	
 function renderAutochargeUI() {...}  
-① オートチャージ設定中テキスト
+① オートチャージ設定中テキスト ✔︎
 	修正前：
     const summaryCardText = document.querySelectorAll(
         '#cardFlip .summary-card-text, #qrModal .summary-card-text'
@@ -166,7 +213,7 @@ function renderAutochargeUI() {...}
     );
 
 
-② 第1・第2・ヒーローのライン
+② 第1・第2・ヒーローのライン ✔︎
 	修正前：
     const heroLine = document.querySelector(
         '#cardFlip .hero-card-balance-line'
@@ -180,14 +227,13 @@ function renderAutochargeUI() {...}
 
 	
 
-
-♥️ 10/23 チケットページ処理	
-3-3. 新規実装するJavaScript
+チケットページ処理	
+3-3. 新規実装するJavaScript 
 まず必要なのは、次の3つ。
 	
-slideInTicket(event)：eTicket画面を開く
-closeTicketPage()：eTicket画面を閉じる
-switchTab(index)：タブと対応するコンテンツパネルを切り替える
+slideInTicket(event)：eTicket画面を開く ✔︎
+closeTicketPage()：eTicket画面を閉じる ✔︎
+switchTab(index)：タブと対応するコンテンツパネルを切り替える ✔︎
 	
 これに加えて、タブのインジケーター位置や、選択中のタブを示すクラスの更新を実装する。
 なお、チケット数を 0 にする前提なので、チケット一覧には空状態のメッセージを表示する。現時点では旧チケットデータを移植する必要はない。
@@ -220,35 +266,6 @@ switchTab(index)：タブと対応するコンテンツパネルを切り替え�
 
 
 
-
-	
-- isTicketDetailOpen
-// 詳細シートが開いているかどうか (初期は閉じている)
-let isTicketDetailOpen = false;
-
-openTicketDetailSheet() 
-closeTicketDetailSheet()
-も廃止になる	
-
-
-
-
-
-1.flipCard() 関数	
-- カード表裏の切り替え 
-function flipCard(event) 
-
-2. チケットカルーセルの切り替え処理（左右スワイプ、ドット、インデックス管理など）
-- 【ヒーロー カード裏面上部のドット】　カルーセルがスクロールしたときに実行するコード
-window.addEventListener
-
-	
-♥️ 
-
-
-
-
-	
 
 5. is-ticket-detail-open クラスを追加・削除している処理	
 - 【 カード裏面 Ticket / eGift 】の 詳細シートを開く
@@ -320,7 +337,7 @@ function closeTicketDetailSheet(event) {
 	
 	
 	
-♥️♥️♥️ 【ヒーローエリアのデザイン・仕様変更】
+♥️♥️ 【ヒーローエリアのデザイン・仕様変更】
 
 10/21 追記 チケットページ	
 【第１モーダル:qrModa 用の　チケットページ】 eGift / eTicket への入口：タップしたら画面したから競り上がる処理 	
