@@ -12,6 +12,22 @@
 	
 ♥️ 無代へ渡す用 
 
+function slideInTicket(event) {
+  if (event) {
+    event.preventDefault();
+  }
+
+  const ticketPage = document.getElementById("ticketPage");
+
+  if (!ticketPage) return;
+
+  ticketPage.classList.add("is-open");
+
+  // 開いたときは「利用可能」タブを表示
+  switchTab(0);
+}
+	
+
 <section class="card-hero-section">
 	...
          <button class="btn-etiket-trigger"
