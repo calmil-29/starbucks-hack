@@ -13,90 +13,84 @@
 ♥️ 無代へ渡す用 
 	
 
-.gift-page {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100vh;
-    height: 100dvh;
-    box-sizing: border-box;
-    background-color: #ffffff;
-    transform: translateY(100%);
-    transition: transform 0.3s ease-out;
-    z-index: 5;
+
+let ticketPageSource = "card";
+
+function openTicketFromQrModal() {
+    const ticketPage = document.getElementById("ticketPage");
+    const closeButton = ticketPage
+        ? ticketPage.querySelector(".btn-close-ticket")
+        : null;
+    const bottomNav = document.querySelector(".bottom-nav-group");
+
+    if (!ticketPage || !closeButton) {
+        return;
+    }
+
+    ticketPageSource = "qrModal";
+
+    closeButton.classList.remove("mode-arrow");
+    closeButton.classList.add("mode-cross");
+
+    ticketPage.classList.add("ticket-page-from-qr");
+    ticketPage.classList.add("is-open");
+
+    if (bottomNav) {
+        bottomNav.classList.add("is-hidden");
+    }
+
+    switchTab(0);
 }
 
-.gift-page.is-open {
-    transform: translateY(0);
+function openGiftPage() {
+    const giftPage = document.getElementById("giftPage");
+
+    if (!giftPage) {
+        return;
+    }
+
+    giftPage.classList.add("is-open");
 }
 
-.gift-fixed-header {
-    flex: 0 0 auto;
-    width: 100%;
-    background-color: #ffffff;
-    position: relative;
-    z-index: 1;
+function closeGiftPage() {
+    const giftPage = document.getElementById("giftPage");
+
+    if (!giftPage) {
+        return;
+    }
+
+    giftPage.classList.remove("is-open");
 }
 
-.gift-header {
-    display: flex;
-    align-items: center;
-    position: relative;
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 56px;
-    padding: 0 16px;
+function closeTicketPage() {
+    const ticketPage = document.getElementById("ticketPage");
+    const closeButton = ticketPage
+        ? ticketPage.querySelector(".btn-close-ticket")
+        : null;
+    const bottomNav = document.querySelector(".bottom-nav-group");
+
+    if (!ticketPage) {
+        return;
+    }
+
+    ticketPage.classList.remove("is-open");
+
+    if (ticketPageSource === "qrModal") {
+        ticketPage.classList.remove("ticket-page-from-qr");
+
+        if (closeButton) {
+            closeButton.classList.remove("mode-cross");
+            closeButton.classList.add("mode-arrow");
+        }
+
+        if (bottomNav) {
+            bottomNav.classList.remove("is-hidden");
+        }
+    }
+
+    ticketPageSource = "card";
 }
 
-.gift-title {
-    flex: 1;
-    margin: 0;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.btn-close-gift {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.btn-close-gift span {
-    position: absolute;
-    width: 20px;
-    height: 2px;
-    border-radius: 1px;
-    background-color: #222222;
-}
-
-.btn-close-gift span:first-child {
-    transform: rotate(45deg);
-}
-
-.btn-close-gift span:last-child {
-    transform: rotate(-45deg);
-}
-
-.gift-content-container {
-    flex: 1 1 0;
-    min-height: 0;
-    overflow-y: auto;
-    width: 100%;
-    box-sizing: border-box;
-}
 
 
 ♥️
