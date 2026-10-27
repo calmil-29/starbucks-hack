@@ -11,6 +11,40 @@
 
 	
 ♥️ 無代へ渡す用 
+
+<section class="card-hero-section">
+	...
+         <button class="btn-etiket-trigger"
+                  type="button"
+                  onclick="slideInTicket(event)">
+            <div class="eticket-text">       
+              <div class="count-box">0</div>
+              <span class="eticket-label">eTicket</span>
+            </div> 
+            <!-- 右向き矢印 > -->
+            <div class="eticket-arrow">
+              <span class="arrow-icon is-ticket"></span>
+            </div>
+          </button>
+
+
+<div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
+	...
+      <button class="qr-tab-item"
+                type="button"
+                onclick="openTicketFromQrModal()"
+         >
+
+          <div class="notice-wrapper">
+            <span class="badge">0</span>
+            <span class="notice-dot"></span>
+          </div>  
+
+          <span class="tab-text">eTicket</span>
+          <!-- 右向き矢印 -->
+          <span class="arrow-icon"></span>
+
+        </button>	
 	
 
 <div id="ticketPage" class="ticket-page">
