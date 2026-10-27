@@ -12,20 +12,56 @@
 	
 ♥️ 無代へ渡す用 
 
-function slideInTicket(event) {
-  if (event) {
-    event.preventDefault();
-  }
+function openTicketFromQrModal() {
+    console.log("① openTicketFromQrModal が呼ばれた");
 
-  const ticketPage = document.getElementById("ticketPage");
+    const ticketPage = document.getElementById("ticketPage");
+    const closeButton = ticketPage
+        ? ticketPage.querySelector(".btn-close-ticket")
+        : null;
+    const bottomNav = document.querySelector(".bottom-nav-group");
 
-  if (!ticketPage) return;
+    console.log("② ticketPage:", ticketPage);
+    console.log("③ closeButton:", closeButton);
 
-  ticketPage.classList.add("is-open");
+    if (!ticketPage || !closeButton) {
+        console.error("ticketPage または closeButton が見つからない");
+        return;
+    }
 
-  // 開いたときは「利用可能」タブを表示
-  switchTab(0);
+    ticketPageSource = "qrModal";
+
+    closeButton.classList.remove("mode-arrow");
+    closeButton.classList.add("mode-cross");
+
+    ticketPage.classList.add("ticket-page-from-qr");
+
+    console.log(
+        "④ ticket-page-from-qr 付与後:",
+        ticketPage.className
+    );
+
+    ticketPage.classList.add("is-open");
+
+    console.log(
+        "⑤ is-open 付与後:",
+        ticketPage.className
+    );
+
+    if (bottomNav) {
+        bottomNav.classList.add("is-hidden");
+    }
+
+    switchTab(0);
 }
+
+
+
+
+
+
+
+
 	
 
 <section class="card-hero-section">
