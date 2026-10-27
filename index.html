@@ -12,85 +12,91 @@
 	
 ♥️ 無代へ渡す用 
 	
-第１モーダル（qrModal）のフッターにあるチケットページに入る処理と、eGift用のページはまだないので、作成。
-eTicketのページはさっき作ったものと同じチケットページと一緒。ただし、qrModal　から入る場合は、ヘッダー部分の .btn-close-ticket を 左向き矢印 ＜ から × （.mode-cross）に切り替える必要があるため、そのための処理は必要。あと、qrModal から入るときの動きは、横スライドから、上下スライドの動きに変更になる。
-それと、.card-hero-section から入る時のチケットページでは .bottom-nav-group が見えるように一緒に表示させていたけど、qrModal から入る場合は表示はさせなない。
 
-チケットページ（ticketPage）のヘッダー
-      <header class="ticket-header">
-        <!-- 左向き矢印 <  か　× （.mode-cross）　アイコンに切り替え-->
-        <button class="btn-close-ticket mode-arrow"  type="button" onclick="closeTicketPage()">
-          <span class="arrow-icon is-ticket-page"></span>
-        </button>
+.gift-page {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+    z-index: 5;
+}
 
-        <!-- タイトル -->
-        <h1 class="ticket-title">eTicket</h1>
-      </header>
-	
-qrModal のフッター
-     <div class="qr-modal-footer-tabs">
-        <button class="qr-tab-item">
-          <div class="notice-wrapper">
-            <span class="badge">0</span>
-            <span class="notice-dot"></span>
-          </div>  
-          <span class="tab-text">eGift</span>
-          <!-- 右向き矢印 -->
-          <span class="arrow-icon"></span>
-        </button>
+.gift-page.is-open {
+    transform: translateY(0);
+}
 
-        <div class="tab-divider"></div> <!-- 真ん中区切り線 -->
+.gift-fixed-header {
+    flex: 0 0 auto;
+    width: 100%;
+    background-color: #ffffff;
+    position: relative;
+    z-index: 1;
+}
 
-        <button class="qr-tab-item">
-          <div class="notice-wrapper">
-            <span class="badge">0</span>
-            <span class="notice-dot"></span>
-          </div>  
-          <span class="tab-text">eTicket</span>
-          <!-- 右向き矢印 -->
-          <span class="arrow-icon"></span>
-        </button>
-      </div>
+.gift-header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 56px;
+    padding: 0 16px;
+}
 
-【ギフトチケットページ】　チケットページの下
-※ 上下スライド表示で × で非表示（元の qrModal ページへ）		
-		  
-タイトル：保存ギフト
-eGiftはありません
-現在ご利用可能な保存されたeGiftはありません。		  
+.gift-title {
+    flex: 1;
+    margin: 0;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+}
 
-仮コード：	
-  <div id="giftPage" class="gift-page">
-    
-    <!-- 固定ヘッダー領域 -->
-    <div class="gift-fixed-header">  
-    
-      <header class="gift-header">
+.btn-close-gift {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
 
-        <button class="btn-close-gift cross-btn"  type="button" onclick="closeGiftPage()">
-          <span></span>
-		  <span></span>	
-        </button>
+.btn-close-gift span {
+    position: absolute;
+    width: 20px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: #222222;
+}
 
-        <!-- タイトル -->
-        <h1 class="ticket-title">保存ギフト</h1>
-      </header>
-	</div>
+.btn-close-gift span:first-child {
+    transform: rotate(45deg);
+}
 
-    <!-- コンテンツ表示エリア -->
-    <div class="gift-content-container" id="giftContentContainer">
+.btn-close-gift span:last-child {
+    transform: rotate(-45deg);
+}
 
-      <div class="content-panel">
-        <div class="msg-title">eGiftはありません</div>
-        <div class="msg-desc">現在ご利用可能な保存されたeGiftはありません。</div>
-      </div>
-
-    </div>
-
-  </div>
-
-.msg-title と .msg-desc はチケットページと共通クラスなのはCSS指定での大きさ・色は同じだから。		  
-あと今更だけど、.cross-btn 「×」（.arrow-iconもだけど）は別ページでも何度も登場する場合、統一クラスにして、位置は各ページごとに指定する方法でいいの？		  
+.gift-content-container {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+}
 
 
 ♥️
