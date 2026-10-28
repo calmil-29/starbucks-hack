@@ -12,13 +12,36 @@
 	
 ♥️ 無代へ渡す用 
 
+.qr-tab-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 16px;
+    flex: 1;
+    height: 100%;
 
-.tab-carousel-container .content-container 、再度開いた時には先頭の「利用可能」に固定して置きたい。
-それと、第１モーダルで　giftPage　ticketPage　を開く前に一瞬ボタンの色が変わる仕様になってるみたいだけど、その演出を止めたい。
-どう修正すればいい？	
+     /* ボタンの標準の見た目を消すリセットCSS */ 
+    background: none;
+    border: none;
+    margin: 0;
+    outline: none;
+
+    -wibkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+
+    /* 中身を横並び・上下中央にする */
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.qr-tab-item:active {
+    background-color: inherit;
+    color: inherit;
+}
 
 	
-
 
 
 ♥️
