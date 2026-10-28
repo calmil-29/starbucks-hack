@@ -12,10 +12,7 @@
 	
 ♥️ 無代へ渡す用 
 
-/* チケットページ共通 */
 .ticket-page {
-    --ticket-enter-transform: translateX(100%);
-
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -25,38 +22,25 @@
     height: 100dvh;
     box-sizing: border-box;
     background-color: #ffffff;
-    transform: var(--ticket-enter-transform);
+    transform: translateX(100%);
     transition: transform 0.3s ease-out;
     z-index: 12;
 }
 
-/* ホーム画面から開く場合：右から */
 .ticket-page.is-open {
-    transform: translate(0, 0);
+    transform: translateX(0);
 }
-
-/* QRモーダルから開く場合：下から */
-.ticket-page.ticket-page-from-qr {
-    --ticket-enter-transform: translateY(100%);
-}
-
-
 	
 
-function openTicketFromQrModal() {
-    console.log("① openTicketFromQrModal が呼ばれた");
 
+  function openTicketFromQrModal() {
     const ticketPage = document.getElementById("ticketPage");
     const closeButton = ticketPage
         ? ticketPage.querySelector(".btn-close-ticket")
         : null;
     const bottomNav = document.querySelector(".bottom-nav-group");
 
-    console.log("② ticketPage:", ticketPage);
-    console.log("③ closeButton:", closeButton);
-
     if (!ticketPage || !closeButton) {
-        console.error("ticketPage または closeButton が見つからない");
         return;
     }
 
@@ -65,25 +49,63 @@ function openTicketFromQrModal() {
     closeButton.classList.remove("mode-arrow");
     closeButton.classList.add("mode-cross");
 
-    ticketPage.classList.add("ticket-page-from-qr");
+    ticketPage.classList.remove("is-open");
 
-    console.log(
-        "④ ticket-page-from-qr 付与後:",
-        ticketPage.className
-    );
-
-    ticketPage.classList.add("is-open");
-
-    console.log(
-        "⑤ is-open 付与後:",
-        ticketPage.className
-    );
+    ticketPage.style.transform = "translateY(100%)";
 
     if (bottomNav) {
         bottomNav.classList.add("is-hidden");
     }
 
-    switchTab(0);
+    requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+            ticketPage.classList.add("is-open");
+            ticketPage.style.transform = "translateY(0)";
+            switchTab(0);
+        });
+    });
+}
+
+function closeTicketPage() {
+    const ticketPage = document.getElementById("ticketPage");
+    const closeButton = ticketPage
+        ? ticketPage.querySelector(".btn-close-ticket")
+        : null;
+    const bottomNav = document.querySelector(".bottom-nav-group");
+
+    if (!ticketPage) {
+        return;
+    }
+
+    if (ticketPageSource === "qrModal") {
+        ticketPage.style.transform = "translateY(100%)";
+    } else {
+        ticketPage.style.transform = "translateX(100%)";
+    }
+
+    ticketPage.classList.remove("is-open");
+
+    if (ticketPageSource === "qrModal") {
+        if (closeButton) {
+            closeButton.classList.remove("mode-cross");
+            closeButton.classList.add("mode-arrow");
+        }
+
+        if (bottomNav) {
+            bottomNav.classList.remove("is-hidden");
+        }
+    }
+
+    ticketPageSource = "card";
+
+    ticketPage.addEventListener("transitionend", function handleTransitionEnd(event) {
+        if (event.propertyName !== "transform") {
+            return;
+        }
+
+        ticketPage.style.transform = "";
+        ticketPage.removeEventListener("transitionend", handleTransitionEnd);
+    });
 }
 
 
