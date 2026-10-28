@@ -13,28 +13,29 @@
 ♥️ 無代へ渡す用 
 
 ヒーロー画面からの開閉
-	
-function slideInTicket(event) {
-  if (event) {
-    event.preventDefault();
-  }
+	function slideInTicket(event) {
+    if (event) {
+        event.preventDefault();
+    }
 
-  const ticketPage = document.getElementById("ticketPage");
+    const ticketPage = document.getElementById("ticketPage");
+    const closeButton = ticketPage
+        ? ticketPage.querySelector(".btn-close-ticket")
+        : null;
 
-  if (!ticketPage) return;
+    if (!ticketPage || !closeButton) {
+        return;
+    }
 
-  ticketPage.classList.add("is-open");
+    ticketPageSource = "card";
 
-  // 開いたときは「利用可能」タブを表示
-  switchTab(0);
-}
-	
-function closeTicketPage() {
-  const ticketPage = document.getElementById("ticketPage");
+    closeButton.classList.remove("mode-cross");
+    closeButton.classList.add("mode-arrow");
 
-  if (!ticketPage) return;
+    ticketPage.style.transform = "";
+    ticketPage.classList.add("is-open");
 
-  ticketPage.classList.remove("is-open");
+    switchTab(0);
 }
 
 第１モーダルからの開閉
@@ -56,7 +57,6 @@ function openTicketFromQrModal() {
     closeButton.classList.add("mode-cross");
 
     ticketPage.classList.remove("is-open");
-
     ticketPage.style.transform = "translateY(100%)";
 
     if (bottomNav) {
@@ -71,8 +71,8 @@ function openTicketFromQrModal() {
         });
     });
 }
-
-function closeTicketPage() {
+	
+  function closeTicketPage() {
     const ticketPage = document.getElementById("ticketPage");
     const closeButton = ticketPage
         ? ticketPage.querySelector(".btn-close-ticket")
@@ -85,40 +85,33 @@ function closeTicketPage() {
 
     if (ticketPageSource === "qrModal") {
         ticketPage.style.transform = "translateY(100%)";
+
+        if (bottomNav) {
+            bottomNav.classList.remove("is-hidden");
+        }
     } else {
         ticketPage.style.transform = "translateX(100%)";
     }
 
     ticketPage.classList.remove("is-open");
 
-    if (ticketPageSource === "qrModal") {
-        if (closeButton) {
-            closeButton.classList.remove("mode-cross");
-            closeButton.classList.add("mode-arrow");
-        }
-
-        if (bottomNav) {
-            bottomNav.classList.remove("is-hidden");
-        }
+    if (closeButton) {
+        closeButton.classList.remove("mode-cross");
+        closeButton.classList.add("mode-arrow");
     }
 
     ticketPageSource = "card";
-
-    ticketPage.addEventListener("transitionend", function handleTransitionEnd(event) {
-        if (event.propertyName !== "transform") {
-            return;
-        }
-
-        ticketPage.style.transform = "";
-        ticketPage.removeEventListener("transitionend", handleTransitionEnd);
-    });
 }
-
-
-
-
-
-	
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
 <section class="card-hero-section">
 	...
