@@ -11,6 +11,28 @@
 
 	
 ♥️ 無代へ渡す用 
+
+      <!-- 3つのタブを常に表示 -->
+      <div class="tab-carousel-container">
+        <div class="tab-carousel">
+          <div class="tab-item is-active" onclick="switchTab(0)">
+            利用可能
+          </div>
+          <div class="tab-item" onclick="switchTab(1)">
+            利用開始日前
+          </div>
+          <div class="tab-item" onclick="switchTab(2)">
+            利用済み
+          </div>
+        </div>  
+
+        <!-- 選択中のタブを示すライン -->
+        <div class="tab-indicator" id="tabIndicator"></div>
+      </div>
+
+
+
+	
 function switchTab(index) {
     const ticketPage = document.getElementById("ticketPage");
     const tabs = document.querySelectorAll("#ticketPage .tab-item");
