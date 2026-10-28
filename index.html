@@ -13,14 +13,31 @@
 ♥️ 無代へ渡す用 
 
 
-script.js:185 ① openTicketFromQrModal が呼ばれた
-script.js:193 ② ticketPage: <div id=​"ticketPage" class=​"ticket-page ticket-page-from-qr is-open">​…​</div>​flex
-script.js:194 ③ closeButton: <button class=​"btn-close-ticket mode-cross" type=​"button" onclick=​"closeTicketPage()​">​…​</button>​flex
-script.js:208 ④ ticket-page-from-qr 付与後: ticket-page ticket-page-from-qr
-script.js:215 ⑤ is-open 付与後: ticket-page ticket-page-from-qr is-open
-script.js:226 ⑥ 実際のtransform: matrix(1, 0, 0, 1, 375, 0)
-script.js:227 ⑦ transformのインライン指定: 
-
+}
+.ticket-page.ticket-page-from-qr.is-open {
+    transform: translateY(0);
+}
+.ticket-page.ticket-page-from-qr {
+    transform: translateY(100%);
+}
+.ticket-page.is-open {
+    transform: translateX(0);
+}
+.ticket-page {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-out;
+    z-index: 12;
+}
 	
 
 function openTicketFromQrModal() {
