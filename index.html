@@ -24,14 +24,85 @@
 
 日本語（15px Bold）＋英語（10px Regular）の二段構成。「スタバらしさ」と「直感性」を両立。
 
-ユーザーの操作 起きること
-上部タブをタップ 対応する商品カテゴリーに切り替わる
-上部タブを横スワイプ タブ列だけが横に動く。選択するまでは商品カテゴリーは変わらない
-商品パネルを横スワイプ 前後のカテゴリーに切り替わり、タブの選択状態と下線も連動する
-商品パネルのスワイプでカテゴリーが変わる 対応するタブが画面内に見えるよう、タブ列も必要に応じて横スクロールする
+メニュー画面：	
+ユーザーの操作 > 起きること
+	
+* 上部タブをタップ > 対応する商品カテゴリーに切り替わる
+* 上部タブを横スワイプ > タブ列だけが横に動く。選択するまでは商品カテゴリーは変わらない
+* 商品パネルを横スワイプ > 前後のカテゴリーに切り替わり、タブの選択状態と下線も連動する
+* 商品パネルのスワイプでカテゴリーが変わる > 対応するタブが画面内に見えるよう、タブ列も必要に応じて横スクロールする
 
+で、今回の上部タブと商品パネルが双方向に連動する構造の操作仕様なら、	
+value は JS実装時のため section の id と同じ名前にする。のは合ってる？	
+上部ナビの label のクラス名は統一？
+商品パネルの section のクラス名は統一して置いていた方がいい？	
+他に div　等で、包んで置いた方がいい場所はある？
 
+<body class="is-menu-page">
 
+  <div class="menu-header-group">
+
+    <header class="menu-header">
+      
+      <!-- ホーム画面に戻るボタン -->
+      <button class="btn-menu-back"
+              type="button"
+              onclick="slidInHome(event)">
+        <!-- 左向き矢印  -->
+        <span class="arrow-icon is-menu-page"></span> 
+      </button>     
+
+      <div class="menu-title">
+        <h1>メニュー</h1>
+      </div>
+      
+    </header>
+
+  </div>
+	
+ <!-- value はJS実装時のため　section id と同じ名前にする -->	
+ <nav class="menu-category-tab-group">
+    <div class="menu-category-inner">
+        
+        <label class="category-tab-item">
+          <input type="radio" name="category" value="MenuPannelRecommend" checked> 
+          <span class="category-tab-label">
+            <span class="category-tab-name">おすすめ</span>
+            <span class="category-tab-sub">Recommends</span>
+          </span>
+        </label>
+...
+     </div><!-- .menu-category-inner -->
+  </nav><!-- .menu-category-tab-group -->
+	
+<!-- 商品パネル(これがリモコン操作対象) 横にスワイプできる設定付き -->
+  <div class="menu-panel-group">
+
+    <section id="MenuPannelRecommend" class="menu-pannel-recommend"><!-- class:これは横スライド用の共通のパネル -->
+
+        <h3 class="panel-title">おすすめ</h3>
+        <small class="panel-note">※一部店舗では価格が異なります。</small>
+
+        <ul class="panel-grid">
+          <li class="panel-item">
+            <a href="">
+              <div class="panel-img">
+                <img src="" alt="ブリュード コーヒー">
+              </div>
+              <div class="panel-label">
+                <span>ブリュード コーヒー</span>
+                <span>¥380〜</span>
+              </div>
+            </a>
+          </li>
+	
+        </ul>
+        
+    </section><!-- MenuPannelRecommend .menu-pannel-recommend --> 
+	...
+	</div><!-- .menu-panel-group -->  
+
+</body>
 
 
 
