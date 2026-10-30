@@ -33,97 +33,33 @@
 * 商品パネルのスワイプでカテゴリーが変わる > 対応するタブが画面内に見えるよう、タブ列も必要に応じて横スクロールする
 
 
-/* カテゴリータブ全体 */
-.menu-category-tab-group {
+/* 商品パネル全体：横スクロール領域 */
+.menu-panel-group {
+    display: flex;
+    flex-wrap: nowrap;
+
     width: 100%;
+
     overflow-x: auto;
     overflow-y: hidden;
-    background-color: var(--stb-white);
-    border-bottom: 1px solid #e5e5e5;
 
-    /* スクロールバーを非表示 */
+    scroll-snap-type: x mandatory;
     scrollbar-width: none;
 }
 
-.menu-category-tab-group::-webkit-scrollbar {
+/* スクロールバーを非表示 */
+.menu-panel-group::-webkit-scrollbar {
     display: none;
 }
 
-/* タブを横一列に並べる */
-.menu-category-inner {
-    display: flex;
-    flex-wrap: nowrap;
-    width: max-content;
-    min-width: 100%;
-}
-
-/* 各タブ */
-.category-tab-item {
-    position: relative;
-    flex: 0 0 auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 88px;
-    padding: 12px 14px;
-    cursor: pointer;
-}
-
-/* ラジオボタン本体は画面上で隠す */
-.category-tab-item input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-}
-
-/* タブの文字部分 */
-.category-tab-label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2px;
-    white-space: nowrap;
-    color: #666666;
-}
-
-/* 日本語カテゴリー名 */
-.category-tab-name {
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 1.4;
-}
-
-/* 英語サブタイトル */
-.category-tab-sub {
-    font-size: 10px;
-    line-height: 1.3;
-    color: #888888;
-}
-
-/* 選択中のタブ */
-.category-tab-item input:checked + .category-tab-label {
-    color: var(--stb-black);
-}
-
-/* 選択中のタブの下線 */
-.category-tab-item input:checked + .category-tab-label::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
+/* 各カテゴリーの商品パネル */
+.menu-panel {
+    flex: 0 0 100%;
     width: 100%;
-    height: 3px;
-    background-color: var(--stb-green);
-}
+    min-width: 0;
 
-/* キーボード操作時のフォーカス表示 */
-.category-tab-item input:focus-visible + .category-tab-label {
-    outline: 2px solid var(--stb-green);
-    outline-offset: 3px;
+    scroll-snap-align: start;
 }
-
 	
 
 
