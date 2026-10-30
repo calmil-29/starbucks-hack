@@ -33,6 +33,46 @@
 * 商品パネルのスワイプでカテゴリーが変わる > 対応するタブが画面内に見えるよう、タブ列も必要に応じて横スクロールする
 
 
+	 {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    background-color: #cccccc;     /* bodyの外側の色 */
+    overflow-x: hidden;
+}
+
+body {
+    width: 100%;
+    max-width: 393px; /* ヘッダーと同じ幅に合わせる */
+    margin: 0 auto;
+    background-color: var(--stb-white);
+    overflow-x: hidden;
+    position: relative;     /* 今後、絶対配置を使うための基本 */
+    min-height: 100vh;
+    padding: 0;
+    line-height: 1.5;
+    font-family: sans-serif;
+    color: var(--stb-black);
+}
+
+html, body {
+    width: 100%;
+    overflow-x: hidden;     /* 横揺れ防止 */
+    position: relative;
+}
+
+button {
+    background: none;
+    border: none;
+    padding: 0;
+    box-sizing: border-box;
+    appearance: none;     /* スマホ（iPhone等）独自のボタン装飾や余白を完全にリセットする */
+    cursor: pointer;
+}
+
 	
 
 
