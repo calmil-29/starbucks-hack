@@ -99,29 +99,13 @@ document.addEventListener("DOMContentLoaded", () => {
 * 上部タブを横スワイプ > タブ列だけが横に動く。選択するまでは商品カテゴリーは変わらない
 * 商品パネルを横スワイプ > 前後のカテゴリーに切り替わり、タブの選択状態と下線も連動する
 * 商品パネルのスワイプでカテゴリーが変わる > 対応するタブが画面内に見えるよう、タブ列も必要に応じて横スクロールする
-にしたいんだけど、どうすればいい？
-CSSでの指定は完了してる。必要ならCSSも出すよ。	
+
 
 <body class="is-menu-page">
 
   <!-- ヘッダーをまとめる -->
   <div class="menu-header-group">
-
-    <header class="menu-header">
-      
-      <!-- ホーム画面に戻るボタン -->
-      <a href="index.html" class="btn-menu-back">
-
-        <!-- 左向き矢印  -->
-        <span class="arrow-icon is-menu-page"></span> 
-      </a>     
-
-      <div class="menu-title">
-        <h1>メニュー</h1>
-      </div>
-      
-    </header>
-
+	  ...
   </div>
 
   <!-- カテゴリータブの表示領域 -->
@@ -188,99 +172,60 @@ CSSでの指定は完了してる。必要ならCSSも出すよ。
       
   </div><!-- .menu-panel-group -->
     
-    
+<script src="script.js"></script>    
 </body>	
-document.addEventListener('DOMContentLoaded', () => {
-  const tabGroup = document.querySelector('.menu-category-tab-group');
-  const tabInputs = document.querySelectorAll('input[name="category"]');
-  const panelGroup = document.querySelector('.menu-panel-group');
-  const panels = document.querySelectorAll('.menu-panel');
-
-  // -------------------------------------------------------------
-  // 1. タブをタップしたとき：対応する商品カテゴリーへスクロール
-  // -------------------------------------------------------------
-  tabInputs.forEach(input => {
-    input.addEventListener('change', (e) => {
-      if (e.target.checked) {
-        const targetId = e.target.value;
-        const targetPanel = document.getElementById(targetId);
-        
-        if (targetPanel) {
-          // JSでのスクロール発火時、一時的にObserverの連動を無視するためのフラグ（微調整用）
-          panelGroup.dataset.isProgramScroll = 'true';
-          
-          targetPanel.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'start'
-          });
-          
-          // タブ自体も画面内に収まるようにスクロール
-          scrollToActiveTab(e.target);
-        }
-      }
-    });
-  });
-
-  // -------------------------------------------------------------
-  // 2. 商品パネルのスワイプ検知：表示されたパネルに応じてタブを切り替える
-  // -------------------------------------------------------------
-  // スクロール停止を検知するためのタイマー
-  let scrollTimeout;
-  panelGroup.addEventListener('scroll', () => {
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      // スクロールが完全に止まったらフラグを解除
-      panelGroup.dataset.isProgramScroll = 'false';
-    }, 150);
-  });
-
-  // 交差監視（IntersectionObserver）の設定
-  const observerOptions = {
-    root: panelGroup,
-    rootMargin: '0px',
-    threshold: 0.6 // パネルが60%以上画面に表示されたら「切り替わった」とみなす
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    // タブタップによるJSスクロール中は、スワイプ連動処理をスキップ
-    if (panelGroup.dataset.isProgramScroll === 'true') return;
-
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const panelId = entry.target.id;
-        const targetRadio = document.querySelector(`input[name="category"][value="${panelId}"]`);
-        
-        if (targetRadio && !targetRadio.checked) {
-          // ラジオボタンをチェック状態にする（CSSで下線や色が変わる）
-          targetRadio.checked = true;
-          // タブ列を必要に応じて横スクロール
-          scrollToActiveTab(targetRadio);
-        }
-      }
-    });
-  }, observerOptions);
-
-  // すべてのパネルを監視対象に登録
-  panels.forEach(panel => observer.observe(panel));
-
-  // -------------------------------------------------------------
-  // 3. アクティブなタブを画面内にスクロールさせる共通関数
-  // -------------------------------------------------------------
-  function scrollToActiveTab(activeInput) {
-    const tabItem = activeInput.closest('.category-tab-item');
-    if (!tabItem || !tabGroup) return;
-
-    // タブがコンテナの画面内に収まるようにスムーズスクロール
-    tabItem.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-      inline: 'nearest' // 画面外にある場合だけ、見える位置まで最小限スクロールする
-    });
-  }
-});
-
 	
+document.addEventListener("DOMContentLoaded", () => {
+
+    // 商品パネルの横スクロール領域
+    const panelGroup = document.querySelector(".menu-panel-group");
+
+    // カテゴリータブのラジオボタン
+    const categoryTabs = document.querySelectorAll(
+        'input[name="category"]'
+    );
+
+    // 各カテゴリータブの選択を監視
+    categoryTabs.forEach((tab) => {
+
+        tab.addEventListener("change", () => {
+
+            // 選択されたタブのvalueを取得
+            const selectedCategory = tab.value;
+
+            // 対応する商品パネルを取得
+            const targetPanel = document.getElementById(
+                selectedCategory
+            );
+
+            // 対応するパネルが存在しない場合は終了
+            if (!targetPanel) {
+                return;
+            }
+
+            // 商品パネルの表示位置を計算
+            const panelGroupRect =
+                panelGroup.getBoundingClientRect();
+
+            const targetPanelRect =
+                targetPanel.getBoundingClientRect();
+
+            const targetPosition =
+                panelGroup.scrollLeft
+                + targetPanelRect.left
+                - panelGroupRect.left;
+
+            // 対応する商品パネルへ移動
+            panelGroup.scrollTo({
+                left: targetPosition,
+                behavior: "smooth"
+            });
+
+        });
+
+    });
+
+});
     
     
     
