@@ -42,79 +42,75 @@
 上部タブ列の横スワイプは、JSでカテゴリー切り替えを発生させず、CSSとブラウザに任せる。
 
 
-<body class="is-menu-page">
+document.addEventListener("DOMContentLoaded", () => {
 
-  <!-- ヘッダーをまとめる -->
-  <div class="menu-header-group">
+    // 商品パネルの横スクロール領域
+    const panelGroup = document.querySelector(".menu-panel-group");
 
-    <header class="menu-header">
-      
-      <!-- ホーム画面に戻るボタン -->
-      <a href="index.html" class="btn-menu-back">
+    // 各商品パネル
+    const panels = document.querySelectorAll(".menu-panel");
 
-        <!-- 左向き矢印  -->
-        <span class="arrow-icon is-menu-page"></span> 
-       </a>     
+    // カテゴリータブのラジオボタン
+    const categoryTabs = document.querySelectorAll(
+        'input[name="category"]'
+    );
 
-      <div class="menu-title">
-        <h1>メニュー</h1>
-      </div>
-      
-    </header>
+    // スクロール終了後に選択状態を更新するためのタイマー
+    let scrollTimer = null;
 
-  </div>
 
-  <!-- カテゴリータブの表示領域 -->
-  <nav class="menu-category-tab-group">
+    // 商品パネルのスクロールを監視
+    panelGroup.addEventListener("scroll", () => {
 
-    <!-- value はJS実装時のため section id と同じ名前にする -->
-    <!-- 選択中のラジオボタンに応じて、CSSでタブの色を変更する -->  
+        // 前回のタイマーを取り消す
+        clearTimeout(scrollTimer);
 
-    <!-- 10個のタブを横並びにする -->
-    <div class="menu-category-inner">
-        <label class="category-tab-item">
-          <input id="TabRecommend" 
-                 type="radio" 
-                 name="category" 
-                 value="recommend" 
-                 checked
-          > 
-            <span class="category-tab-label">
-              <span class="category-tab-name">おすすめ</span>
-              <span class="category-tab-sub">Recommends</span>
-            </span>
-        </label>
-		...残りのタブも同じ構造
-	</div>	
- </nav>
+        // スクロールが落ち着いてから選択状態を更新
+        scrollTimer = setTimeout(() => {
 
-<!-- 商品パネルの横スワイプ領域 -->
-<div class="menu-panel-group">	
-    <section 
-      id="recommend" 
-      class="menu-panel"
-      aria-labelledby="TabRecommend"
-     >
-      <h3 class="panel-title">おすすめ</h3>
-      <small class="panel-note">※一部店舗では価格が異なります。</small>
-      <ul class="panel-grid">
-         <li class="panel-item">
-            <a href="">
-              <div class="panel-img">
-                <img src="" alt="ブリュード コーヒー">
-              </div>
+            // 商品パネル表示領域の中央位置
+            const panelGroupCenter =
+                panelGroup.getBoundingClientRect().left
+                + panelGroup.clientWidth / 2;
 
-              <div class="panel-label">
-                <span>ブリュード コーヒー</span>
-                <span>¥380〜</span>
-              </div>
-            </a>
-          </li>
-		  <!--　残りのリストも同じ構造　-->
-	    </ul>
-    </section>  
-	<!--　残りのセクションも同じ構造　-->
-</div><!-- .menu-panel-group -->	
+            // 表示領域の中央に最も近いパネル
+            let currentPanel = null;
+            let minDistance = Infinity;
+
+            panels.forEach((panel) => {
+
+                // 各パネルの中央位置
+                const panelCenter =
+                    panel.getBoundingClientRect().left
+                    + panel.getBoundingClientRect().width / 2;
+
+                // 表示領域の中央との距離
+                const distance = Math.abs(
+                    panelCenter - panelGroupCenter
+                );
+
+                // 最も中央に近いパネルを記録
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    currentPanel = panel;
+                }
+            });
+
+            // 対応するラジオボタンを探す
+            const selectedTab = Array.from(categoryTabs).find(
+                (tab) => tab.value === currentPanel.id
+            );
+
+            // 対応するタブを選択状態にする
+            if (selectedTab) {
+                selectedTab.checked = true;
+            }
+
+        }, 120);
+
+    });
+
+});
 
 
 		
