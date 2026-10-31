@@ -93,6 +93,99 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+
+
+<body class="is-menu-page">
+
+  <!-- ヘッダーをまとめる -->
+  <div class="menu-header-group">
+
+    <header class="menu-header">
+      
+      <!-- ホーム画面に戻るボタン -->
+      <a href="index.html" class="btn-menu-back">
+
+        <!-- 左向き矢印  -->
+        <span class="arrow-icon is-menu-page"></span> 
+      </a>     
+
+      <div class="menu-title">
+        <h1>メニュー</h1>
+      </div>
+      
+    </header>
+
+  </div>
+
+  <!-- カテゴリータブの表示領域 -->
+  <nav class="menu-category-tab-group">
+
+    <!-- value はJS実装時のため section id と同じ名前にする -->
+    <!-- 選択中のラジオボタンに応じて、CSSでタブの色を変更する -->  
+
+    <!-- 10個のタブを横並びにする -->
+    <div class="menu-category-inner">
+
+        <!-- おすすめ -->
+        <label class="category-tab-item">
+          <input id="TabRecommend" 
+                 type="radio" 
+                 name="category" 
+                 value="recommend" 
+                 checked
+          > 
+            <span class="category-tab-label">
+              <span class="category-tab-name">おすすめ</span>
+              <span class="category-tab-sub">Recommends</span>
+            </span>
+        </label>
+
+        <!-- 同じ構造のタグが続く -->
+
+    </div><!-- .menu-category-inner -->
+  </nav><!-- .menu-category-tab-group -->
+
+  <!-- 商品パネルの横スワイプ領域 -->
+  <div class="menu-panel-group">
+
+    <!-- おすすめ -->
+    <section 
+      id="recommend" 
+      class="menu-panel"
+      aria-labelledby="TabRecommend"
+     >
+      <h3 class="panel-title">おすすめ</h3>
+      <small class="panel-note">※一部店舗では価格が異なります。</small>
+
+        <ul class="panel-grid">
+
+          <li class="panel-item">
+            <a href="">
+              <div class="panel-img">
+                <img src="" alt="ブリュード コーヒー">
+              </div>
+
+              <div class="panel-label">
+                <span>ブリュード コーヒー</span>
+                <span>¥380〜</span>
+              </div>
+            </a>
+          </li>
+
+          <!-- 同じ構造のリストが続く -->
+
+        </ul>
+    </section><!-- Recommend --> 
+
+	<!-- 同じ構造のセクションが続く -->
+      
+  </div><!-- .menu-panel-group -->
+    
+    
+</body>	
+
+	
 ♥️
 ※ クラス名もあとでわかりやすくするために変更	
 • .card-front → .card-main-area へ変更		
