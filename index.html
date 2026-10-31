@@ -177,33 +177,36 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 document.addEventListener("DOMContentLoaded", () => {
 
-    // 商品パネルの横スクロール領域
+    console.log("① JavaScriptが実行された");
+
     const panelGroup = document.querySelector(".menu-panel-group");
 
-    // カテゴリータブのラジオボタン
     const categoryTabs = document.querySelectorAll(
         'input[name="category"]'
     );
 
-    // 各カテゴリータブの選択を監視
+    console.log("② 商品パネル領域:", panelGroup);
+    console.log("③ カテゴリータブの数:", categoryTabs.length);
+
     categoryTabs.forEach((tab) => {
 
         tab.addEventListener("change", () => {
 
-            // 選択されたタブのvalueを取得
+            console.log("④ タブが選択された:", tab.value);
+
             const selectedCategory = tab.value;
 
-            // 対応する商品パネルを取得
             const targetPanel = document.getElementById(
                 selectedCategory
             );
 
-            // 対応するパネルが存在しない場合は終了
-            if (!targetPanel) {
+            console.log("⑤ 対応する商品パネル:", targetPanel);
+
+            if (!panelGroup || !targetPanel) {
+                console.log("⑥ 必要な要素が見つからない");
                 return;
             }
 
-            // 商品パネルの表示位置を計算
             const panelGroupRect =
                 panelGroup.getBoundingClientRect();
 
@@ -215,7 +218,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 + targetPanelRect.left
                 - panelGroupRect.left;
 
-            // 対応する商品パネルへ移動
+            console.log("⑦ 移動先:", targetPosition);
+
             panelGroup.scrollTo({
                 left: targetPosition,
                 behavior: "smooth"
