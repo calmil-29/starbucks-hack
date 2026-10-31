@@ -8,36 +8,33 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-// 商品パネルをスワイプしたときの処理
-panelGroup.addEventListener("scroll", () => {
+// 選択されたタブの表示位置を取得
+const currentTabItem = currentTab.closest(".category-tab-item");
 
-    // 現在のスクロール位置から、表示中のパネル番号を求める
-    const currentIndex = Math.round(
-        panelGroup.scrollLeft / panelGroup.clientWidth
-    );
+const tabGroupRect = tabGroup.getBoundingClientRect();
+const currentTabRect = currentTabItem.getBoundingClientRect();
 
-    // その番号に対応する商品パネルを取得
-    const currentPanel = panelGroup.children[currentIndex];
+// タブが表示領域の右側にはみ出している場合
+if (currentTabRect.right > tabGroupRect.right) {
 
-    // パネルが取得できなければ終了
-    if (!currentPanel) {
-        return;
-    }
-
-    // パネルのidと同じvalueを持つラジオボタンを取得
-    const currentTab = Array.from(categoryTabs).find((tab) => {
-        return tab.value === currentPanel.id;
+    tabGroup.scrollTo({
+        left: tabGroup.scrollLeft
+            + currentTabRect.right
+            - tabGroupRect.right,
+        behavior: "smooth"
     });
 
-    // 対応するタブが見つからなければ終了
-    if (!currentTab) {
-        return;
-    }
+// タブが表示領域の左側にはみ出している場合
+} else if (currentTabRect.left < tabGroupRect.left) {
 
-    // タブの選択状態を更新
-    currentTab.checked = true;
+    tabGroup.scrollTo({
+        left: tabGroup.scrollLeft
+            + currentTabRect.left
+            - tabGroupRect.left,
+        behavior: "smooth"
+    });
 
-});
+}
 	
 ♥️ 無代へ渡す用 
 
