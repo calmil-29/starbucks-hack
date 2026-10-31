@@ -32,7 +32,7 @@
 * 商品パネルのスワイプでカテゴリーが変わる > 対応するタブが画面内に見えるよう、タブ列も必要に応じて横スクロールする
 
 
-メニュー画面のJS処理
+⚫︎ メニュー画面のJS処理
 戻るボタンでホーム画面に戻る（ホームは先頭表示）
 タブ選択で対応する商品パネルへ移動
 商品パネルのスワイプで選択中のタブを更新
@@ -42,9 +42,82 @@
 上部タブ列の横スワイプは、JSでカテゴリー切り替えを発生させず、CSSとブラウザに任せる。
 
 
-	
+<body class="is-menu-page">
+
+  <!-- ヘッダーをまとめる -->
+  <div class="menu-header-group">
+
+    <header class="menu-header">
+      
+      <!-- ホーム画面に戻るボタン -->
+      <a href="index.html" class="btn-menu-back">
+
+        <!-- 左向き矢印  -->
+        <span class="arrow-icon is-menu-page"></span> 
+       </a>     
+
+      <div class="menu-title">
+        <h1>メニュー</h1>
+      </div>
+      
+    </header>
+
+  </div>
+
+  <!-- カテゴリータブの表示領域 -->
+  <nav class="menu-category-tab-group">
+
+    <!-- value はJS実装時のため section id と同じ名前にする -->
+    <!-- 選択中のラジオボタンに応じて、CSSでタブの色を変更する -->  
+
+    <!-- 10個のタブを横並びにする -->
+    <div class="menu-category-inner">
+        <label class="category-tab-item">
+          <input id="TabRecommend" 
+                 type="radio" 
+                 name="category" 
+                 value="recommend" 
+                 checked
+          > 
+            <span class="category-tab-label">
+              <span class="category-tab-name">おすすめ</span>
+              <span class="category-tab-sub">Recommends</span>
+            </span>
+        </label>
+		...残りのタブも同じ構造
+	</div>	
+ </nav>
+
+<!-- 商品パネルの横スワイプ領域 -->
+<div class="menu-panel-group">	
+    <section 
+      id="recommend" 
+      class="menu-panel"
+      aria-labelledby="TabRecommend"
+     >
+      <h3 class="panel-title">おすすめ</h3>
+      <small class="panel-note">※一部店舗では価格が異なります。</small>
+      <ul class="panel-grid">
+         <li class="panel-item">
+            <a href="">
+              <div class="panel-img">
+                <img src="" alt="ブリュード コーヒー">
+              </div>
+
+              <div class="panel-label">
+                <span>ブリュード コーヒー</span>
+                <span>¥380〜</span>
+              </div>
+            </a>
+          </li>
+		  <!--　残りのリストも同じ構造　-->
+	    </ul>
+    </section>  
+	<!--　残りのセクションも同じ構造　-->
+</div><!-- .menu-panel-group -->	
 
 
+		
 
 ♥️
 ※ クラス名もあとでわかりやすくするために変更	
