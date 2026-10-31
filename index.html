@@ -8,7 +8,36 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-document.addEventListener("DOMContentLoaded", () => {...}
+// 商品パネルをスワイプしたときの処理
+panelGroup.addEventListener("scroll", () => {
+
+    // 現在のスクロール位置から、表示中のパネル番号を求める
+    const currentIndex = Math.round(
+        panelGroup.scrollLeft / panelGroup.clientWidth
+    );
+
+    // その番号に対応する商品パネルを取得
+    const currentPanel = panelGroup.children[currentIndex];
+
+    // パネルが取得できなければ終了
+    if (!currentPanel) {
+        return;
+    }
+
+    // パネルのidと同じvalueを持つラジオボタンを取得
+    const currentTab = Array.from(categoryTabs).find((tab) => {
+        return tab.value === currentPanel.id;
+    });
+
+    // 対応するタブが見つからなければ終了
+    if (!currentTab) {
+        return;
+    }
+
+    // タブの選択状態を更新
+    currentTab.checked = true;
+
+});
 	
 ♥️ 無代へ渡す用 
 
