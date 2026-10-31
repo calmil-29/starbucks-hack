@@ -47,74 +47,52 @@ document.addEventListener("DOMContentLoaded", () => {
     // 商品パネルの横スクロール領域
     const panelGroup = document.querySelector(".menu-panel-group");
 
-    // 各商品パネル
-    const panels = document.querySelectorAll(".menu-panel");
-
     // カテゴリータブのラジオボタン
     const categoryTabs = document.querySelectorAll(
         'input[name="category"]'
     );
 
-    // スクロール終了後に選択状態を更新するためのタイマー
-    let scrollTimer = null;
+    // 各カテゴリータブの選択を監視
+    categoryTabs.forEach((tab) => {
 
+        tab.addEventListener("change", () => {
 
-    // 商品パネルのスクロールを監視
-    panelGroup.addEventListener("scroll", () => {
+            // 選択されたタブのvalueを取得
+            const selectedCategory = tab.value;
 
-        // 前回のタイマーを取り消す
-        clearTimeout(scrollTimer);
-
-        // スクロールが落ち着いてから選択状態を更新
-        scrollTimer = setTimeout(() => {
-
-            // 商品パネル表示領域の中央位置
-            const panelGroupCenter =
-                panelGroup.getBoundingClientRect().left
-                + panelGroup.clientWidth / 2;
-
-            // 表示領域の中央に最も近いパネル
-            let currentPanel = null;
-            let minDistance = Infinity;
-
-            panels.forEach((panel) => {
-
-                // 各パネルの中央位置
-                const panelCenter =
-                    panel.getBoundingClientRect().left
-                    + panel.getBoundingClientRect().width / 2;
-
-                // 表示領域の中央との距離
-                const distance = Math.abs(
-                    panelCenter - panelGroupCenter
-                );
-
-                // 最も中央に近いパネルを記録
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    currentPanel = panel;
-                }
-            });
-
-            // 対応するラジオボタンを探す
-            const selectedTab = Array.from(categoryTabs).find(
-                (tab) => tab.value === currentPanel.id
+            // 対応する商品パネルを取得
+            const targetPanel = document.getElementById(
+                selectedCategory
             );
 
-            // 対応するタブを選択状態にする
-            if (selectedTab) {
-                selectedTab.checked = true;
+            // 対応するパネルが存在しない場合は終了
+            if (!targetPanel) {
+                return;
             }
 
-        }, 120);
+            // 商品パネルの表示位置を計算
+            const panelGroupRect =
+                panelGroup.getBoundingClientRect();
+
+            const targetPanelRect =
+                targetPanel.getBoundingClientRect();
+
+            const targetPosition =
+                panelGroup.scrollLeft
+                + targetPanelRect.left
+                - panelGroupRect.left;
+
+            // 対応する商品パネルへ移動
+            panelGroup.scrollTo({
+                left: targetPosition,
+                behavior: "smooth"
+            });
+
+        });
 
     });
 
 });
-
-
-		
-
 ♥️
 ※ クラス名もあとでわかりやすくするために変更	
 • .card-front → .card-main-area へ変更		
