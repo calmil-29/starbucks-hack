@@ -231,55 +231,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
-script.js:701 Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
-    at script.js:701:9
-（匿名） @ script.js:701
-
-
-script.js:701　だと、第１モーダルのキャプチャ制御の別処理になるけど。今の document.addEventListener("DOMContentLoaded", () => {...} は、場所で言うとscript.js:1850
-なにがどう言う意味で出てるの？
-	Cannot read properties of null (reading 'addEventListener')
-    at script.js:701:9	
 	
-//【第１モーダル キャプチャ制御】　
-// カード選択窓の中をタップしたか、窓の外をタップしたかを判定して閉じる	
-const qrModal = document.getElementById('qrModal');
+script.js:903 Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
+    at script.js:903:14
 
-qrModal.addEventListener('click' , function(event) {
-
-    // 現在開いている第１モーダルのカード選択窓を取得
-    const activeWindow = document.querySelector(
-        '.qr-card-selector-window.is-active'
-    );
-
-    // カードの選択肢が開いてるときだけ処理する
-    if (activeWindow) {
-
-        // カード選択肢の「中」をタップした場合
-        if (event.target.closest('.qr-card-selector-window')) {
-
-            // 何もしない
-            return;
-            
-        } else {
-
-            activeWindow.classList.remove('is-active');
-
-            // カード選択の矢印を「v」に戻す
-            const balanceWrapper = document.querySelector('.qr-balance-wrapper');
-
-            if (balanceWrapper) {
-                balanceWrapper.classList.remove('is-active');
-            }
-
-            event.stopPropagation();
-        }
-    }
-}, { capture: true });    
-    
-    
-    
-    
     
     
     
