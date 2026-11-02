@@ -12,39 +12,59 @@
 // 選択されたタブの表示位置を取得
 const currentTabItem = currentTab.closest(".category-tab-item");
 
+// タブの番号を取得
+const currentIndex = Array.from(categoryTabs).indexOf(currentTab);
+
+// タブ列の表示領域
 const tabGroupRect = tabGroup.getBoundingClientRect();
+
+// 選択タブの表示位置
 const currentTabRect = currentTabItem.getBoundingClientRect();
 
-// タブ表示領域の幅
-const tabGroupWidth = tabGroup.clientWidth;
+// スクロール先の基準位置
+let targetScrollLeft;
 
-// 選択されたタブの中心位置
-const tabCenter =
-    currentTabRect.left
-    - tabGroupRect.left
-    + currentTabRect.width / 2;
+if (currentIndex <= 2) {
 
-// タブ表示領域の中央位置
-const groupCenter = tabGroupWidth / 2;
+    // 先頭付近：左寄せ
+    // ただし、前のタブが少し残る位置にする
+    targetScrollLeft =
+        tabGroup.scrollLeft
+        + currentTabRect.left
+        - tabGroupRect.left
+        - 16;
 
-// 選択されたタブの位置に応じてスクロール先を決める
-let targetScrollLeft = tabGroup.scrollLeft;
+} else if (currentIndex >= 7) {
 
-if (tabCenter > groupCenter + 30) {
+    // 末尾付近：右寄せ
+    targetScrollLeft =
+        tabGroup.scrollLeft
+        + currentTabRect.right
+        - tabGroupRect.right;
 
-    // 中央より右側なら、選択タブを右寄りにする
-    targetScrollLeft += tabCenter - groupCenter - 30;
+} else {
 
-} else if (tabCenter < groupCenter - 30) {
-
-    // 中央より左側なら、選択タブを左寄りにする
-    targetScrollLeft += tabCenter - groupCenter + 30;
+    // 中盤：中央寄せ
+    targetScrollLeft =
+        tabGroup.scrollLeft
+        + currentTabRect.left
+        - tabGroupRect.left
+        - (tabGroup.clientWidth - currentTabItem.offsetWidth) / 2;
 
 }
 
+// スクロールできる範囲内に収める
+const maxScrollLeft =
+    tabGroup.scrollWidth - tabGroup.clientWidth;
+
+const adjustedScrollLeft = Math.max(
+    0,
+    Math.min(targetScrollLeft, maxScrollLeft)
+);
+
 // タブ列をスクロール
 tabGroup.scrollTo({
-    left: targetScrollLeft,
+    left: adjustedScrollLeft,
     behavior: "smooth"
 });
 	
