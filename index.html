@@ -8,33 +8,45 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
 // 選択されたタブの表示位置を取得
 const currentTabItem = currentTab.closest(".category-tab-item");
 
 const tabGroupRect = tabGroup.getBoundingClientRect();
 const currentTabRect = currentTabItem.getBoundingClientRect();
 
-// タブが表示領域の右側にはみ出している場合
-if (currentTabRect.right > tabGroupRect.right) {
+// タブ表示領域の幅
+const tabGroupWidth = tabGroup.clientWidth;
 
-    tabGroup.scrollTo({
-        left: tabGroup.scrollLeft
-            + currentTabRect.right
-            - tabGroupRect.right,
-        behavior: "smooth"
-    });
+// 選択されたタブの中心位置
+const tabCenter =
+    currentTabRect.left
+    - tabGroupRect.left
+    + currentTabRect.width / 2;
 
-// タブが表示領域の左側にはみ出している場合
-} else if (currentTabRect.left < tabGroupRect.left) {
+// タブ表示領域の中央位置
+const groupCenter = tabGroupWidth / 2;
 
-    tabGroup.scrollTo({
-        left: tabGroup.scrollLeft
-            + currentTabRect.left
-            - tabGroupRect.left,
-        behavior: "smooth"
-    });
+// 選択されたタブの位置に応じてスクロール先を決める
+let targetScrollLeft = tabGroup.scrollLeft;
+
+if (tabCenter > groupCenter + 30) {
+
+    // 中央より右側なら、選択タブを右寄りにする
+    targetScrollLeft += tabCenter - groupCenter - 30;
+
+} else if (tabCenter < groupCenter - 30) {
+
+    // 中央より左側なら、選択タブを左寄りにする
+    targetScrollLeft += tabCenter - groupCenter + 30;
 
 }
+
+// タブ列をスクロール
+tabGroup.scrollTo({
+    left: targetScrollLeft,
+    behavior: "smooth"
+});
 	
 ♥️ 無代へ渡す用 
 
