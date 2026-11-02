@@ -9,7 +9,100 @@
 </head>
 <body>
 
-	// 選択されたタブの表示位置を取得
+document.addEventListener("DOMContentLoaded", () => {
+
+    console.log("① JavaScriptが実行された");
+
+    const panelGroup = document.querySelector(".menu-panel-group");
+
+    const categoryTabs = document.querySelectorAll(
+        'input[name="category"]'
+    );
+
+    console.log("② 商品パネル領域:", panelGroup);
+    console.log("③ カテゴリータブの数:", categoryTabs.length);
+
+    categoryTabs.forEach((tab) => {
+
+        tab.addEventListener("change", () => {
+
+            console.log("④ タブが選択された:", tab.value);
+
+            const selectedCategory = tab.value;
+
+            const targetPanel = document.getElementById(
+                selectedCategory
+            );
+
+            console.log("⑤ 対応する商品パネル:", targetPanel);
+
+            if (!panelGroup || !targetPanel) {
+                console.log("⑥ 必要な要素が見つからない");
+                return;
+            }
+
+            const panelGroupRect =
+                panelGroup.getBoundingClientRect();
+
+            const targetPanelRect =
+                targetPanel.getBoundingClientRect();
+
+            const targetPosition =
+                panelGroup.scrollLeft
+                + targetPanelRect.left
+                - panelGroupRect.left;
+
+            console.log("⑦ 移動先:", targetPosition);
+
+            panelGroup.scrollTo({
+                left: targetPosition,
+                behavior: "smooth"
+            });
+
+        });
+
+    });
+
+    // -----------------------------------------
+    // 商品パネルをスワイプしたときの処理
+    // -----------------------------------------
+
+    panelGroup.addEventListener("scroll", () => {
+
+      // 現在のスクロール位置から、表示中のパネル番号を求める
+      const currentIndex = Math.round(
+          panelGroup.scrollLeft / panelGroup.clientWidth
+      );
+
+      // その番号に対応する商品パネルを取得
+      const currentPanel = panelGroup.children[currentIndex];
+
+      // パネルが取得できなければ終了
+      if (!currentPanel) {
+          return;
+      }
+
+      // パネルのidと同じvalueを持つラジオボタンを取得
+      const currentTab = Array.from(categoryTabs).find((tab) => {
+          return tab.value === currentPanel.id;
+      });
+
+      // 対応するタブが見つからなければ終了
+      if (!currentTab) {
+          return;
+      }
+
+      // タブの選択状態を更新
+      currentTab.checked = true;
+
+      // -----------------------------------------
+      // 商品パネルのスワイプに合わせてタブ列もスクロール
+      // -----------------------------------------
+
+      // カテゴリータブの横スクロール領域
+      const tabGroup = document.querySelector('.menu-category-tab-group');
+
+// 選択されたタブの表示位置を取得
 const currentTabItem = currentTab.closest(".category-tab-item");
 
 const tabGroupRect = tabGroup.getBoundingClientRect();
@@ -90,6 +183,12 @@ const adjustedScrollLeft = Math.max(
 tabGroup.scrollTo({
     left: adjustedScrollLeft,
     behavior: "smooth"
+});
+
+     
+
+    });
+
 });
 
         
