@@ -9,7 +9,91 @@
 </head>
 <body>
 
-	
+	// 選択されたタブの表示位置を取得
+const currentTabItem = currentTab.closest(".category-tab-item");
+
+const tabGroupRect = tabGroup.getBoundingClientRect();
+const currentTabRect = currentTabItem.getBoundingClientRect();
+
+// 全カテゴリーの中で、現在のタブが何番目か
+const currentIndex = Array.from(categoryTabs).indexOf(currentTab);
+
+// カテゴリーの総数
+const totalTabs = categoryTabs.length;
+
+// タブ列の表示幅
+const visibleWidth = tabGroup.clientWidth;
+
+// 選択タブの幅
+const currentTabWidth = currentTabItem.offsetWidth;
+
+// 選択タブを配置する目標位置
+const leftPosition = 24;
+
+const centerPosition =
+    (visibleWidth - currentTabWidth) / 2;
+
+const rightPosition =
+    visibleWidth - currentTabWidth - 16;
+
+// 中央になるカテゴリー番号
+const middleIndex = (totalTabs - 1) / 2;
+
+// 選択タブの位置を計算
+let targetPosition;
+
+if (currentIndex === 0) {
+
+    // 最初のタブは左端
+    targetPosition = 0;
+
+} else if (currentIndex <= middleIndex) {
+
+    // 序盤から中盤：左寄りから中央へ
+    const progress =
+        (currentIndex - 1) / (middleIndex - 1);
+
+    targetPosition =
+        leftPosition
+        + (centerPosition - leftPosition) * progress;
+
+} else {
+
+    // 中盤から終盤：中央から右寄りへ
+    const progress =
+        (currentIndex - middleIndex)
+        / ((totalTabs - 1) - middleIndex);
+
+    targetPosition =
+        centerPosition
+        + (rightPosition - centerPosition) * progress;
+
+}
+
+// 実際にスクロールする位置を計算
+const scrollPosition =
+    tabGroup.scrollLeft
+    + currentTabRect.left
+    - tabGroupRect.left
+    - targetPosition;
+
+// スクロール可能な範囲に収める
+const maxScrollLeft =
+    tabGroup.scrollWidth - tabGroup.clientWidth;
+
+const adjustedScrollLeft = Math.max(
+    0,
+    Math.min(scrollPosition, maxScrollLeft)
+);
+
+// タブ列を滑らかに移動
+tabGroup.scrollTo({
+    left: adjustedScrollLeft,
+    behavior: "smooth"
+});
+
+        
+    
 ♥️ 無代へ渡す用 
 
 次、ここから一度ホーム画面から離れる。ホームページは、まだ、ボトムナビや、少々変えたいJSでの処理は残ってはいるけど、まずは大枠のメインを終わらせる。てことで、商品メニューのページ作成に入る。今年の１月ごろにデザインもHTMLも書いたものだから、修正からかな。
