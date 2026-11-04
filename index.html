@@ -9,189 +9,39 @@
 </head>
 <body>
 
-document.addEventListener("DOMContentLoaded", () => {
 
-    console.log("① JavaScriptが実行された");
+ 上部タブ：
+        <label class="category-tab-item">
+          <input id="TabSelect" 
+                 type="radio" 
+                 name="category" 
+                 value="select" 
+          > 
+            <span class="category-tab-label">
+              <span class="category-tab-name">店舗限定</span>
+              <span class="category-tab-sub">STARBUCKS RESERVE & More</span>
+            </span>
+        </label>
+	
+カテゴリーパネル：	
+   <section 
+      id="select" 
+      class="menu-panel"
+      aria-labelledby="TabSelect">
+        <h3 class="panel-title">店舗限定</h3>  
 
-    const panelGroup = document.querySelector(".menu-panel-group");
+        <div class="banner-navigation-wrapper">
 
-    const categoryTabs = document.querySelectorAll(
-        'input[name="category"]'
-    );
+          <a href="Product-menu-select.html" class="panel-banner-btn">
+            <img src="" alt="店舗限定メニュー">
+            <div class="banner-label">
+              <h4>対象店舗：リザーブ® ロースタリー、ティー専門店など</h4>
+              <small>※別ページへ移動します。</small>
+            </div>  
+          </a>
 
-    console.log("② 商品パネル領域:", panelGroup);
-    console.log("③ カテゴリータブの数:", categoryTabs.length);
-
-    categoryTabs.forEach((tab) => {
-
-        tab.addEventListener("change", () => {
-
-            console.log("④ タブが選択された:", tab.value);
-
-            const selectedCategory = tab.value;
-
-            const targetPanel = document.getElementById(
-                selectedCategory
-            );
-
-            console.log("⑤ 対応する商品パネル:", targetPanel);
-
-            if (!panelGroup || !targetPanel) {
-                console.log("⑥ 必要な要素が見つからない");
-                return;
-            }
-
-            const panelGroupRect =
-                panelGroup.getBoundingClientRect();
-
-            const targetPanelRect =
-                targetPanel.getBoundingClientRect();
-
-            const targetPosition =
-                panelGroup.scrollLeft
-                + targetPanelRect.left
-                - panelGroupRect.left;
-
-            console.log("⑦ 移動先:", targetPosition);
-
-            panelGroup.scrollTo({
-                left: targetPosition,
-                behavior: "smooth"
-            });
-
-        });
-
-    });
-
-    // -----------------------------------------
-    // 商品パネルをスワイプしたときの処理
-    // -----------------------------------------
-
-    panelGroup.addEventListener("scroll", () => {
-
-      // 現在のスクロール位置から、表示中のパネル番号を求める
-      const currentIndex = Math.round(
-          panelGroup.scrollLeft / panelGroup.clientWidth
-      );
-
-      // その番号に対応する商品パネルを取得
-      const currentPanel = panelGroup.children[currentIndex];
-
-      // パネルが取得できなければ終了
-      if (!currentPanel) {
-          return;
-      }
-
-      // パネルのidと同じvalueを持つラジオボタンを取得
-      const currentTab = Array.from(categoryTabs).find((tab) => {
-          return tab.value === currentPanel.id;
-      });
-
-      // 対応するタブが見つからなければ終了
-      if (!currentTab) {
-          return;
-      }
-
-      // タブの選択状態を更新
-      currentTab.checked = true;
-
-      // -----------------------------------------
-      // 商品パネルのスワイプに合わせてタブ列もスクロール
-      // -----------------------------------------
-
-      // カテゴリータブの横スクロール領域
-      const tabGroup = document.querySelector('.menu-category-tab-group');
-
-// 選択されたタブの表示位置を取得
-const currentTabItem = currentTab.closest(".category-tab-item");
-
-const tabGroupRect = tabGroup.getBoundingClientRect();
-const currentTabRect = currentTabItem.getBoundingClientRect();
-
-// 全カテゴリーの中で、現在のタブが何番目か
-const currentIndex = Array.from(categoryTabs).indexOf(currentTab);
-
-// カテゴリーの総数
-const totalTabs = categoryTabs.length;
-
-// タブ列の表示幅
-const visibleWidth = tabGroup.clientWidth;
-
-// 選択タブの幅
-const currentTabWidth = currentTabItem.offsetWidth;
-
-// 選択タブを配置する目標位置
-const leftPosition = 24;
-
-const centerPosition =
-    (visibleWidth - currentTabWidth) / 2;
-
-const rightPosition =
-    visibleWidth - currentTabWidth - 16;
-
-// 中央になるカテゴリー番号
-const middleIndex = (totalTabs - 1) / 2;
-
-// 選択タブの位置を計算
-let targetPosition;
-
-if (currentIndex === 0) {
-
-    // 最初のタブは左端
-    targetPosition = 0;
-
-} else if (currentIndex <= middleIndex) {
-
-    // 序盤から中盤：左寄りから中央へ
-    const progress =
-        (currentIndex - 1) / (middleIndex - 1);
-
-    targetPosition =
-        leftPosition
-        + (centerPosition - leftPosition) * progress;
-
-} else {
-
-    // 中盤から終盤：中央から右寄りへ
-    const progress =
-        (currentIndex - middleIndex)
-        / ((totalTabs - 1) - middleIndex);
-
-    targetPosition =
-        centerPosition
-        + (rightPosition - centerPosition) * progress;
-
-}
-
-// 実際にスクロールする位置を計算
-const scrollPosition =
-    tabGroup.scrollLeft
-    + currentTabRect.left
-    - tabGroupRect.left
-    - targetPosition;
-
-// スクロール可能な範囲に収める
-const maxScrollLeft =
-    tabGroup.scrollWidth - tabGroup.clientWidth;
-
-const adjustedScrollLeft = Math.max(
-    0,
-    Math.min(scrollPosition, maxScrollLeft)
-);
-
-// タブ列を滑らかに移動
-tabGroup.scrollTo({
-    left: adjustedScrollLeft,
-    behavior: "smooth"
-});
-
-     
-
-    });
-
-});
-
-        
+        </div>
+    </section>  
     
 ♥️ 無代へ渡す用 
 
