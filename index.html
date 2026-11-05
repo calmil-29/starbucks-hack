@@ -9,9 +9,7 @@
 </head>
 <body>
 
-そもそも、細かい絞り機能はいらないと思ってて。だから、検索を廃止して、ブランドごとに分けるより、店舗でわかる形にする。どこに何があるか、より、ここに何があるか、の方が探しやすいと思ったんだけど。どうかな？何が飲みたくてそこに行くのか、よりまず場所じゃない？そりゃ取り扱い場所によっては置いてない店舗もあるけど、それ言ったら代表的なSTARBUCKS COFFEEでもさらに限定された店舗にしか置いてない商品あるし。で、正直そこは突き詰めるのはここらでやめた方がいいと思ってる。今回は情報の正しさより、見せ方（支払い動線）の優先だしね。実際、公式でも絞った先で、商品説明のとこでさらに「お取り扱い店舗」で絞る必要がある構造だし。
 
-で、例えば、最後尾上部タブはそのままでいいとして、カテゴリーパネルに、それぞれの取り扱い店舗への入り口を置く。
 	
 取り扱い店舗一覧
 * STARBUCKS COFFEE （最初のメインメニュー）
@@ -27,10 +25,9 @@ TOKYO
 
 *  STARBUCKS Tea & Cafe
 
-あと、別ページに飛ぶのはやめて、ページ全体が切り替わる構造にする。その方が迷子になりにくそうだし。で、それぞれのカテゴリーパネル部分は作り込まない。３個ほど代表を見せる形にする。
 
 現在の最後尾
-上部タブ：
+上部タブ修正前：
         <label class="category-tab-item">
           <input id="TabSelect" 
                  type="radio" 
@@ -42,13 +39,47 @@ TOKYO
               <span class="category-tab-sub">STARBUCKS RESERVE & More</span>
             </span>
         </label>
+修正案：
+	    <label class="category-tab-item">
+          <input id="TabSelect" 
+                 type="radio" 
+                 name="category" 
+                 value="select" 
+          > 
+            <span class="category-tab-label">
+              <span class="category-tab-name">取り扱い店舗選択</span>
+				
+			  <!-- サブタグは、もしくは Starbucks Brands -->	
+              <span class="category-tab-sub">Store Types</span>
+            </span>
+        </label>
 	
-カテゴリーパネル：	
+カテゴリーパネル　修正前：	
    <section 
       id="select" 
       class="menu-panel"
       aria-labelledby="TabSelect">
         <h3 class="panel-title">店舗限定</h3>  
+
+        <div class="banner-navigation-wrapper">
+
+          <a href="Product-menu-select.html" class="panel-banner-btn">
+            <img src="" alt="店舗限定メニュー">
+            <div class="banner-label">
+              <h4>対象店舗：リザーブ® ロースタリー、ティー専門店など</h4>
+              <small>※別ページへ移動します。</small>
+            </div>  
+          </a>
+
+        </div>
+    </section>  
+
+修正案：	
+   <section 
+      id="select" 
+      class="menu-panel"
+      aria-labelledby="TabSelect">
+        <h3 class="panel-title">取り扱い店舗選択</h3>  
 
         <div class="banner-navigation-wrapper">
 
