@@ -25,31 +25,87 @@ TOKYO
 
 *  STARBUCKS Tea & Cafe
 
-きみが出してくれたこのコード：
- <div class="menu-panel-group">
+<div class="menu-panel-group">
 
-  <!-- STARBUCKS COFFEE -->
-  <div class="store-detail-view"
-       data-store-panel="regular"
-       hidden>
+  <!-- おすすめ -->
+  <section
+    id="recommend"
+    class="menu-panel"
+    aria-labelledby="TabRecommend"
+  >
+    <!-- おすすめの商品一覧 -->
+  </section>
 
-    <button type="button"
-            class="btn-store-back"
-            data-store-back>
-      ← 店舗選択に戻る
-    </button>
 
-    <h3 class="panel-title">STARBUCKS COFFEE</h3>
+  <!-- 店舗選択・店舗別メニュー -->
+  <section
+    id="select"
+    class="menu-panel"
+    aria-labelledby="TabSelect"
+  >
 
-    <!-- 商品一覧 -->
-    <ul class="panel-grid">
-      <!-- 商品カード -->
-    </ul>
+    <!-- ① 店舗選択画面 -->
+    <div class="store-selection-view"
+         data-store-entry>
 
-  </div>
-店舗ごとの表示領域と同じ section の中に追加する。ってどこの部分？		 
+      <h3 class="panel-title">取り扱い店舗</h3>
+      <small>※メニューページが切り替わります。</small>
 
-追加するコードの場所はここだよね？：	
+      <div class="store-buttons-wrapper">
+
+        <button
+          class="btn-menu-page"
+          type="button"
+          data-store="regular"
+        >
+          STARBUCKS COFFEE
+        </button>
+
+        <!-- 同じ構造で、ほかの店舗ボタンも並べる -->
+
+      </div>
+    </div>
+
+
+    <!-- ② STARBUCKS COFFEE の表示領域 -->
+    <div class="store-detail-view"
+         data-store-panel="regular"
+         hidden>
+
+      <button
+        type="button"
+        class="btn-store-back"
+        data-store-back
+      >
+        ← 店舗選択に戻る
+      </button>
+
+      <h3 class="panel-title">STARBUCKS COFFEE</h3>
+
+      <ul class="panel-grid">
+        <!-- 商品カード -->
+      </ul>
+
+    </div>
+
+
+    <!-- ③ ほかの店舗の表示領域も、ここに続けて追加する -->
+
+
+  </section>
+
+  <!-- ほかのカテゴリーの section -->
+
+</div>
+
+    </div><!-- .store-selection-view -->
+
+    <!-- ★ここに店舗ごとの表示領域を追加する -->
+
+  </section><!-- #select -->
+
+
+
  <div class="menu-panel-group">
 
     <!-- おすすめ -->
