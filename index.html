@@ -25,61 +25,8 @@ TOKYO
 
 *  STARBUCKS Tea & Cafe
 
-
-<section
-  id="select"
-  class="menu-panel"
-  aria-labelledby="TabSelect"
->
-
-  <!-- 店舗選択画面 -->
-  <div class="store-selection-view">
-
-    <h3 class="panel-title">取り扱い店舗</h3>
-
-    <small>※表示するメニューが切り替わります。</small>
-
-    <div class="store-buttons-wrapper">
-
-      <button class="btn-menu-page"
-              type="button"
-              data-store="regular">
-        STARBUCKS COFFEE
-      </button>
-
-      <button class="btn-menu-page"
-              type="button"
-              data-store="reserve-cafe">
-        STARBUCKS RESERVE® Cafe
-      </button>
-
-      <button class="btn-menu-page"
-              type="button"
-              data-store="reserve-bar">
-        STARBUCKS RESERVE® BAR
-      </button>
-
-      <button class="btn-menu-page"
-              type="button"
-              data-store="reserve-store">
-        STARBUCKS RESERVE® STORE
-      </button>
-
-      <button class="btn-menu-page"
-              type="button"
-              data-store="roastery">
-        STARBUCKS RESERVE® ROASTERY TOKYO
-      </button>
-
-      <button class="btn-menu-page"
-              type="button"
-              data-store="tea-cafe">
-        STARBUCKS Tea & Cafe
-      </button>
-
-    </div>
-
-  </div>
+きみが出してくれたこのコード：
+ <div class="menu-panel-group">
 
   <!-- STARBUCKS COFFEE -->
   <div class="store-detail-view"
@@ -100,6 +47,60 @@ TOKYO
     </ul>
 
   </div>
+店舗ごとの表示領域と同じ section の中に追加する。ってどこの部分？		 
+
+追加するコードの場所はここだよね？：	
+ <div class="menu-panel-group">
+
+    <!-- おすすめ -->
+    <section 
+      id="recommend" 
+      class="menu-panel"
+      aria-labelledby="TabRecommend"
+     >
+      <h3 class="panel-title">おすすめ</h3>
+      <small class="panel-note">※一部店舗では価格が異なります。</small>
+
+        <ul class="panel-grid">
+
+          <li class="panel-item">
+            <a href="">
+              <div class="panel-img">
+                <img src="" alt="ブリュード コーヒー">
+              </div>
+
+              <div class="panel-label">
+                <span>ブリュード コーヒー</span>
+                <span>¥380〜</span>
+              </div>
+            </a>
+          </li>
+		</ul>
+		<!-- 同じ ul li 構造の各パネルが並ぶ -->
+
+	<section 
+      id="select" 
+      class="menu-panel"
+      aria-labelledby="TabSelect"
+    >
+      <div class="store-selection-view">
+
+        <h3 class="panel-title">取り扱い店舗</h3>  
+        <small>※メニューページが切り替わります。</small>
+
+	    <div class="store-buttons-wrapper">
+
+        <button class="btn-menu-page"  
+                type="button" 
+                data-store="regular">
+          STARBUCKS COFFEE  
+		</button>
+		<!-- 同じ構造、data-store別の、角ボタンが並ぶ -->	
+	</div><!-- .menu-panel-group -->		
+
+
+
+
 
 
   <!-- RESERVE Cafe -->
