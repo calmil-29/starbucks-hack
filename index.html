@@ -25,9 +25,24 @@ TOKYO
 
 *  STARBUCKS Tea & Cafe
 
+新たに上部タブとパネルに追加した分と修正した分。
+	
+<nav class="menu-category-tab-group">　
+追加：	 
+       <!-- アルコール -->
+        <label class="category-tab-item">
+          <input id="TabARRIVIAMO" 
+                 type="radio" 
+                 name="category" 
+                 value="ARRIVIAMO™" 
+          > 
+            <span class="category-tab-label">
+              <span class="category-tab-name">クラフトカクテル | ARRIVIAMO™</span>
+              <span class="category-tab-sub">Alcoholic / Spirit-free</span>
+            </span>
+        </label>
 
-現在の最後尾
-上部タブ修正前：
+修正前：
         <label class="category-tab-item">
           <input id="TabSelect" 
                  type="radio" 
@@ -49,12 +64,39 @@ TOKYO
             <span class="category-tab-label">
               <span class="category-tab-name">取り扱い店舗選択</span>
 				
-			  <!-- サブタグは、もしくは Starbucks Brands -->	
+			  <!-- サブタグは、Starbucks Brands の方がいい？-->	
               <span class="category-tab-sub">Store Types</span>
-            </span>
-        </label>
+			</span>
+        </label>	
+	 
+<div class="menu-panel-group">
+追加：	
+	   <section 
+      id="ARRIVIAMO™" 
+      class="menu-panel"
+      aria-labelledby="TabARRIVIAMO™"
+     >
+        <h3 class="panel-title">クラフトカクテル | ARRIVIAMO™</h3>
+
+        <ul class="panel-grid">
+
+          <li class="panel-item">
+            <a href="">
+              <div class="panel-img">
+                <img src="" alt="">
+              </div>
+
+              <div class="panel-label">
+                <h4>ストロベリーフィズ No.68 with バレルエイジド アロマ</h4>
+                <span>¥2,500</span>
+              </div>
+            </a>
+          </li>
+
+        </ul>
+    </section> 
 	
-カテゴリーパネル　修正前：	
+修正前：	
    <section 
       id="select" 
       class="menu-panel"
@@ -82,18 +124,37 @@ TOKYO
         <h3 class="panel-title">取り扱い店舗選択</h3>  
         <small>※メニューページが切り替わります。</small>
 
-        <button class="btn-menu-page"  
-                type="button" 
-                onclick="MainMenuPage()"
-         >STARBUCKS COFFEE  
-		 </button>	
-	     <button class="btn-menu-page"  
-                type="button" 
-                onclick="MainMenuPage()"
-         >STARBUCKS RESERVE® Cafe
-		 </button>	
-	     <!-- 同じ構造が続く -->
-
+	    <div class="store-buttons-wrapper">
+          <button class="btn-menu-page"  
+                  type="button" 
+                  onclick="MainMenuPage('regular')"
+           >STARBUCKS COFFEE  
+		   </button>	
+	       <button class="btn-menu-page"  
+                  type="button" 
+                  onclick="MainMenuPage('reserve-cafe')"
+           >STARBUCKS RESERVE® Cafe
+		   </button>	
+	       <button class="btn-menu-page"  
+                  type="button" 
+                  onclick="MainMenuPage('reserve-bar')"
+           >STARBUCKS RESERVE® BAR
+		   </button>	
+	        <button class="btn-menu-page"  
+                  type="button" 
+                  onclick="MainMenuPage('reserve-store')"
+           >STARBUCKS RESERVE® STORE
+		   </button>	
+	      <button class="btn-menu-page"  
+                  type="button" 
+                  onclick="MainMenuPage('roastery')"
+           >STARBUCKS RESERVE® ROASTERY TOKYO
+		   </button>	
+	      <button class="btn-menu-page"  
+                  type="button" 
+                  onclick="MainMenuPage('tea-cafe')"
+           >STARBUCKS Tea & Cafe
+		   </button>	
         </div>
     </section>  
 
