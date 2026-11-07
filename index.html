@@ -10,7 +10,181 @@
 <body>
 
 
-ごちゃごちゃなってる理由がわかった。取り扱い場所によっては、アルコールだけじゃなくて、コーヒー、エスプレッソ、フラペチーノ...全商品が対象になるからだ。つまり、おすすめ以外のカテゴリー（残り９個）には、並べている順から、あるものに対して、２カテゴリーにパネルを3個だけ表示、それ以外は1個。それか、もう全部３個表示にしたほうがいい？数増えるし、画像も足す必要あるけど。で、取扱のない商品に対しては「こちらの商品の取り扱いはございません。（公式では：条件に一致する商品はございません）」って置く予定だけど、これは、おすすめ以外の全カテゴリーに置く必要がある。	
+<!-- メニューページ全体 -->
+<main class="menu-page">
+
+  <!-- 共通タイトル -->
+  <header class="menu-page-header">
+    <h1 class="menu-main-title">メニュー</h1>
+
+    <!-- 店舗切り替え時にJSで変更 -->
+    <p id="currentStoreName" class="menu-store-name">
+      STARBUCKS COFFEE
+    </p>
+  </header>
+
+
+  <!-- 上部カテゴリータブ -->
+  <div class="menu-category-group">
+
+    <!-- 既存のラジオボタンとlabelを維持 -->
+    <!-- おすすめ・コーヒー・エスプレッソ・その他 -->
+
+    <!-- 店舗選択タブは特別な動作にする -->
+    <!-- 既存のTabSelectを利用する場合はJS側も変更する -->
+
+  </div>
+
+
+  <!-- 通常カテゴリーの横スクロール領域 -->
+  <div class="menu-panel-group">
+
+    <!-- おすすめ -->
+    <section
+      id="recommend"
+      class="menu-panel"
+      aria-labelledby="TabRecommend"
+    >
+      <h2 class="panel-title">おすすめ</h2>
+
+      <ul class="panel-grid">
+        <!-- 商品カード -->
+      </ul>
+    </section>
+
+
+    <!-- コーヒー -->
+    <section
+      id="coffee"
+      class="menu-panel"
+      aria-labelledby="TabCoffee"
+    >
+      <h2 class="panel-title">コーヒー</h2>
+
+      <ul class="panel-grid">
+        <!-- 商品カード -->
+      </ul>
+    </section>
+
+
+    <!-- エスプレッソ -->
+    <section
+      id="espresso"
+      class="menu-panel"
+      aria-labelledby="TabEspresso"
+    >
+      <h2 class="panel-title">エスプレッソ</h2>
+
+      <ul class="panel-grid">
+        <!-- 商品カード -->
+      </ul>
+    </section>
+
+
+    <!-- その他9カテゴリーのうち残り -->
+
+    <!-- 店舗選択画面 -->
+    <section
+      id="select"
+      class="menu-panel"
+      aria-labelledby="TabSelect"
+    >
+
+      <div class="store-panel-heading">
+        <h2 class="panel-title">取り扱い店舗</h2>
+        <small>※メニューページが切り替わります。</small>
+      </div>
+
+      <div class="store-buttons-wrapper">
+
+        <button type="button"
+                class="btn-menu-page"
+                data-store="regular">
+          STARBUCKS COFFEE
+        </button>
+
+        <button type="button"
+                class="btn-menu-page"
+                data-store="reserve-cafe">
+          STARBUCKS RESERVE® Cafe
+        </button>
+
+        <button type="button"
+                class="btn-menu-page"
+                data-store="reserve-bar">
+          STARBUCKS RESERVE® BAR
+        </button>
+
+        <button type="button"
+                class="btn-menu-page"
+                data-store="reserve-store">
+          STARBUCKS RESERVE® STORE
+        </button>
+
+        <button type="button"
+                class="btn-menu-page"
+                data-store="roastery">
+          STARBUCKS RESERVE® ROASTERY TOKYO
+        </button>
+
+        <button type="button"
+                class="btn-menu-page"
+                data-store="tea-cafe">
+          STARBUCKS Tea & Cafe
+        </button>
+
+      </div>
+    </section>
+
+  </div><!-- .menu-panel-group -->
+
+
+  <!-- 右側から重なる店舗選択パネル -->
+  <dialog
+    id="storeDrawer"
+    class="store-drawer"
+    closedby="any"
+    aria-labelledby="storeDrawerTitle"
+  >
+
+    <div class="store-drawer-content">
+
+      <h2 id="storeDrawerTitle">店舗を選択</h2>
+
+      <div class="store-drawer-buttons">
+
+        <button type="button" data-store="regular">
+          STARBUCKS COFFEE
+        </button>
+
+        <button type="button" data-store="reserve-cafe">
+          STARBUCKS RESERVE® Cafe
+        </button>
+
+        <button type="button" data-store="reserve-bar">
+          STARBUCKS RESERVE® BAR
+        </button>
+
+        <button type="button" data-store="reserve-store">
+          STARBUCKS RESERVE® STORE
+        </button>
+
+        <button type="button" data-store="roastery">
+          STARBUCKS RESERVE® ROASTERY TOKYO
+        </button>
+
+        <button type="button" data-store="tea-cafe">
+          STARBUCKS Tea & Cafe
+        </button>
+
+      </div>
+
+    </div>
+
+  </dialog>
+
+</main>
+
 
 で、現在のコード：	
  <div class="menu-panel-group">
