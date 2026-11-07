@@ -9,34 +9,75 @@
 </head>
 <body>
 
+<body class="is-menu-page">
 
-<!-- メニューページ全体 -->
-<main class="menu-page">
+  <!-- ヘッダーの表示領域 -->
+  <div class="menu-header-group">
 
-  <!-- 共通タイトル -->
-  <header class="menu-page-header">
-    <h1 class="menu-main-title">メニュー</h1>
+    <header class="menu-header">
 
-    <!-- 店舗切り替え時にJSで変更 -->
-    <p id="currentStoreName" class="menu-store-name">
-      STARBUCKS COFFEE
-    </p>
-  </header>
+      <!-- ホーム画面に戻るボタン -->
+      <a href="index.html" class="btn-menu-back">
+        <span class="arrow-icon is-menu-page"></span>
+      </a>
 
+      <div class="menu-title">
+        <h1 class="menu-main-title">メニュー</h1>
 
-  <!-- 上部カテゴリータブ -->
-  <div class="menu-category-group">
+        <!-- 店舗切り替え時にJSで変更 -->
+        <p id="currentStoreName" class="menu-store-name">
+          STARBUCKS COFFEE
+        </p>
+      </div>
 
-    <!-- 既存のラジオボタンとlabelを維持 -->
-    <!-- おすすめ・コーヒー・エスプレッソ・その他 -->
-
-    <!-- 店舗選択タブは特別な動作にする -->
-    <!-- 既存のTabSelectを利用する場合はJS側も変更する -->
+    </header>
 
   </div>
 
 
-  <!-- 通常カテゴリーの横スクロール領域 -->
+  <!-- カテゴリータブの表示領域 -->
+  <nav class="menu-category-tab-group">
+
+    <div class="menu-category-inner">
+
+      <!-- おすすめ -->
+      <label class="category-tab-item">
+        <input
+          id="TabRecommend"
+          type="radio"
+          name="category"
+          value="recommend"
+          checked
+        >
+        <span class="category-tab-label">
+          <span class="category-tab-name">おすすめ</span>
+          <span class="category-tab-sub">Recommends</span>
+        </span>
+      </label>
+
+      <!-- コーヒー、エスプレッソなどの既存タブをここに残す -->
+
+
+      <!-- 取り扱い店舗 -->
+      <label class="category-tab-item">
+        <input
+          id="TabSelect"
+          type="radio"
+          name="category"
+          value="select"
+        >
+        <span class="category-tab-label">
+          <span class="category-tab-name">取り扱い店舗</span>
+          <span class="category-tab-sub">Stores</span>
+        </span>
+      </label>
+
+    </div><!-- .menu-category-inner -->
+
+  </nav><!-- .menu-category-tab-group -->
+
+
+  <!-- 商品パネルの横スワイプ領域 -->
   <div class="menu-panel-group">
 
     <!-- おすすめ -->
@@ -45,45 +86,36 @@
       class="menu-panel"
       aria-labelledby="TabRecommend"
     >
-      <h2 class="panel-title">おすすめ</h2>
+
+      <h3 class="panel-title">おすすめ</h3>
+      <small class="panel-note">※一部店舗では価格が異なります。</small>
 
       <ul class="panel-grid">
-        <!-- 商品カード -->
+
+        <li class="panel-item">
+          <a href="">
+            <div class="panel-img">
+              <img src="" alt="ブリュード コーヒー">
+            </div>
+
+            <div class="panel-label">
+              <span>ブリュード コーヒー</span>
+              <span>¥380〜</span>
+            </div>
+          </a>
+        </li>
+
+        <!-- 商品カードを追加 -->
+
       </ul>
-    </section>
+
+    </section><!-- #recommend -->
 
 
-    <!-- コーヒー -->
-    <section
-      id="coffee"
-      class="menu-panel"
-      aria-labelledby="TabCoffee"
-    >
-      <h2 class="panel-title">コーヒー</h2>
-
-      <ul class="panel-grid">
-        <!-- 商品カード -->
-      </ul>
-    </section>
+    <!-- コーヒー、エスプレッソなどの既存9セクションをここに残す -->
 
 
-    <!-- エスプレッソ -->
-    <section
-      id="espresso"
-      class="menu-panel"
-      aria-labelledby="TabEspresso"
-    >
-      <h2 class="panel-title">エスプレッソ</h2>
-
-      <ul class="panel-grid">
-        <!-- 商品カード -->
-      </ul>
-    </section>
-
-
-    <!-- その他9カテゴリーのうち残り -->
-
-    <!-- 店舗選択画面 -->
+    <!-- 店舗選択のフルパネル -->
     <section
       id="select"
       class="menu-panel"
@@ -91,55 +123,49 @@
     >
 
       <div class="store-panel-heading">
-        <h2 class="panel-title">取り扱い店舗</h2>
+        <h3 class="panel-title">取り扱い店舗</h3>
         <small>※メニューページが切り替わります。</small>
       </div>
 
-      <div class="store-buttons-wrapper">
+      <div class="store-selection-view" data-store-entry>
 
-        <button type="button"
-                class="btn-menu-page"
-                data-store="regular">
-          STARBUCKS COFFEE
-        </button>
+        <div class="store-buttons-wrapper">
 
-        <button type="button"
-                class="btn-menu-page"
-                data-store="reserve-cafe">
-          STARBUCKS RESERVE® Cafe
-        </button>
+          <button class="btn-menu-page" type="button" data-store="regular">
+            STARBUCKS COFFEE
+          </button>
 
-        <button type="button"
-                class="btn-menu-page"
-                data-store="reserve-bar">
-          STARBUCKS RESERVE® BAR
-        </button>
+          <button class="btn-menu-page" type="button" data-store="reserve-cafe">
+            STARBUCKS RESERVE® Cafe
+          </button>
 
-        <button type="button"
-                class="btn-menu-page"
-                data-store="reserve-store">
-          STARBUCKS RESERVE® STORE
-        </button>
+          <button class="btn-menu-page" type="button" data-store="reserve-bar">
+            STARBUCKS RESERVE® BAR
+          </button>
 
-        <button type="button"
-                class="btn-menu-page"
-                data-store="roastery">
-          STARBUCKS RESERVE® ROASTERY TOKYO
-        </button>
+          <button class="btn-menu-page" type="button" data-store="reserve-store">
+            STARBUCKS RESERVE® STORE
+          </button>
 
-        <button type="button"
-                class="btn-menu-page"
-                data-store="tea-cafe">
-          STARBUCKS Tea & Cafe
-        </button>
+          <button class="btn-menu-page" type="button" data-store="roastery">
+            STARBUCKS RESERVE® ROASTERY TOKYO
+          </button>
 
-      </div>
-    </section>
+          <button class="btn-menu-page" type="button" data-store="tea-cafe">
+            STARBUCKS Tea & Cafe
+          </button>
+
+        </div><!-- .store-buttons-wrapper -->
+
+      </div><!-- .store-selection-view -->
+
+    </section><!-- #select -->
 
   </div><!-- .menu-panel-group -->
 
 
-  <!-- 右側から重なる店舗選択パネル -->
+  <!-- 右側から開く店舗選択ドロワー -->
+  <!-- menu-panel-group の外に置く -->
   <dialog
     id="storeDrawer"
     class="store-drawer"
@@ -149,41 +175,43 @@
 
     <div class="store-drawer-content">
 
-      <h2 id="storeDrawerTitle">店舗を選択</h2>
+      <div class="store-drawer-heading">
+        <h2 id="storeDrawerTitle">店舗を選択</h2>
+      </div>
 
-      <div class="store-drawer-buttons">
+      <div class="store-buttons-wrapper">
 
-        <button type="button" data-store="regular">
+        <button class="btn-menu-page" type="button" data-store="regular">
           STARBUCKS COFFEE
         </button>
 
-        <button type="button" data-store="reserve-cafe">
+        <button class="btn-menu-page" type="button" data-store="reserve-cafe">
           STARBUCKS RESERVE® Cafe
         </button>
 
-        <button type="button" data-store="reserve-bar">
+        <button class="btn-menu-page" type="button" data-store="reserve-bar">
           STARBUCKS RESERVE® BAR
         </button>
 
-        <button type="button" data-store="reserve-store">
+        <button class="btn-menu-page" type="button" data-store="reserve-store">
           STARBUCKS RESERVE® STORE
         </button>
 
-        <button type="button" data-store="roastery">
+        <button class="btn-menu-page" type="button" data-store="roastery">
           STARBUCKS RESERVE® ROASTERY TOKYO
         </button>
 
-        <button type="button" data-store="tea-cafe">
+        <button class="btn-menu-page" type="button" data-store="tea-cafe">
           STARBUCKS Tea & Cafe
         </button>
 
-      </div>
+      </div><!-- .store-buttons-wrapper -->
 
-    </div>
+    </div><!-- .store-drawer-content -->
 
-  </dialog>
+  </dialog><!-- #storeDrawer -->
 
-</main>
+</body>
 
 
 現在のコード（全体の構造）：	
