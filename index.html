@@ -186,8 +186,59 @@
 </main>
 
 
-で、現在のコード：	
- <div class="menu-panel-group">
+現在のコード（全体の構造）：	
+	
+<body class="is-menu-page">
+<!-- ヘッダーの表示領域 -->	
+ <div class="menu-header-group">
+
+    <header class="menu-header">
+      
+      <!-- ホーム画面に戻るボタン -->
+      <a href="index.html" class="btn-menu-back">
+
+        <!-- 左向き矢印  -->
+        <span class="arrow-icon is-menu-page"></span> 
+      </a>     
+
+      <div class="menu-title">
+        <h1 class="menu-main-title">メニュー</h1>
+
+        <!-- 店舗切り替え時にJSで変更 -->
+        <p id="currentStoreName" class="menu-store-name">
+          STARBUCKS COFFEE
+        </p>
+      </div>
+      
+    </header>
+
+  </div>
+	
+<!-- カテゴリータブの表示領域 -->
+<nav class="menu-category-tab-group">
+  <!-- 11個のタブを横並びにする -->
+  <div class="menu-category-inner">	
+	  
+    <label class="category-tab-item">
+          <input id="TabRecommend" 
+                 type="radio" 
+                 name="category" 
+                 value="recommend" 
+                 checked
+          > 
+            <span class="category-tab-label">
+              <span class="category-tab-name">おすすめ</span>
+              <span class="category-tab-sub">Recommends</span>
+            </span>
+        </label>
+	   <!-- 同じ構造のlabelが10個続く コーヒー、エスプレッソ...取り扱い店舗 -->
+	  
+  </div><!-- .menu-category-inner -->
+</nav><!-- .menu-category-tab-group -->	  
+	  
+	  
+<!-- 商品パネルの横スワイプ領域 -->
+<div class="menu-panel-group">
 
    <!-- おすすめ -->
     <section 
@@ -216,7 +267,8 @@
 		<!-- 同じ li 構造のパネルが3つ並ぶ -->
 		</section><!-- Recommend -->
 
-	    <!-- 同じ section 構造が9個並ぶ・内パネルが3つは３個、それ以外はパネル1個/ -->
+	    <!-- 同じ構造のsectionが9個続く・その内、先頭のパネルの数３個、それ以外はパネル1個 -->
+	    <!-- ここも全てのパネルに３個枠用意、「条件に一致する商品はございません。」表示を修正時に追加する必要あり -->
 
 	<!-- 店舗選択・店舗別メニュー --> 
 	<section 
@@ -278,6 +330,8 @@
     </section>  
       
   </div><!-- .menu-panel-group -->
+	
+</body>	
     
 
 	
