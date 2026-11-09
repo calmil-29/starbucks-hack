@@ -10,261 +10,60 @@
 <body>
 
 // -----------------------------------------
-// 店舗選択ドロワー
+// 店舗情報
 // -----------------------------------------
 
-const storeDrawer = document.getElementById("storeDrawer");
+const currentStoreName = document.getElementById("currentStoreName");
 
-// 現在表示しているカテゴリータブを記録
-let activeCategoryTab = document.querySelector(
-    'input[name="category"]:checked'
-);
-
-// -----------------------------------------
-// 「取り扱い店舗」が選択された場合
-// -----------------------------------------
-
-if (selectedCategory === "select") {
-
-    // ドロワーを開く
-    if (storeDrawer && !storeDrawer.open) {
-        storeDrawer.showModal();
-    }
-
-    // 現在表示しているカテゴリーの選択状態を維持
-    if (activeCategoryTab) {
-        activeCategoryTab.checked = true;
-    }
-
-    // ここで処理を終了
-    // #select へのスクロールは行わない
-    return;
-}
-
-
-
+// 店舗IDと表示名の対応表
+const storeNames = {
+    "regular": "STARBUCKS COFFEE",
+    "reserve-cafe": "STARBUCKS RESERVE® Cafe",
+    "reserve-bar": "STARBUCKS RESERVE® BAR",
+    "reserve-store": "STARBUCKS RESERVE® STORE",
+    "roastery": "STARBUCKS RESERVE® ROASTERY TOKYO",
+    "tea-cafe": "STARBUCKS Tea & Cafe"
+};
 	
-取り扱い店舗一覧
-* STARBUCKS COFFEE （最初のメインメニュー）
+// -----------------------------------------
+// 店舗選択ボタンを押したときの処理
+// -----------------------------------------
 
-* ﻿﻿STARBUCKS RESERVE® Cafe
+const menuPage = document.querySelector(".is-menu-page");
 
-* ﻿﻿STARBUCKS RESERVE® BAR
+menuPage.addEventListener("click", (event) => {
 
-* ﻿﻿STARBUCKS RESERVE® STORE
+    // 押された要素、またはその親要素から店舗ボタンを探す
+    const storeButton = event.target.closest("[data-store]");
 
-* ﻿﻿STARBUCKS RESERVE® ROASTERY
-TOKYO
+    // 店舗ボタン以外が押された場合は終了
+    if (!storeButton) {
+        return;
+    }
 
-*  STARBUCKS Tea & Cafe
+    // ボタンのdata-storeから店舗IDを取得
+    const selectedStore = storeButton.dataset.store;
 
-<div class="menu-panel-group">
+    console.log("選択された店舗ID:", selectedStore);
 
-  <!-- おすすめ -->
-  <section
-    id="recommend"
-    class="menu-panel"
-    aria-labelledby="TabRecommend"
-  >
-    <!-- おすすめの商品一覧 -->
-  </section>
+    // 店舗IDに対応する店舗名を取得
+    const selectedStoreName = storeNames[selectedStore];
 
+    // 対応する店舗名がなければ終了
+    if (!selectedStoreName) {
+        console.log("対応する店舗が見つからない");
+        return;
+    }
 
-  <!-- 店舗選択・店舗別メニュー -->
-  <section
-    id="select"
-    class="menu-panel"
-    aria-labelledby="TabSelect"
-  >
+    // ヘッダーの店舗名を変更
+    currentStoreName.textContent = selectedStoreName;
 
-    <!-- ① 店舗選択画面 -->
-    <div class="store-selection-view"
-         data-store-entry>
+    // ドロワーが開いていれば閉じる
+    if (storeDrawer && storeDrawer.open) {
+        storeDrawer.close();
+    }
 
-      <h3 class="panel-title">取り扱い店舗</h3>
-      <small>※メニューページが切り替わります。</small>
-
-      <div class="store-buttons-wrapper">
-
-        <button
-          class="btn-menu-page"
-          type="button"
-          data-store="regular"
-        >
-          STARBUCKS COFFEE
-        </button>
-
-        <!-- 同じ構造で、ほかの店舗ボタンも並べる -->
-
-      </div>
-    </div>
-
-
-    <!-- ② STARBUCKS COFFEE の表示領域 -->
-    <div class="store-detail-view"
-         data-store-panel="regular"
-         hidden>
-
-      <button
-        type="button"
-        class="btn-store-back"
-        data-store-back
-      >
-        ← 店舗選択に戻る
-      </button>
-
-      <h3 class="panel-title">STARBUCKS COFFEE</h3>
-
-      <ul class="panel-grid">
-        <!-- 商品カード -->
-      </ul>
-
-    </div>
-
-
-    <!-- ③ ほかの店舗の表示領域も、ここに続けて追加する -->
-
-
-  </section>
-
-  <!-- ほかのカテゴリーの section -->
-
-</div>
-
-    </div><!-- .store-selection-view -->
-
-    <!-- ★ここに店舗ごとの表示領域を追加する -->
-
-  </section><!-- #select -->
-
-
---------------------------------
-
-	<section 
-      id="select" 
-      class="menu-panel"
-      aria-labelledby="TabSelect"
-    >
-      <div class="store-selection-view">
-
-        <h3 class="panel-title">取り扱い店舗</h3>  
-        <small>※メニューページが切り替わります。</small>
-
-	    <div class="store-buttons-wrapper">
-
-        <button class="btn-menu-page"  
-                type="button" 
-                data-store="regular">
-          STARBUCKS COFFEE  
-		</button>
-		<!-- 同じ構造、data-store別の、角ボタンが並ぶ -->	
-	</div><!-- .menu-panel-group -->		
-
-
-
-
-
-
-  <!-- RESERVE Cafe -->
-  <div class="store-detail-view"
-       data-store-panel="reserve-cafe"
-       hidden>
-
-    <button type="button"
-            class="btn-store-back"
-            data-store-back>
-      ← 店舗選択に戻る
-    </button>
-
-    <h3 class="panel-title">STARBUCKS RESERVE® Cafe</h3>
-
-    <ul class="panel-grid">
-      <!-- 商品カード -->
-    </ul>
-
-  </div>
-
-
-  <!-- RESERVE BAR -->
-  <div class="store-detail-view"
-       data-store-panel="reserve-bar"
-       hidden>
-
-    <button type="button"
-            class="btn-store-back"
-            data-store-back>
-      ← 店舗選択に戻る
-    </button>
-
-    <h3 class="panel-title">STARBUCKS RESERVE® BAR</h3>
-
-    <ul class="panel-grid">
-      <!-- 商品カード -->
-    </ul>
-
-  </div>
-
-
-  <!-- RESERVE STORE -->
-  <div class="store-detail-view"
-       data-store-panel="reserve-store"
-       hidden>
-
-    <button type="button"
-            class="btn-store-back"
-            data-store-back>
-      ← 店舗選択に戻る
-    </button>
-
-    <h3 class="panel-title">STARBUCKS RESERVE® STORE</h3>
-
-    <ul class="panel-grid">
-      <!-- 商品カード -->
-    </ul>
-
-  </div>
-
-
-  <!-- ROASTERY TOKYO -->
-  <div class="store-detail-view"
-       data-store-panel="roastery"
-       hidden>
-
-    <button type="button"
-            class="btn-store-back"
-            data-store-back>
-      ← 店舗選択に戻る
-    </button>
-
-    <h3 class="panel-title">STARBUCKS RESERVE® ROASTERY TOKYO</h3>
-
-    <ul class="panel-grid">
-      <!-- 商品カード -->
-    </ul>
-
-  </div>
-
-
-  <!-- Tea & Cafe -->
-  <div class="store-detail-view"
-       data-store-panel="tea-cafe"
-       hidden>
-
-    <button type="button"
-            class="btn-store-back"
-            data-store-back>
-      ← 店舗選択に戻る
-    </button>
-
-    <h3 class="panel-title">STARBUCKS Tea & Cafe</h3>
-
-    <ul class="panel-grid">
-      <!-- 商品カード -->
-    </ul>
-
-  </div>
-
-</section>
+});
 
 	
     
