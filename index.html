@@ -9,61 +9,38 @@
 </head>
 <body>
 
-// -----------------------------------------
-// 店舗情報
-// -----------------------------------------
+<section
+  id="coffee"
+  class="menu-panel"
+  aria-labelledby="TabCoffee"
+>
+  <h3 class="panel-title">コーヒー</h3>
 
-const currentStoreName = document.getElementById("currentStoreName");
+  <div class="store-menu-content" data-store-content="regular">
+    <!-- STARBUCKS COFFEEの商品 -->
+  </div>
 
-// 店舗IDと表示名の対応表
-const storeNames = {
-    "regular": "STARBUCKS COFFEE",
-    "reserve-cafe": "STARBUCKS RESERVE® Cafe",
-    "reserve-bar": "STARBUCKS RESERVE® BAR",
-    "reserve-store": "STARBUCKS RESERVE® STORE",
-    "roastery": "STARBUCKS RESERVE® ROASTERY TOKYO",
-    "tea-cafe": "STARBUCKS Tea & Cafe"
-};
-	
-// -----------------------------------------
-// 店舗選択ボタンを押したときの処理
-// -----------------------------------------
+  <div class="store-menu-content" data-store-content="reserve-cafe" hidden>
+    <!-- RESERVE Cafeの商品 -->
+  </div>
 
-const menuPage = document.querySelector(".is-menu-page");
+  <div class="store-menu-content" data-store-content="reserve-bar" hidden>
+    <!-- RESERVE BARの商品 -->
+  </div>
 
-menuPage.addEventListener("click", (event) => {
+  <div class="store-menu-content" data-store-content="reserve-store" hidden>
+    <!-- RESERVE STOREの商品 -->
+  </div>
 
-    // 押された要素、またはその親要素から店舗ボタンを探す
-    const storeButton = event.target.closest("[data-store]");
+  <div class="store-menu-content" data-store-content="roastery" hidden>
+    <!-- ROASTERYの商品 -->
+  </div>
 
-    // 店舗ボタン以外が押された場合は終了
-    if (!storeButton) {
-        return;
-    }
+  <div class="store-menu-content" data-store-content="tea-cafe" hidden>
+    <!-- Tea & Cafeの商品 -->
+  </div>
 
-    // ボタンのdata-storeから店舗IDを取得
-    const selectedStore = storeButton.dataset.store;
-
-    console.log("選択された店舗ID:", selectedStore);
-
-    // 店舗IDに対応する店舗名を取得
-    const selectedStoreName = storeNames[selectedStore];
-
-    // 対応する店舗名がなければ終了
-    if (!selectedStoreName) {
-        console.log("対応する店舗が見つからない");
-        return;
-    }
-
-    // ヘッダーの店舗名を変更
-    currentStoreName.textContent = selectedStoreName;
-
-    // ドロワーが開いていれば閉じる
-    if (storeDrawer && storeDrawer.open) {
-        storeDrawer.close();
-    }
-
-});
+</section>
 
 	
     
