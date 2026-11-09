@@ -9,38 +9,91 @@
 </head>
 <body>
 
-<section
-  id="coffee"
-  class="menu-panel"
-  aria-labelledby="TabCoffee"
->
-  <h3 class="panel-title">コーヒー</h3>
+ <div class="menu-panel-group">
 
-  <div class="store-menu-content" data-store-content="regular">
-    <!-- STARBUCKS COFFEEの商品 -->
-  </div>
+    <!-- おすすめ -->
+    <section 
+      id="recommend" 
+      class="menu-panel"
+      aria-labelledby="TabRecommend"
+     >
+      <h3 class="panel-title">おすすめ</h3>
+      <small class="panel-note">※一部店舗では価格が異なります。</small>
 
-  <div class="store-menu-content" data-store-content="reserve-cafe" hidden>
-    <!-- RESERVE Cafeの商品 -->
-  </div>
+        <!-- STARBUCKS COFFEEの商品 -->
+        <div class="store-menu-content" data-store-content="regular"></div>
+        
+          <!-- 商品カード -->
+          <ul class="panel-grid">
 
-  <div class="store-menu-content" data-store-content="reserve-bar" hidden>
-    <!-- RESERVE BARの商品 -->
-  </div>
+            <li class="panel-item">
+              <a href="">
+                <div class="panel-img">
+                  <img src="" alt="">
+                </div>
 
-  <div class="store-menu-content" data-store-content="reserve-store" hidden>
-    <!-- RESERVE STOREの商品 -->
-  </div>
+                <div class="panel-label">
+                  <span>商品名</span>
+                  <span>¥〜</span>
+                </div>
+              </a>
+            </li>
 
-  <div class="store-menu-content" data-store-content="roastery" hidden>
-    <!-- ROASTERYの商品 -->
-  </div>
+            <li class="panel-item">
+              <a href="">
+                <div class="panel-img">
+                  <img src="" alt="">
+                </div>
 
-  <div class="store-menu-content" data-store-content="tea-cafe" hidden>
-    <!-- Tea & Cafeの商品 -->
-  </div>
+                <div class="panel-label">
+                  <span>商品名</span>
+                  <span>¥〜</span>
+                </div>
+              </a>
+            </li>
 
-</section>
+            <li class="panel-item">
+              <a href="">
+                <div class="panel-img">
+                  <img src="" alt="">
+                </div>
+
+                <div class="panel-label">
+                  <span>商品名</span>
+                  <span>¥〜</span>
+                </div>
+              </a>
+            </li>
+
+        </ul>
+
+        <!-- RESERVE Cafeの商品 -->
+        <div class="store-menu-content" data-store-content="reserve-cafe" hidden>
+   
+        </div>
+
+        <!-- RESERVE BARの商品 -->
+        <div class="store-menu-content" data-store-content="reserve-bar" hidden>
+    
+        </div>
+
+        <!-- RESERVE STOREの商品 -->
+        <div class="store-menu-content" data-store-content="reserve-store" hidden>
+
+        </div>
+
+        <!-- ROASTERYの商品 -->
+        <div class="store-menu-content" data-store-content="roastery" hidden>
+
+        </div>
+
+        <!-- Tea & Cafeの商品 -->
+        <div class="store-menu-content" data-store-content="tea-cafe" hidden>
+        
+        </div>
+    
+      </section><!-- Recommend --> 
+	 ...
 
 	
     
