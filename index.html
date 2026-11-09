@@ -9,120 +9,190 @@
 </head>
 <body>
 
-/* ========================================
-   店舗選択ドロワー
-======================================== */
+document.addEventListener("DOMContentLoaded", () => {
 
-/* ドロワー本体 */
-.store-drawer {
-  position: fixed;
-  inset: 0 0 0 auto;
+    console.log("① JavaScriptが実行された");
 
-  width: 50%;
-  max-width: 420px;
-  height: 100vh;
-  height: 100dvh;
-  max-height: none;
+    const panelGroup = document.querySelector(".menu-panel-group");
 
-  margin: 0;
-  padding: 0;
+    const categoryTabs = document.querySelectorAll(
+        'input[name="category"]'
+    );
 
-  border: none;
-  background-color: #fff;
+    console.log("② 商品パネル領域:", panelGroup);
+    console.log("③ カテゴリータブの数:", categoryTabs.length);
 
-  overflow-y: auto;
-  overscroll-behavior: contain;
+    categoryTabs.forEach((tab) => {
 
-  z-index: 1000;
-}
+        tab.addEventListener("change", () => {
 
-/* ダイアログが開いたときの背景 */
-.store-drawer::backdrop {
-  background-color: rgba(0, 0, 0, 0.35);
-}
+            console.log("④ タブが選択された:", tab.value);
 
-/* ドロワーの内側 */
-.store-drawer-content {
-  display: flex;
-  flex-direction: column;
+            const selectedCategory = tab.value;
 
-  min-height: 100%;
-  padding: 32px 24px;
-  box-sizing: border-box;
-}
+            const targetPanel = document.getElementById(
+                selectedCategory
+            );
 
-/* ドロワーのタイトル */
-.store-drawer-heading {
-  margin-bottom: 28px;
-}
+            console.log("⑤ 対応する商品パネル:", targetPanel);
 
-.store-drawer-heading h2 {
-  margin: 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-}
+            if (!panelGroup || !targetPanel) {
+                console.log("⑥ 必要な要素が見つからない");
+                return;
+            }
 
-/* ドロワー内の店舗ボタン */
-.store-drawer .store-buttons-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+            const panelGroupRect =
+                panelGroup.getBoundingClientRect();
 
-/* ドロワー内の各店舗ボタン */
-.store-drawer .btn-menu-page {
-  display: block;
-  width: 100%;
-  box-sizing: border-box;
-}
+            const targetPanelRect =
+                targetPanel.getBoundingClientRect();
+
+            const targetPosition =
+                panelGroup.scrollLeft
+                + targetPanelRect.left
+                - panelGroupRect.left;
+
+            console.log("⑦ 移動先:", targetPosition);
+
+            panelGroup.scrollTo({
+                left: targetPosition,
+                behavior: "smooth"
+            });
+
+        });
+
+    });
+
+    // -----------------------------------------
+    // 商品パネルをスワイプしたときの処理
+    // -----------------------------------------
+
+    panelGroup.addEventListener("scroll", () => {
+
+      // 現在のスクロール位置から、表示中のパネル番号を求める
+      const currentIndex = Math.round(
+          panelGroup.scrollLeft / panelGroup.clientWidth
+      );
+
+      // その番号に対応する商品パネルを取得
+      const currentPanel = panelGroup.children[currentIndex];
+
+      // パネルが取得できなければ終了
+      if (!currentPanel) {
+          return;
+      }
+
+      // パネルのidと同じvalueを持つラジオボタンを取得
+      const currentTab = Array.from(categoryTabs).find((tab) => {
+          return tab.value === currentPanel.id;
+      });
+
+      // 対応するタブが見つからなければ終了
+      if (!currentTab) {
+          return;
+      }
+
+      // タブの選択状態を更新
+      currentTab.checked = true;
+
+      // ----------------------------------------- 
+      // 商品パネルのスワイプに合わせてタブ列もスクロール
+      // ----------------------------------------- 
+
+      // カテゴリータブの横スクロール領域
+      const tabGroup = document.querySelector('.menu-category-tab-group');
+
+      // 選択されたタブの表示位置を取得
+      const currentTabItem = currentTab.closest(".category-tab-item");
+
+      const tabGroupRect = tabGroup.getBoundingClientRect();
+      const currentTabRect = currentTabItem.getBoundingClientRect();
+
+      // 全カテゴリーの中で、現在のタブが何番目か
+      const selectedTabIndex = Array.from(categoryTabs).indexOf(currentTab);
+
+      // カテゴリーの総数   
+      const totalTabs = categoryTabs.length;
+
+      // タブ列の表示幅
+      const visibleWidth = tabGroup.clientWidth;
+
+      // 選択タブの幅
+      const currentTabWidth = currentTabItem.offsetWidth;
+
+      // 選択タブを配置する目標位置
+      const leftPosition = 24;
+
+      const centerPosition =
+          (visibleWidth - currentTabWidth) / 2;
+
+      const rightPosition =
+          visibleWidth - currentTabWidth - 16;
+
+      // 中央になるカテゴリー番号
+      const middleIndex = (totalTabs - 1) / 2;
+
+      // 選択タブの位置を計算
+      let targetPosition;
+
+      if (selectedTabIndex === 0) {
+
+          // 最初のタブは左端
+          targetPosition = 0;
+
+      } else if (selectedTabIndex <= middleIndex) {
+
+          // 序盤から中盤：左寄りから中央へ
+          const progress =
+              (selectedTabIndex - 1) / (middleIndex - 1);
+
+          targetPosition =
+              leftPosition
+              + (centerPosition - leftPosition) * progress;
+
+      } else {
+
+          // 中盤から終盤：中央から右寄りへ
+          const progress =
+              (selectedTabIndex - middleIndex)
+              / ((totalTabs - 1) - middleIndex);
+
+          targetPosition =
+              centerPosition
+              + (rightPosition - centerPosition) * progress;
+
+      }
+
+      // 実際にスクロールする位置を計算
+      const scrollPosition =
+          tabGroup.scrollLeft
+          + currentTabRect.left
+          - tabGroupRect.left
+          - targetPosition;
+
+      // スクロール可能な範囲に収める
+      const maxScrollLeft =
+          tabGroup.scrollWidth - tabGroup.clientWidth;
+
+      const adjustedScrollLeft = Math.max(
+          0,
+          Math.min(scrollPosition, maxScrollLeft)
+      );
+
+      // タブ列を滑らかに移動
+      tabGroup.scrollTo({
+          left: adjustedScrollLeft,
+          behavior: "smooth"
+      });
+
+    });
+
+});
 
 
-/* ========================================
-   ドロワーの表示アニメーション
-======================================== */
-
-/* 開いたときに右からスライド */
-.store-drawer[open] {
-  animation: storeDrawerSlideIn 0.3s ease-out;
-}
-
-@keyframes storeDrawerSlideIn {
-  from {
-    transform: translateX(100%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-}
 
 
-/* ========================================
-   スマートフォン対応
-======================================== */
 
-@media (max-width: 600px) {
-
-  .store-drawer {
-    width: 85%;
-    max-width: none;
-  }
-
-  .store-drawer-content {
-    padding: 28px 20px;
-  }
-
-}
-
-
-/* 動きを減らす設定が有効な場合 */
-@media (prefers-reduced-motion: reduce) {
-
-  .store-drawer[open] {
-    animation: none;
-  }
-
-}
 	
 取り扱い店舗一覧
 * STARBUCKS COFFEE （最初のメインメニュー）
