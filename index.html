@@ -9,93 +9,69 @@
 </head>
 <body>
     
-    <section 
-      id="recommend" 
-      class="menu-panel"
-      aria-labelledby="TabRecommend"
-     >
-      <h3 class="panel-title">おすすめ</h3>
-      <small class="panel-note">※一部店舗では価格が異なります。</small>
+ /* ========================================
+   商品カード一覧
+======================================== */
 
-      <div class="" data-store-content="" hidden>
-        <p class="no-products-message">条件に一致する商品はございません。</p>
-      </div>  
+.panel-grid {
+  display: grid;
 
-        <!-- STARBUCKS COFFEEの商品 -->
-        <div class="store-menu-content" data-store-content="regular"></div>
-        
-          <!-- 商品カード -->
-          <ul class="panel-grid">
+  /* 3列に並べる */
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 
-            <li class="panel-item">
-              <a href="">
-                <div class="panel-img">
-                  <img src="" alt="">
-                </div>
+  /* カード同士の間隔 */
+  column-gap: 20px;
+  row-gap: 28px;
 
-                <div class="panel-label">
-                  <span>商品名</span>
-                  <span>¥〜</span>
-                </div>
-              </a>
-            </li>
+  /* ulの初期設定をリセット */
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 
-            <li class="panel-item">
-              <a href="">
-                <div class="panel-img">
-                  <img src="" alt="">
-                </div>
 
-                <div class="panel-label">
-                  <span>商品名</span>
-                  <span>¥〜</span>
-                </div>
-              </a>
-            </li>
+/* ========================================
+   商品カード
+======================================== */
 
-            <li class="panel-item">
-              <a href="">
-                <div class="panel-img">
-                  <img src="" alt="">
-                </div>
+.panel-item {
+  min-width: 0;
+}
 
-                <div class="panel-label">
-                  <span>商品名</span>
-                  <span>¥〜</span>
-                </div>
-              </a>
-            </li>
 
-        </ul>
+/* 商品画像 */
+.panel-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
 
-        <!-- RESERVE Cafeの商品 -->
-        <div class="store-menu-content" data-store-content="reserve-cafe" hidden>
-   
-        </div>
 
-        <!-- RESERVE BARの商品 -->
-        <div class="store-menu-content" data-store-content="reserve-bar" hidden>
-    
-        </div>
+/* 商品名・価格 */
+.panel-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 
-        <!-- RESERVE STOREの商品 -->
-        <div class="store-menu-content" data-store-content="reserve-store" hidden>
+  margin-top: 10px;
+}
 
-        </div>
 
-        <!-- ROASTERYの商品 -->
-        <div class="store-menu-content" data-store-content="roastery" hidden>
+/* ========================================
+   スマートフォン
+======================================== */
 
-        </div>
+@media (max-width: 600px) {
 
-        <!-- Tea & Cafeの商品 -->
-        <div class="store-menu-content" data-store-content="tea-cafe" hidden>
-        
-        </div>
-    
-      </section><!-- Recommend --> 
+  .panel-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
-	...
+    column-gap: 12px;
+    row-gap: 24px;
+  }
+
+}
     
 ♥️ 無代へ渡す用 
 
