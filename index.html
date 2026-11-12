@@ -9,11 +9,271 @@
 </head>
 <body>
 
-toggleDepositWindow()
-selectDepositOption()
-goToDepositConfirm()
-closeDepositModal()
-closeDepositModalForce()
+
+function toggleDepositWindow(type, event) {   
+    if (event) event.stopPropagation(); 
+
+    // 他の別窓を全部閉じる
+    closeAllSelectorWindows();
+    
+    // 開きたい別枠を探す
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1); 
+    const targetId = `deposit${upperType}Window`;
+
+    // 開く
+    const targetWindow = document.getElementById(targetId); 
+    if (targetWindow) {
+        targetWindow.classList.add('is-active');
+    }
+}
+	
+//【第２・第３共通】：選択中の値を設定画面に表示し、【第３モーダルの設定値】を更新する 	
+function selectDepositOption(type, value, event) {
+    if (event) event.stopPropagation(); 
+
+    // 【第３モーダル】か【第２モーダル】かを自動判定
+
+    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
+
+    // 【UI更新対象の特定】
+
+    let menuIndex = 1;
+
+    if (type === 'amount') menuIndex = 2;     // 入金額
+    if (type === 'condition') menuIndex = 3;  // 入金条件（オートチャージのみ）
+
+    // 「支払い方法」：【第３モーダル】なら４番目、【第２モーダル】なら３番目
+
+    if (type === 'method') {
+        menuIndex = isAutocharge ? 4 : 3;
+    }    
+
+    // 文字を書き換える対象となる【DOM要素】をピンポイントで取得
+
+    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
+    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
+
+    //【防波堤（ガードクローズ）】もし DOM要素がまだ画面に存在しない場合は、ここで処理を中断する
+
+    if (!currentLabel) {
+        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
+        return;
+    }
+
+    // ======================================
+    // 【データ更新とDOM要素への文字反映】 
+    // ======================================
+
+    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新
+
+    const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');  // 第３ 現在選択中カード画像
+    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');        // 第２ 現在選択中カード画像
+  
+    if (type === 'card') {
+
+        if (isAutocharge) {
+            // 【第３モーダル】編集用
+            editingAutoTargetCardType = value;    
+
+        } else {
+            // 【第２モーダル】現在選択中カード	
+            depositTargetCardType = value;        
+
+
+        console.log(
+            '【第2】カード切替後',
+            'currentSelectedCardType =',
+            currentSelectedCardType,
+            'depositTargetCardType =',
+            depositTargetCardType,
+            'autoTargetCardType =',
+            autoTargetCardType
+        );
+
+        
+        }    
+
+        // オートチャージ機能
+        if (!isAutocharge && isAutochargeEnabled) {
+            renderAutochargeUI();
+
+        }
+
+        // カード画像を切り替える
+        if (value === 'main') {
+
+            // 第３
+            if (isAutocharge) {
+	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
+
+            //　第２
+	        } else {
+	            depositCurrentCardImg.src = 'images/my-card-main.svg';
+
+                const depositCardName = document.getElementById('depositCardName'); 
+
+                if (depositCardName) {
+                    depositCardName.textContent = `Starbucks Card`;
+                }	
+
+	        }
+
+            currentLabel.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
+
+            } else if (value === 'sub') {
+
+            if (isAutocharge) {
+	        autochargeCurrentCardImg.src = 'images/my-card-sub.png'; 
+
+	        } else {
+	        depositCurrentCardImg.src = 'images/my-card-sub.png';
+
+            const depositCardName = document.getElementById('depositCardName'); 
+
+                if (depositCardName) {
+                    depositCardName.textContent = `サブカード`;
+                }	
+	        }
+
+            currentLabel.textContent = `¥${subCardBalance.toLocaleString()}`;
+        }
+
+    // B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）
+
+    } else if (type === 'amount' || type === 'condition') {
+
+        // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
+        const numValue = Number(value);
+
+        if (!isNaN(numValue)) {
+
+            // 第３：編集用の入金額・入金条件
+            if (isAutocharge) {
+                if (type === 'amount')  editingAutochargeAmount = numValue; 
+                if (type === 'condition') editingAutochargeCondition = numValue; 
+            }  
+
+            // 第２・第３共通、画面のDOM要素（テキスト）を書き換える　例：「¥2,000」
+            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
+
+        } else {
+            currentLabel.textContent = value;
+        }
+        
+    // C. 支払い方法
+
+    } else if (type === 'method') {
+        if (isAutocharge) {
+
+            // 第３：編集用の支払い方法を更新
+            editingAutochargeMethod = value; 
+        } 
+
+        // 第２・第３共通、画面のDOM要素（テキスト）を書き換える
+        currentLabel.textContent = value;
+    }    
+   
+    // 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する 
+    if (isAutocharge) {
+        const allSummaries = document.querySelectorAll('.autocharge-summary');
+
+        allSummaries.forEach(el => {
+            el.textContent = `オートチャージ：¥${editingAutochargeAmount.toLocaleString()}\n` +
+            `入金条件：残高が¥${editingAutochargeCondition.toLocaleString()}未満` ; 
+        });
+
+        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
+
+        const errorBox = document.getElementById('autoErrorMessage');
+        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件
+        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
+
+       if (Number(editingAutochargeAmount) < Number(editingAutochargeCondition)) { 
+
+            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
+
+            if (errorBox) errorBox.style.display = 'block';
+            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
+            if (nextBtn) nextBtn.disabled = true; 
+
+        } else {
+
+            // 条件クリア：エラーを消して通常状態に戻す
+
+            if (errorBox) errorBox.style.display = 'none';
+            if (conditionMenu)  conditionMenu.classList.remove('has-error');
+            if (nextBtn) nextBtn.disabled = false;
+        }
+    }
+
+
+    // 【自動クローズ】 文字をコピーし終わったら、用済みになった「ドロップダウン」を閉じる 
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
+
+    // 【ドロップダウンを特定】今開いていたドロップダウンのIDを自動で組み立てる
+
+    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
+    const targetWindow = document.getElementById(windowId);
+
+    if (targetWindow) {
+        targetWindow.classList.remove('is-active');
+    }  
+} 
+		   
+function goToDepositConfirm(event) {
+    if (event) event.stopPropagation();
+    
+    const inputArea = document.querySelector('.deposit-screen-input');    // 【入金設定画面】の箱
+    const confirmBox = document.querySelector('.deposit-screen-confirm'); // 【最終確認画面】の箱
+
+    // 確認画面に進む瞬間に、入力画面を完全に非表示にする
+    
+    if (inputArea) inputArea.classList.remove('is-active'); 
+
+    // 確認画面を表示
+
+    if (confirmBox) {
+        confirmBox.classList.add('is-active');
+    } 
+
+    fillDepositConfirm();
+} 
+
+		   
+function closeDepositModal(event) {
+
+   if (!event) return;
+
+    // 白い中身（'.deposit-modal-content'）がタップされた場合は、完全に処理をブロックして閉じない
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
+    
+    closeDepositModalForce();
+   
+}
+
+function closeDepositModalForce() {
+
+    const depositModal = document.getElementById('depositModal'); 
+
+    if (depositModal) {
+        depositModal.classList.remove('is-active'); // 【第２モーダル】全体を閉じる
+
+        // 次にこのモーダルを開いた時のために、画面の初期化を裏で行っておく
+        // 500ミリ秒（0.5秒）後に元の「入力画面」の状態に戻して、次回開いた時に確認画面が残るバグを防ぐ
+         setTimeout(() => {
+            const inputArea = document.querySelector('.deposit-screen-input'); 
+            const confirmBox = document.querySelector('.deposit-screen-confirm');
+
+            if (inputArea) inputArea.classList.add('is-active');
+            if (confirmBox) confirmBox.classList.remove('is-active'); 
+        }, 500);
+    }
+}
+
+		   
     
 ♥️ 無代へ渡す用 
 
