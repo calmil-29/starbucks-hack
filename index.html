@@ -8,81 +8,148 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!--
-  今回の制作対象外：
-  ・商品説明、詳細情報
-  ・アレルゲン・栄養成分情報
-  ・詳細なカスタマイズ機能
-  ・デリバリー案内
-  ・おすすめ情報、最近見た商品
--->
-	
-<body class="is-sub-page">
 
-  <main class="product-group"> 
-  
-    <div class="product-inner">
+QRモーダル：	
+<div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
 
-      <!-- メニュー画面に戻るボタン -->
-      <header class="prpduct-header">
-        <a href="Product-menu.html" class="btn-menu-back">
-          <p>ブリュード コーヒー</p>
+    <div class="qr-modal-content">
 
-          <!-- 左向き矢印 < --> 
-          <span class="arrow-icon is-product-page"></span>
-        </a>   
-      </header>  
-      
-      <img src="../images/coffee.png" alt="コーヒー" class="product-img"> 
-
-      <div class="product-item">
-        <h2 class="product-title">ブリュード コーヒー</h2>
-        <p class="product-type">ホット / アイス</p>
+      <div class="qr-modal-header">
+        <button class="qr-close-btn" onclick="closeQrModal(event)">
+          <span></span>
+          <span></span>
+        </button>
       </div>
 
-      <!-- 金額 -->
-      <div class="product-price-group">
-        <div class="produt-main-price">
-          <h1>Tall</h1>
-          <h1>￥420〜</h1> 
-        </div>
+      <div class="qr-modal-zone">
 
-          <div class="product-sub-prices">
-            <span>Short￥380〜</span>  
-            <span>Grande￥465〜</span>  
-            <span>Venti®￥510〜</span>
+        <img id="qrModalImg" src="" alt="支払いコード"> 
+
+        <div class="qr-code-toggle-wrapper">
+          <p class="qr-code-toggle">コード番号を表示</p>
+          <span class="qr-arrow-number"></span>
+        </div>
+        
+        <p class="qr-code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
+      </div>  
+      
+      <!-- カード選択 --> 
+      <div class="qr-modal-card-zone">
+        <div class="qr-card-meta">
+
+          <!-- 【第１モーダル】オートチャージ保存時に、テキスト（ヒーロー共通クラス）+ 金額の下ラインのカラー変更 --> 
+          <span class="summary-card-text">オートチャージ設定中</span> 
+          
+          <span class="qr-card-name">Starbucks Card</span>
+
+          <div class="qr-balance-wrapper" onclick="toggleCardSelector(event)"> 
+
+            <!-- 金額の下ライン -->
+            <div class="qr-card-balance-line">
+              <span class="qr-card-balance">¥0</span>
+            </div>
+
+            <!-- アロー -->
+            <span class="qr-arrow-balance"></span>
+            
           </div>
 
-       </div>  
-      
-       <!-- 支払いボタン -->
-       <div class="product-order-options">
-         <button class="btn btn-register" onclick="openQrModal(event)">レジで支払う</button>
-         <button class="btn btn-mobile">モバイルオーダーする</button>
-       </div>
+          <!-- アクセス固定日時 -->
+          <time id="qrCardTimestamp"></time>
+        </div>
 
-       <!-- 注意書き -->
-       <div class="product-notes">
-         <p>・価格は税込価格です。</p>
-         <p>・一部店舗では価格が異なります。</p>
-       </div>
-    </div>
-  </main>
+        <!-- 【第２モーダル】入金設定へ進むためのボタン -->
+        <button class="qr-deposit-btn" onclick="openDepositModal(event)">入金</button>
 
-  
-  
-<script src="script.js"></script>  
+        <!-- 第１カード選択のドロップダウン -->
+        <div class="qr-card-selector-window">
+          
+          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
+            <div class="card-wrapper">
 
-</body>	
-    
-で。「レジで支払う」を押した時、ホーム画面のヒーローにある支払いカード画面を表示ではなくて、ホーム画面のQR拡大モーダル（ホーム画面の第１モーダル）に行きたい、そのままホーム画面を開くより、下からスライドでOR拡大モーダルが出てきた方が、途中で支払いをやめたり、見ていたメニュー画面に戻ったり、見ていた商品画面がその場で支払い時でも何だったのか見えている方が使いやすいかなと思ってなんだけど。
-で、違うページのモーダルを呼び指すときってどうすればいいの？
-QR拡大モーダル：
-<div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">...</div>	
+              <!-- オートチャージが保存されたときの 緑⚫︎バッジ（第２と共通クラス） -->
+              <span class="charge-badge" data-card-type="main"></span>
 
-それと、h1 h2 とか、デザインとしての文字の大きさで決めるのではなく、何が主役なのかで使った方がいい？	
+              <!-- カード画像 --> 
+              <img src="images/my-card-main.svg" class="qr-selector-card-img" alt="メインカード">
+            </div>
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-main-card-balance">¥0</span>
+            </div>
+          </div> 
+
+          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <div class="card-wrapper">
+
+              <!-- オートチャージが保存されたときの 緑⚫︎バッジ -->
+              <span class="charge-badge" data-card-type="sub"></span>
+
+              <img src="images/my-card-sub.png" class="qr-selector-card-img" alt="サブカード">
+            </div>  
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-sub-card-balance">¥3,500</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
+        </div><!-- .qr-card-selector-window -->   
+
+      </div><!-- .qr-modal-card-zone -->
+
+      <!-- カードデザイン画像 -->
+      <div class="qr-modal-card-graphic">
+        <img id="qrModalCardImg" src="images/starbucks-card-design.png" alt="スタバカードデザイン">
+      </div>
+
+      <!-- 【第１モーダル 下部ナビ】 -->
+      <div class="qr-modal-footer-tabs">
+
+        <!-- ギフトページ -->
+        <button class="qr-tab-item"
+                type="button"
+                onclick="openGiftPage()"
+         >
+
+          <div class="notice-wrapper">
+            <span class="badge">0</span>
+            <span class="notice-dot"></span>
+          </div>  
+
+          <span class="tab-text">eGift</span>
+          <!-- 右向き矢印 -->
+          <span class="arrow-icon"></span>
+
+        </button>
+
+        <!-- 真ん中区切り線 -->
+        <div class="tab-divider"></div> 
+
+        <!--チケットページ -->
+        <button class="qr-tab-item"
+                type="button"
+                onclick="openTicketFromQrModal()"
+         >
+
+          <div class="notice-wrapper">
+            <span class="badge">0</span>
+            <span class="notice-dot"></span>
+          </div>  
+
+          <span class="tab-text">eTicket</span>
+          <!-- 右向き矢印 -->
+          <span class="arrow-icon"></span>
+
+        </button>
+      </div><!-- .qr-modal-footer-tabs -->
+
+    </div><!-- .qr-modal-content -->
+  </div><!-- #qrModal -->
+
+
 	
-		  
+
+  
+
     
 ♥️ 無代へ渡す用 
 
