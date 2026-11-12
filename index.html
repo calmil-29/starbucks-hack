@@ -10,6 +10,26 @@
 <body>
 
 
+	#qrModal 
+	
+     <div class="qr-modal-zone">
+
+        <img id="qrModalImg" src="" alt="支払いコード"> 
+
+        <div class="qr-code-toggle-wrapper">
+          <p class="qr-code-toggle">コード番号を表示</p>
+          <span class="qr-arrow-number"></span>
+        </div>
+        
+        <p class="qr-code-number">1234 5678 9101 1121<br>3141 5161 7181 920</p>
+      </div>  
+
+	const qrSrc = 
+    clickedImg.getAttribute('src');
+    document.getElementById('qrModalImg').setAttribute('src', qrSrc);
+
+      
+
 	
 
 
