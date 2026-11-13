@@ -8,7 +8,48 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+できた！でもなんでだろ？.qr-modal-header でボタンのタップエリアは確保してたつもりだったんだけど。	
+.qr-modal-header {
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    /* ボタンとしの標準の見た目を全て消し去るリセットCSS */ 
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    outline: none;
+    /* ボタンのタップエリア */
+    width: 30px;
+    height: 30px;
+    position: absolute;
     
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+/* バツボタン */
+.qr-close-btn span {
+    pointer-events: none;
+    position: absolute;
+    display: block;
+    width: 20px;
+    height: 1.5px;
+    background-color: #000000;
+    border-radius: 2px;
+    top: 50%;
+    left: 50%;
+}
+
+.qr-close-btn span:nth-child(1) {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.qr-close-btn span:nth-child(2) {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 .qr-close-btn {
     position: relative;
     width: 30px;
@@ -18,6 +59,9 @@
     background: transparent;
     cursor: pointer;
 }
+
+
+	
 
 ホーム画面と同じQR画像を使うとのことだから、ホーム画面の openQrModal() が取得している画像の指定方法に合わせる。って、あ、なるほど。そういえばなんかJSで処理するような画像の出し方してたかも？
 	
