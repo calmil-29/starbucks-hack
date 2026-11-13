@@ -9,82 +9,8 @@
 </head>
 <body>
     
-    
-// =======================================
-// 商品詳細ページ：QRモーダル
-// =======================================
-
-// QRモーダルを開く
-function openProductQrModal(event) {
-    if (event) event.stopPropagation();
-
-    const registerButton = event.currentTarget;
-    const qrModal = document.getElementById('qrModal');
-    const qrModalImg = document.getElementById('qrModalImg');
-
-    if (!qrModal || !qrModalImg) return;
-
-    // ボタンに設定したQR画像のパスを取得
-    const qrSrc = registerButton.dataset.qrSrc;
-
-    if (!qrSrc) {
-        console.error('QR画像のパスが設定されていません。');
-        return;
-    }
-
-    // QR画像を表示
-    qrModalImg.src = qrSrc;
-
-    // アクセス時刻を表示
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const date = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-
-    const timestamp = document.getElementById('qrCardTimestamp');
-
-    if (timestamp) {
-        timestamp.textContent =
-            `${year}/${month}/${date} ${hours}:${minutes} 時点`;
-    }
-
-    // モーダル内の表示状態を初期化
-    document.querySelector('.qr-code-number')?.classList.remove('is-active');
-    document.querySelector('.qr-code-toggle-wrapper')?.classList.remove('is-active');
-    document.querySelector('.qr-card-selector-window')?.classList.remove('is-active');
-
-    const toggleBtn = document.querySelector('.qr-code-toggle');
-
-    if (toggleBtn) {
-        toggleBtn.textContent = 'コード番号を表示';
-    }
-
-    // QRモーダルを表示
-    qrModal.classList.add('is-active');
-}
-
-
-// QRモーダルを閉じる
-function closeQrModal(event) {
-    if (!event) return;
-
-    const clickedCloseButton = event.target.closest('.qr-close-btn');
-    const clickedOverlay = event.target === event.currentTarget;
-
-    // モーダルの中身を押した場合は閉じない
-    if (!clickedCloseButton && !clickedOverlay) {
-        return;
-    }
-
-    const qrModal = document.getElementById('qrModal');
-
-    if (qrModal) {
-        qrModal.classList.remove('is-active');
-    }
-}
-
+<script src="product-detail.js"></script>  
+</body>
     
 
 ホーム画面と同じQR画像を使うとのことだから、ホーム画面の openQrModal() が取得している画像の指定方法に合わせる。って、あ、なるほど。そういえばなんかJSで処理するような画像の出し方してたかも？
