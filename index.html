@@ -9,18 +9,18 @@
 </head>
 <body>
     
-script.js:1864 ① JavaScriptが実行された
-script.js:1921 ② 商品パネル領域: null
-script.js:1922 ③ カテゴリータブの数: 0
-script.js:2008 Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
-    at HTMLDocument.<anonymous> (script.js:2008:14)
-（匿名） @ script.js:2008
-script.js:53 [UI Update] Progress intialized: 40.125%
-script.js:446 closeQrModal が呼ばれた
-script.js:447 event.target: <div class=​"qr-modal-header">​…​</div>​
-script.js:448 event.currentTarget: <div id=​"qrModal" class=​"qr-modal-overlay is-active" onclick=​"closeQrModal(event)​">​…​</div>​flex
+const btn = document.querySelector('.qr-close-btn');
+const rect = btn.getBoundingClientRect();
 
-
+console.log('ボタンのサイズ:', rect.width, rect.height);
+console.log('ボタンの位置:', rect.left, rect.top);
+console.log(
+  'ボタン中央でクリックを受け取る要素:',
+  document.elementFromPoint(
+    rect.left + rect.width / 2,
+    rect.top + rect.height / 2
+  )
+);
   
     
 
