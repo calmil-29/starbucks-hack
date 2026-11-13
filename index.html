@@ -9,7 +9,19 @@
 </head>
 <body>
     
+function closeQrModal(event) {
+    // 背景をクリックした場合だけ閉じる
+    // モーダル内部をクリックした場合は閉じない
+    if (event && event.target !== event.currentTarget) {
+        return;
+    }
 
+    const modal = document.getElementById('qrModal');
+
+    if (modal) {
+        modal.classList.remove('is-active');
+    }
+}
     
 
 ホーム画面と同じQR画像を使うとのことだから、ホーム画面の openQrModal() が取得している画像の指定方法に合わせる。って、あ、なるほど。そういえばなんかJSで処理するような画像の出し方してたかも？
