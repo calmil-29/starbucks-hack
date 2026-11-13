@@ -9,37 +9,7 @@
 </head>
 <body>
     
-<div id="qrModal" class="qr-modal-overlay" onclick="closeQrModal(event)">
 
-    <div class="qr-modal-content">
-
-      <div class="qr-modal-header">
-        <button class="qr-close-btn" onclick="closeQrModal(event)">
-          <span></span>
-          <span></span>
-        </button>
-      </div>
-
-function closeQrModal(event) {
-    if (!event) return;
-
-    // ×ボタン、またはその中のspanを押したか確認
-    const clickedCloseButton = event.target.closest('.qr-close-btn');
-
-    //　背景そのものを押したか確認
-    const clickedOverlay = event.target === event.currentTarget;
-
-    // ×ボタンでも背景でもなければ閉じない
-    if (!clickedCloseButton && !clickedOverlay) {
-        return;
-    }
-
-    const modal = document.getElementById('qrModal');
-
-    if (modal) {
-        modal.classList.remove('is-active');
-    }
-}		
     
 
 ホーム画面と同じQR画像を使うとのことだから、ホーム画面の openQrModal() が取得している画像の指定方法に合わせる。って、あ、なるほど。そういえばなんかJSで処理するような画像の出し方してたかも？
