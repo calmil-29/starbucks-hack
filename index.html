@@ -9,21 +9,15 @@
 </head>
 <body>
     
-script.js:1878 ① JavaScriptが実行された
-script.js:1935 ② 商品パネル領域: null
-script.js:1936 ③ カテゴリータブの数: 0
-script.js:2022 Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
-    at HTMLDocument.<anonymous> (script.js:2022:14)
-（匿名） @ script.js:2022
-script.js:53 [UI Update] Progress intialized: 40.125%
-script.js:446 closeQrModal が呼ばれた
-script.js:447 event.target: <div class=​"qr-modal-header">​…​</div>​
-script.js:448 event.currentTarget: <div id=​"qrModal" class=​"qr-modal-overlay is-active" onclick=​"closeQrModal(event)​">​…​</div>​flex
-script.js:453 ボタンのサイズ: 0 0
-script.js:454 ボタンの位置: 20 113
-script.js:455 ボタン中央でクリックを受け取る要素: <div class=​"qr-modal-header">​…​</div>​
-
-    
+.qr-close-btn {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
 
 ホーム画面と同じQR画像を使うとのことだから、ホーム画面の openQrModal() が取得している画像の指定方法に合わせる。って、あ、なるほど。そういえばなんかJSで処理するような画像の出し方してたかも？
 	
