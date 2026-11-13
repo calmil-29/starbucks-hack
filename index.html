@@ -9,8 +9,68 @@
 </head>
 <body>
 
-renderCurrentCardToDeposit() の関数
-script.js にある状態変数の宣言部分（starbucksCardBalance、subCardBalance、currentSelectedCardType など）
+function renderCurrentCardToDeposit() {
+
+    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');  // 第２現在表示カード
+    const depositCardName = document.getElementById('depositCardName'); 	         // 第２現在表示カード名
+    const depositCardVal = document.getElementById('depositCardVal');                // 第２現在表示カード金額
+
+    // 現在カード：メイン
+
+    if (depositTargetCardType === 'main') {
+
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-main.svg';
+        }
+        
+        if (depositCardName) {
+            depositCardName.textContent = `Starbucks Card`;
+        }	
+
+        if (depositCardVal) {
+             depositCardVal.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
+        }	
+
+    } else {
+
+        // 現在カード：サブ
+
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-sub.png';
+        }
+
+        if (depositCardName) {
+            depositCardName.textContent = `サブカード`;
+        }
+        
+        if (depositCardVal) {
+             depositCardVal.textContent = `¥${subCardBalance.toLocaleString()}`;
+        }	
+
+    }
+}
+
+	
+let starbucksCardBalance = 0; // メインカードの初期残高データ（例: 0）      
+let subCardBalance = 3500;    // サブカードの初期残高データ（例: 3500）
+let currentSelectedCardType = 'main';
+
+let depositTargetCardType = 'main';
+
+let autoTargetCardType = 'main'; // オートチャージ対象のカードの初期値
+let autochargeAmount = 2000;     // オートチャージ金額（例：2000円チャージする）
+let autochargeCondition = 1000;  // オートチャージを実行する入金条件 （例：1000円以下になったら）
+let autochargeMethod = '未登録';   // 支払い方法
+
+let isAutochargeEnabled = false; // オートチャージがONかOFFか（初期はOFF）	
+
+let editingAutoTargetCardType = 'main'; 
+let editingAutochargeAmount = 2000;    
+let editingAutochargeCondition = 1000;  
+let editingAutochargeMethod = '未登録';
+	
+
+
 	
 
 ホーム画面と同じQR画像を使うとのことだから、ホーム画面の openQrModal() が取得している画像の指定方法に合わせる。って、あ、なるほど。そういえばなんかJSで処理するような画像の出し方してたかも？
