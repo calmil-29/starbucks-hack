@@ -10,7 +10,42 @@
 <body>
 	
 
+// ========================================
+// 復元したカード選択状態をQRモーダルに反映
+// ========================================
 
+const isMainCard = currentSelectedCardType === 'main';
+
+const selectedCardImg = document.querySelector(
+    isMainCard
+        ? '.qr-selector-item[data-change-type="main-card"] img'
+        : '.qr-selector-item[data-change-type="sub-card"] img'
+);
+
+const modalCardImg = document.getElementById('qrModalCardImg');
+const modalBalance = document.querySelector('.qr-card-balance');
+const modalCardName = document.querySelector('.qr-card-meta .qr-card-name');
+
+// カード画像
+if (modalCardImg && selectedCardImg) {
+    modalCardImg.src = selectedCardImg.src;
+}
+
+// カード残高
+if (modalBalance) {
+    const balance = isMainCard
+        ? starbucksCardBalance
+        : subCardBalance;
+
+    modalBalance.textContent = `¥${balance.toLocaleString()}`;
+}
+
+// カード名
+if (modalCardName) {
+    modalCardName.textContent = isMainCard
+        ? 'Starbucks Card'
+        : 'サブカード';
+}
 
 	
 
