@@ -10,8 +10,26 @@
 <body>
 	
 
-<script src="product-detail.js"></script>  
-</body>
+// ========================================
+// カード・オートチャージの状態
+// ========================================
+
+let starbucksCardBalance = 0;
+let subCardBalance = 3500;
+let currentSelectedCardType = 'main';
+
+let depositTargetCardType = 'main';
+
+let autoTargetCardType = 'main';
+let autochargeAmount = 2000;
+let autochargeCondition = 1000;
+let autochargeMethod = '未登録';
+let isAutochargeEnabled = false;
+
+let editingAutoTargetCardType = 'main';
+let editingAutochargeAmount = 2000;
+let editingAutochargeCondition = 1000;
+let editingAutochargeMethod = '未登録';
 
    
 	
