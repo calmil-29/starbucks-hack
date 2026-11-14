@@ -9,6 +9,22 @@
 </head>
 <body>
 
+product-detail.js:105 カード情報を復元しました {starbucksCardBalance: 0, subCardBalance: 3500, currentSelectedCardType: 'main', isAutochargeEnabled: false, autoTargetCardType: 'main', …}
+product-detail.js:118 {starbucksCardBalance: 0, subCardBalance: 3500, currentSelectedCardType: 'main', isAutochargeEnabled: false, autoTargetCardType: 'main', …}
+console.log(
+    '現在のカード:', currentSelectedCardType,
+    '保存データ:', sessionStorage.getItem(CARD_STATE_KEY)
+);
+VM2842:1 現在のカード: main 保存データ: {"starbucksCardBalance":0,"subCardBalance":3500,"currentSelectedCardType":"main","isAutochargeEnabled":false,"autoTargetCardType":"main","autochargeAmount":2000,"autochargeCondition":1000,"autochargeMethod":"未登録"}
+undefined
+console.log(
+    'カード状態:', currentSelectedCardType,
+    'QRカード名:', document.querySelector('.qr-card-meta .qr-card-name')?.textContent,
+    'QR残高:', document.querySelector('.qr-card-balance')?.textContent,
+    'QR画像:', document.getElementById('qrModalCardImg')?.getAttribute('src')
+);
+VM2846:1 カード状態: main QRカード名: Starbucks Card QR残高: ¥0 QR画像: images/starbucks-card-design.png
+undefined
 console.log(
     'カード状態:', currentSelectedCardType,
     'QRカード名:', document.querySelector('.qr-card-meta .qr-card-name')?.textContent,
@@ -17,13 +33,9 @@ console.log(
 );
 	
     
-    console.log('現在のカード:', currentSelectedCardType);
-    
-console.log('商品詳細ページのConsoleは動いている');
-console.log(
-    '復元後の変数:', currentSelectedCardType,
-    '保存されている値:', sessionStorage.getItem(CARD_STATE_KEY)
-);
+VM2853:1 カード状態: main QRカード名: Starbucks Card QR残高: ¥0 QR画像: http://192.168.3.4:5500/images/my-card-main.svg
+undefined
+
 
 ♥️ 無代へ渡す用 
 
