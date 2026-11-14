@@ -8,7 +8,97 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+script.js：
+function saveCardState() {
 
+    const cardState = {
+        starbucksCardBalance,
+        subCardBalance,
+        currentSelectedCardType,
+
+        isAutochargeEnabled,
+        autoTargetCardType,
+        autochargeAmount,
+        autochargeCondition,
+        autochargeMethod
+    };
+
+    try {
+        sessionStorage.setItem(
+            CARD_STATE_KEY,
+            JSON.stringify(cardState)
+        );
+
+        console.log('カード情報を保存しました', cardState);
+
+    } catch (error) {
+        console.error('カード情報の保存に失敗しました', error);
+    }
+}
+
+product-detail.js：
+function restoreCardState() {
+
+    try {
+        const savedData = sessionStorage.getItem(CARD_STATE_KEY);
+
+        if (!savedData) {
+            console.log('保存されたカード情報はありません');
+            return;
+        }
+
+        const cardState = JSON.parse(savedData);
+
+        // カード残高
+        if (Number.isFinite(cardState.starbucksCardBalance)) {
+            starbucksCardBalance = cardState.starbucksCardBalance;
+        }
+
+        if (Number.isFinite(cardState.subCardBalance)) {
+            subCardBalance = cardState.subCardBalance;
+        }
+
+        // 現在選択中のカード
+        if (['main', 'sub'].includes(cardState.currentSelectedCardType)) {
+            currentSelectedCardType = cardState.currentSelectedCardType;
+        }
+
+        // オートチャージ設定
+        if (typeof cardState.isAutochargeEnabled === 'boolean') {
+            isAutochargeEnabled = cardState.isAutochargeEnabled;
+        }
+
+        if (['main', 'sub'].includes(cardState.autoTargetCardType)) {
+            autoTargetCardType = cardState.autoTargetCardType;
+        }
+
+        if (Number.isFinite(cardState.autochargeAmount)) {
+            autochargeAmount = cardState.autochargeAmount;
+        }
+
+        if (Number.isFinite(cardState.autochargeCondition)) {
+            autochargeCondition = cardState.autochargeCondition;
+        }
+
+        if (typeof cardState.autochargeMethod === 'string') {
+            autochargeMethod = cardState.autochargeMethod;
+        }
+
+        console.log('カード情報を復元しました', cardState);
+
+    } catch (error) {
+        console.error('カード情報の復元に失敗しました', error);
+    }
+}	
+
+
+restoreCardState()を呼び出している箇所は script.js、product-detail.js どちらも同じ：
+
+const CARD_STATE_KEY = 'starbucksHackCardState';
+function saveCardState() {...}
+function restoreCardState() {...}
+window.addEventListener('pagehide', saveCardState);
+restoreCardState();	
 
 
 ♥️ 無代へ渡す用 
