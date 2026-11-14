@@ -9,56 +9,7 @@
 </head>
 <body>
 
-// 「コード番号を表示 v」の開閉(トグル)処理	
-window.addEventListener('load', () => {
-    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');  // コード番号を表示」の箱
-    const toggleText = document.querySelector('.qr-code-toggle');              //「コード番号を表示」
-    const codeNumber = document.querySelector('.qr-code-number');             // コード番号「16桁の数字」
 
-    if (toggleWrapper && toggleText && codeNumber) {
-        toggleWrapper.addEventListener('click', (event) => {
-            
-            event.stopPropagation();
-
-            // コード番号「16桁の数字」
-            codeNumber.classList.toggle('is-active');
-
-            // コード番号の「v / ^」部分
-            toggleWrapper.classList.toggle('is-active');
-
-            // 文字の後ろの矢印「v」と「^」を切り分ける　　
-            if (codeNumber.classList.contains('is-active')) {
-                toggleText.textContent = 'コード番号を非表示';  
-
-            } else {
-                toggleText.textContent = 'コード番号を表示';
-            }
-        });
-    }
-});
-	
-// カード選択ドロップダウンの開閉 / 同時に「v / ^」の切り替える関数
-function toggleCardSelector(event) {
-    // タップの衝撃波がモーダル全体に伝わるのを止める
-    if(!event) return;
-    event.stopPropagation();
-
-    // カード選択ドロップダウン
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-
-    // カード選択の「v / ^」部分
-    const balanceWrapper = document.querySelector('.qr-balance-wrapper');
-
-    if (selectorWindow) {
-        // カード選択窓を開閉
-        selectorWindow.classList.toggle('is-active');
-    }    
-
-    // カード選択の矢印
-    if (balanceWrapper) {
-            balanceWrapper.classList.toggle('is-active');
-    }
-}
 
 
 	
