@@ -21,6 +21,41 @@ restoreCardState();
 
 
 
+        <div class="qr-card-selector-window">
+          
+          <div class="qr-selector-item" data-change-type="main-card" onclick="switchCard(event)">
+            <div class="card-wrapper">
+
+              <!-- オートチャージが保存されたときの 緑⚫︎バッジ（第２と共通クラス） -->
+              <span class="charge-badge" data-card-type="main"></span>
+
+              <!-- カード画像 --> 
+              <img src="images/my-card-main.svg" class="qr-selector-card-img" alt="メインカード">
+            </div>
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-main-card-balance">¥0</span>
+            </div>
+          </div> 
+
+          <div class="qr-selector-item" data-change-type="sub-card" onclick="switchCard(event)">
+            <div class="card-wrapper">
+
+              <!-- オートチャージが保存されたときの 緑⚫︎バッジ -->
+              <span class="charge-badge" data-card-type="sub"></span>
+
+              <img src="images/my-card-sub.png" class="qr-selector-card-img" alt="サブカード">
+            </div>  
+            <div class="qr-selector-card-info">
+              <span class="qr-selector-sub-card-balance">¥3,500</span>
+            </div>
+          </div> 
+          
+          <!-- 必要に応じて追加 -->
+        </div><!-- .qr-card-selector-window -->   
+	
+
+
+
 
 
 	
