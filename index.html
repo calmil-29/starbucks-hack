@@ -23,39 +23,7 @@ console.log(
     sessionStorage.getItem('starbucksHackCardState')
 );
 
-Bでサブカードに切り替えた直後：
-	
-product-detail.js:105 カード情報を復元しました {starbucksCardBalance: 0, subCardBalance: 3500, currentSelectedCardType: 'main', isAutochargeEnabled: false, autoTargetCardType: 'main', …}
-product-detail.js:118 {starbucksCardBalance: 0, subCardBalance: 3500, currentSelectedCardType: 'main', isAutochargeEnabled: false, autoTargetCardType: 'main', …}
-product-detail.js:353 【第1】カード切替後 currentSelectedCardType = sub autoTargetCardType = main
-product-detail.js:50 カード情報を保存しました {starbucksCardBalance: 0, subCardBalance: 3500, currentSelectedCardType: 'sub', isAutochargeEnabled: false, autoTargetCardType: 'main', …}
-product-detail.js:385 Uncaught ReferenceError: renderCurrentCardToDeposit is not defined
-    at switchCard (product-detail.js:385:5)
-    at HTMLDivElement.onclick (Product detail.html:153:97)
-switchCard @ product-detail.js:385
-onclick @ Product detail.html:153
-console.log(
-    sessionStorage.getItem('starbucksHackCardState')
-);
-VM639:1 {"starbucksCardBalance":0,"subCardBalance":3500,"currentSelectedCardType":"sub","isAutochargeEnabled":false,"autoTargetCardType":"main","autochargeAmount":2000,"autochargeCondition":1000,"autochargeMethod":"未登録"}
-undefined
 
-A に戻って確認：	
-script.js:398 カード情報を復元しました {starbucksCardBalance: 0, subCardBalance: 3500, currentSelectedCardType: 'sub', isAutochargeEnabled: false, autoTargetCardType: 'main', …}
-script.js:1953 ① JavaScriptが実行された
-script.js:2010 ② 商品パネル領域: null
-script.js:2011 ③ カテゴリータブの数: 0
-script.js:2097 Uncaught TypeError: Cannot read properties of null (reading 'addEventListener')
-    at HTMLDocument.<anonymous> (script.js:2097:14)
-（匿名） @ script.js:2097
-script.js:13 [UI Update] Progress intialized: 40.125%
-console.log(
-    sessionStorage.getItem('starbucksHackCardState')
-);
-
-VM688:1 {"starbucksCardBalance":0,"subCardBalance":3500,"currentSelectedCardType":"sub","isAutochargeEnabled":false,"autoTargetCardType":"main","autochargeAmount":2000,"autochargeCondition":1000,"autochargeMethod":"未登録"}
-undefined
-	
 	
 
 
