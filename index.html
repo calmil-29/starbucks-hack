@@ -11,6 +11,68 @@
     
 
 
+function openQrModal(event) {
+
+    // 親要素へのクリックイベントの伝播を防ぐ
+    if (event) event.stopPropagation();
+
+
+    // アクセス固定日時を取得
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const date = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    // QRモーダルの日時を更新
+    const qrCardTimestamp = document.getElementById('qrCardTimestamp');
+
+    if (qrCardTimestamp) {
+        qrCardTimestamp.textContent =
+            `${year}/${month}/${date} ${hours}:${minutes} 時点`;
+    }
+
+
+    // モーダルを開くたびに、コード番号・カード選択欄を初期状態に戻す
+    const codeNumber = document.querySelector('.qr-code-number');
+    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');
+    const toggleBtn = document.querySelector('.qr-code-toggle');
+    const balanceWrapper = document.querySelector('.qr-balance-wrapper');
+    const selectorWindow = document.querySelector('.qr-card-selector-window');
+
+    codeNumber?.classList.remove('is-active');
+    toggleWrapper?.classList.remove('is-active');
+
+    if (toggleBtn) {
+        toggleBtn.textContent = 'コード番号を表示';
+    }
+
+    balanceWrapper?.classList.remove('is-active');
+    selectorWindow?.classList.remove('is-active');
+
+
+    // タップされた場所のQR画像を取得
+    const clickedArea = event.currentTarget;
+    const clickedImg = clickedArea.querySelector('img');
+    const qrSrc = clickedImg?.getAttribute('src');
+
+    const qrModalImg = document.getElementById('qrModalImg');
+
+    if (qrModalImg && qrSrc) {
+        qrModalImg.setAttribute('src', qrSrc);
+    }
+
+
+    // 現在選択されているカード情報をQRモーダルに反映
+    renderSelectedCard();
+
+
+    // QRモーダルを下から表示
+    document.getElementById('qrModal')?.classList.add('is-active');
+}
+
 
 
 ♥️ 無代へ渡す用 
