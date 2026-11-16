@@ -8,6 +8,71 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    
+    
+    
+function renderSelectedCard() {
+
+    const isMain = currentSelectedCardType === 'main';
+
+    // 表示するカード情報を決定
+    const cardSrc = isMain
+        ? 'images/my-card-main.svg'
+        : 'images/my-card-sub.png';
+
+    const cardBalance = isMain
+        ? starbucksCardBalance
+        : subCardBalance;
+
+    const cardName = isMain
+        ? 'Starbucks Card'
+        : 'サブカード';
+
+    // ヒーロー部分
+    const heroCardImg = document.getElementById('heroCardImg');
+    const heroCardBalance = document.getElementById('heroCardBalance');
+
+    if (heroCardImg) {
+        heroCardImg.setAttribute('src', cardSrc);
+    }
+
+    if (heroCardBalance) {
+        heroCardBalance.textContent = cardBalance.toLocaleString();
+    }
+
+    // QRモーダル部分
+    const modalCardImg = document.getElementById('qrModalCardImg');
+    const modalBalance = document.querySelector('.qr-card-balance');
+    const qrCardName = document.querySelector('.qr-card-meta .qr-card-name');
+
+    if (modalCardImg) {
+        modalCardImg.setAttribute('src', cardSrc);
+    }
+
+    if (modalBalance) {
+        modalBalance.textContent = '¥' + cardBalance.toLocaleString();
+    }
+
+    if (qrCardName) {
+        qrCardName.textContent = cardName;
+    }
+
+    // カード名表示
+    const mainCardLabel = document.querySelector('.balance-display .card-label');
+
+    if (mainCardLabel) {
+        mainCardLabel.textContent = cardName;
+    }
+
+    // オートチャージ関連
+    if (isAutochargeEnabled) {
+        renderAutochargeUI();
+    }
+
+    renderCurrentCardToDeposit();
+    renderCurrentCardToAutocharge();
+}
+
 
 script.js
 product-detail.js	
