@@ -9,149 +9,211 @@
 </head>
 <body>
     
-    
-修正後：
-function switchCard(event) {
 
-    //  安全装置（土台のファイルがあるか確認）
-    if (!event) return;
-
-    // モダールや別枠が閉じてしまうのを防ぐための防波堤
-    event.stopPropagation();
-
-    // ドロップダウンを監視している「大元の枠組み（要素）」
-    // ※ 中にある文字や画像を触っても、必ずこの枠全体（currentTarget）が掴める
-    const clickedItem = event.currentTarget;
-
-    // ドロップダウンのカードの種類を読み取る
-    // HTML の data-change-type から main-card / sub-card を取得
-    const changeType = clickedItem.getAttribute('data-change-type');
-
-    // カードの種類を変更
-    if (changeType === 'main-card') { 
-
-        // 【第１モーダル】現在のカードが 'main'
-        currentSelectedCardType = 'main';  
-
-    } else {
-        return; 
-    }
-
-    // 表示を更新
-    renderSelectedCard();
-
-    // カード選択状態を保存
-    saveCardState();
-
-    // ７. 切り替えが終わったら、カード選択の別枠を閉じる
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-    selectorWindow?.classList.remove('is-active')
-}
-
-	
-修正前：
-function switchCard(event) {
-
-    // 1. 安全装置（土台のファイルがあるか確認）
-    if (!event) return;
-
-    // モダールや別枠が閉じてしまうのを防ぐための防波堤
-    event.stopPropagation();
-
-    // 2. ドロップダウンを監視している「大元の枠組み（要素）」
-    // ※ 中にある文字や画像を触っても、必ずこの枠全体（currentTarget）が掴める
-
-    const clickedItem = event.currentTarget;
-
-    // 3. ドロップダウンのカードの種類を読み取る
-    // HTML の data-change-type から main-card / sub-card を取得
-
-    const changeType = clickedItem.getAttribute('data-change-type');
-
-    // 4. 掴む要素（第１モダールの中身 + ヒーロー画像の中身）
-
-    const modalCardImg = document.getElementById('qrModalCardImg')      // 第１ カードデザイン画像
-    const modalBalance = document.querySelector('.qr-card-balance')     // 第１ 表示金額
-    const heroCardImg = document.getElementById('heroCardImg')          // ヒーロー カード画像
-    const heroCardBalance = document.getElementById('heroCardBalance')  // ヒーロー 表示金額
-
-
-    // 5.条件分岐：目印に合わせて、画面と金額を書き換える　
-
-    const qrCardNameEl = document.querySelector('.qr-card-meta .qr-card-name');
-    const mainCardLabel = document.querySelector('.balance-display .card-label'); 
-
-    if (changeType === 'main-card') { 
-
-        // 【第１モーダル】現在のカードが 'main'
-        currentSelectedCardType = 'main';  
-
-        const mainSrc = 'images/my-card-main.svg';
-        const mainTxt = starbucksCardBalance.toLocaleString(); 
+で、気づいたんだけど。ORモーダル。途中でヒーロー画面の構造を変更したのに、openQrModal() の処理に前のものが残っている状態。現存の A側の openQrModal() からいらないものを除去してくれる？
+ヒーロー画面：	
+  <section class="card-hero-section">
+      
+        <div class="card-front">
         
-        if (modalCardImg) modalCardImg.setAttribute('src', mainSrc);
-        if (modalBalance) modalBalance.textContent = '¥' + mainTxt;
-        if (heroCardImg) heroCardImg.setAttribute('src', mainSrc); 
-        if (heroCardBalance) heroCardBalance.textContent = mainTxt;
+          <!-- 【ヒーロー】現在選ばれているカード画像 --> 
+          <img class="main-card-visual-img" id="heroCardImg" src="images/my-card-main.svg" alt="メインカード">
 
-        if (qrCardNameEl) qrCardNameEl.textContent = 'Starbucks Card'
-        if (mainCardLabel) mainCardLabel.textContent = 'Starbucks Card'
+          <div class="card-main-visual">
 
-        console.log(
-       '保存された値:',
-        sessionStorage.getItem(CARD_STATE_KEY)
-        );
+            <!-- QRコード 【第１モーダル】への入り口 -->
+            <div class="qr-tap-area" onclick="openQrModal(event)" data-type="payment">
+               <div class="card-qr-box">
+                 <img src="images/QRコード.png" class="qr-code" alt="QR">
+              </div>
+            </div>
+
+            <div class="card-info-side">
+
+              <!-- カード情報 -->
+              <div class="balance-display">
+
+                <!-- ※【ヒーロー】オートチャージ設定後 テキスト・金額下の既存ラインカラーが追加 -->
+                <span class="summary-card-text">オートチャージ設定中</span> 
+
+                <p class="card-label">Starbucks Card</p>
+
+                <div class="hero-card-balance-line">
+                  <span class="unit">¥</span>
+                  <span id="heroCardBalance" class="hero-card-value">0</span>
+                </div>
+              </div>
+
+            </div><!-- .card-info-side -->
+          </div><!-- .card-main-visual -->
+
+          <!-- 【チケットページ】への入り口 -->
+          <button class="btn-etiket-trigger"
+                  type="button"
+                  onclick="slideInTicket(event)">
+            <div class="eticket-text">       
+              <div class="count-box">0</div>
+              <span class="eticket-label">eTicket</span>
+            </div> 
+            
+            <!-- 右向き矢印 > -->
+            <div class="eticket-arrow">
+              <span class="arrow-icon is-ticket"></span>
+            </div>
+          </button>
+        
+          <!-- REWARDS -->
+          <div class="star-progress-overlay">
+
+            <div class="rewards-label">
+              <p>STARBUCKS® REWARDS</p>
+            </div>
+
+            <div class="current-stars-group">
+              <div class="current-reward">
+                <span class="big-number">160</span>.5 <img src="images/Star-icon.svg" alt="★">
+              </div>
+              <div class="member-status-group">
+                <p class="member-status">Green会員</p>
+                <img src="images/status-star.svg" alt="三つ星">
+              </div>  
+            </div>
+
+            <!-- リワードの進歩状況を示すプログレスバー -->
+            <div class="progress-bar-wrapper">
+              <div class="progress-bar-track">
+                <div id="js-progressbar" class="progress-bar-fill"></div>
+                <div class="track-dots">
+                  <span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+                </div>
+              </div>
+
+              <div class="progress-steps">
+                <span>25</span><span>90</span><span>130</span><span>190</span><span>400</span>
+              </div>
+            </div><!-- .progress-bar-wrapper -->
+          </div><!-- .star-progress-overlay -->
+
+          <!-- REWARDS アクションボタン -->
+          <div class="rewards-action-list">
     
-    } else if (changeType === 'sub-card') { 
+            <div class="btn-action-group">
+              <a href="#" class="btn-reward" aria-label="スターリワードに交換する">スターリワードに交換</a>
+              <a href="#" class="btn-reward-more" aria-label="スターリワードをもっと見る">もっと見る</a>
+            </div>
+          </div><!-- .card-action-list -->
 
-      // 【第１モーダル】現在のカード 'sub' 
-      currentSelectedCardType = 'sub'; 
+        </div><!-- .card-front -->
+    
+  </section><!-- .card-hero-section -->
+
+現存のAの openQrModal()：
+function openQrModal(event) {
+
+    // 親要素（カード全体）にクリックイベントを伝えない
+    if(event) event.stopPropagation();
 
     
-        console.log(
-            '【第1】カード切替後',
-            'currentSelectedCardType =',
-            currentSelectedCardType,
-            'autoTargetCardType =',
-            autoTargetCardType
-        );   
+    // アクセス固定日時
+    // 現在の日時を取得
+    const now = new Date();
 
-       const subSrc = 'images/my-card-sub.png';
-       const subTxt = subCardBalance.toLocaleString(); 
+    // 年
+    const year = now.getFullYear();
 
-       if (modalCardImg) modalCardImg.setAttribute('src', subSrc); 
-       if (modalBalance) modalBalance.textContent = '¥' + subTxt; 
-       if (heroCardImg) heroCardImg.setAttribute('src', subSrc);
-       if (heroCardBalance) heroCardBalance.textContent = subTxt;
+    // 月
+    // 月は０から始まるから +1 が必要
+    const month = String(now.getMonth() +1).padStart(2,'0');
 
-       if (qrCardNameEl) qrCardNameEl.textContent = 'サブカード';
-       if (mainCardLabel) mainCardLabel.textContent = 'サブカード';
+    // 日にち
+    const date = String(now.getDate()).padStart(2,'0');
 
+    // 時刻
+    const hours =String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    const qrCardTimestamp = document.getElementById('qrCardTimestamp');
+    if (qrCardTimestamp) {
+        qrCardTimestamp.textContent = `${year}/${month}/${date} ${hours}:${minutes} 時点`;
     }
 
-    // カード選択状態を即時保存
-    saveCardState();
+    
+    // モダールが閉じると同時に、コード番号・カード選択も閉じた状態に戻す
+    const codeNumber = document.querySelector('.qr-code-number');                  // コード番号
+    const toggleWrapper = document.querySelector('.qr-code-toggle-wrapper');       // コード番号の枠
+    const toggleBtn = document.querySelector('.qr-code-toggle');                   // 「コード番号を表示」
+    const balanceWrapper = document.querySelector('.qr-balance-wrapper');          // 現在選択中カードの残高の枠
+    const selectorWindow = document.querySelector('.qr-card-selector-window');     // カード選択ドロップダウン
 
-    // オートチャージ表示のDOM更新 
-    // 【ヒーロー・第１】金額下のライン追加/ラインカラー変更
-    if (isAutochargeEnabled) {
-        renderAutochargeUI();
-    }	
+    codeNumber?.classList.remove('is-active');                // 開閉クラスを強制的に外す
+    toggleWrapper?.classList.remove('is-active');             // 矢印を元に戻すためにクラスを外す 
+    if (toggleBtn) toggleBtn.textContent = 'コード番号を表示';   // 文字も初期状態に戻す
+    balanceWrapper?.classList.remove('is-active');            // 残高の矢印も元に戻す
+    selectorWindow?.classList.remove('is-active');            // カード切り替えを強制的に閉じる
+    
+
+    // 1. タップされた要素の「目印：payment, reward, gift のどれか」を読み取る」
+    const clickedArea = event.currentTarget;
+    const dataType = clickedArea.getAttribute('data-type');
+
+    // 2. タップされた場所のQRコードをモダール上部に表示する
+    const clickedImg = clickedArea.querySelector('img');
+
+    const qrSrc = 
+    clickedImg.getAttribute('src');
+    document.getElementById('qrModalImg').setAttribute('src', qrSrc);
+
+    const cardZone = document.querySelector('.qr-modal-card-zone');
+    const cardImg = document.getElementById('qrModalCardImg')
 
 
-    // 【第２モーダル】現在選択中カードを表示する関数
-    renderCurrentCardToDeposit();
+    // 3. 条件分岐の切り替え。data-type（カードの種類）に合わせて、モダールの見た目を3パターンに切り替える
 
-    // 【第３モーダル】現在選択中カードを表示する関数　
-    renderCurrentCardToAutocharge();
+    // 【パターン１： 表面の支払いカード】
+    if (dataType === 'main-card') {
 
+        // 入金ゾーンを出す
+        cardZone.style.display = 'flex'; 
 
-    // ７. 切り替えが終わったら、カード選択の別枠を閉じる
-    const selectorWindow = document.querySelector('.qr-card-selector-window');
-    selectorWindow?.classList.remove('is-active')
+        // 固定の画像を出すのではなく、ヒーロー の現在の「src」と「金額」を盗み見る
+        const currentMainImg = document.getElementById('heroCardImg')?.getAttribute('src');
+        const currentMainBalance = document.getElementById('heroCardBalance')?.textContent;
+
+        // 盗み見た情報を、そのままモーダルの画像と金額にコピーする　
+        if (cardImg && currentMainImg) {
+            cardImg.setAttribute('src', currentMainImg);
+        }
+        if (modalBalance && currentMainBalance) {
+            modalBalance.textContent = '¥' + currentMainBalance;
+        }
+    }    
+
+    // 【パターン２： リワードカード】
+    else if (dataType === 'rewards') {
+
+        // 入金ゾーンを隠す
+        cardZone.style.display ='none' 
+        if (cardImg) cardImg.setAttribute('src', '../images/starbucks-rewards500-design.png')
+
+    // 【パターン３：eGiftカード】        
+    } else if (dataType === 'eGift700') {
+
+        // 入金ゾーンを隠す
+        cardZone.style.display ='none' 
+        if (cardImg) cardImg.setAttribute('src', '../images/starbucks-egift700-design.png')
+
+    // 【パターン４： eGiftカード】        
+    } else if (dataType === 'eGift300') {
+
+        // 入金ゾーンを隠す
+        cardZone.style.display ='none' 
+        if (cardImg) cardImg.setAttribute('src', '../images/starbucks-egift300-design.png')
+    }
+    
+    // モダールを下から表示
+    document.getElementById('qrModal').classList.add('is-active');
 }
-
-
+	
 	
 
 
