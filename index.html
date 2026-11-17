@@ -10,14 +10,13 @@
 <body>
     
 
-qrModalImg.onerror = () => {
-    console.error('QR画像の読み込みに失敗:', qrModalImg.src);
-};
 
-qrModalImg.onload = () => {
-    console.log('QR画像の読み込み成功');
-};
-	
+script.js:454 クリックされた要素: <div class=​"qr-tap-area" onclick=​"openQrModal(event)​" data-qr-src=​"images/​QRコード.png" data-type=​"payment">​ ​</div>​
+script.js:455 取得したQR画像パス images/QRコード.png
+script.js:464 QRモーダル画像のsrc: http://192.168.3.4:5500/images/QR%E3%82%B3%E3%83%BC%E3%83%89.png
+script.js:465 QRモーダル画像の表示状態 undefined
+script.js:472 QR画像の読み込み成功
+
 function openQrModal(event) {
 
     // クリックイベントの確認
