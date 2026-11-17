@@ -9,64 +9,96 @@
 </head>
 <body>
     
-
+ちなみにこっちはAの方の renderSelectedCard() の処理だけど、Bと違ってヒーロー部分があるのはもちろんだけど、微妙に書き方違うから、できれば、AとBと書き方は統一しておきたい。
 function renderSelectedCard() {
 
     // ========================================
     // 現在選択されているカードを判定
     // ========================================
-
-    const isMainCard = currentSelectedCardType === 'main';
+    
+    const isMain = currentSelectedCardType === 'main';
 
     // ========================================
     // 表示先の要素を取得
     // ========================================
+    
+    const cardSrc = isMain
+        ? 'images/my-card-main.svg'
+        : 'images/my-card-sub.png';
 
-    const selectedCardImg = document.querySelector(
-        isMainCard
-            ? '.qr-selector-item[data-change-type="main-card"] img'
-            : '.qr-selector-item[data-change-type="sub-card"] img'
-    );
+    const cardBalance = isMain
+        ? starbucksCardBalance
+        : subCardBalance;
+
+    const cardName = isMain
+        ? 'Starbucks Card'
+        : 'サブカード';
+
+    // ========================================    
+    // ヒーロー部分
+    // ========================================
+
+    const heroCardImg = document.getElementById('heroCardImg');
+    const heroCardBalance = document.getElementById('heroCardBalance');
+
+    if (heroCardImg) {
+        heroCardImg.setAttribute('src', cardSrc);
+    }
+
+    if (heroCardBalance) {
+        heroCardBalance.textContent = cardBalance.toLocaleString();
+    }
+
+    // ========================================
+    // QRモーダル部分
+    // ========================================
 
     const modalCardImg = document.getElementById('qrModalCardImg');
     const modalBalance = document.querySelector('.qr-card-balance');
-    const modalCardName = document.querySelector('.qr-card-meta .qr-card-name');
+    const qrCardName = document.querySelector('.qr-card-meta .qr-card-name');
 
-
-    // ========================================
-    // カード画像を反映
-    // ========================================
-
-    if (modalCardImg && selectedCardImg) {
-        modalCardImg.src = selectedCardImg.src;
+    if (modalCardImg) {
+        modalCardImg.setAttribute('src', cardSrc);
     }
-
-
-    // ========================================
-    // カード残高を反映
-    // ========================================
 
     if (modalBalance) {
-
-        const balance = isMainCard
-            ? starbucksCardBalance
-            : subCardBalance;
-
-        modalBalance.textContent = `¥${balance.toLocaleString()}`;
+        modalBalance.textContent = '¥' + cardBalance.toLocaleString();
     }
 
-
-    // ========================================
-    // カード名を反映
-    // ========================================
-
-    if (modalCardName) {
-        modalCardName.textContent = isMainCard
-            ? 'Starbucks Card'
-            : 'サブカード';
+    if (qrCardName) {
+        qrCardName.textContent = cardName;
     }
+
+    // ======================================== 
+    // ヒーロー部分 カード情報
+    // ======================================== 
+
+    const mainCardLabel = document.querySelector('.hero-balance-display .hero-card-label');
+
+    if (mainCardLabel) {
+        mainCardLabel.textContent = cardName;
+    }
+
+    // ======================================== 
+    // オートチャージ関連
+    // ======================================== 
+
+    if (isAutochargeEnabled) {
+        renderAutochargeUI();
+    }
+
+    // ======================================== 
+    // 【第２モーダル】現在選択中カードを表示する関数
+    // ======================================== 
+
+    renderCurrentCardToDeposit();
+
+    // ======================================== 
+    // 【第３モーダル】現在選択中カードを表示する関数　
+    // ======================================== 
+
+    renderCurrentCardToAutocharge();
 }
-
 
 
 	
