@@ -10,7 +10,95 @@
 <body>
     
 
+product-detail.js 側のQRモダールを開く処理なんだけど、QR画像を取得の箇所とか script.js と違うけど、どちらに統一した方がいいとかある？
+function openProductQrModal(event) {
+    if (event) event.stopPropagation();
 
+    const registerButton = event.currentTarget;
+    const qrModal = document.getElementById('qrModal');
+    const qrModalImg = document.getElementById('qrModalImg');
+
+    if (!qrModal || !qrModalImg) return;
+
+    // ボタンに設定したQR画像のパスを取得
+    const qrSrc = registerButton.dataset.qrSrc;
+
+    if (!qrSrc) {
+        console.error('QR画像のパスが設定されていません。');
+        return;
+    }
+
+    // QR画像を表示
+    qrModalImg.src = qrSrc;
+
+    // アクセス時刻を表示
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const date = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+
+    const timestamp = document.getElementById('qrCardTimestamp');
+
+    if (timestamp) {
+        timestamp.textContent =
+            `${year}/${month}/${date} ${hours}:${minutes} 時点`;
+    }
+
+    // モーダル内の表示状態を初期化
+    document.querySelector('.qr-code-number')?.classList.remove('is-active');
+    document.querySelector('.qr-code-toggle-wrapper')?.classList.remove('is-active');
+    document.querySelector('.qr-card-selector-window')?.classList.remove('is-active');
+
+    const toggleBtn = document.querySelector('.qr-code-toggle');
+
+    if (toggleBtn) {
+        toggleBtn.textContent = 'コード番号を表示';
+    }
+
+    // ========================================
+    // 復元したカード選択状態をQRモーダルに反映
+    // ========================================
+
+    const isMainCard = currentSelectedCardType === 'main';
+
+    const selectedCardImg = document.querySelector(
+        isMainCard
+            ? '.qr-selector-item[data-change-type="main-card"] img'
+            : '.qr-selector-item[data-change-type="sub-card"] img'
+    );
+
+    const modalCardImg = document.getElementById('qrModalCardImg');
+    const modalBalance = document.querySelector('.qr-card-balance');
+    const modalCardName = document.querySelector('.qr-card-meta .qr-card-name');
+
+    // カード画像
+    if (modalCardImg && selectedCardImg) {
+        modalCardImg.src = selectedCardImg.src;
+    }
+
+    // カード残高
+    if (modalBalance) {
+        const balance = isMainCard
+            ? starbucksCardBalance
+            : subCardBalance;
+
+        modalBalance.textContent = `¥${balance.toLocaleString()}`;
+    }
+
+    // カード名
+    if (modalCardName) {
+        modalCardName.textContent = isMainCard
+            ? 'Starbucks Card'
+            : 'サブカード';
+    }
+
+    // QRモーダルを表示
+    qrModal.classList.add('is-active');
+}
+
+// script.js側
 function openQrModal(event) {
 
     // 親要素へのクリックイベントの伝播を防ぐ
@@ -33,7 +121,6 @@ function openQrModal(event) {
         qrCardTimestamp.textContent =
             `${year}/${month}/${date} ${hours}:${minutes} 時点`;
     }
-
 
     // モーダルを開くたびに、コード番号・カード選択欄を初期状態に戻す
     const codeNumber = document.querySelector('.qr-code-number');
@@ -71,8 +158,11 @@ function openQrModal(event) {
 
     // QRモーダルを下から表示
     document.getElementById('qrModal')?.classList.add('is-active');
-}
+}	
 
+
+
+	
 
 
 ♥️ 無代へ渡す用 
