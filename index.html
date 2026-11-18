@@ -8,97 +8,217 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
-ちなみにこっちはAの方の renderSelectedCard() の処理だけど、Bと違ってヒーロー部分があるのはもちろんだけど、微妙に書き方違うから、できれば、AとBと書き方は統一しておきたい。
-function renderSelectedCard() {
 
-    // ========================================
-    // 現在選択されているカードを判定
-    // ========================================
-    
-    const isMain = currentSelectedCardType === 'main';
+※ QRモーダル→第１、入金モーダル→第２モーダル	
+	
+【入金（第２）モーダル】
+	
+// 現在選択中カード を表示する関数　		
+function renderCurrentCardToDeposit() {
 
-    // ========================================
-    // 表示先の要素を取得
-    // ========================================
-    
-    const cardSrc = isMain
-        ? 'images/my-card-main.svg'
-        : 'images/my-card-sub.png';
+    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');  // 第２現在表示カード
+    const depositCardName = document.getElementById('depositCardName'); 	         // 第２現在表示カード名
+    const depositCardVal = document.getElementById('depositCardVal');                // 第２現在表示カード金額
 
-    const cardBalance = isMain
-        ? starbucksCardBalance
-        : subCardBalance;
+    // 現在カード：メイン
 
-    const cardName = isMain
-        ? 'Starbucks Card'
-        : 'サブカード';
+    if (depositTargetCardType === 'main') {
 
-    // ========================================    
-    // ヒーロー部分
-    // ========================================
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-main.svg';
+        }
+        
+        if (depositCardName) {
+            depositCardName.textContent = `Starbucks Card`;
+        }	
 
-    const heroCardImg = document.getElementById('heroCardImg');
-    const heroCardBalance = document.getElementById('heroCardBalance');
+        if (depositCardVal) {
+             depositCardVal.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
+        }	
 
-    if (heroCardImg) {
-        heroCardImg.setAttribute('src', cardSrc);
+    } else {
+
+        // 現在カード：サブ
+
+        if (depositCurrentCardImg) {
+            depositCurrentCardImg.src = 'images/my-card-sub.png';
+        }
+
+        if (depositCardName) {
+            depositCardName.textContent = `サブカード`;
+        }
+        
+        if (depositCardVal) {
+             depositCardVal.textContent = `¥${subCardBalance.toLocaleString()}`;
+        }	
+
     }
+}
 
-    if (heroCardBalance) {
-        heroCardBalance.textContent = cardBalance.toLocaleString();
-    }
+// 第２を開いた瞬間に、現在状態を読み取って自分を描画する
+function openDepositModal(event) {
 
-    // ========================================
-    // QRモーダル部分
-    // ========================================
+    if(!event) return;
 
-    const modalCardImg = document.getElementById('qrModalCardImg');
-    const modalBalance = document.querySelector('.qr-card-balance');
-    const qrCardName = document.querySelector('.qr-card-meta .qr-card-name');
+    // タップの衝撃波で、第１モーダルが閉じてしまうのを防ぐ
+    event.stopPropagation ();
 
-    if (modalCardImg) {
-        modalCardImg.setAttribute('src', cardSrc);
-    }
+    // 【第１モーダル】現在表示カードを、【第２モーダル】現在選択中の入金対象のカードの「初期値」として引き継ぐ　
+    depositTargetCardType = currentSelectedCardType;
 
-    if (modalBalance) {
-        modalBalance.textContent = '¥' + cardBalance.toLocaleString();
-    }
 
-    if (qrCardName) {
-        qrCardName.textContent = cardName;
-    }
+    console.log(
+        '【第２を開く直前】',
+        'currentSelectedCardType =', currentSelectedCardType,
+        'depositTargetCardtype =', depositTargetCardType,
+        'autoTargetCardType =', autoTargetCardType
+    );    
 
-    // ======================================== 
-    // ヒーロー部分 カード情報
-    // ======================================== 
 
-    const mainCardLabel = document.querySelector('.hero-balance-display .hero-card-label');
+    //  新しく開くとき、前回の確認画面を非表示にしておく
+    const confirmBox = document.querySelector('.deposit-screen-confirm');
 
-    if (mainCardLabel) {
-        mainCardLabel.textContent = cardName;
-    }
+    if (confirmBox) confirmBox.classList.remove('is-active'); 
 
-    // ======================================== 
-    // オートチャージ関連
-    // ======================================== 
+    // 新しく開くとき、入力画面を表示にしておく 
+    const inputArea = document.querySelector('.deposit-screen-input'); // 入金設定の箱
 
-    if (isAutochargeEnabled) {
-        renderAutochargeUI();
-    }
+    if (inputArea) inputArea.classList.add('is-active');
 
-    // ======================================== 
-    // 【第２モーダル】現在選択中カードを表示する関数
-    // ======================================== 
 
+    // 第２を開いた瞬間にも最新の現在選択中カードを表示
     renderCurrentCardToDeposit();
 
-    // ======================================== 
-    // 【第３モーダル】現在選択中カードを表示する関数　
-    // ======================================== 
+   
+    console.log(
+        '【第２を開いた後】',
+        'currentSelectedCardType =', currentSelectedCardType,
+        'depositTargetCardType =', depositTargetCardType,
+        'autoTargetCardType =', autoTargetCardType
+    );   
 
-    renderCurrentCardToAutocharge();
+
+    // 【リセット機能】入金額と支払い方法は、初期値に強制リセットする
+
+    const allItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
+    
+    // ２番目のメニュー「入金額」の中身をリセット
+    if (allItems[1]) {
+
+        const amtLabel = allItems[1].querySelector('.current-value');
+
+        if (amtLabel) amtLabel.textContent = '¥1,000';
+    }
+
+    // ３番目のメニュー「支払い方法」の中身をリセット
+    if (allItems[2]) {
+
+        const methodLabel = allItems[2].querySelector('.current-value');
+
+        if (methodLabel) methodLabel.textContent = '未登録';
+    }
+
+    //オートチャージ保存後 【ヒーロー・第１・第２】のオートチャージ表示のDOM更新
+    renderAutochargeUI();
+
+    
+    // 第２モーダルの土台（オーバーレイ）
+    const depositModal = document.getElementById('depositModal');
+
+    if (depositModal) {
+        depositModal.classList.add('is-active');
+    }    
 }
+
+// 背景（オーバーレイ）をタップした時に閉じる
+function closeDepositModal(event) {
+
+   if (!event) return;
+
+    // 白い中身（'.deposit-modal-content'）がタップされた場合は、完全に処理をブロックして閉じない
+    if (event.target.closest('.deposit-modal-content')) {
+        event.stopPropagation();
+        return;
+    }
+    
+    closeDepositModalForce();
+   
+}
+
+// 【第２モーダル】から【第１モーダル】に戻る	
+function closeDepositModalForce() {
+
+    const depositModal = document.getElementById('depositModal'); 
+
+    if (depositModal) {
+        depositModal.classList.remove('is-active'); // 【第２モーダル】全体を閉じる
+
+        // 次にこのモーダルを開いた時のために、画面の初期化を裏で行っておく
+        // 500ミリ秒（0.5秒）後に元の「入力画面」の状態に戻して、次回開いた時に確認画面が残るバグを防ぐ
+         setTimeout(() => {
+            const inputArea = document.querySelector('.deposit-screen-input'); 
+            const confirmBox = document.querySelector('.deposit-screen-confirm');
+
+            if (inputArea) inputArea.classList.add('is-active');
+            if (confirmBox) confirmBox.classList.remove('is-active'); 
+        }, 500);
+    }
+}	
+
+// 【画面のリセット】開いているドロップダウンの窓をすべて同時に閉じる処理 	
+function closeAllSelectorWindows() {
+
+    const allWindows = document.querySelectorAll('.deposit-selector-window');
+
+    allWindows.forEach(win => {
+        win.classList.remove('is-active');
+    });
+}
+
+// 【画面の表示切り替え】タップされた項目のドロップダウン（選択肢の窓）を開く処理	
+function toggleDepositWindow(type, event) {   
+    if (event) event.stopPropagation(); 
+
+    // 他の別窓を全部閉じる
+    closeAllSelectorWindows();
+    
+    // 開きたい別枠を探す
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1); 
+    const targetId = `deposit${upperType}Window`;
+
+    // 開く
+    const targetWindow = document.getElementById(targetId); 
+    if (targetWindow) {
+        targetWindow.classList.add('is-active');
+    }
+}
+
+// 【第２モーダル】キャプチャ制御 「カード選択ドロップダウン」の開閉（トグル）外での処理	
+const depositModal = document.getElementById('depositModal');
+
+// カード選択窓の中をタップしたか、窓の外をタップしたかを判定して閉じる　
+
+if (depositModal) {
+// クリックされたときは、メモリに保持している depositModal をそのまま再利用する
+depositModal.addEventListener('click', function(event) {
+
+    const activeWindow = document.querySelector('.deposit-selector-window.is-active');
+
+    if (activeWindow) {
+        
+        if (event.target.closest('.deposit-selector-window')) {
+           
+        } else {
+            closeAllSelectorWindows();
+            event.stopPropagation();
+        }
+    } else {
+      
+    }
+
+}, { capture: true });
+}
+ 	
 
 
 	
