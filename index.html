@@ -9,430 +9,481 @@
 </head>
 <body>
 
-そうそう、入金したい先のカードが、第１、ホーム画面で選択中のカードとは限らないから、そこはわけてる。
-	
-※ オートチャージモーダル→第３モーダル	
-【第２・第３共通】	
-// 選択中の値を設定画面に表示し、【第３モーダル】の設定値を更新する 
+// 【第３モーダル】を開く関数
+function openAutochargeModal(event) {
+    
+    if (event) event.stopPropagation();
 
-function selectDepositOption(type, value, event) {
-    if (event) event.stopPropagation(); 
-
-    // 【第３モーダル】か【第２モーダル】かを自動判定
-
-    const isAutocharge = event.target.closest('.autocharge-menu-list') !== null;
-
-    // 【UI更新対象の特定】
-
-    let menuIndex = 1;
-
-    if (type === 'amount') menuIndex = 2;     // 入金額
-    if (type === 'condition') menuIndex = 3;  // 入金条件（オートチャージのみ）
-
-    // 「支払い方法」：【第３モーダル】なら４番目、【第２モーダル】なら３番目
-
-    if (type === 'method') {
-        menuIndex = isAutocharge ? 4 : 3;
-    }    
-
-    // 文字を書き換える対象となる【DOM要素】をピンポイントで取得
-
-    const listClass = isAutocharge ? '.autocharge-menu-list' : '.deposit-menu-list'; 
-    const currentLabel = document.querySelector(`${listClass} .deposit-menu-item:nth-child(${menuIndex}) .current-value`);
-
-    //【防波堤（ガードクローズ）】もし DOM要素がまだ画面に存在しない場合は、ここで処理を中断する
-
-    if (!currentLabel) {
-        console.warn(`看板が見つかりません。listCrass: ${listClass}, menuIndex: ${menuIndex}`);
+    // オートチャージ機能が ON状態 なら第３モーダルは非表示
+    if (isAutochargeEnabled) {
         return;
     }
 
-    // ======================================
-    // 【データ更新とDOM要素への文字反映】 
-    // ======================================
+    // ==================================
+    // 「編集中の設定」を開始する
+    // ==================================
 
-    // A. カード選択（【第１・ヒーロー】と連動させないための金額更新
+	// 第１モーダルで現在選ばれているカードを、今回のオートチャージ対象の「初期値」にする
 
-    const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');  // 第３ 現在選択中カード画像
-    const depositCurrentCardImg = document.getElementById('depositCurrentCardImg');        // 第２ 現在選択中カード画像
-  
-    if (type === 'card') {
+	editingAutoTargetCardType = currentSelectedCardType; 
 
-        if (isAutocharge) {
-            // 【第３モーダル】編集用
-            editingAutoTargetCardType = value;    
+    // 金額・条件・支払い方法：
+    // すでに保存されている設定を引き継ぐ
 
-        } else {
-            // 【第２モーダル】現在選択中カード	
-            depositTargetCardType = value;        
+    editingAutochargeAmount = autochargeAmount;
+    editingAutochargeCondition = autochargeCondition;
+    editingAutochargeMethod = autochargeMethod;
 
+    // 第３モーダルの「現在表示カード」を最新にする
 
-        console.log(
-            '【第2】カード切替後',
-            'currentSelectedCardType =',
-            currentSelectedCardType,
-            'depositTargetCardType =',
-            depositTargetCardType,
-            'autoTargetCardType =',
-            autoTargetCardType
-        );
+    renderCurrentCardToAutocharge();
 
-        
-        }    
+    // ==================================
+	// 前回の確認画面を閉じる
+    // ==================================
 
-        // オートチャージ機能
-        if (!isAutocharge && isAutochargeEnabled) {
-            renderAutochargeUI();
+	const confirmBox = document.querySelector('.autocharge-screen-confirm');
 
-        }
-
-        // カード画像を切り替える
-        if (value === 'main') {
-
-            // 第３
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-main.svg'; 
-
-            //　第２
-	        } else {
-	            depositCurrentCardImg.src = 'images/my-card-main.svg';
-
-                const depositCardName = document.getElementById('depositCardName'); 
-
-                if (depositCardName) {
-                    depositCardName.textContent = `Starbucks Card`;
-                }	
-
-	        }
-
-            currentLabel.textContent = `¥${starbucksCardBalance.toLocaleString()}`;
-
-            } else if (value === 'sub') {
-
-            if (isAutocharge) {
-	        autochargeCurrentCardImg.src = 'images/my-card-sub.png'; 
-
-	        } else {
-	        depositCurrentCardImg.src = 'images/my-card-sub.png';
-
-            const depositCardName = document.getElementById('depositCardName'); 
-
-                if (depositCardName) {
-                    depositCardName.textContent = `サブカード`;
-                }	
-	        }
-
-            currentLabel.textContent = `¥${subCardBalance.toLocaleString()}`;
-        }
-
-    // B. 入金額・入金条件（画面の文字書き換え + 第３のみ変数保存ルール）
-
-    } else if (type === 'amount' || type === 'condition') {
-
-        // ドロップダウンのタイトル文字を拾うバグを防ぐため、数値に変換できるものだけ処理するガード
-        const numValue = Number(value);
-
-        if (!isNaN(numValue)) {
-
-            // 第３：編集用の入金額・入金条件
-            if (isAutocharge) {
-                if (type === 'amount')  editingAutochargeAmount = numValue; 
-                if (type === 'condition') editingAutochargeCondition = numValue; 
-            }  
-
-            // 第２・第３共通、画面のDOM要素（テキスト）を書き換える　例：「¥2,000」
-            currentLabel.textContent = `¥${numValue.toLocaleString()}`;
-
-        } else {
-            currentLabel.textContent = value;
-        }
-        
-    // C. 支払い方法
-
-    } else if (type === 'method') {
-        if (isAutocharge) {
-
-            // 第３：編集用の支払い方法を更新
-            editingAutochargeMethod = value; 
-        } 
-
-        // 第２・第３共通、画面のDOM要素（テキスト）を書き換える
-        currentLabel.textContent = value;
-    }    
-   
-    // 【第３モーダル専用】最上部のサマリーテキストをリアルタム更新する 
-    if (isAutocharge) {
-        const allSummaries = document.querySelectorAll('.autocharge-summary');
-
-        allSummaries.forEach(el => {
-            el.textContent = `オートチャージ：¥${editingAutochargeAmount.toLocaleString()}\n` +
-            `入金条件：残高が¥${editingAutochargeCondition.toLocaleString()}未満` ; 
-        });
-
-        // 3. 【バリデーション】入金額が入金条件を下回っているかチェックする
-
-        const errorBox = document.getElementById('autoErrorMessage');
-        const conditionMenu = document.querySelector('.autocharge-menu-list .deposit-menu-item:nth-child(3)'); // 入金条件
-        const nextBtn = document.querySelector('.autocharge-next-btn'); // 次へボタン
-
-       if (Number(editingAutochargeAmount) < Number(editingAutochargeCondition)) { 
-
-            // 条件不一致：エラーを表示して、枠を赤くし、次へボタンを押せなくする
-
-            if (errorBox) errorBox.style.display = 'block';
-            if (conditionMenu) conditionMenu.classList.add('has-error'); // CSSで枠を赤くしたり「注意アイコン」をだす用
-            if (nextBtn) nextBtn.disabled = true; 
-
-        } else {
-
-            // 条件クリア：エラーを消して通常状態に戻す
-
-            if (errorBox) errorBox.style.display = 'none';
-            if (conditionMenu)  conditionMenu.classList.remove('has-error');
-            if (nextBtn) nextBtn.disabled = false;
-        }
-    }
-
-
-    // 【自動クローズ】 文字をコピーし終わったら、用済みになった「ドロップダウン」を閉じる 
-    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
-
-    // 【ドロップダウンを特定】今開いていたドロップダウンのIDを自動で組み立てる
-
-    const windowId = isAutocharge ? `autocharge${upperType}Window` : `deposit${upperType}Window`;
-    const targetWindow = document.getElementById(windowId);
-
-    if (targetWindow) {
-        targetWindow.classList.remove('is-active');
-    }  
-}
-
-// 【第２モーダル】「次へ」ボタン
-// 【設定画面】から【確認画面】へ切り替える  		   
-function goToDepositConfirm(event) {
-    if (event) event.stopPropagation();
+	if (confirmBox) confirmBox.classList.remove('is-active');
     
-    const inputArea = document.querySelector('.deposit-screen-input');    // 【入金設定画面】の箱
-    const confirmBox = document.querySelector('.deposit-screen-confirm'); // 【最終確認画面】の箱
-
-    // 確認画面に進む瞬間に、入力画面を完全に非表示にする
-    
-    if (inputArea) inputArea.classList.remove('is-active'); 
-
-    // 確認画面を表示
-
-    if (confirmBox) {
-        confirmBox.classList.add('is-active');
-    } 
-
-    fillDepositConfirm();
-} 
-
-// 【第２モーダル】【確認画面】へ現在の設定内容を書き込む	   
-function fillDepositConfirm() {
-
-    // 現在の設定値を取得
-
-    const currentCard = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(1) .current-value')?.textContent || 'Starbucks Card';
-    const currentAmount = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value')?.textContent || '1,000';
-    const currentMethod = document.querySelector('.deposit-menu-list .deposit-menu-item:nth-child(3) .current-value')?.textContent || '未登録';
-
-    // HTML側にある、確認画面の各IDの入れ物をガシッと掴む
-
-    const confirmCard = document.getElementById('confirmCard');       // 入金先カード
-    const confirmMethod = document.getElementById('confirmMethod');   // 支払い方法
-    const finalBtn = document.getElementById('finalDepositBtn');      // 入金確定ボタン
-    
-    // 【確認画面】へ反映
-
-    if (confirmCard) {
-        confirmCard.textContent = currentCard;
-    }
-    if (confirmMethod) {
-        confirmMethod.textContent = currentMethod;
-    }
-    if (finalBtn) {
-        finalBtn.textContent = `${currentAmount} 入金する`;
-    }
-
-}  
-
-// 【第2モーダル】の【確認画面】の「入金する」ボタンの処理（残高更新）　		   
-document.getElementById('finalDepositBtn')?.addEventListener('click', function(event) {
-
-    if (event) event.stopPropagation();
-
-    // =========================================================
-    // A. 【第2モーダル確認画面】から「今回の入金額」を取得
-    // =========================================================
-    
-    const amountEl = document.querySelector(
-        '#depositModal .deposit-menu-list .deposit-menu-item:nth-child(2) .current-value'
-    );
-
-    // テキストを取り出して数値に変換
-    const selectedAmountText = amountEl?.textContent || '0';
-    const depositAmount = parseInt(selectedAmountText.replace(/[^0-9]/g, ''), 10);
-
-    // 正しい数値かチェック
-    if (isNaN(depositAmount) || depositAmount === 0) {
-        alert("入金額が正しく取得できませんでした。");
-        return;
-    }
-
-    // =========================================================
-    // B. 【第2モーダル】で選ばれた「入金対象カード」に入金する
-    // =========================================================
-
-    let updatedBalance = 0;
-
-    if (depositTargetCardType === 'main') { 
-
-        // メインカードにお金を足す
-        starbucksCardBalance = starbucksCardBalance + depositAmount;
-
-        // 今回入金したカードの「入金残高」を保存
-        updatedBalance = starbucksCardBalance;
-       
-    } else {
-
-        // サブカードにお金を足す
-        subCardBalance = subCardBalance + depositAmount;
-
-        // 今回入金したカードの「入金残高」を保存
-        updatedBalance = subCardBalance;
-      
-    }
-
-    // ===========================================================
-    // C. 【第１・ヒーロー】には「現在のカード」の結果だけ反映：表に表示ぶん　
-    // ===========================================================
-
-    // 「現在のカード」と「今回入金したカード」が同じ場合だけ、第１・ヒーローの残高を更新する
-
-    if (currentSelectedCardType === depositTargetCardType) {
-
-        // 現在のカードがメインなら、メインの最新残高を表示
-        
-        if (currentSelectedCardType === 'main') {
-            
-            const heroBalanceEl = document.getElementById('heroCardBalance');
-
-            if (heroBalanceEl) {
-                heroBalanceEl.textContent = 
-                    starbucksCardBalance.toLocaleString();                    
-            }
-
-            const modalBalanceEl = 
-                document.querySelector(
-                    '.qr-modal-card-zone .qr-card-balance'
-                );
-
-            if (modalBalanceEl) {
-                modalBalanceEl.textContent = 
-                    starbucksCardBalance.toLocaleString(); 
-            }
-        
-        // 現在のカードがサブなら、サブの最新情報を表示    
-        } else {
-
-            const heroBalanceEl = document.getElementById('heroCardBalance');
-            if (heroBalanceEl) {
-                heroBalanceEl.textContent = 
-                    subCardBalance.toLocaleString();
-            }
-
-            const modalBalanceEl  =  document.querySelector(
-                    '.qr-modal-card-zone .qr-card-balance')
-            if (modalBalanceEl) {
-                modalBalanceEl.textContent = 
-                       subCardBalance.toLocaleString();
-            }
-        }
-    }
-
-    // ===========================================
-    // 【第１モーダル】の「カード選択ドロップダウン」　
-    // ===========================================
-
-    const modalWindowMainEl = 
-        document.querySelector(
-            '.qr-selector-main-card-balance'
-        );
-
-    if (modalWindowMainEl) {
-        modalWindowMainEl.textContent =
-            '¥' + starbucksCardBalance.toLocaleString(); 
-    }   
-
-    const modalWindowsubEl = 
-        document.querySelector(
-            '.qr-selector-sub-card-balance'
-        );
- 
-    if (modalWindowsubEl) {
-        modalWindowsubEl.textContent =
-            '¥' + subCardBalance.toLocaleString(); 
-    }   
-
-    // ======================================
-    // 【第２モーダル】のカード選択ドロップダウン
-    // ======================================
-
-    const depositWindowMainEl = 
-        document.querySelector(
-            '.deposit-main-card-balance');
-
-    if (depositWindowMainEl) {
-        depositWindowMainEl.textContent =
-            '¥' + starbucksCardBalance.toLocaleString(); 
-    }   
-    
-    const depositWindowSubEl =
-        document.querySelector(
-            '.deposit-sub-card-balance');
-
-    if (depositWindowSubEl) {
-        depositWindowSubEl.textContent =
-        '¥' + subCardBalance.toLocaleString();
-    }   
-
-    // ======================================
-    // 【第3モーダル】のカード選択ドロップダウン
-    // ======================================
-
-    const autochargeWindowMainEl = 
-        document.querySelector(
-            '.autocharge-main-card-balance');
-
-    if (autochargeWindowMainEl) {
-        autochargeWindowMainEl.textContent =
-            '¥' + starbucksCardBalance.toLocaleString(); 
-    }   
-    
-    const autochargetWindowSubEl =
-        document.querySelector(
-            '.autocharge-sub-card-balance');
-
-    if (autochargetWindowSubEl) {
-        autochargetWindowSubEl.textContent =
-        '¥' + subCardBalance.toLocaleString();
-    }   
-    
-    
-    // ===========================
-    // 【第２モーダル】全体を閉じる
-    // ===========================
+    // ==================================
+    // 第２モーダルを閉じて第３モーダルを開く
+    // ==================================
 
     const depositModal = document.getElementById('depositModal');
+    const autochargeModal = document.getElementById('autochargeModal');
+
     if (depositModal) {
         depositModal.classList.remove('is-active');
     }
 
-});
-		   
-		   
+    if (autochargeModal) {
+        autochargeModal.classList.add('is-active');
+    }
 
+    // ==================================
+    // 「編集中設定」を第３の設定画面に表示する
+    // ==================================
+
+    const allSummaries = document.querySelectorAll('.autocharge-summary');     // 入金条件
+    const amountEl = document.querySelector('.autocharge-value-amount');       // 入金額
+    const conditionEl = document.querySelector('.autocharge-value-condition'); // 入金条件
+    const methodEl = document.querySelector('.autocharge-value-method');       // 支払い方法
+
+    if (amountEl) {
+        amountEl.textContent =`¥${editingAutochargeAmount.toLocaleString()}`;
+    }
+    if (conditionEl) {
+        conditionEl.textContent = `¥${editingAutochargeCondition.toLocaleString()}`;
+    }
+    if (methodEl) {
+        methodEl.textContent = editingAutochargeMethod;
+    }
+
+    // ==================================
+    // サマリーにも「編集中設定」を表示
+    // ==================================　
+
+    allSummaries.forEach(el => {
+        el.textContent = `オートチャージ：¥${editingAutochargeAmount.toLocaleString()}\n` +
+                         `入金条件：残高が¥${editingAutochargeCondition.toLocaleString()}未満` ;
+    });
+
+}
+
+// 【第３モーダル】カード選択や入金額などの「ドロップダウン」を開く関数
+function toggleAutochargeWindow(type, event) {
+    if (event) event.stopPropagation();
+
+    // 【第３モーダル】のid名（#autochargeModal）を基準にして、その中の別窓を指差しして掴む
+    // １文字の頭文字を大文字にする（card → Card）を使ってIDを作る
+
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
+    const targetWindow = document.querySelector(`#autochargeModal #autocharge${upperType}Window`);
+
+    if (targetWindow) {
+        targetWindow.classList.add('is-active');
+    }
+}
+
+// 【キャプチャ制御】カード選択窓の中をタップしたか、窓の外をタップしたかを判定して閉じる　
+const autochargeModal = document.getElementById('autochargeModal');
+
+if (autochargeModal) {
+autochargeModal.addEventListener('click' , function(event) {
+
+    // 現在開いている第3モーダルのカード選択窓を取得
+    const activeWindow = document.querySelector(
+        '.deposit-selector-window.is-active'
+    );
+
+    // カードの選択肢が開いてるときだけ処理する
+    if (activeWindow) {
+
+        // カード選択肢の「中」をタップした場合
+        if (event.target.closest('.deposit-selector-window')) {
+
+            // 何もしない
+            return;
+            
+        } else {
+
+            activeWindow.classList.remove('is-active');
+
+            event.stopPropagation();
+        }
+    }
+}, { capture: true });
+}
+
+// 【第２・第３共通】
+// selectDepositOption() で設定画面で選択したデータを 	
+// 【第3モーダル】【確認画面】へ現在の設定内容を書き込む
+function fillAutochargeConfirm(event) {
+
+    // 金庫から現在のカードに応じた「表示用テキスト」を作る
+    let cardText ='StarBucks Card';
+
+    if (editingAutoTargetCardType === 'main') { 
+        cardText = `StarBuks Card ¥${starbucksCardBalance.toLocaleString()}`;
+
+    } else if (editingAutoTargetCardType === 'sub') { 
+        cardText = `サブカード ¥${subCardBalance.toLocaleString()}`;
+    }
+
+    // 第３の確認画面の各id
+    const autoConfirmCard = document.getElementById('autoConfirmCard');                // オートチャージ先カード
+    const autoConfirmAmount = document.getElementById('autoConfirmAmount');            // 入金額
+	const autoConfirmCondition = document.getElementById('autoConfirmCondition');      // 入金条件
+    const autoConfirmMethod = document.getElementById('autochargeconfirmMethod');      // 支払い方法
+
+    // 各金庫のデータを【確認画面のDOM要素】へ反映
+    if (autoConfirmCard) {
+        autoConfirmCard.textContent = cardText;
+    }
+
+    if (autoConfirmAmount) {
+        autoConfirmAmount.textContent = `¥${editingAutochargeAmount.toLocaleString()}`;  
+    }
+    if (autoConfirmCondition) {
+       autoConfirmCondition.textContent = `¥${editingAutochargeCondition.toLocaleString()}`; 
+    }   
+    if (autoConfirmMethod) {
+        autoConfirmMethod.textContent = editingAutochargeMethod;
+    }     
+
+}  
+
+// 【第３モーダル】「次へ」ボタン 
+function goToAutochargeConfirm(event) {
+    if (event) event.stopPropagation();
+    
+    const inputArea = document.querySelector('.autocharge-screen-input');     // 【オートチャージ設定画面】の箱
+    const confirmBox = document.querySelector('.autocharge-screen-confirm');  // 【オートチャージ確認画面】の箱
+
+    // 確認画面に進む瞬間に、設定画面を完全に非表示にする
+    if (inputArea) inputArea.classList.remove('is-active'); 
+
+    // 確認画面を表示
+    if (confirmBox) {
+        confirmBox.classList.add('is-active');
+
+        console.log('確認画面のclass', confirmBox.className);
+    } 
+
+    fillAutochargeConfirm();
+}	
+
+// 【第３モーダル】オートチャージ設定を完全に閉じる
+function closeAutochargeModal(event) {
+
+    if (event && event.target !== event.currentTarget) return; 
+    closeAutochargeModalForce();
+}
+
+function closeAutochargeModalForce() {
+
+    const autochargeModal = document.getElementById('autochargeModal');
+    if (autochargeModal) {
+        autochargeModal.classList.remove('is-active'); 
+    }
+}
+
+// 【第３モーダル】オートチャージ設定を保存 
+function executeAutochargeSave(event) {
+
+    if (event) event.stopPropagation();
+
+    // 編集中 → 保存済みへ確定  
+    autoTargetCardType = editingAutoTargetCardType;     // オートチャージ対象のカード　
+    autochargeAmount = editingAutochargeAmount;         // オートチャージする金額
+    autochargeCondition = editingAutochargeCondition;   // オートチャージを実行する入金条件 
+    autochargeMethod = editingAutochargeMethod          // オートチャージ支払い方法
+
+    // オートチャージを ON 
+    isAutochargeEnabled = true;                         
+
+    // 第３モーダルを閉じる
+    const autochargeModal = document.getElementById('autochargeModal');
+
+    if (autochargeModal) {
+        autochargeModal.classList.remove('is-active');
+    }
+
+    // 保存済み状態を各UI【ヒーロー・第１・第2 DOM 】へ反映す
+    renderAutochargeUI();
+
+}
+
+// オートチャージ保存状態を各UI（ヒーロー・第１・第2）DOMへ反映する処理
+function renderAutochargeUI() {
+    
+	
+    // オートチャージが有効か
+    const isEnabled = isAutochargeEnabled;
+
+    // 第1・ヒーローの現在カードが対象カードか
+    const isQrTarget =
+        isEnabled &&
+        currentSelectedCardType === autoTargetCardType;
+
+    // 第2の現在カードが対象カードか
+    const isDepositTarget =
+        isEnabled &&
+        depositTargetCardType === autoTargetCardType;
+        
+        
+    console.log(
+        '【第2 保存状態判定】',
+        'isEnabled =', isEnabled,
+        'depositTargetCardType =', depositTargetCardType,
+        'autoTargetCardType =', autoTargetCardType,
+        'isDepositTarget =', isDepositTarget
+    );      
+
+
+    // =======================================
+    // 【第２モーダル】オートチャージ OFF → ON 表示 
+    // =======================================
+    
+    const bannerViewOff = document.querySelector('.banner-view-off');
+    const bannerViewOn = document.querySelector('.banner-view-on');
+
+    if (bannerViewOff) bannerViewOff.classList.toggle('is-active', isEnabled);
+    if (bannerViewOn) bannerViewOn.classList.toggle('is-active', isEnabled);
+
+    // =======================================
+    // 【第２モーダル】オートチャージ発動条件
+    // =======================================
+
+    const allSummaries = document.querySelectorAll('.autocharge-summary');
+
+    allSummaries.forEach(el => {
+        el.textContent = `オートチャージ：¥${autochargeAmount.toLocaleString()}\n` +
+                         `入金条件：残高が¥${autochargeCondition.toLocaleString()}未満` ;       
+    });
+
+
+    // =========================
+    // ① オートチャージ設定中テキスト
+    // =========================
+
+    const summaryCardText = document.querySelectorAll(
+        '.summary-card-text'
+    );
+
+    summaryCardText.forEach(text => {
+        text.classList.toggle(
+            'is-active',
+            isQrTarget
+        );
+    });
+
+    // =========================
+    // ② 第1・第2・ヒーローのライン
+    // =========================
+
+    const heroLine = document.querySelector(
+        '.hero-card-balance-line'
+    );
+
+    const qrLine = document.querySelector(
+        '#qrModal .qr-card-balance-line'
+    );
+
+    const depositLine = document.querySelector(
+        '#depositModal .deposit-card-balance-line'
+    );
+
+    if (heroLine) {
+        heroLine.classList.toggle(
+            'is-active',
+            isQrTarget
+        );
+    }
+
+    if (qrLine) {
+        qrLine.classList.toggle(
+            'is-active',
+            isQrTarget
+        );
+    }
+
+    if (depositLine) {
+        depositLine.classList.toggle(
+            'is-active',
+            isDepositTarget
+        );
+
+    }
+
+    // =========================
+    // ③ バッジ
+    // =========================
+
+    const badges = document.querySelectorAll(
+        '#qrModal .charge-badge, #depositModal .charge-badge'
+    );
+
+    badges.forEach(badge => {
+
+        // 第2現在表示カード
+        if (badge.id === 'depositCurrentBadge') {
+
+            badge.classList.toggle(
+                'is-active',
+                isDepositTarget
+            );
+
+            return;
+        }
+
+        // ドロップダウン
+        const cardType =
+            badge.getAttribute('data-card-type');
+
+        badge.classList.toggle(
+            'is-active',
+            isEnabled &&
+            cardType === autoTargetCardType
+        );
+    });
+
+    // ============================
+    // ④【第２モーダル】対象カード表示
+    // ============================
+
+    const summaryCardImg = document.querySelector('.summary-card-img');
+    const summaryCardName = document.querySelector('.summary-card-name');
+
+
+    console.log(
+        '【第２ オートチャージ保存カード表示】',
+        'autoTargetCardType =', autoTargetCardType,
+        'summaryCardImg = ', summaryCardImg,
+        'summaryCardName',  summaryCardName
+    );
+
+
+    if (summaryCardImg) {
+        if (autoTargetCardType === 'main') {
+            summaryCardImg.src = 'images/my-card-main.svg';
+
+        } else if (autoTargetCardType === 'sub') {
+            summaryCardImg.src = 'images/my-card-sub.png';
+        }
+
+        summaryCardImg.classList.toggle('is-active', isEnabled);
+        
+        
+        console.log(
+            '【画像設定後】',
+            'src =', summaryCardImg?.src,
+            'class =', summaryCardImg?.className
+        );
+
+        
+    }
+
+    if (summaryCardName) {
+        if (autoTargetCardType === 'main') {
+            summaryCardName.textContent = 'Starbucks Card';
+
+        } else if (autoTargetCardType === 'sub') {
+            summaryCardName.textContent = 'サブカード'; 
+        }
+
+        summaryCardName.classList.toggle('is-active', isEnabled);   
+
+
+        console.log(
+        '【名前設定後】',
+        'text =', summaryCardName?.textContent,
+        'class =', summaryCardName?.className
+        );
+
+
+    }
+
+
+    // -----------------------------------------
+    // ⑥【第２モーダル】状態スイッチ
+    // -----------------------------------------
+    
+    const autochargeSwitch = document.querySelector('.autocharge-switch');
+
+    if (autochargeSwitch) {
+
+        // ON なら右、OFF なら左
+        autochargeSwitch.classList.toggle(
+            'is-on',
+            isEnabled
+        );
+    }    
+
+}
+
+// オートチャージ機能をOFF
+function turnOffAutocharge(event) {
+
+    if (event) event.stopPropagation();
+
+    // 状態スイッチを非表示にする
+    const autochargeSwitch = document.querySelector('.autocharge-switch');
+
+    // オートチャージをOFFにする
+    isAutochargeEnabled = false;
+
+    if (autochargeSwitch) {
+
+        const hideOnview = (event) => {
+            
+            if (event.propertyName !== 'transform') return;
+
+            // スイッチのアニメーションが終わった
+            // ↓
+            // ここで初めて ON 画像を OFF 画面へ切り替える
+
+            // 保存済み状態を「通常時の画面」に反映する
+            renderAutochargeUI();
+
+            autochargeSwitch.removeEventListener(
+                'transitionend',
+                hideOnview
+            );
+        };
+
+        autochargeSwitch.addEventListener(
+            'transitionend',
+             hideOnview
+        );
+
+        // ここで ON → OFF の transform を開始
+        autochargeSwitch.classList.remove('is-on');
+
+    }    
+}
+	
 	
 
 ♥️ 無代へ渡す用 
