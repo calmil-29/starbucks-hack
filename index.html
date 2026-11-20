@@ -9,6 +9,8 @@
 </head>
 <body>
 
+
+
 Aのコード：	
 function openDepositModal(event) {
 
@@ -63,6 +65,44 @@ function openDepositModal(event) {
     }    
 }
 
+Bのコード：
+
+function openDepositModal(event) {
+
+    if (event) event.stopPropagation();
+
+    // 現在選択しているカードを入金先に設定
+    depositTargetCardType = currentSelectedCardType;
+
+    // 入金確認画面を閉じる
+    const confirmScreen = document.querySelector('.deposit-screen-confirm');
+    if (confirmScreen) confirmScreen.classList.remove('is-active');
+
+    // 入金入力画面を表示
+    const inputScreen = document.querySelector('.deposit-screen-input');
+    if (inputScreen) inputScreen.classList.add('is-active');
+
+    // 入金先カードの表示を更新
+    renderCurrentCardToDeposit();
+
+    // メニューの初期値を設定
+    const depositMenuItems = document.querySelectorAll('.deposit-menu-list .deposit-menu-item');
+
+    if (depositMenuItems[1]) {
+        depositMenuItems[1].querySelector('.current-value').textContent = '¥1,000';
+    }
+
+    if (depositMenuItems[2]) {
+        depositMenuItems[2].querySelector('.current-value').textContent = '未登録';
+    }
+
+    // オートチャージ表示を更新
+    renderAutochargeUI();
+
+    // 第2モーダルを開く
+    const depositModal = document.getElementById('depositModal');
+    if (depositModal) depositModal.classList.add('is-active');
+}
 	
 
 ♥️ 無代へ渡す用 
