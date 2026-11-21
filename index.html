@@ -9,36 +9,7 @@
 </head>
 <body>
 
-function renderCurrentCardToAutocharge() {
-    
-    const autochargeCurrentCardImg = document.getElementById('autochargeCurrentCardImg');
-    const autoCardVal = document.getElementById('autoCardVal');
 
-    if (currentSelectedCardType === 'main') {
-
-        // 現在カード：メイン
-        if(autochargeCurrentCardImg) {
-            autochargeCurrentCardImg.src = 'images/my-card-main.svg';
-        }
-        
-        if (autoCardVal) {
-            autoCardVal.textContent = `Starbucks Card ¥${starbucksCardBalance.toLocaleString()}`;
-        }
-
-    } else {
-
-        // 現在カード：サブ
-        if(autochargeCurrentCardImg) {
-            autochargeCurrentCardImg.src = 'images/my-card-sub.png';
-        }
-        
-        if (autoCardVal) {
-            autoCardVal.textContent = `サブカード ¥${subCardBalance.toLocaleString()}`;
-        }
-    }
-}
-
-	
 
 
 ♥️ 無代へ渡す用 
