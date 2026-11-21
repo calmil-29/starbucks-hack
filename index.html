@@ -9,7 +9,19 @@
 </head>
 <body>
 
+function toggleAutochargeWindow(type, event) {
+    if (event) event.stopPropagation();
 
+    // 【第３モーダル】のid名（#autochargeModal）を基準にして、その中の別窓を指差しして掴む
+    // １文字の頭文字を大文字にする（card → Card）を使ってIDを作る
+
+    const upperType = type.charAt(0).toUpperCase() + type.slice(1);
+    const targetWindow = document.querySelector(`#autochargeModal #autocharge${upperType}Window`);
+
+    if (targetWindow) {
+        targetWindow.classList.add('is-active');
+    }
+}
 
 
 ♥️ 無代へ渡す用 
