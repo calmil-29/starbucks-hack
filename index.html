@@ -10,7 +10,51 @@
 <body>
 
 
+.deposit-selector-window {
+    position: absolute;
+    top: 50px;   /* メニューボタンの少し下に配置 */
+    right: 30px;
 
+    width: max-content;
+
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);   
+    
+    /* 開閉用のz-index（メニューの一覧より手前に出す） */
+    z-index: 10;
+
+    /* アニメーションの初期状態（透明で、少し下に下げておく） */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+}
+
+.deposit-selector-window.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0); /* 定位置に戻る */
+}
+
+/* ドロップダウン内 */
+.deposit-selector-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 12px 10px;
+    font-size: 12px;
+    color: #333333;
+    cursor: pointer;
+}	
+
+/* 【入金設定】各メニュー箱 */
+.deposit-menu-item {
+    position: relative;
+}
 	
 
 ♥️ 無代へ渡す用 
