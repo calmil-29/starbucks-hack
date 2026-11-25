@@ -9,6 +9,25 @@
 </head>
 <body>
 
+// 【設定画面】から【確認画面】へ切り替える 
+function goToAutochargeConfirm(event) {
+    if (event) event.stopPropagation();
+    
+    const inputArea = document.querySelector('.autocharge-screen-input');     // 【オートチャージ設定画面】の箱
+    const confirmBox = document.querySelector('.autocharge-screen-confirm');  // 【オートチャージ確認画面】の箱
+
+    // 確認画面に進む瞬間に、設定画面を完全に非表示にする
+    if (inputArea) inputArea.classList.remove('is-active'); 
+
+    // 確認画面を表示
+    if (confirmBox) {
+        confirmBox.classList.add('is-active');
+
+        console.log('確認画面のclass', confirmBox.className);
+    } 
+
+    fillAutochargeConfirm();
+}  	
 
 
 ♥️ 無代へ渡す用 
