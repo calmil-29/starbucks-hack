@@ -9,45 +9,6 @@
 </head>
 <body>
 
-// 【第２・第３共通】
-
-// selectDepositOption() で設定画面で選択したデータを 
-// 【第3モーダル】【確認画面】へ現在の設定内容を書き込む
-function fillAutochargeConfirm(event) {
-
-    // 金庫から現在のカードに応じた「表示用テキスト」を作る
-    let cardText ='StarBucks Card';
-
-    if (editingAutoTargetCardType === 'main') { 
-        cardText = `StarBuks Card ¥${starbucksCardBalance.toLocaleString()}`;
-
-    } else if (editingAutoTargetCardType === 'sub') { 
-        cardText = `サブカード ¥${subCardBalance.toLocaleString()}`;
-    }
-
-    // 第３の確認画面の各id
-    const autoConfirmCard = document.getElementById('autoConfirmCard');                // オートチャージ先カード
-    const autoConfirmAmount = document.getElementById('autoConfirmAmount');            // 入金額
-	const autoConfirmCondition = document.getElementById('autoConfirmCondition');      // 入金条件
-    const autoConfirmMethod = document.getElementById('autochargeconfirmMethod');      // 支払い方法
-
-    // 各金庫のデータを【確認画面のDOM要素】へ反映
-    if (autoConfirmCard) {
-        autoConfirmCard.textContent = cardText;
-    }
-
-    if (autoConfirmAmount) {
-        autoConfirmAmount.textContent = `¥${editingAutochargeAmount.toLocaleString()}`;  
-    }
-    if (autoConfirmCondition) {
-       autoConfirmCondition.textContent = `¥${editingAutochargeCondition.toLocaleString()}`; 
-    }   
-    if (autoConfirmMethod) {
-        autoConfirmMethod.textContent = editingAutochargeMethod;
-    }     
-
-}   
-	
 
 
 ♥️ 無代へ渡す用 
