@@ -10,67 +10,35 @@
 <body>
   
   
-  <!-- 「入金額選択のドロップダウン」 -->
-<div class="deposit-selector-window" id="depositAmountWindow">
 
-  <!-- プリセット金額 -->
-  <div class="deposit-selector-item" onclick="selectDepositOption('amount', 1000, event)">¥1,000</div>
-  <div class="deposit-selector-item" onclick="selectDepositOption('amount', 3000, event)">¥3,000</div>
-  <div class="deposit-selector-item" onclick="selectDepositOption('amount', 5000, event)">¥5,000</div>
-  <div class="deposit-selector-item" onclick="selectDepositOption('amount', 10000, event)">¥10,000</div>
+/* 【入金設定】手動入力画面 */
+.custom-amount-modal {
+    position: absolute;
+    inset: 0;
 
-  <!-- 手動入力画面を開く -->
-  <div class="deposit-selector-item" onclick="openCustomAmountModal(event)">
-    金額を入力
-  </div>
+    display: flex;
+    flex-direction: column;
 
-</div>
-  
-<!-- 手動入力画面 -->
-<div class="custom-amount-modal" id="customAmountModal">
+    background-color: #ffffff;
+    z-index: 20;
 
-  <!-- ヘッダー -->
-  <div class="custom-modal-header">
-    <button class="custom-close-btn" onclick="closeCustomAmountModal(event)">
-      <span></span>
-      <span></span>
-    </button>
-  </div>
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
 
-  <div class="custom-amount-body">
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease,
+        transform 0.3s ease;
+}
 
-    <!-- 入力金額の表示 -->
-    <p id="customAmountDisplay">¥0</p>
+/* 手動入力画面を表示 */
+.custom-amount-modal.is-active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
 
-    <!-- 注意書き -->
-    <p id="customAmountGuide">
-      入金額は¥1,000以上を設定してください。
-    </p>
-
-    <!-- 金額入力 -->
-    <input
-      type="number"
-      id="depositCustomAmount"
-      min="1000"
-      max="30000"
-      step="1"
-      inputmode="numeric"
-      placeholder="金額を入力"
-    >
-
-    <!-- 完了ボタン -->
-    <button
-      type="button"
-      id="customAmountSubmitBtn"
-      class="custom-submit-btn"
-      onclick="submitCustomAmount(event)"
-      disabled
-    >
-      完了
-    </button>
-
-  </div>
-</div>
 
 	
 
