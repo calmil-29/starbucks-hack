@@ -10,51 +10,67 @@
 <body>
 
 
-.deposit-selector-window {
-    position: absolute;
-    top: 50px;   /* メニューボタンの少し下に配置 */
-    right: 30px;
 
-    width: max-content;
-
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);   
-    
-    /* 開閉用のz-index（メニューの一覧より手前に出す） */
-    z-index: 10;
-
-    /* アニメーションの初期状態（透明で、少し下に下げておく） */
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(10px);
-    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-}
-
-.deposit-selector-window.is-active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0); /* 定位置に戻る */
-}
-
-/* ドロップダウン内 */
-.deposit-selector-item {
+/* 【入金設定】手動入力エリア */
+.deposit-custom-amount {
     display: flex;
-    align-items: center;
-    gap: 12px;
+    flex-direction: column;
+    gap: 8px;
 
-    padding: 12px 10px;
+    margin-top: 10px;
+    padding: 12px 10px 5px;
+
+    border-top: 1px solid #eeeeee;
+}
+
+/* 手動入力エリアのラベル */
+.deposit-custom-amount label {
     font-size: 12px;
     color: #333333;
-    cursor: pointer;
-}	
-
-/* 【入金設定】各メニュー箱 */
-.deposit-menu-item {
-    position: relative;
 }
+
+/* 金額入力欄 */
+.deposit-custom-amount input {
+    width: 180px;
+    box-sizing: border-box;
+
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 6px;
+
+    font-size: 14px;
+    color: #333333;
+    background-color: #ffffff;
+}
+
+/* 入力欄のフォーカス時 */
+.deposit-custom-amount input:focus {
+    outline: none;
+    border-color: #00754a;
+}
+
+/* 手動入力の確定ボタン */
+.deposit-custom-amount button {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+
+    background-color: #00754a;
+    color: #ffffff;
+
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* 入力エラー */
+#depositAmountError {
+    min-height: 0;
+    margin: 0;
+
+    font-size: 11px;
+    color: #c0392b;
+}
+
 	
 
 ♥️ 無代へ渡す用 
