@@ -9,6 +9,47 @@
 </head>
 <body>
 
+// 　OFF にした瞬間の「遷移」を処理する
+function turnOffAutocharge(event) {
+
+    if (event) event.stopPropagation();
+
+    // 状態スイッチを非表示にする
+    const autochargeSwitch = document.querySelector('.autocharge-switch');
+
+    // オートチャージをOFFにする
+    isAutochargeEnabled = false;
+
+    if (autochargeSwitch) {
+
+        const hideOnview = (event) => {
+            
+            if (event.propertyName !== 'transform') return;
+
+            // スイッチのアニメーションが終わった
+            // ↓
+            // ここで初めて ON 画像を OFF 画面へ切り替える
+
+            // 保存済み状態を「通常時の画面」に反映する
+            renderAutochargeUI();
+
+            autochargeSwitch.removeEventListener(
+                'transitionend',
+                hideOnview
+            );
+        };
+
+        autochargeSwitch.addEventListener(
+            'transitionend',
+             hideOnview
+        );
+
+        // ここで ON → OFF の transform を開始
+        autochargeSwitch.classList.remove('is-on');
+
+    }    
+}
+
 	
 
 ♥️ 無代へ渡す用 
