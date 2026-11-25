@@ -9,6 +9,22 @@
 </head>
 <body>
 
+// 【第３モーダル】オートチャージ設定を完全に閉じる バツボタン / キャンセルボタン
+function closeAutochargeModal(event) {
+
+    if (event && event.target !== event.currentTarget) return; 
+    closeAutochargeModalForce();
+}
+
+function closeAutochargeModalForce() {
+
+    const autochargeModal = document.getElementById('autochargeModal');
+    if (autochargeModal) {
+        autochargeModal.classList.remove('is-active'); 
+    }
+}
+
+	
 
 ♥️ 無代へ渡す用 
 
