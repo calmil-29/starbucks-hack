@@ -55,13 +55,26 @@
   <div class="deposit-selector-item" onclick="selectDepositOption('amount', 10000, event)">¥10,000</div>
 
   <!-- 手動入力金額 -->	
-  <div class="deposit-custom-amount" onclick="applyCustimDepositAmount(event)">金額を入力</div>	
+  <div class="deposit-custom-amount" onclick="opencustimAmountodal(event)">金額を入力</div>	
 </div>	
 	
- <!-- 手動金額エリア -->
-  <div class="deposit-custom-amount-modal">
+<!-- 手動金額エリア -->
+<div class="deposit-custom-amount-modal" id="customAmountModal">
+	  
+  <!-- ヘッダー 【バツボタン】-->
+  <div class="custom-modal-header">
+    <button class="custom-close-btn" onclick="closeCustomModal()">
+      <span></span>
+      <span></span>
+    </button>
+  </div>	  
 
-    <label for="depositCustomAmount">¥0</label>
+<!-- 入力した金額表示部分 -->	
+<label for="depositCustomAmount">¥0</label>
+
+<!-- 注意書き -->
+<!-- 1000円以下だとそもそも入力できない(なのでエラーは必要なし)。1000円以上入力したときに、ここの注意書きの文字は消える-->
+<p>入金額は¥1,000以上を設定してください。</p>	
 
     <input 
      type="number"
@@ -71,8 +84,10 @@
      step="1"
      placeholder="金額を入力"
     >
-                  
-     <button type="button" onclick="applyCustimDepositAmount(event)">
+
+	<!--「完了」ボタン -->
+	<!--1000円以上入力したとき、グレーから緑に変わる -->	 
+     <button type="button" onclick="customAmountSubmitBtm(event)" class="custom-submit-btn">
      完了
      </button>
 
