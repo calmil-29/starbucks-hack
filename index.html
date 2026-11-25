@@ -11,67 +11,28 @@
 
 
 
-/* 【入金設定】手動入力エリア */
-.deposit-custom-amount {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+<!-- 手動金額エリア -->
+                <div class="deposit-custom-amount">
 
-    margin-top: 10px;
-    padding: 12px 10px 5px;
+                  <label for="depositCustomAmount">金額を入力</label>
 
-    border-top: 1px solid #eeeeee;
-}
+                  <input 
+                   type="number"
+                   id="depositCustomAmount"
+                   min="1000"
+                   max="30000"
+                   step="1"
+                   placeholder="金額を入力"
+                  >
+                  
+                  <button type="button" onclick="applyCustimDepositAmount(event)">
+                    この金額にする
+                  </button>
 
-/* 手動入力エリアのラベル */
-.deposit-custom-amount label {
-    font-size: 12px;
-    color: #333333;
-}
+                  <!-- 入金エラー -->
+                  <p id="depositAmountError" aria-live="polite"></p>
 
-/* 金額入力欄 */
-.deposit-custom-amount input {
-    width: 180px;
-    box-sizing: border-box;
-
-    padding: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 6px;
-
-    font-size: 14px;
-    color: #333333;
-    background-color: #ffffff;
-}
-
-/* 入力欄のフォーカス時 */
-.deposit-custom-amount input:focus {
-    outline: none;
-    border-color: #00754a;
-}
-
-/* 手動入力の確定ボタン */
-.deposit-custom-amount button {
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-
-    background-color: #00754a;
-    color: #ffffff;
-
-    font-size: 12px;
-    cursor: pointer;
-}
-
-/* 入力エラー */
-#depositAmountError {
-    min-height: 0;
-    margin: 0;
-
-    font-size: 11px;
-    color: #c0392b;
-}
-
-	
+                </div> 
 
 ♥️ 無代へ渡す用 
 
