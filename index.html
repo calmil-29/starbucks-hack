@@ -9,42 +9,6 @@
 </head>
 <body>
 
-// ===========================================================================
-// 【第３モーダル】クリック監視（キャプチャ制御）
-// ===========================================================================
-
-// 第３モーダルが存在するページだけ処理する
-// 【効率化】ブラウザの検索負荷を減らすため、土台となるDOM要素を事前に１回だけ取得・保持しておく
-const autochargeModal = document.getElementById('autochargeModal');
-
-
-// カード選択窓の中をタップしたか、窓の外をタップしたかを判定して閉じる
-if (autochargeModal) {
-autochargeModal.addEventListener('click' , function(event) {
-
-    // 現在開いている第3モーダルのカード選択窓を取得
-    const activeWindow = document.querySelector(
-        '.deposit-selector-window.is-active'
-    );
-
-    // カードの選択肢が開いてるときだけ処理する
-    if (activeWindow) {
-
-        // カード選択肢の「中」をタップした場合
-        if (event.target.closest('.deposit-selector-window')) {
-
-            // 何もしない
-            return;
-            
-        } else {
-
-            activeWindow.classList.remove('is-active');
-
-            event.stopPropagation();
-        }
-    }
-}, { capture: true });
-}
 
 
 ♥️ 無代へ渡す用 
