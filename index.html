@@ -11,6 +11,150 @@
 
 
 
+// 手動入力中の金額・注意書き・完了ボタンを更新
+function updateCustomAmount() {
+
+    const amountInput = document.getElementById('depositCustomAmount');
+    const amountDisplay = document.getElementById('customAmountDisplay');
+    const amountGuide = document.getElementById('customAmountGuide');
+    const submitBtn = document.getElementById('customAmountSubmitBtn');
+
+    if (!amountInput || !amountDisplay || !amountGuide || !submitBtn) return;
+
+    const amount = Number(amountInput.value);
+
+    // 入力金額を画面に表示
+    if (amountInput.value === '') {
+        amountDisplay.textContent = '¥0';
+    } else if (Number.isFinite(amount)) {
+        amountDisplay.textContent = `¥${amount.toLocaleString()}`;
+    }
+
+    // 入力金額が有効か判定
+    const isValid = Number.isInteger(amount) && amount >= 1000 && amount <= 30000;
+
+    if (isValid) {
+
+        // 有効：注意書きを消して完了ボタンを有効化
+        amountGuide.style.display = 'none';
+        submitBtn.disabled = false;
+        submitBtn.classList.add('is-valid');
+
+    } else {
+
+        // 無効：注意書きと完了ボタンを初期状態に戻す
+        amountGuide.style.display = 'block';
+
+        if (amount > 30000) {
+            amountGuide.textContent = '入金額は¥30,000以下を設定してください。';
+        } else {
+            amountGuide.textContent = '入金額は¥1,000以上を設定してください。';
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.classList.remove('is-valid');
+    }
+}
+
+
+
+// 手動入力画面を開く
+function openCustomAmountModal(event) {
+
+    if (event) event.stopPropagation();
+
+    const amountWindow = document.getElementById('depositAmountWindow');
+    const customModal = document.getElementById('customAmountModal');
+    const amountInput = document.getElementById('depositCustomAmount');
+
+    if (!customModal || !amountInput) return;
+
+    // 入金額ドロップダウンを閉じる
+    if (amountWindow) {
+        amountWindow.classList.remove('is-active');
+    }
+
+    // 入力内容を初期化
+    amountInput.value = '';
+    updateCustomAmount();
+
+    // 手動入力画面を表示
+    customModal.classList.add('is-active');
+
+    // 入力欄にフォーカス
+    amountInput.focus();
+}
+
+
+// 手動入力画面を閉じて、入金額ドロップダウンに戻る
+function closeCustomAmountModal(event) {
+
+    if (event) event.stopPropagation();
+
+    const customModal = document.getElementById('customAmountModal');
+    const amountWindow = document.getElementById('depositAmountWindow');
+
+    if (customModal) {
+        customModal.classList.remove('is-active');
+    }
+
+    // 元のドロップダウンを再表示
+    if (amountWindow) {
+        amountWindow.classList.add('is-active');
+    }
+}
+
+
+
+
+
+// 手動入力した金額を入金額として確定
+function submitCustomAmount(event) {
+
+    if (event) event.stopPropagation();
+
+    const amountInput = document.getElementById('depositCustomAmount');
+    const customModal = document.getElementById('customAmountModal');
+    const amountWindow = document.getElementById('depositAmountWindow');
+
+    if (!amountInput || !customModal) return;
+
+    const amount = Number(amountInput.value);
+
+    // 最終確認：1,000〜30,000円の整数か
+    if (!Number.isInteger(amount) || amount < 1000 || amount > 30000) {
+        updateCustomAmount();
+        return;
+    }
+
+    // 既存の入金額表示欄を取得
+    const amountLabel = document.querySelector(
+        '.deposit-menu-list .deposit-menu-item:nth-child(2) .current-value'
+    );
+
+    if (!amountLabel) return;
+
+    // 入力金額を既存の入金額表示に反映
+    amountLabel.textContent = `¥${amount.toLocaleString()}`;
+
+    // 手動入力画面を閉じる
+    customModal.classList.remove('is-active');
+
+    // ドロップダウンも閉じて、入金設定画面に戻る
+    if (amountWindow) {
+        amountWindow.classList.remove('is-active');
+    }
+}
+
+
+// 手動入力画面も閉じておく
+const customModal = document.getElementById('customAmountModal');
+
+if (customModal) {
+    customModal.classList.remove('is-active');
+}
+
+
 	
 
 ♥️ 無代へ渡す用 
